@@ -1,0 +1,31 @@
+package schema
+
+import (
+	"github.com/facebookincubator/ent"
+	"github.com/facebookincubator/ent/schema/edge"
+	"github.com/facebookincubator/ent/schema/field"
+)
+
+// Officer holds the schema definition for the Officer entity.
+type Officer struct {
+	ent.Schema
+}
+
+// Fields of the Officer.
+func (Officer) Fields() []ent.Field {
+	return []ent.Field{
+		field.String("officer_email").Unique(),
+		field.String("officer_name").Unique(),
+		field.String("officer_password"),
+		/*field.Float("product_payment_of_year"),
+		  field.Time("created_at").
+		      Default(time.Now),*/
+	}
+}
+
+// Edges of the Officer.
+func (Officer) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("officers", Product.Type).StorageKey(edge.Column("officer_id")),
+	}
+}

@@ -1,6 +1,9 @@
 package schema
 
-type Issue struct {
+import "github.com/facebookincubator/ent"
+
+type Issue32 struct {
+	ent.Schema
 }
 
 
