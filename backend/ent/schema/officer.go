@@ -14,9 +14,9 @@ type Officer struct {
 // Fields of the Officer.
 func (Officer) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("officer_email").Unique(),
-		field.String("officer_name").Unique(),
-		field.String("officer_password"),
+		field.String("officer_email").Unique().NotEmpty(),
+		field.String("officer_name").Unique().NotEmpty(),
+		field.String("officer_password").NotEmpty(),
 		/*field.Float("product_payment_of_year"),
 		  field.Time("created_at").
 		      Default(time.Now),*/
@@ -27,5 +27,6 @@ func (Officer) Fields() []ent.Field {
 func (Officer) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("officers", Product.Type).StorageKey(edge.Column("officer_id")),
+		edge.To("officer_insurance", Insurance.Type).StorageKey(edge.Column("officer_id")),
 	}
 }
