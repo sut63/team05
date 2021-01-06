@@ -473,6 +473,34 @@ func HasMemberInsuranceWith(preds ...predicate.Insurance) predicate.Member {
 	})
 }
 
+// HasMemberPayment applies the HasEdge predicate on the "member_payment" edge.
+func HasMemberPayment() predicate.Member {
+	return predicate.Member(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(MemberPaymentTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, MemberPaymentTable, MemberPaymentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasMemberPaymentWith applies the HasEdge predicate on the "member_payment" edge with a given conditions (other predicates).
+func HasMemberPaymentWith(preds ...predicate.Payment) predicate.Member {
+	return predicate.Member(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(MemberPaymentInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, MemberPaymentTable, MemberPaymentColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Member) predicate.Member {
 	return predicate.Member(func(s *sql.Selector) {

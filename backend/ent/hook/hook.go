@@ -9,6 +9,19 @@ import (
 	"github.com/sut63/team05/ent"
 )
 
+// The BankFunc type is an adapter to allow the use of ordinary
+// function as Bank mutator.
+type BankFunc func(context.Context, *ent.BankMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BankFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.BankMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BankMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The GenderFunc type is an adapter to allow the use of ordinary
 // function as Gender mutator.
 type GenderFunc func(context.Context, *ent.GenderMutation) (ent.Value, error)
@@ -74,6 +87,19 @@ func (f MemberFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return f(ctx, mv)
 }
 
+// The MoneyTransferFunc type is an adapter to allow the use of ordinary
+// function as MoneyTransfer mutator.
+type MoneyTransferFunc func(context.Context, *ent.MoneyTransferMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f MoneyTransferFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.MoneyTransferMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.MoneyTransferMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The OfficerFunc type is an adapter to allow the use of ordinary
 // function as Officer mutator.
 type OfficerFunc func(context.Context, *ent.OfficerMutation) (ent.Value, error)
@@ -83,6 +109,19 @@ func (f OfficerFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	mv, ok := m.(*ent.OfficerMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.OfficerMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The PaymentFunc type is an adapter to allow the use of ordinary
+// function as Payment mutator.
+type PaymentFunc func(context.Context, *ent.PaymentMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PaymentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PaymentMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PaymentMutation", m)
 	}
 	return f(ctx, mv)
 }

@@ -8,6 +8,18 @@ import (
 )
 
 var (
+	// BanksColumns holds the columns for the "banks" table.
+	BanksColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "bank_type", Type: field.TypeString},
+	}
+	// BanksTable holds the schema information for the "banks" table.
+	BanksTable = &schema.Table{
+		Name:        "banks",
+		Columns:     BanksColumns,
+		PrimaryKey:  []*schema.Column{BanksColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// GendersColumns holds the columns for the "genders" table.
 	GendersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -107,6 +119,18 @@ var (
 		PrimaryKey:  []*schema.Column{MembersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// MoneyTransfersColumns holds the columns for the "money_transfers" table.
+	MoneyTransfersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "moneytransfer_type", Type: field.TypeString},
+	}
+	// MoneyTransfersTable holds the schema information for the "money_transfers" table.
+	MoneyTransfersTable = &schema.Table{
+		Name:        "money_transfers",
+		Columns:     MoneyTransfersColumns,
+		PrimaryKey:  []*schema.Column{MoneyTransfersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// OfficersColumns holds the columns for the "officers" table.
 	OfficersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -120,6 +144,53 @@ var (
 		Columns:     OfficersColumns,
 		PrimaryKey:  []*schema.Column{OfficersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
+	}
+	// PaymentsColumns holds the columns for the "payments" table.
+	PaymentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "account_name", Type: field.TypeString},
+		{Name: "account_number", Type: field.TypeString},
+		{Name: "transfer_time", Type: field.TypeTime},
+		{Name: "bank_id", Type: field.TypeInt, Nullable: true},
+		{Name: "insurance_id", Type: field.TypeInt, Nullable: true},
+		{Name: "member_id", Type: field.TypeInt, Nullable: true},
+		{Name: "moneytransfer_id", Type: field.TypeInt, Nullable: true},
+	}
+	// PaymentsTable holds the schema information for the "payments" table.
+	PaymentsTable = &schema.Table{
+		Name:       "payments",
+		Columns:    PaymentsColumns,
+		PrimaryKey: []*schema.Column{PaymentsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "payments_banks_bank_payment",
+				Columns: []*schema.Column{PaymentsColumns[4]},
+
+				RefColumns: []*schema.Column{BanksColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "payments_insurances_insurance_payment",
+				Columns: []*schema.Column{PaymentsColumns[5]},
+
+				RefColumns: []*schema.Column{InsurancesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "payments_members_member_payment",
+				Columns: []*schema.Column{PaymentsColumns[6]},
+
+				RefColumns: []*schema.Column{MembersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "payments_money_transfers_moneytransfer_payment",
+				Columns: []*schema.Column{PaymentsColumns[7]},
+
+				RefColumns: []*schema.Column{MoneyTransfersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// ProductsColumns holds the columns for the "products" table.
 	ProductsColumns = []*schema.Column{
@@ -163,12 +234,15 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		BanksTable,
 		GendersTable,
 		GroupOfAgesTable,
 		HospitalsTable,
 		InsurancesTable,
 		MembersTable,
+		MoneyTransfersTable,
 		OfficersTable,
+		PaymentsTable,
 		ProductsTable,
 	}
 )
@@ -178,6 +252,10 @@ func init() {
 	InsurancesTable.ForeignKeys[1].RefTable = MembersTable
 	InsurancesTable.ForeignKeys[2].RefTable = OfficersTable
 	InsurancesTable.ForeignKeys[3].RefTable = ProductsTable
+	PaymentsTable.ForeignKeys[0].RefTable = BanksTable
+	PaymentsTable.ForeignKeys[1].RefTable = InsurancesTable
+	PaymentsTable.ForeignKeys[2].RefTable = MembersTable
+	PaymentsTable.ForeignKeys[3].RefTable = MoneyTransfersTable
 	ProductsTable.ForeignKeys[0].RefTable = GendersTable
 	ProductsTable.ForeignKeys[1].RefTable = GroupOfAgesTable
 	ProductsTable.ForeignKeys[2].RefTable = OfficersTable

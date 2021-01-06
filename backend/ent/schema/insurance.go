@@ -30,5 +30,6 @@ func (Insurance) Edges() []ent.Edge {
 		edge.From("Hospital", Hospital.Type).Ref("hospital_insurance").Unique(),
 		edge.From("Officer", Officer.Type).Ref("officer_insurance").Unique(),
 		edge.From("Product", Product.Type).Ref("product_insurance").Unique(),
+		edge.To("insurance_payment", Payment.Type).StorageKey(edge.Column("insurance_id")),
 	}
 }

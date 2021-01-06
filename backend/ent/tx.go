@@ -12,6 +12,8 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// Bank is the client for interacting with the Bank builders.
+	Bank *BankClient
 	// Gender is the client for interacting with the Gender builders.
 	Gender *GenderClient
 	// GroupOfAge is the client for interacting with the GroupOfAge builders.
@@ -22,8 +24,12 @@ type Tx struct {
 	Insurance *InsuranceClient
 	// Member is the client for interacting with the Member builders.
 	Member *MemberClient
+	// MoneyTransfer is the client for interacting with the MoneyTransfer builders.
+	MoneyTransfer *MoneyTransferClient
 	// Officer is the client for interacting with the Officer builders.
 	Officer *OfficerClient
+	// Payment is the client for interacting with the Payment builders.
+	Payment *PaymentClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
 
@@ -161,12 +167,15 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.Bank = NewBankClient(tx.config)
 	tx.Gender = NewGenderClient(tx.config)
 	tx.GroupOfAge = NewGroupOfAgeClient(tx.config)
 	tx.Hospital = NewHospitalClient(tx.config)
 	tx.Insurance = NewInsuranceClient(tx.config)
 	tx.Member = NewMemberClient(tx.config)
+	tx.MoneyTransfer = NewMoneyTransferClient(tx.config)
 	tx.Officer = NewOfficerClient(tx.config)
+	tx.Payment = NewPaymentClient(tx.config)
 	tx.Product = NewProductClient(tx.config)
 }
 
@@ -177,7 +186,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: Gender.QueryXXX(), the query will be executed
+// applies a query, for example: Bank.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

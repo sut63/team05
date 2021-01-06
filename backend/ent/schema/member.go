@@ -24,5 +24,6 @@ func (Member) Fields() []ent.Field {
 func (Member) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("member_insurance", Insurance.Type).StorageKey(edge.Column("member_id")),
+		edge.To("member_payment", Payment.Type).StorageKey(edge.Column("member_id")),
 	}
 }
