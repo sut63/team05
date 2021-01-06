@@ -7,6 +7,7 @@ import (
 
 	"github.com/sut63/team05/ent/bank"
 	"github.com/sut63/team05/ent/hospital"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/moneytransfer"
@@ -31,6 +32,16 @@ func init() {
 	hospitalDescHospitalName := hospitalFields[0].Descriptor()
 	// hospital.HospitalNameValidator is a validator for the "hospital_name" field. It is called by the builders before save.
 	hospital.HospitalNameValidator = hospitalDescHospitalName.Validators[0].(func(string) error)
+	inquiryFields := schema.Inquiry{}.Fields()
+	_ = inquiryFields
+	// inquiryDescInquiryInguiryMessages is the schema descriptor for Inquiry_inguiry_messages field.
+	inquiryDescInquiryInguiryMessages := inquiryFields[0].Descriptor()
+	// inquiry.InquiryInguiryMessagesValidator is a validator for the "Inquiry_inguiry_messages" field. It is called by the builders before save.
+	inquiry.InquiryInguiryMessagesValidator = inquiryDescInquiryInguiryMessages.Validators[0].(func(string) error)
+	// inquiryDescInquiryTimeMessages is the schema descriptor for Inquiry_time_messages field.
+	inquiryDescInquiryTimeMessages := inquiryFields[1].Descriptor()
+	// inquiry.DefaultInquiryTimeMessages holds the default value on creation for the Inquiry_time_messages field.
+	inquiry.DefaultInquiryTimeMessages = inquiryDescInquiryTimeMessages.Default.(func() time.Time)
 	insuranceFields := schema.Insurance{}.Fields()
 	_ = insuranceFields
 	// insuranceDescInsuranceAddress is the schema descriptor for insurance_address field.

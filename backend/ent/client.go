@@ -10,9 +10,11 @@ import (
 	"github.com/sut63/team05/ent/migrate"
 
 	"github.com/sut63/team05/ent/bank"
+	"github.com/sut63/team05/ent/category"
 	"github.com/sut63/team05/ent/gender"
 	"github.com/sut63/team05/ent/groupofage"
 	"github.com/sut63/team05/ent/hospital"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/moneytransfer"
@@ -32,12 +34,16 @@ type Client struct {
 	Schema *migrate.Schema
 	// Bank is the client for interacting with the Bank builders.
 	Bank *BankClient
+	// Category is the client for interacting with the Category builders.
+	Category *CategoryClient
 	// Gender is the client for interacting with the Gender builders.
 	Gender *GenderClient
 	// GroupOfAge is the client for interacting with the GroupOfAge builders.
 	GroupOfAge *GroupOfAgeClient
 	// Hospital is the client for interacting with the Hospital builders.
 	Hospital *HospitalClient
+	// Inquiry is the client for interacting with the Inquiry builders.
+	Inquiry *InquiryClient
 	// Insurance is the client for interacting with the Insurance builders.
 	Insurance *InsuranceClient
 	// Member is the client for interacting with the Member builders.
@@ -64,9 +70,11 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Bank = NewBankClient(c.config)
+	c.Category = NewCategoryClient(c.config)
 	c.Gender = NewGenderClient(c.config)
 	c.GroupOfAge = NewGroupOfAgeClient(c.config)
 	c.Hospital = NewHospitalClient(c.config)
+	c.Inquiry = NewInquiryClient(c.config)
 	c.Insurance = NewInsuranceClient(c.config)
 	c.Member = NewMemberClient(c.config)
 	c.MoneyTransfer = NewMoneyTransferClient(c.config)
@@ -106,9 +114,11 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		ctx:           ctx,
 		config:        cfg,
 		Bank:          NewBankClient(cfg),
+		Category:      NewCategoryClient(cfg),
 		Gender:        NewGenderClient(cfg),
 		GroupOfAge:    NewGroupOfAgeClient(cfg),
 		Hospital:      NewHospitalClient(cfg),
+		Inquiry:       NewInquiryClient(cfg),
 		Insurance:     NewInsuranceClient(cfg),
 		Member:        NewMemberClient(cfg),
 		MoneyTransfer: NewMoneyTransferClient(cfg),
@@ -131,9 +141,11 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	return &Tx{
 		config:        cfg,
 		Bank:          NewBankClient(cfg),
+		Category:      NewCategoryClient(cfg),
 		Gender:        NewGenderClient(cfg),
 		GroupOfAge:    NewGroupOfAgeClient(cfg),
 		Hospital:      NewHospitalClient(cfg),
+		Inquiry:       NewInquiryClient(cfg),
 		Insurance:     NewInsuranceClient(cfg),
 		Member:        NewMemberClient(cfg),
 		MoneyTransfer: NewMoneyTransferClient(cfg),
@@ -169,9 +181,11 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.Bank.Use(hooks...)
+	c.Category.Use(hooks...)
 	c.Gender.Use(hooks...)
 	c.GroupOfAge.Use(hooks...)
 	c.Hospital.Use(hooks...)
+	c.Inquiry.Use(hooks...)
 	c.Insurance.Use(hooks...)
 	c.Member.Use(hooks...)
 	c.MoneyTransfer.Use(hooks...)
@@ -277,6 +291,105 @@ func (c *BankClient) QueryBankPayment(b *Bank) *PaymentQuery {
 // Hooks returns the client hooks.
 func (c *BankClient) Hooks() []Hook {
 	return c.hooks.Bank
+}
+
+// CategoryClient is a client for the Category schema.
+type CategoryClient struct {
+	config
+}
+
+// NewCategoryClient returns a client for the Category from the given config.
+func NewCategoryClient(c config) *CategoryClient {
+	return &CategoryClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `category.Hooks(f(g(h())))`.
+func (c *CategoryClient) Use(hooks ...Hook) {
+	c.hooks.Category = append(c.hooks.Category, hooks...)
+}
+
+// Create returns a create builder for Category.
+func (c *CategoryClient) Create() *CategoryCreate {
+	mutation := newCategoryMutation(c.config, OpCreate)
+	return &CategoryCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Update returns an update builder for Category.
+func (c *CategoryClient) Update() *CategoryUpdate {
+	mutation := newCategoryMutation(c.config, OpUpdate)
+	return &CategoryUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CategoryClient) UpdateOne(ca *Category) *CategoryUpdateOne {
+	mutation := newCategoryMutation(c.config, OpUpdateOne, withCategory(ca))
+	return &CategoryUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CategoryClient) UpdateOneID(id int) *CategoryUpdateOne {
+	mutation := newCategoryMutation(c.config, OpUpdateOne, withCategoryID(id))
+	return &CategoryUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Category.
+func (c *CategoryClient) Delete() *CategoryDelete {
+	mutation := newCategoryMutation(c.config, OpDelete)
+	return &CategoryDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *CategoryClient) DeleteOne(ca *Category) *CategoryDeleteOne {
+	return c.DeleteOneID(ca.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *CategoryClient) DeleteOneID(id int) *CategoryDeleteOne {
+	builder := c.Delete().Where(category.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CategoryDeleteOne{builder}
+}
+
+// Create returns a query builder for Category.
+func (c *CategoryClient) Query() *CategoryQuery {
+	return &CategoryQuery{config: c.config}
+}
+
+// Get returns a Category entity by its id.
+func (c *CategoryClient) Get(ctx context.Context, id int) (*Category, error) {
+	return c.Query().Where(category.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CategoryClient) GetX(ctx context.Context, id int) *Category {
+	ca, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return ca
+}
+
+// QueryCategoryInquiry queries the category_inquiry edge of a Category.
+func (c *CategoryClient) QueryCategoryInquiry(ca *Category) *InquiryQuery {
+	query := &InquiryQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ca.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(category.Table, category.FieldID, id),
+			sqlgraph.To(inquiry.Table, inquiry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, category.CategoryInquiryTable, category.CategoryInquiryColumn),
+		)
+		fromV = sqlgraph.Neighbors(ca.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *CategoryClient) Hooks() []Hook {
+	return c.hooks.Category
 }
 
 // GenderClient is a client for the Gender schema.
@@ -576,6 +689,153 @@ func (c *HospitalClient) Hooks() []Hook {
 	return c.hooks.Hospital
 }
 
+// InquiryClient is a client for the Inquiry schema.
+type InquiryClient struct {
+	config
+}
+
+// NewInquiryClient returns a client for the Inquiry from the given config.
+func NewInquiryClient(c config) *InquiryClient {
+	return &InquiryClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `inquiry.Hooks(f(g(h())))`.
+func (c *InquiryClient) Use(hooks ...Hook) {
+	c.hooks.Inquiry = append(c.hooks.Inquiry, hooks...)
+}
+
+// Create returns a create builder for Inquiry.
+func (c *InquiryClient) Create() *InquiryCreate {
+	mutation := newInquiryMutation(c.config, OpCreate)
+	return &InquiryCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Update returns an update builder for Inquiry.
+func (c *InquiryClient) Update() *InquiryUpdate {
+	mutation := newInquiryMutation(c.config, OpUpdate)
+	return &InquiryUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *InquiryClient) UpdateOne(i *Inquiry) *InquiryUpdateOne {
+	mutation := newInquiryMutation(c.config, OpUpdateOne, withInquiry(i))
+	return &InquiryUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *InquiryClient) UpdateOneID(id int) *InquiryUpdateOne {
+	mutation := newInquiryMutation(c.config, OpUpdateOne, withInquiryID(id))
+	return &InquiryUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Inquiry.
+func (c *InquiryClient) Delete() *InquiryDelete {
+	mutation := newInquiryMutation(c.config, OpDelete)
+	return &InquiryDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *InquiryClient) DeleteOne(i *Inquiry) *InquiryDeleteOne {
+	return c.DeleteOneID(i.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *InquiryClient) DeleteOneID(id int) *InquiryDeleteOne {
+	builder := c.Delete().Where(inquiry.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &InquiryDeleteOne{builder}
+}
+
+// Create returns a query builder for Inquiry.
+func (c *InquiryClient) Query() *InquiryQuery {
+	return &InquiryQuery{config: c.config}
+}
+
+// Get returns a Inquiry entity by its id.
+func (c *InquiryClient) Get(ctx context.Context, id int) (*Inquiry, error) {
+	return c.Query().Where(inquiry.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *InquiryClient) GetX(ctx context.Context, id int) *Inquiry {
+	i, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return i
+}
+
+// QueryMember queries the Member edge of a Inquiry.
+func (c *InquiryClient) QueryMember(i *Inquiry) *MemberQuery {
+	query := &MemberQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(inquiry.Table, inquiry.FieldID, id),
+			sqlgraph.To(member.Table, member.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, inquiry.MemberTable, inquiry.MemberColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCategory queries the Category edge of a Inquiry.
+func (c *InquiryClient) QueryCategory(i *Inquiry) *CategoryQuery {
+	query := &CategoryQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(inquiry.Table, inquiry.FieldID, id),
+			sqlgraph.To(category.Table, category.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, inquiry.CategoryTable, inquiry.CategoryColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOfficer queries the Officer edge of a Inquiry.
+func (c *InquiryClient) QueryOfficer(i *Inquiry) *OfficerQuery {
+	query := &OfficerQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(inquiry.Table, inquiry.FieldID, id),
+			sqlgraph.To(officer.Table, officer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, inquiry.OfficerTable, inquiry.OfficerColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProduct queries the Product edge of a Inquiry.
+func (c *InquiryClient) QueryProduct(i *Inquiry) *ProductQuery {
+	query := &ProductQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := i.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(inquiry.Table, inquiry.FieldID, id),
+			sqlgraph.To(product.Table, product.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, inquiry.ProductTable, inquiry.ProductColumn),
+		)
+		fromV = sqlgraph.Neighbors(i.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *InquiryClient) Hooks() []Hook {
+	return c.hooks.Inquiry
+}
+
 // InsuranceClient is a client for the Insurance schema.
 type InsuranceClient struct {
 	config
@@ -849,6 +1109,22 @@ func (c *MemberClient) QueryMemberPayment(m *Member) *PaymentQuery {
 	return query
 }
 
+// QueryMemberInquiry queries the member_inquiry edge of a Member.
+func (c *MemberClient) QueryMemberInquiry(m *Member) *InquiryQuery {
+	query := &InquiryQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(member.Table, member.FieldID, id),
+			sqlgraph.To(inquiry.Table, inquiry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberInquiryTable, member.MemberInquiryColumn),
+		)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *MemberClient) Hooks() []Hook {
 	return c.hooks.Member
@@ -1056,6 +1332,22 @@ func (c *OfficerClient) QueryOfficerInsurance(o *Officer) *InsuranceQuery {
 			sqlgraph.From(officer.Table, officer.FieldID, id),
 			sqlgraph.To(insurance.Table, insurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerInsuranceTable, officer.OfficerInsuranceColumn),
+		)
+		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOfficerInquiry queries the officer_inquiry edge of a Officer.
+func (c *OfficerClient) QueryOfficerInquiry(o *Officer) *InquiryQuery {
+	query := &InquiryQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := o.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(officer.Table, officer.FieldID, id),
+			sqlgraph.To(inquiry.Table, inquiry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerInquiryTable, officer.OfficerInquiryColumn),
 		)
 		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
 		return fromV, nil
@@ -1350,6 +1642,22 @@ func (c *ProductClient) QueryProductInsurance(pr *Product) *InsuranceQuery {
 			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(insurance.Table, insurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductInsuranceTable, product.ProductInsuranceColumn),
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProductInquiry queries the product_inquiry edge of a Product.
+func (c *ProductClient) QueryProductInquiry(pr *Product) *InquiryQuery {
+	query := &InquiryQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(product.Table, product.FieldID, id),
+			sqlgraph.To(inquiry.Table, inquiry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductInquiryTable, product.ProductInquiryColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil

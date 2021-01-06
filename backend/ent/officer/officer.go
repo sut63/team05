@@ -18,6 +18,8 @@ const (
 	EdgeOfficers = "officers"
 	// EdgeOfficerInsurance holds the string denoting the officer_insurance edge name in mutations.
 	EdgeOfficerInsurance = "officer_insurance"
+	// EdgeOfficerInquiry holds the string denoting the officer_inquiry edge name in mutations.
+	EdgeOfficerInquiry = "officer_inquiry"
 
 	// Table holds the table name of the officer in the database.
 	Table = "officers"
@@ -35,6 +37,13 @@ const (
 	OfficerInsuranceInverseTable = "insurances"
 	// OfficerInsuranceColumn is the table column denoting the officer_insurance relation/edge.
 	OfficerInsuranceColumn = "officer_id"
+	// OfficerInquiryTable is the table the holds the officer_inquiry relation/edge.
+	OfficerInquiryTable = "inquiries"
+	// OfficerInquiryInverseTable is the table name for the Inquiry entity.
+	// It exists in this package in order to avoid circular dependency with the "inquiry" package.
+	OfficerInquiryInverseTable = "inquiries"
+	// OfficerInquiryColumn is the table column denoting the officer_inquiry relation/edge.
+	OfficerInquiryColumn = "officer_id"
 )
 
 // Columns holds all SQL columns for officer fields.

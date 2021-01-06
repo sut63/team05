@@ -9,6 +9,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/predicate"
@@ -77,6 +78,21 @@ func (ou *OfficerUpdate) AddOfficerInsurance(i ...*Insurance) *OfficerUpdate {
 	return ou.AddOfficerInsuranceIDs(ids...)
 }
 
+// AddOfficerInquiryIDs adds the officer_inquiry edge to Inquiry by ids.
+func (ou *OfficerUpdate) AddOfficerInquiryIDs(ids ...int) *OfficerUpdate {
+	ou.mutation.AddOfficerInquiryIDs(ids...)
+	return ou
+}
+
+// AddOfficerInquiry adds the officer_inquiry edges to Inquiry.
+func (ou *OfficerUpdate) AddOfficerInquiry(i ...*Inquiry) *OfficerUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return ou.AddOfficerInquiryIDs(ids...)
+}
+
 // Mutation returns the OfficerMutation object of the builder.
 func (ou *OfficerUpdate) Mutation() *OfficerMutation {
 	return ou.mutation
@@ -110,6 +126,21 @@ func (ou *OfficerUpdate) RemoveOfficerInsurance(i ...*Insurance) *OfficerUpdate 
 		ids[j] = i[j].ID
 	}
 	return ou.RemoveOfficerInsuranceIDs(ids...)
+}
+
+// RemoveOfficerInquiryIDs removes the officer_inquiry edge to Inquiry by ids.
+func (ou *OfficerUpdate) RemoveOfficerInquiryIDs(ids ...int) *OfficerUpdate {
+	ou.mutation.RemoveOfficerInquiryIDs(ids...)
+	return ou
+}
+
+// RemoveOfficerInquiry removes officer_inquiry edges to Inquiry.
+func (ou *OfficerUpdate) RemoveOfficerInquiry(i ...*Inquiry) *OfficerUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return ou.RemoveOfficerInquiryIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -294,6 +325,44 @@ func (ou *OfficerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := ou.mutation.RemovedOfficerInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerInquiryTable,
+			Columns: []string{officer.OfficerInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ou.mutation.OfficerInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerInquiryTable,
+			Columns: []string{officer.OfficerInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ou.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{officer.Label}
@@ -360,6 +429,21 @@ func (ouo *OfficerUpdateOne) AddOfficerInsurance(i ...*Insurance) *OfficerUpdate
 	return ouo.AddOfficerInsuranceIDs(ids...)
 }
 
+// AddOfficerInquiryIDs adds the officer_inquiry edge to Inquiry by ids.
+func (ouo *OfficerUpdateOne) AddOfficerInquiryIDs(ids ...int) *OfficerUpdateOne {
+	ouo.mutation.AddOfficerInquiryIDs(ids...)
+	return ouo
+}
+
+// AddOfficerInquiry adds the officer_inquiry edges to Inquiry.
+func (ouo *OfficerUpdateOne) AddOfficerInquiry(i ...*Inquiry) *OfficerUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return ouo.AddOfficerInquiryIDs(ids...)
+}
+
 // Mutation returns the OfficerMutation object of the builder.
 func (ouo *OfficerUpdateOne) Mutation() *OfficerMutation {
 	return ouo.mutation
@@ -393,6 +477,21 @@ func (ouo *OfficerUpdateOne) RemoveOfficerInsurance(i ...*Insurance) *OfficerUpd
 		ids[j] = i[j].ID
 	}
 	return ouo.RemoveOfficerInsuranceIDs(ids...)
+}
+
+// RemoveOfficerInquiryIDs removes the officer_inquiry edge to Inquiry by ids.
+func (ouo *OfficerUpdateOne) RemoveOfficerInquiryIDs(ids ...int) *OfficerUpdateOne {
+	ouo.mutation.RemoveOfficerInquiryIDs(ids...)
+	return ouo
+}
+
+// RemoveOfficerInquiry removes officer_inquiry edges to Inquiry.
+func (ouo *OfficerUpdateOne) RemoveOfficerInquiry(i ...*Inquiry) *OfficerUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return ouo.RemoveOfficerInquiryIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -567,6 +666,44 @@ func (ouo *OfficerUpdateOne) sqlSave(ctx context.Context) (o *Officer, err error
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: insurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := ouo.mutation.RemovedOfficerInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerInquiryTable,
+			Columns: []string{officer.OfficerInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ouo.mutation.OfficerInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerInquiryTable,
+			Columns: []string{officer.OfficerInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
 				},
 			},
 		}

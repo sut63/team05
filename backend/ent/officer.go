@@ -32,9 +32,11 @@ type OfficerEdges struct {
 	Officers []*Product
 	// OfficerInsurance holds the value of the officer_insurance edge.
 	OfficerInsurance []*Insurance
+	// OfficerInquiry holds the value of the officer_inquiry edge.
+	OfficerInquiry []*Inquiry
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
 // OfficersOrErr returns the Officers value or an error if the edge
@@ -53,6 +55,15 @@ func (e OfficerEdges) OfficerInsuranceOrErr() ([]*Insurance, error) {
 		return e.OfficerInsurance, nil
 	}
 	return nil, &NotLoadedError{edge: "officer_insurance"}
+}
+
+// OfficerInquiryOrErr returns the OfficerInquiry value or an error if the edge
+// was not loaded in eager-loading.
+func (e OfficerEdges) OfficerInquiryOrErr() ([]*Inquiry, error) {
+	if e.loadedTypes[2] {
+		return e.OfficerInquiry, nil
+	}
+	return nil, &NotLoadedError{edge: "officer_inquiry"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -103,6 +114,11 @@ func (o *Officer) QueryOfficers() *ProductQuery {
 // QueryOfficerInsurance queries the officer_insurance edge of the Officer.
 func (o *Officer) QueryOfficerInsurance() *InsuranceQuery {
 	return (&OfficerClient{config: o.config}).QueryOfficerInsurance(o)
+}
+
+// QueryOfficerInquiry queries the officer_inquiry edge of the Officer.
+func (o *Officer) QueryOfficerInquiry() *InquiryQuery {
+	return (&OfficerClient{config: o.config}).QueryOfficerInquiry(o)
 }
 
 // Update returns a builder for updating this Officer.

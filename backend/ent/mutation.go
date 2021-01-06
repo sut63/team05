@@ -9,9 +9,11 @@ import (
 	"time"
 
 	"github.com/sut63/team05/ent/bank"
+	"github.com/sut63/team05/ent/category"
 	"github.com/sut63/team05/ent/gender"
 	"github.com/sut63/team05/ent/groupofage"
 	"github.com/sut63/team05/ent/hospital"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/moneytransfer"
@@ -32,9 +34,11 @@ const (
 
 	// Node types.
 	TypeBank          = "Bank"
+	TypeCategory      = "Category"
 	TypeGender        = "Gender"
 	TypeGroupOfAge    = "GroupOfAge"
 	TypeHospital      = "Hospital"
+	TypeInquiry       = "Inquiry"
 	TypeInsurance     = "Insurance"
 	TypeMember        = "Member"
 	TypeMoneyTransfer = "MoneyTransfer"
@@ -409,6 +413,374 @@ func (m *BankMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Bank edge %s", name)
+}
+
+// CategoryMutation represents an operation that mutate the Categories
+// nodes in the graph.
+type CategoryMutation struct {
+	config
+	op                      Op
+	typ                     string
+	id                      *int
+	category_name           *string
+	clearedFields           map[string]struct{}
+	category_inquiry        map[int]struct{}
+	removedcategory_inquiry map[int]struct{}
+	done                    bool
+	oldValue                func(context.Context) (*Category, error)
+}
+
+var _ ent.Mutation = (*CategoryMutation)(nil)
+
+// categoryOption allows to manage the mutation configuration using functional options.
+type categoryOption func(*CategoryMutation)
+
+// newCategoryMutation creates new mutation for $n.Name.
+func newCategoryMutation(c config, op Op, opts ...categoryOption) *CategoryMutation {
+	m := &CategoryMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeCategory,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withCategoryID sets the id field of the mutation.
+func withCategoryID(id int) categoryOption {
+	return func(m *CategoryMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Category
+		)
+		m.oldValue = func(ctx context.Context) (*Category, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Category.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withCategory sets the old Category of the mutation.
+func withCategory(node *Category) categoryOption {
+	return func(m *CategoryMutation) {
+		m.oldValue = func(context.Context) (*Category, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m CategoryMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m CategoryMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the id value in the mutation. Note that, the id
+// is available only if it was provided to the builder.
+func (m *CategoryMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetCategoryName sets the category_name field.
+func (m *CategoryMutation) SetCategoryName(s string) {
+	m.category_name = &s
+}
+
+// CategoryName returns the category_name value in the mutation.
+func (m *CategoryMutation) CategoryName() (r string, exists bool) {
+	v := m.category_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCategoryName returns the old category_name value of the Category.
+// If the Category object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *CategoryMutation) OldCategoryName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCategoryName is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCategoryName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCategoryName: %w", err)
+	}
+	return oldValue.CategoryName, nil
+}
+
+// ResetCategoryName reset all changes of the "category_name" field.
+func (m *CategoryMutation) ResetCategoryName() {
+	m.category_name = nil
+}
+
+// AddCategoryInquiryIDs adds the category_inquiry edge to Inquiry by ids.
+func (m *CategoryMutation) AddCategoryInquiryIDs(ids ...int) {
+	if m.category_inquiry == nil {
+		m.category_inquiry = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.category_inquiry[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveCategoryInquiryIDs removes the category_inquiry edge to Inquiry by ids.
+func (m *CategoryMutation) RemoveCategoryInquiryIDs(ids ...int) {
+	if m.removedcategory_inquiry == nil {
+		m.removedcategory_inquiry = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedcategory_inquiry[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedCategoryInquiry returns the removed ids of category_inquiry.
+func (m *CategoryMutation) RemovedCategoryInquiryIDs() (ids []int) {
+	for id := range m.removedcategory_inquiry {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// CategoryInquiryIDs returns the category_inquiry ids in the mutation.
+func (m *CategoryMutation) CategoryInquiryIDs() (ids []int) {
+	for id := range m.category_inquiry {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetCategoryInquiry reset all changes of the "category_inquiry" edge.
+func (m *CategoryMutation) ResetCategoryInquiry() {
+	m.category_inquiry = nil
+	m.removedcategory_inquiry = nil
+}
+
+// Op returns the operation name.
+func (m *CategoryMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Category).
+func (m *CategoryMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during
+// this mutation. Note that, in order to get all numeric
+// fields that were in/decremented, call AddedFields().
+func (m *CategoryMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m.category_name != nil {
+		fields = append(fields, category.FieldCategoryName)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name.
+// The second boolean value indicates that this field was
+// not set, or was not define in the schema.
+func (m *CategoryMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case category.FieldCategoryName:
+		return m.CategoryName()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database.
+// An error is returned if the mutation operation is not UpdateOne,
+// or the query to the database was failed.
+func (m *CategoryMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case category.FieldCategoryName:
+		return m.OldCategoryName(ctx)
+	}
+	return nil, fmt.Errorf("unknown Category field %s", name)
+}
+
+// SetField sets the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *CategoryMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case category.FieldCategoryName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCategoryName(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Category field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented
+// or decremented during this mutation.
+func (m *CategoryMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was in/decremented
+// from a field with the given name. The second value indicates
+// that this field was not set, or was not define in the schema.
+func (m *CategoryMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *CategoryMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Category numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared
+// during this mutation.
+func (m *CategoryMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicates if this field was
+// cleared in this mutation.
+func (m *CategoryMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value for the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *CategoryMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Category nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation regarding the
+// given field name. It returns an error if the field is not
+// defined in the schema.
+func (m *CategoryMutation) ResetField(name string) error {
+	switch name {
+	case category.FieldCategoryName:
+		m.ResetCategoryName()
+		return nil
+	}
+	return fmt.Errorf("unknown Category field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this
+// mutation.
+func (m *CategoryMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.category_inquiry != nil {
+		edges = append(edges, category.EdgeCategoryInquiry)
+	}
+	return edges
+}
+
+// AddedIDs returns all ids (to other nodes) that were added for
+// the given edge name.
+func (m *CategoryMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case category.EdgeCategoryInquiry:
+		ids := make([]ent.Value, 0, len(m.category_inquiry))
+		for id := range m.category_inquiry {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this
+// mutation.
+func (m *CategoryMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.removedcategory_inquiry != nil {
+		edges = append(edges, category.EdgeCategoryInquiry)
+	}
+	return edges
+}
+
+// RemovedIDs returns all ids (to other nodes) that were removed for
+// the given edge name.
+func (m *CategoryMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case category.EdgeCategoryInquiry:
+		ids := make([]ent.Value, 0, len(m.removedcategory_inquiry))
+		for id := range m.removedcategory_inquiry {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this
+// mutation.
+func (m *CategoryMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// EdgeCleared returns a boolean indicates if this edge was
+// cleared in this mutation.
+func (m *CategoryMutation) EdgeCleared(name string) bool {
+	switch name {
+	}
+	return false
+}
+
+// ClearEdge clears the value for the given name. It returns an
+// error if the edge name is not defined in the schema.
+func (m *CategoryMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Category unique edge %s", name)
+}
+
+// ResetEdge resets all changes in the mutation regarding the
+// given edge name. It returns an error if the edge is not
+// defined in the schema.
+func (m *CategoryMutation) ResetEdge(name string) error {
+	switch name {
+	case category.EdgeCategoryInquiry:
+		m.ResetCategoryInquiry()
+		return nil
+	}
+	return fmt.Errorf("unknown Category edge %s", name)
 }
 
 // GenderMutation represents an operation that mutate the Genders
@@ -1570,6 +1942,600 @@ func (m *HospitalMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Hospital edge %s", name)
 }
 
+// InquiryMutation represents an operation that mutate the Inquiries
+// nodes in the graph.
+type InquiryMutation struct {
+	config
+	op                        Op
+	typ                       string
+	id                        *int
+	_Inquiry_inguiry_messages *string
+	_Inquiry_time_messages    *time.Time
+	clearedFields             map[string]struct{}
+	_Member                   *int
+	cleared_Member            bool
+	_Category                 *int
+	cleared_Category          bool
+	_Officer                  *int
+	cleared_Officer           bool
+	_Product                  *int
+	cleared_Product           bool
+	done                      bool
+	oldValue                  func(context.Context) (*Inquiry, error)
+}
+
+var _ ent.Mutation = (*InquiryMutation)(nil)
+
+// inquiryOption allows to manage the mutation configuration using functional options.
+type inquiryOption func(*InquiryMutation)
+
+// newInquiryMutation creates new mutation for $n.Name.
+func newInquiryMutation(c config, op Op, opts ...inquiryOption) *InquiryMutation {
+	m := &InquiryMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeInquiry,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withInquiryID sets the id field of the mutation.
+func withInquiryID(id int) inquiryOption {
+	return func(m *InquiryMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Inquiry
+		)
+		m.oldValue = func(ctx context.Context) (*Inquiry, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Inquiry.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withInquiry sets the old Inquiry of the mutation.
+func withInquiry(node *Inquiry) inquiryOption {
+	return func(m *InquiryMutation) {
+		m.oldValue = func(context.Context) (*Inquiry, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m InquiryMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m InquiryMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the id value in the mutation. Note that, the id
+// is available only if it was provided to the builder.
+func (m *InquiryMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetInquiryInguiryMessages sets the Inquiry_inguiry_messages field.
+func (m *InquiryMutation) SetInquiryInguiryMessages(s string) {
+	m._Inquiry_inguiry_messages = &s
+}
+
+// InquiryInguiryMessages returns the Inquiry_inguiry_messages value in the mutation.
+func (m *InquiryMutation) InquiryInguiryMessages() (r string, exists bool) {
+	v := m._Inquiry_inguiry_messages
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInquiryInguiryMessages returns the old Inquiry_inguiry_messages value of the Inquiry.
+// If the Inquiry object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *InquiryMutation) OldInquiryInguiryMessages(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldInquiryInguiryMessages is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldInquiryInguiryMessages requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInquiryInguiryMessages: %w", err)
+	}
+	return oldValue.InquiryInguiryMessages, nil
+}
+
+// ResetInquiryInguiryMessages reset all changes of the "Inquiry_inguiry_messages" field.
+func (m *InquiryMutation) ResetInquiryInguiryMessages() {
+	m._Inquiry_inguiry_messages = nil
+}
+
+// SetInquiryTimeMessages sets the Inquiry_time_messages field.
+func (m *InquiryMutation) SetInquiryTimeMessages(t time.Time) {
+	m._Inquiry_time_messages = &t
+}
+
+// InquiryTimeMessages returns the Inquiry_time_messages value in the mutation.
+func (m *InquiryMutation) InquiryTimeMessages() (r time.Time, exists bool) {
+	v := m._Inquiry_time_messages
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInquiryTimeMessages returns the old Inquiry_time_messages value of the Inquiry.
+// If the Inquiry object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *InquiryMutation) OldInquiryTimeMessages(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldInquiryTimeMessages is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldInquiryTimeMessages requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInquiryTimeMessages: %w", err)
+	}
+	return oldValue.InquiryTimeMessages, nil
+}
+
+// ResetInquiryTimeMessages reset all changes of the "Inquiry_time_messages" field.
+func (m *InquiryMutation) ResetInquiryTimeMessages() {
+	m._Inquiry_time_messages = nil
+}
+
+// SetMemberID sets the Member edge to Member by id.
+func (m *InquiryMutation) SetMemberID(id int) {
+	m._Member = &id
+}
+
+// ClearMember clears the Member edge to Member.
+func (m *InquiryMutation) ClearMember() {
+	m.cleared_Member = true
+}
+
+// MemberCleared returns if the edge Member was cleared.
+func (m *InquiryMutation) MemberCleared() bool {
+	return m.cleared_Member
+}
+
+// MemberID returns the Member id in the mutation.
+func (m *InquiryMutation) MemberID() (id int, exists bool) {
+	if m._Member != nil {
+		return *m._Member, true
+	}
+	return
+}
+
+// MemberIDs returns the Member ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// MemberID instead. It exists only for internal usage by the builders.
+func (m *InquiryMutation) MemberIDs() (ids []int) {
+	if id := m._Member; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetMember reset all changes of the "Member" edge.
+func (m *InquiryMutation) ResetMember() {
+	m._Member = nil
+	m.cleared_Member = false
+}
+
+// SetCategoryID sets the Category edge to Category by id.
+func (m *InquiryMutation) SetCategoryID(id int) {
+	m._Category = &id
+}
+
+// ClearCategory clears the Category edge to Category.
+func (m *InquiryMutation) ClearCategory() {
+	m.cleared_Category = true
+}
+
+// CategoryCleared returns if the edge Category was cleared.
+func (m *InquiryMutation) CategoryCleared() bool {
+	return m.cleared_Category
+}
+
+// CategoryID returns the Category id in the mutation.
+func (m *InquiryMutation) CategoryID() (id int, exists bool) {
+	if m._Category != nil {
+		return *m._Category, true
+	}
+	return
+}
+
+// CategoryIDs returns the Category ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// CategoryID instead. It exists only for internal usage by the builders.
+func (m *InquiryMutation) CategoryIDs() (ids []int) {
+	if id := m._Category; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCategory reset all changes of the "Category" edge.
+func (m *InquiryMutation) ResetCategory() {
+	m._Category = nil
+	m.cleared_Category = false
+}
+
+// SetOfficerID sets the Officer edge to Officer by id.
+func (m *InquiryMutation) SetOfficerID(id int) {
+	m._Officer = &id
+}
+
+// ClearOfficer clears the Officer edge to Officer.
+func (m *InquiryMutation) ClearOfficer() {
+	m.cleared_Officer = true
+}
+
+// OfficerCleared returns if the edge Officer was cleared.
+func (m *InquiryMutation) OfficerCleared() bool {
+	return m.cleared_Officer
+}
+
+// OfficerID returns the Officer id in the mutation.
+func (m *InquiryMutation) OfficerID() (id int, exists bool) {
+	if m._Officer != nil {
+		return *m._Officer, true
+	}
+	return
+}
+
+// OfficerIDs returns the Officer ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// OfficerID instead. It exists only for internal usage by the builders.
+func (m *InquiryMutation) OfficerIDs() (ids []int) {
+	if id := m._Officer; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetOfficer reset all changes of the "Officer" edge.
+func (m *InquiryMutation) ResetOfficer() {
+	m._Officer = nil
+	m.cleared_Officer = false
+}
+
+// SetProductID sets the Product edge to Product by id.
+func (m *InquiryMutation) SetProductID(id int) {
+	m._Product = &id
+}
+
+// ClearProduct clears the Product edge to Product.
+func (m *InquiryMutation) ClearProduct() {
+	m.cleared_Product = true
+}
+
+// ProductCleared returns if the edge Product was cleared.
+func (m *InquiryMutation) ProductCleared() bool {
+	return m.cleared_Product
+}
+
+// ProductID returns the Product id in the mutation.
+func (m *InquiryMutation) ProductID() (id int, exists bool) {
+	if m._Product != nil {
+		return *m._Product, true
+	}
+	return
+}
+
+// ProductIDs returns the Product ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// ProductID instead. It exists only for internal usage by the builders.
+func (m *InquiryMutation) ProductIDs() (ids []int) {
+	if id := m._Product; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetProduct reset all changes of the "Product" edge.
+func (m *InquiryMutation) ResetProduct() {
+	m._Product = nil
+	m.cleared_Product = false
+}
+
+// Op returns the operation name.
+func (m *InquiryMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Inquiry).
+func (m *InquiryMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during
+// this mutation. Note that, in order to get all numeric
+// fields that were in/decremented, call AddedFields().
+func (m *InquiryMutation) Fields() []string {
+	fields := make([]string, 0, 2)
+	if m._Inquiry_inguiry_messages != nil {
+		fields = append(fields, inquiry.FieldInquiryInguiryMessages)
+	}
+	if m._Inquiry_time_messages != nil {
+		fields = append(fields, inquiry.FieldInquiryTimeMessages)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name.
+// The second boolean value indicates that this field was
+// not set, or was not define in the schema.
+func (m *InquiryMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case inquiry.FieldInquiryInguiryMessages:
+		return m.InquiryInguiryMessages()
+	case inquiry.FieldInquiryTimeMessages:
+		return m.InquiryTimeMessages()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database.
+// An error is returned if the mutation operation is not UpdateOne,
+// or the query to the database was failed.
+func (m *InquiryMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case inquiry.FieldInquiryInguiryMessages:
+		return m.OldInquiryInguiryMessages(ctx)
+	case inquiry.FieldInquiryTimeMessages:
+		return m.OldInquiryTimeMessages(ctx)
+	}
+	return nil, fmt.Errorf("unknown Inquiry field %s", name)
+}
+
+// SetField sets the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *InquiryMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case inquiry.FieldInquiryInguiryMessages:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInquiryInguiryMessages(v)
+		return nil
+	case inquiry.FieldInquiryTimeMessages:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInquiryTimeMessages(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Inquiry field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented
+// or decremented during this mutation.
+func (m *InquiryMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was in/decremented
+// from a field with the given name. The second value indicates
+// that this field was not set, or was not define in the schema.
+func (m *InquiryMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *InquiryMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Inquiry numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared
+// during this mutation.
+func (m *InquiryMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicates if this field was
+// cleared in this mutation.
+func (m *InquiryMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value for the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *InquiryMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Inquiry nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation regarding the
+// given field name. It returns an error if the field is not
+// defined in the schema.
+func (m *InquiryMutation) ResetField(name string) error {
+	switch name {
+	case inquiry.FieldInquiryInguiryMessages:
+		m.ResetInquiryInguiryMessages()
+		return nil
+	case inquiry.FieldInquiryTimeMessages:
+		m.ResetInquiryTimeMessages()
+		return nil
+	}
+	return fmt.Errorf("unknown Inquiry field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this
+// mutation.
+func (m *InquiryMutation) AddedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m._Member != nil {
+		edges = append(edges, inquiry.EdgeMember)
+	}
+	if m._Category != nil {
+		edges = append(edges, inquiry.EdgeCategory)
+	}
+	if m._Officer != nil {
+		edges = append(edges, inquiry.EdgeOfficer)
+	}
+	if m._Product != nil {
+		edges = append(edges, inquiry.EdgeProduct)
+	}
+	return edges
+}
+
+// AddedIDs returns all ids (to other nodes) that were added for
+// the given edge name.
+func (m *InquiryMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case inquiry.EdgeMember:
+		if id := m._Member; id != nil {
+			return []ent.Value{*id}
+		}
+	case inquiry.EdgeCategory:
+		if id := m._Category; id != nil {
+			return []ent.Value{*id}
+		}
+	case inquiry.EdgeOfficer:
+		if id := m._Officer; id != nil {
+			return []ent.Value{*id}
+		}
+	case inquiry.EdgeProduct:
+		if id := m._Product; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this
+// mutation.
+func (m *InquiryMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 4)
+	return edges
+}
+
+// RemovedIDs returns all ids (to other nodes) that were removed for
+// the given edge name.
+func (m *InquiryMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this
+// mutation.
+func (m *InquiryMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m.cleared_Member {
+		edges = append(edges, inquiry.EdgeMember)
+	}
+	if m.cleared_Category {
+		edges = append(edges, inquiry.EdgeCategory)
+	}
+	if m.cleared_Officer {
+		edges = append(edges, inquiry.EdgeOfficer)
+	}
+	if m.cleared_Product {
+		edges = append(edges, inquiry.EdgeProduct)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean indicates if this edge was
+// cleared in this mutation.
+func (m *InquiryMutation) EdgeCleared(name string) bool {
+	switch name {
+	case inquiry.EdgeMember:
+		return m.cleared_Member
+	case inquiry.EdgeCategory:
+		return m.cleared_Category
+	case inquiry.EdgeOfficer:
+		return m.cleared_Officer
+	case inquiry.EdgeProduct:
+		return m.cleared_Product
+	}
+	return false
+}
+
+// ClearEdge clears the value for the given name. It returns an
+// error if the edge name is not defined in the schema.
+func (m *InquiryMutation) ClearEdge(name string) error {
+	switch name {
+	case inquiry.EdgeMember:
+		m.ClearMember()
+		return nil
+	case inquiry.EdgeCategory:
+		m.ClearCategory()
+		return nil
+	case inquiry.EdgeOfficer:
+		m.ClearOfficer()
+		return nil
+	case inquiry.EdgeProduct:
+		m.ClearProduct()
+		return nil
+	}
+	return fmt.Errorf("unknown Inquiry unique edge %s", name)
+}
+
+// ResetEdge resets all changes in the mutation regarding the
+// given edge name. It returns an error if the edge is not
+// defined in the schema.
+func (m *InquiryMutation) ResetEdge(name string) error {
+	switch name {
+	case inquiry.EdgeMember:
+		m.ResetMember()
+		return nil
+	case inquiry.EdgeCategory:
+		m.ResetCategory()
+		return nil
+	case inquiry.EdgeOfficer:
+		m.ResetOfficer()
+		return nil
+	case inquiry.EdgeProduct:
+		m.ResetProduct()
+		return nil
+	}
+	return fmt.Errorf("unknown Inquiry edge %s", name)
+}
+
 // InsuranceMutation represents an operation that mutate the Insurances
 // nodes in the graph.
 type InsuranceMutation struct {
@@ -2354,6 +3320,8 @@ type MemberMutation struct {
 	removedmember_insurance map[int]struct{}
 	member_payment          map[int]struct{}
 	removedmember_payment   map[int]struct{}
+	member_inquiry          map[int]struct{}
+	removedmember_inquiry   map[int]struct{}
 	done                    bool
 	oldValue                func(context.Context) (*Member, error)
 }
@@ -2632,6 +3600,48 @@ func (m *MemberMutation) ResetMemberPayment() {
 	m.removedmember_payment = nil
 }
 
+// AddMemberInquiryIDs adds the member_inquiry edge to Inquiry by ids.
+func (m *MemberMutation) AddMemberInquiryIDs(ids ...int) {
+	if m.member_inquiry == nil {
+		m.member_inquiry = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.member_inquiry[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveMemberInquiryIDs removes the member_inquiry edge to Inquiry by ids.
+func (m *MemberMutation) RemoveMemberInquiryIDs(ids ...int) {
+	if m.removedmember_inquiry == nil {
+		m.removedmember_inquiry = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedmember_inquiry[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedMemberInquiry returns the removed ids of member_inquiry.
+func (m *MemberMutation) RemovedMemberInquiryIDs() (ids []int) {
+	for id := range m.removedmember_inquiry {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// MemberInquiryIDs returns the member_inquiry ids in the mutation.
+func (m *MemberMutation) MemberInquiryIDs() (ids []int) {
+	for id := range m.member_inquiry {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetMemberInquiry reset all changes of the "member_inquiry" edge.
+func (m *MemberMutation) ResetMemberInquiry() {
+	m.member_inquiry = nil
+	m.removedmember_inquiry = nil
+}
+
 // Op returns the operation name.
 func (m *MemberMutation) Op() Op {
 	return m.op
@@ -2781,12 +3791,15 @@ func (m *MemberMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *MemberMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.member_insurance != nil {
 		edges = append(edges, member.EdgeMemberInsurance)
 	}
 	if m.member_payment != nil {
 		edges = append(edges, member.EdgeMemberPayment)
+	}
+	if m.member_inquiry != nil {
+		edges = append(edges, member.EdgeMemberInquiry)
 	}
 	return edges
 }
@@ -2807,6 +3820,12 @@ func (m *MemberMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case member.EdgeMemberInquiry:
+		ids := make([]ent.Value, 0, len(m.member_inquiry))
+		for id := range m.member_inquiry {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -2814,12 +3833,15 @@ func (m *MemberMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *MemberMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.removedmember_insurance != nil {
 		edges = append(edges, member.EdgeMemberInsurance)
 	}
 	if m.removedmember_payment != nil {
 		edges = append(edges, member.EdgeMemberPayment)
+	}
+	if m.removedmember_inquiry != nil {
+		edges = append(edges, member.EdgeMemberInquiry)
 	}
 	return edges
 }
@@ -2840,6 +3862,12 @@ func (m *MemberMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case member.EdgeMemberInquiry:
+		ids := make([]ent.Value, 0, len(m.removedmember_inquiry))
+		for id := range m.removedmember_inquiry {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -2847,7 +3875,7 @@ func (m *MemberMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *MemberMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	return edges
 }
 
@@ -2877,6 +3905,9 @@ func (m *MemberMutation) ResetEdge(name string) error {
 		return nil
 	case member.EdgeMemberPayment:
 		m.ResetMemberPayment()
+		return nil
+	case member.EdgeMemberInquiry:
+		m.ResetMemberInquiry()
 		return nil
 	}
 	return fmt.Errorf("unknown Member edge %s", name)
@@ -3265,6 +4296,8 @@ type OfficerMutation struct {
 	removedofficers          map[int]struct{}
 	officer_insurance        map[int]struct{}
 	removedofficer_insurance map[int]struct{}
+	officer_inquiry          map[int]struct{}
+	removedofficer_inquiry   map[int]struct{}
 	done                     bool
 	oldValue                 func(context.Context) (*Officer, error)
 }
@@ -3543,6 +4576,48 @@ func (m *OfficerMutation) ResetOfficerInsurance() {
 	m.removedofficer_insurance = nil
 }
 
+// AddOfficerInquiryIDs adds the officer_inquiry edge to Inquiry by ids.
+func (m *OfficerMutation) AddOfficerInquiryIDs(ids ...int) {
+	if m.officer_inquiry == nil {
+		m.officer_inquiry = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.officer_inquiry[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveOfficerInquiryIDs removes the officer_inquiry edge to Inquiry by ids.
+func (m *OfficerMutation) RemoveOfficerInquiryIDs(ids ...int) {
+	if m.removedofficer_inquiry == nil {
+		m.removedofficer_inquiry = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedofficer_inquiry[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedOfficerInquiry returns the removed ids of officer_inquiry.
+func (m *OfficerMutation) RemovedOfficerInquiryIDs() (ids []int) {
+	for id := range m.removedofficer_inquiry {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// OfficerInquiryIDs returns the officer_inquiry ids in the mutation.
+func (m *OfficerMutation) OfficerInquiryIDs() (ids []int) {
+	for id := range m.officer_inquiry {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetOfficerInquiry reset all changes of the "officer_inquiry" edge.
+func (m *OfficerMutation) ResetOfficerInquiry() {
+	m.officer_inquiry = nil
+	m.removedofficer_inquiry = nil
+}
+
 // Op returns the operation name.
 func (m *OfficerMutation) Op() Op {
 	return m.op
@@ -3692,12 +4767,15 @@ func (m *OfficerMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *OfficerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.officers != nil {
 		edges = append(edges, officer.EdgeOfficers)
 	}
 	if m.officer_insurance != nil {
 		edges = append(edges, officer.EdgeOfficerInsurance)
+	}
+	if m.officer_inquiry != nil {
+		edges = append(edges, officer.EdgeOfficerInquiry)
 	}
 	return edges
 }
@@ -3718,6 +4796,12 @@ func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case officer.EdgeOfficerInquiry:
+		ids := make([]ent.Value, 0, len(m.officer_inquiry))
+		for id := range m.officer_inquiry {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -3725,12 +4809,15 @@ func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *OfficerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.removedofficers != nil {
 		edges = append(edges, officer.EdgeOfficers)
 	}
 	if m.removedofficer_insurance != nil {
 		edges = append(edges, officer.EdgeOfficerInsurance)
+	}
+	if m.removedofficer_inquiry != nil {
+		edges = append(edges, officer.EdgeOfficerInquiry)
 	}
 	return edges
 }
@@ -3751,6 +4838,12 @@ func (m *OfficerMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case officer.EdgeOfficerInquiry:
+		ids := make([]ent.Value, 0, len(m.removedofficer_inquiry))
+		for id := range m.removedofficer_inquiry {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -3758,7 +4851,7 @@ func (m *OfficerMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *OfficerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	return edges
 }
 
@@ -3788,6 +4881,9 @@ func (m *OfficerMutation) ResetEdge(name string) error {
 		return nil
 	case officer.EdgeOfficerInsurance:
 		m.ResetOfficerInsurance()
+		return nil
+	case officer.EdgeOfficerInquiry:
+		m.ResetOfficerInquiry()
 		return nil
 	}
 	return fmt.Errorf("unknown Officer edge %s", name)
@@ -4465,6 +5561,8 @@ type ProductMutation struct {
 	cleared_Officer            bool
 	product_insurance          map[int]struct{}
 	removedproduct_insurance   map[int]struct{}
+	product_inquiry            map[int]struct{}
+	removedproduct_inquiry     map[int]struct{}
 	done                       bool
 	oldValue                   func(context.Context) (*Product, error)
 }
@@ -4915,6 +6013,48 @@ func (m *ProductMutation) ResetProductInsurance() {
 	m.removedproduct_insurance = nil
 }
 
+// AddProductInquiryIDs adds the product_inquiry edge to Inquiry by ids.
+func (m *ProductMutation) AddProductInquiryIDs(ids ...int) {
+	if m.product_inquiry == nil {
+		m.product_inquiry = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.product_inquiry[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveProductInquiryIDs removes the product_inquiry edge to Inquiry by ids.
+func (m *ProductMutation) RemoveProductInquiryIDs(ids ...int) {
+	if m.removedproduct_inquiry == nil {
+		m.removedproduct_inquiry = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedproduct_inquiry[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedProductInquiry returns the removed ids of product_inquiry.
+func (m *ProductMutation) RemovedProductInquiryIDs() (ids []int) {
+	for id := range m.removedproduct_inquiry {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ProductInquiryIDs returns the product_inquiry ids in the mutation.
+func (m *ProductMutation) ProductInquiryIDs() (ids []int) {
+	for id := range m.product_inquiry {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetProductInquiry reset all changes of the "product_inquiry" edge.
+func (m *ProductMutation) ResetProductInquiry() {
+	m.product_inquiry = nil
+	m.removedproduct_inquiry = nil
+}
+
 // Op returns the operation name.
 func (m *ProductMutation) Op() Op {
 	return m.op
@@ -5120,7 +6260,7 @@ func (m *ProductMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *ProductMutation) AddedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m._Gender != nil {
 		edges = append(edges, product.EdgeGender)
 	}
@@ -5132,6 +6272,9 @@ func (m *ProductMutation) AddedEdges() []string {
 	}
 	if m.product_insurance != nil {
 		edges = append(edges, product.EdgeProductInsurance)
+	}
+	if m.product_inquiry != nil {
+		edges = append(edges, product.EdgeProductInquiry)
 	}
 	return edges
 }
@@ -5158,6 +6301,12 @@ func (m *ProductMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case product.EdgeProductInquiry:
+		ids := make([]ent.Value, 0, len(m.product_inquiry))
+		for id := range m.product_inquiry {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -5165,9 +6314,12 @@ func (m *ProductMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *ProductMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.removedproduct_insurance != nil {
 		edges = append(edges, product.EdgeProductInsurance)
+	}
+	if m.removedproduct_inquiry != nil {
+		edges = append(edges, product.EdgeProductInquiry)
 	}
 	return edges
 }
@@ -5182,6 +6334,12 @@ func (m *ProductMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case product.EdgeProductInquiry:
+		ids := make([]ent.Value, 0, len(m.removedproduct_inquiry))
+		for id := range m.removedproduct_inquiry {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -5189,7 +6347,7 @@ func (m *ProductMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *ProductMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.cleared_Gender {
 		edges = append(edges, product.EdgeGender)
 	}
@@ -5249,6 +6407,9 @@ func (m *ProductMutation) ResetEdge(name string) error {
 		return nil
 	case product.EdgeProductInsurance:
 		m.ResetProductInsurance()
+		return nil
+	case product.EdgeProductInquiry:
+		m.ResetProductInquiry()
 		return nil
 	}
 	return fmt.Errorf("unknown Product edge %s", name)

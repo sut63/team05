@@ -9,6 +9,7 @@ import (
 
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/payment"
@@ -67,6 +68,21 @@ func (mc *MemberCreate) AddMemberPayment(p ...*Payment) *MemberCreate {
 		ids[i] = p[i].ID
 	}
 	return mc.AddMemberPaymentIDs(ids...)
+}
+
+// AddMemberInquiryIDs adds the member_inquiry edge to Inquiry by ids.
+func (mc *MemberCreate) AddMemberInquiryIDs(ids ...int) *MemberCreate {
+	mc.mutation.AddMemberInquiryIDs(ids...)
+	return mc
+}
+
+// AddMemberInquiry adds the member_inquiry edges to Inquiry.
+func (mc *MemberCreate) AddMemberInquiry(i ...*Inquiry) *MemberCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return mc.AddMemberInquiryIDs(ids...)
 }
 
 // Mutation returns the MemberMutation object of the builder.
@@ -214,6 +230,25 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := mc.mutation.MemberInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberInquiryTable,
+			Columns: []string{member.MemberInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
 				},
 			},
 		}

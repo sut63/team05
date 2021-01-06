@@ -28,5 +28,6 @@ func (Officer) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("officers", Product.Type).StorageKey(edge.Column("officer_id")),
 		edge.To("officer_insurance", Insurance.Type).StorageKey(edge.Column("officer_id")),
+		edge.To("officer_inquiry", Inquiry.Type).StorageKey(edge.Column("officer_id")),
 	}
 }

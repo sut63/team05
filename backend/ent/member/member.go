@@ -18,6 +18,8 @@ const (
 	EdgeMemberInsurance = "member_insurance"
 	// EdgeMemberPayment holds the string denoting the member_payment edge name in mutations.
 	EdgeMemberPayment = "member_payment"
+	// EdgeMemberInquiry holds the string denoting the member_inquiry edge name in mutations.
+	EdgeMemberInquiry = "member_inquiry"
 
 	// Table holds the table name of the member in the database.
 	Table = "members"
@@ -35,6 +37,13 @@ const (
 	MemberPaymentInverseTable = "payments"
 	// MemberPaymentColumn is the table column denoting the member_payment relation/edge.
 	MemberPaymentColumn = "member_id"
+	// MemberInquiryTable is the table the holds the member_inquiry relation/edge.
+	MemberInquiryTable = "inquiries"
+	// MemberInquiryInverseTable is the table name for the Inquiry entity.
+	// It exists in this package in order to avoid circular dependency with the "inquiry" package.
+	MemberInquiryInverseTable = "inquiries"
+	// MemberInquiryColumn is the table column denoting the member_inquiry relation/edge.
+	MemberInquiryColumn = "member_id"
 )
 
 // Columns holds all SQL columns for member fields.
