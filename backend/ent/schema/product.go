@@ -30,5 +30,6 @@ func (Product) Edges() []ent.Edge {
 		edge.From("Goup_Of_Age", GroupOfAge.Type).Ref("gropages").Unique(),
 		edge.From("Officer", Officer.Type).Ref("officers").Unique(),
 		edge.To("product_insurance", Insurance.Type).StorageKey(edge.Column("product_id")),
+		edge.To("product_inquiry", Inquiry.Type).StorageKey(edge.Column("product_id")),
 	}
 }

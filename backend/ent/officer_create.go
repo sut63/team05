@@ -9,6 +9,7 @@ import (
 
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/product"
@@ -67,6 +68,21 @@ func (oc *OfficerCreate) AddOfficerInsurance(i ...*Insurance) *OfficerCreate {
 		ids[j] = i[j].ID
 	}
 	return oc.AddOfficerInsuranceIDs(ids...)
+}
+
+// AddOfficerInquiryIDs adds the officer_inquiry edge to Inquiry by ids.
+func (oc *OfficerCreate) AddOfficerInquiryIDs(ids ...int) *OfficerCreate {
+	oc.mutation.AddOfficerInquiryIDs(ids...)
+	return oc
+}
+
+// AddOfficerInquiry adds the officer_inquiry edges to Inquiry.
+func (oc *OfficerCreate) AddOfficerInquiry(i ...*Inquiry) *OfficerCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return oc.AddOfficerInquiryIDs(ids...)
 }
 
 // Mutation returns the OfficerMutation object of the builder.
@@ -214,6 +230,25 @@ func (oc *OfficerCreate) createSpec() (*Officer, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: insurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := oc.mutation.OfficerInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerInquiryTable,
+			Columns: []string{officer.OfficerInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
 				},
 			},
 		}

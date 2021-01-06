@@ -11,6 +11,7 @@ import (
 	"github.com/facebookincubator/ent/schema/field"
 	"github.com/sut63/team05/ent/gender"
 	"github.com/sut63/team05/ent/groupofage"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/predicate"
@@ -148,6 +149,21 @@ func (pu *ProductUpdate) AddProductInsurance(i ...*Insurance) *ProductUpdate {
 	return pu.AddProductInsuranceIDs(ids...)
 }
 
+// AddProductInquiryIDs adds the product_inquiry edge to Inquiry by ids.
+func (pu *ProductUpdate) AddProductInquiryIDs(ids ...int) *ProductUpdate {
+	pu.mutation.AddProductInquiryIDs(ids...)
+	return pu
+}
+
+// AddProductInquiry adds the product_inquiry edges to Inquiry.
+func (pu *ProductUpdate) AddProductInquiry(i ...*Inquiry) *ProductUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return pu.AddProductInquiryIDs(ids...)
+}
+
 // Mutation returns the ProductMutation object of the builder.
 func (pu *ProductUpdate) Mutation() *ProductMutation {
 	return pu.mutation
@@ -184,6 +200,21 @@ func (pu *ProductUpdate) RemoveProductInsurance(i ...*Insurance) *ProductUpdate 
 		ids[j] = i[j].ID
 	}
 	return pu.RemoveProductInsuranceIDs(ids...)
+}
+
+// RemoveProductInquiryIDs removes the product_inquiry edge to Inquiry by ids.
+func (pu *ProductUpdate) RemoveProductInquiryIDs(ids ...int) *ProductUpdate {
+	pu.mutation.RemoveProductInquiryIDs(ids...)
+	return pu
+}
+
+// RemoveProductInquiry removes product_inquiry edges to Inquiry.
+func (pu *ProductUpdate) RemoveProductInquiry(i ...*Inquiry) *ProductUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return pu.RemoveProductInquiryIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -448,6 +479,44 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := pu.mutation.RemovedProductInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductInquiryTable,
+			Columns: []string{product.ProductInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.ProductInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductInquiryTable,
+			Columns: []string{product.ProductInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{product.Label}
@@ -583,6 +652,21 @@ func (puo *ProductUpdateOne) AddProductInsurance(i ...*Insurance) *ProductUpdate
 	return puo.AddProductInsuranceIDs(ids...)
 }
 
+// AddProductInquiryIDs adds the product_inquiry edge to Inquiry by ids.
+func (puo *ProductUpdateOne) AddProductInquiryIDs(ids ...int) *ProductUpdateOne {
+	puo.mutation.AddProductInquiryIDs(ids...)
+	return puo
+}
+
+// AddProductInquiry adds the product_inquiry edges to Inquiry.
+func (puo *ProductUpdateOne) AddProductInquiry(i ...*Inquiry) *ProductUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return puo.AddProductInquiryIDs(ids...)
+}
+
 // Mutation returns the ProductMutation object of the builder.
 func (puo *ProductUpdateOne) Mutation() *ProductMutation {
 	return puo.mutation
@@ -619,6 +703,21 @@ func (puo *ProductUpdateOne) RemoveProductInsurance(i ...*Insurance) *ProductUpd
 		ids[j] = i[j].ID
 	}
 	return puo.RemoveProductInsuranceIDs(ids...)
+}
+
+// RemoveProductInquiryIDs removes the product_inquiry edge to Inquiry by ids.
+func (puo *ProductUpdateOne) RemoveProductInquiryIDs(ids ...int) *ProductUpdateOne {
+	puo.mutation.RemoveProductInquiryIDs(ids...)
+	return puo
+}
+
+// RemoveProductInquiry removes product_inquiry edges to Inquiry.
+func (puo *ProductUpdateOne) RemoveProductInquiry(i ...*Inquiry) *ProductUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return puo.RemoveProductInquiryIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -873,6 +972,44 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (pr *Product, err erro
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: insurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := puo.mutation.RemovedProductInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductInquiryTable,
+			Columns: []string{product.ProductInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.ProductInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductInquiryTable,
+			Columns: []string{product.ProductInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
 				},
 			},
 		}

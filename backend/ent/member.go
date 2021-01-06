@@ -32,9 +32,11 @@ type MemberEdges struct {
 	MemberInsurance []*Insurance
 	// MemberPayment holds the value of the member_payment edge.
 	MemberPayment []*Payment
+	// MemberInquiry holds the value of the member_inquiry edge.
+	MemberInquiry []*Inquiry
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
 // MemberInsuranceOrErr returns the MemberInsurance value or an error if the edge
@@ -53,6 +55,15 @@ func (e MemberEdges) MemberPaymentOrErr() ([]*Payment, error) {
 		return e.MemberPayment, nil
 	}
 	return nil, &NotLoadedError{edge: "member_payment"}
+}
+
+// MemberInquiryOrErr returns the MemberInquiry value or an error if the edge
+// was not loaded in eager-loading.
+func (e MemberEdges) MemberInquiryOrErr() ([]*Inquiry, error) {
+	if e.loadedTypes[2] {
+		return e.MemberInquiry, nil
+	}
+	return nil, &NotLoadedError{edge: "member_inquiry"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -103,6 +114,11 @@ func (m *Member) QueryMemberInsurance() *InsuranceQuery {
 // QueryMemberPayment queries the member_payment edge of the Member.
 func (m *Member) QueryMemberPayment() *PaymentQuery {
 	return (&MemberClient{config: m.config}).QueryMemberPayment(m)
+}
+
+// QueryMemberInquiry queries the member_inquiry edge of the Member.
+func (m *Member) QueryMemberInquiry() *InquiryQuery {
+	return (&MemberClient{config: m.config}).QueryMemberInquiry(m)
 }
 
 // Update returns a builder for updating this Member.

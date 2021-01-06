@@ -9,6 +9,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/payment"
@@ -77,6 +78,21 @@ func (mu *MemberUpdate) AddMemberPayment(p ...*Payment) *MemberUpdate {
 	return mu.AddMemberPaymentIDs(ids...)
 }
 
+// AddMemberInquiryIDs adds the member_inquiry edge to Inquiry by ids.
+func (mu *MemberUpdate) AddMemberInquiryIDs(ids ...int) *MemberUpdate {
+	mu.mutation.AddMemberInquiryIDs(ids...)
+	return mu
+}
+
+// AddMemberInquiry adds the member_inquiry edges to Inquiry.
+func (mu *MemberUpdate) AddMemberInquiry(i ...*Inquiry) *MemberUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return mu.AddMemberInquiryIDs(ids...)
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (mu *MemberUpdate) Mutation() *MemberMutation {
 	return mu.mutation
@@ -110,6 +126,21 @@ func (mu *MemberUpdate) RemoveMemberPayment(p ...*Payment) *MemberUpdate {
 		ids[i] = p[i].ID
 	}
 	return mu.RemoveMemberPaymentIDs(ids...)
+}
+
+// RemoveMemberInquiryIDs removes the member_inquiry edge to Inquiry by ids.
+func (mu *MemberUpdate) RemoveMemberInquiryIDs(ids ...int) *MemberUpdate {
+	mu.mutation.RemoveMemberInquiryIDs(ids...)
+	return mu
+}
+
+// RemoveMemberInquiry removes member_inquiry edges to Inquiry.
+func (mu *MemberUpdate) RemoveMemberInquiry(i ...*Inquiry) *MemberUpdate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return mu.RemoveMemberInquiryIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -294,6 +325,44 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := mu.mutation.RemovedMemberInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberInquiryTable,
+			Columns: []string{member.MemberInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := mu.mutation.MemberInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberInquiryTable,
+			Columns: []string{member.MemberInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{member.Label}
@@ -360,6 +429,21 @@ func (muo *MemberUpdateOne) AddMemberPayment(p ...*Payment) *MemberUpdateOne {
 	return muo.AddMemberPaymentIDs(ids...)
 }
 
+// AddMemberInquiryIDs adds the member_inquiry edge to Inquiry by ids.
+func (muo *MemberUpdateOne) AddMemberInquiryIDs(ids ...int) *MemberUpdateOne {
+	muo.mutation.AddMemberInquiryIDs(ids...)
+	return muo
+}
+
+// AddMemberInquiry adds the member_inquiry edges to Inquiry.
+func (muo *MemberUpdateOne) AddMemberInquiry(i ...*Inquiry) *MemberUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return muo.AddMemberInquiryIDs(ids...)
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (muo *MemberUpdateOne) Mutation() *MemberMutation {
 	return muo.mutation
@@ -393,6 +477,21 @@ func (muo *MemberUpdateOne) RemoveMemberPayment(p ...*Payment) *MemberUpdateOne 
 		ids[i] = p[i].ID
 	}
 	return muo.RemoveMemberPaymentIDs(ids...)
+}
+
+// RemoveMemberInquiryIDs removes the member_inquiry edge to Inquiry by ids.
+func (muo *MemberUpdateOne) RemoveMemberInquiryIDs(ids ...int) *MemberUpdateOne {
+	muo.mutation.RemoveMemberInquiryIDs(ids...)
+	return muo
+}
+
+// RemoveMemberInquiry removes member_inquiry edges to Inquiry.
+func (muo *MemberUpdateOne) RemoveMemberInquiry(i ...*Inquiry) *MemberUpdateOne {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return muo.RemoveMemberInquiryIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -567,6 +666,44 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (m *Member, err error) 
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := muo.mutation.RemovedMemberInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberInquiryTable,
+			Columns: []string{member.MemberInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := muo.mutation.MemberInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberInquiryTable,
+			Columns: []string{member.MemberInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
 				},
 			},
 		}

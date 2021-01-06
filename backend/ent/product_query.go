@@ -14,6 +14,7 @@ import (
 	"github.com/facebookincubator/ent/schema/field"
 	"github.com/sut63/team05/ent/gender"
 	"github.com/sut63/team05/ent/groupofage"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/predicate"
@@ -33,6 +34,7 @@ type ProductQuery struct {
 	withGoupOfAge        *GroupOfAgeQuery
 	withOfficer          *OfficerQuery
 	withProductInsurance *InsuranceQuery
+	withProductInquiry   *InquiryQuery
 	withFKs              bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -128,6 +130,24 @@ func (pq *ProductQuery) QueryProductInsurance() *InsuranceQuery {
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(insurance.Table, insurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductInsuranceTable, product.ProductInsuranceColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProductInquiry chains the current query on the product_inquiry edge.
+func (pq *ProductQuery) QueryProductInquiry() *InquiryQuery {
+	query := &InquiryQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
+			sqlgraph.To(inquiry.Table, inquiry.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductInquiryTable, product.ProductInquiryColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -358,6 +378,17 @@ func (pq *ProductQuery) WithProductInsurance(opts ...func(*InsuranceQuery)) *Pro
 	return pq
 }
 
+//  WithProductInquiry tells the query-builder to eager-loads the nodes that are connected to
+// the "product_inquiry" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithProductInquiry(opts ...func(*InquiryQuery)) *ProductQuery {
+	query := &InquiryQuery{config: pq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withProductInquiry = query
+	return pq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -425,11 +456,12 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		nodes       = []*Product{}
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			pq.withGender != nil,
 			pq.withGoupOfAge != nil,
 			pq.withOfficer != nil,
 			pq.withProductInsurance != nil,
+			pq.withProductInquiry != nil,
 		}
 	)
 	if pq.withGender != nil || pq.withGoupOfAge != nil || pq.withOfficer != nil {
@@ -562,6 +594,34 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "product_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.ProductInsurance = append(node.Edges.ProductInsurance, n)
+		}
+	}
+
+	if query := pq.withProductInquiry; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Product)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Inquiry(func(s *sql.Selector) {
+			s.Where(sql.InValues(product.ProductInquiryColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.product_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "product_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "product_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.ProductInquiry = append(node.Edges.ProductInquiry, n)
 		}
 	}
 

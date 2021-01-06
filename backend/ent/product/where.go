@@ -570,6 +570,34 @@ func HasProductInsuranceWith(preds ...predicate.Insurance) predicate.Product {
 	})
 }
 
+// HasProductInquiry applies the HasEdge predicate on the "product_inquiry" edge.
+func HasProductInquiry() predicate.Product {
+	return predicate.Product(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ProductInquiryTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProductInquiryTable, ProductInquiryColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProductInquiryWith applies the HasEdge predicate on the "product_inquiry" edge with a given conditions (other predicates).
+func HasProductInquiryWith(preds ...predicate.Inquiry) predicate.Product {
+	return predicate.Product(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ProductInquiryInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProductInquiryTable, ProductInquiryColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Product) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {

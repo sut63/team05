@@ -501,6 +501,34 @@ func HasOfficerInsuranceWith(preds ...predicate.Insurance) predicate.Officer {
 	})
 }
 
+// HasOfficerInquiry applies the HasEdge predicate on the "officer_inquiry" edge.
+func HasOfficerInquiry() predicate.Officer {
+	return predicate.Officer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(OfficerInquiryTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, OfficerInquiryTable, OfficerInquiryColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasOfficerInquiryWith applies the HasEdge predicate on the "officer_inquiry" edge with a given conditions (other predicates).
+func HasOfficerInquiryWith(preds ...predicate.Inquiry) predicate.Officer {
+	return predicate.Officer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(OfficerInquiryInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, OfficerInquiryTable, OfficerInquiryColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Officer) predicate.Officer {
 	return predicate.Officer(func(s *sql.Selector) {

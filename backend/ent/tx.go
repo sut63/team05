@@ -14,12 +14,16 @@ type Tx struct {
 	config
 	// Bank is the client for interacting with the Bank builders.
 	Bank *BankClient
+	// Category is the client for interacting with the Category builders.
+	Category *CategoryClient
 	// Gender is the client for interacting with the Gender builders.
 	Gender *GenderClient
 	// GroupOfAge is the client for interacting with the GroupOfAge builders.
 	GroupOfAge *GroupOfAgeClient
 	// Hospital is the client for interacting with the Hospital builders.
 	Hospital *HospitalClient
+	// Inquiry is the client for interacting with the Inquiry builders.
+	Inquiry *InquiryClient
 	// Insurance is the client for interacting with the Insurance builders.
 	Insurance *InsuranceClient
 	// Member is the client for interacting with the Member builders.
@@ -168,9 +172,11 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Bank = NewBankClient(tx.config)
+	tx.Category = NewCategoryClient(tx.config)
 	tx.Gender = NewGenderClient(tx.config)
 	tx.GroupOfAge = NewGroupOfAgeClient(tx.config)
 	tx.Hospital = NewHospitalClient(tx.config)
+	tx.Inquiry = NewInquiryClient(tx.config)
 	tx.Insurance = NewInsuranceClient(tx.config)
 	tx.Member = NewMemberClient(tx.config)
 	tx.MoneyTransfer = NewMoneyTransferClient(tx.config)

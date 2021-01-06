@@ -11,6 +11,7 @@ import (
 	"github.com/facebookincubator/ent/schema/field"
 	"github.com/sut63/team05/ent/gender"
 	"github.com/sut63/team05/ent/groupofage"
+	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/product"
@@ -117,6 +118,21 @@ func (pc *ProductCreate) AddProductInsurance(i ...*Insurance) *ProductCreate {
 		ids[j] = i[j].ID
 	}
 	return pc.AddProductInsuranceIDs(ids...)
+}
+
+// AddProductInquiryIDs adds the product_inquiry edge to Inquiry by ids.
+func (pc *ProductCreate) AddProductInquiryIDs(ids ...int) *ProductCreate {
+	pc.mutation.AddProductInquiryIDs(ids...)
+	return pc
+}
+
+// AddProductInquiry adds the product_inquiry edges to Inquiry.
+func (pc *ProductCreate) AddProductInquiry(i ...*Inquiry) *ProductCreate {
+	ids := make([]int, len(i))
+	for j := range i {
+		ids[j] = i[j].ID
+	}
+	return pc.AddProductInquiryIDs(ids...)
 }
 
 // Mutation returns the ProductMutation object of the builder.
@@ -298,6 +314,25 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: insurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.ProductInquiryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductInquiryTable,
+			Columns: []string{product.ProductInquiryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: inquiry.FieldID,
 				},
 			},
 		}

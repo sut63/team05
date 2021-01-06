@@ -20,6 +20,18 @@ var (
 		PrimaryKey:  []*schema.Column{BanksColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// CategoriesColumns holds the columns for the "categories" table.
+	CategoriesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "category_name", Type: field.TypeString, Unique: true},
+	}
+	// CategoriesTable holds the schema information for the "categories" table.
+	CategoriesTable = &schema.Table{
+		Name:        "categories",
+		Columns:     CategoriesColumns,
+		PrimaryKey:  []*schema.Column{CategoriesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// GendersColumns holds the columns for the "genders" table.
 	GendersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -56,6 +68,52 @@ var (
 		Columns:     HospitalsColumns,
 		PrimaryKey:  []*schema.Column{HospitalsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
+	}
+	// InquiriesColumns holds the columns for the "inquiries" table.
+	InquiriesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "inquiry_inguiry_messages", Type: field.TypeString},
+		{Name: "inquiry_time_messages", Type: field.TypeTime},
+		{Name: "category_id", Type: field.TypeInt, Nullable: true},
+		{Name: "member_id", Type: field.TypeInt, Nullable: true},
+		{Name: "officer_id", Type: field.TypeInt, Nullable: true},
+		{Name: "product_id", Type: field.TypeInt, Nullable: true},
+	}
+	// InquiriesTable holds the schema information for the "inquiries" table.
+	InquiriesTable = &schema.Table{
+		Name:       "inquiries",
+		Columns:    InquiriesColumns,
+		PrimaryKey: []*schema.Column{InquiriesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "inquiries_categories_category_inquiry",
+				Columns: []*schema.Column{InquiriesColumns[3]},
+
+				RefColumns: []*schema.Column{CategoriesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "inquiries_members_member_inquiry",
+				Columns: []*schema.Column{InquiriesColumns[4]},
+
+				RefColumns: []*schema.Column{MembersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "inquiries_officers_officer_inquiry",
+				Columns: []*schema.Column{InquiriesColumns[5]},
+
+				RefColumns: []*schema.Column{OfficersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "inquiries_products_product_inquiry",
+				Columns: []*schema.Column{InquiriesColumns[6]},
+
+				RefColumns: []*schema.Column{ProductsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// InsurancesColumns holds the columns for the "insurances" table.
 	InsurancesColumns = []*schema.Column{
@@ -235,9 +293,11 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BanksTable,
+		CategoriesTable,
 		GendersTable,
 		GroupOfAgesTable,
 		HospitalsTable,
+		InquiriesTable,
 		InsurancesTable,
 		MembersTable,
 		MoneyTransfersTable,
@@ -248,6 +308,10 @@ var (
 )
 
 func init() {
+	InquiriesTable.ForeignKeys[0].RefTable = CategoriesTable
+	InquiriesTable.ForeignKeys[1].RefTable = MembersTable
+	InquiriesTable.ForeignKeys[2].RefTable = OfficersTable
+	InquiriesTable.ForeignKeys[3].RefTable = ProductsTable
 	InsurancesTable.ForeignKeys[0].RefTable = HospitalsTable
 	InsurancesTable.ForeignKeys[1].RefTable = MembersTable
 	InsurancesTable.ForeignKeys[2].RefTable = OfficersTable

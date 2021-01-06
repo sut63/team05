@@ -9,6 +9,9 @@ import (
 // Bank is the predicate function for bank builders.
 type Bank func(*sql.Selector)
 
+// Category is the predicate function for category builders.
+type Category func(*sql.Selector)
+
 // Gender is the predicate function for gender builders.
 type Gender func(*sql.Selector)
 
@@ -17,6 +20,9 @@ type GroupOfAge func(*sql.Selector)
 
 // Hospital is the predicate function for hospital builders.
 type Hospital func(*sql.Selector)
+
+// Inquiry is the predicate function for inquiry builders.
+type Inquiry func(*sql.Selector)
 
 // Insurance is the predicate function for insurance builders.
 type Insurance func(*sql.Selector)
