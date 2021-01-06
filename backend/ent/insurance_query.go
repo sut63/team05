@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"math"
@@ -15,6 +16,7 @@ import (
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
 )
@@ -28,11 +30,12 @@ type InsuranceQuery struct {
 	unique     []string
 	predicates []predicate.Insurance
 	// eager-loading edges.
-	withMember   *MemberQuery
-	withHospital *HospitalQuery
-	withOfficer  *OfficerQuery
-	withProduct  *ProductQuery
-	withFKs      bool
+	withMember           *MemberQuery
+	withHospital         *HospitalQuery
+	withOfficer          *OfficerQuery
+	withProduct          *ProductQuery
+	withInsurancePayment *PaymentQuery
+	withFKs              bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -127,6 +130,24 @@ func (iq *InsuranceQuery) QueryProduct() *ProductQuery {
 			sqlgraph.From(insurance.Table, insurance.FieldID, iq.sqlQuery()),
 			sqlgraph.To(product.Table, product.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, insurance.ProductTable, insurance.ProductColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(iq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryInsurancePayment chains the current query on the insurance_payment edge.
+func (iq *InsuranceQuery) QueryInsurancePayment() *PaymentQuery {
+	query := &PaymentQuery{config: iq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := iq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(insurance.Table, insurance.FieldID, iq.sqlQuery()),
+			sqlgraph.To(payment.Table, payment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, insurance.InsurancePaymentTable, insurance.InsurancePaymentColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(iq.driver.Dialect(), step)
 		return fromU, nil
@@ -357,6 +378,17 @@ func (iq *InsuranceQuery) WithProduct(opts ...func(*ProductQuery)) *InsuranceQue
 	return iq
 }
 
+//  WithInsurancePayment tells the query-builder to eager-loads the nodes that are connected to
+// the "insurance_payment" edge. The optional arguments used to configure the query builder of the edge.
+func (iq *InsuranceQuery) WithInsurancePayment(opts ...func(*PaymentQuery)) *InsuranceQuery {
+	query := &PaymentQuery{config: iq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	iq.withInsurancePayment = query
+	return iq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -424,11 +456,12 @@ func (iq *InsuranceQuery) sqlAll(ctx context.Context) ([]*Insurance, error) {
 		nodes       = []*Insurance{}
 		withFKs     = iq.withFKs
 		_spec       = iq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			iq.withMember != nil,
 			iq.withHospital != nil,
 			iq.withOfficer != nil,
 			iq.withProduct != nil,
+			iq.withInsurancePayment != nil,
 		}
 	)
 	if iq.withMember != nil || iq.withHospital != nil || iq.withOfficer != nil || iq.withProduct != nil {
@@ -558,6 +591,34 @@ func (iq *InsuranceQuery) sqlAll(ctx context.Context) ([]*Insurance, error) {
 			for i := range nodes {
 				nodes[i].Edges.Product = n
 			}
+		}
+	}
+
+	if query := iq.withInsurancePayment; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Insurance)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Payment(func(s *sql.Selector) {
+			s.Where(sql.InValues(insurance.InsurancePaymentColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.insurance_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "insurance_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "insurance_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.InsurancePayment = append(node.Edges.InsurancePayment, n)
 		}
 	}
 

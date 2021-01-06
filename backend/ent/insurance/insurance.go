@@ -28,6 +28,8 @@ const (
 	EdgeOfficer = "Officer"
 	// EdgeProduct holds the string denoting the product edge name in mutations.
 	EdgeProduct = "Product"
+	// EdgeInsurancePayment holds the string denoting the insurance_payment edge name in mutations.
+	EdgeInsurancePayment = "insurance_payment"
 
 	// Table holds the table name of the insurance in the database.
 	Table = "insurances"
@@ -59,6 +61,13 @@ const (
 	ProductInverseTable = "products"
 	// ProductColumn is the table column denoting the Product relation/edge.
 	ProductColumn = "product_id"
+	// InsurancePaymentTable is the table the holds the insurance_payment relation/edge.
+	InsurancePaymentTable = "payments"
+	// InsurancePaymentInverseTable is the table name for the Payment entity.
+	// It exists in this package in order to avoid circular dependency with the "payment" package.
+	InsurancePaymentInverseTable = "payments"
+	// InsurancePaymentColumn is the table column denoting the insurance_payment relation/edge.
+	InsurancePaymentColumn = "insurance_id"
 )
 
 // Columns holds all SQL columns for insurance fields.

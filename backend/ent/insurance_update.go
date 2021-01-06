@@ -14,6 +14,7 @@ import (
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
 )
@@ -148,6 +149,21 @@ func (iu *InsuranceUpdate) SetProduct(p *Product) *InsuranceUpdate {
 	return iu.SetProductID(p.ID)
 }
 
+// AddInsurancePaymentIDs adds the insurance_payment edge to Payment by ids.
+func (iu *InsuranceUpdate) AddInsurancePaymentIDs(ids ...int) *InsuranceUpdate {
+	iu.mutation.AddInsurancePaymentIDs(ids...)
+	return iu
+}
+
+// AddInsurancePayment adds the insurance_payment edges to Payment.
+func (iu *InsuranceUpdate) AddInsurancePayment(p ...*Payment) *InsuranceUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return iu.AddInsurancePaymentIDs(ids...)
+}
+
 // Mutation returns the InsuranceMutation object of the builder.
 func (iu *InsuranceUpdate) Mutation() *InsuranceMutation {
 	return iu.mutation
@@ -175,6 +191,21 @@ func (iu *InsuranceUpdate) ClearOfficer() *InsuranceUpdate {
 func (iu *InsuranceUpdate) ClearProduct() *InsuranceUpdate {
 	iu.mutation.ClearProduct()
 	return iu
+}
+
+// RemoveInsurancePaymentIDs removes the insurance_payment edge to Payment by ids.
+func (iu *InsuranceUpdate) RemoveInsurancePaymentIDs(ids ...int) *InsuranceUpdate {
+	iu.mutation.RemoveInsurancePaymentIDs(ids...)
+	return iu
+}
+
+// RemoveInsurancePayment removes insurance_payment edges to Payment.
+func (iu *InsuranceUpdate) RemoveInsurancePayment(p ...*Payment) *InsuranceUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return iu.RemoveInsurancePaymentIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -425,6 +456,44 @@ func (iu *InsuranceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := iu.mutation.RemovedInsurancePaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   insurance.InsurancePaymentTable,
+			Columns: []string{insurance.InsurancePaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := iu.mutation.InsurancePaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   insurance.InsurancePaymentTable,
+			Columns: []string{insurance.InsurancePaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, iu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{insurance.Label}
@@ -559,6 +628,21 @@ func (iuo *InsuranceUpdateOne) SetProduct(p *Product) *InsuranceUpdateOne {
 	return iuo.SetProductID(p.ID)
 }
 
+// AddInsurancePaymentIDs adds the insurance_payment edge to Payment by ids.
+func (iuo *InsuranceUpdateOne) AddInsurancePaymentIDs(ids ...int) *InsuranceUpdateOne {
+	iuo.mutation.AddInsurancePaymentIDs(ids...)
+	return iuo
+}
+
+// AddInsurancePayment adds the insurance_payment edges to Payment.
+func (iuo *InsuranceUpdateOne) AddInsurancePayment(p ...*Payment) *InsuranceUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return iuo.AddInsurancePaymentIDs(ids...)
+}
+
 // Mutation returns the InsuranceMutation object of the builder.
 func (iuo *InsuranceUpdateOne) Mutation() *InsuranceMutation {
 	return iuo.mutation
@@ -586,6 +670,21 @@ func (iuo *InsuranceUpdateOne) ClearOfficer() *InsuranceUpdateOne {
 func (iuo *InsuranceUpdateOne) ClearProduct() *InsuranceUpdateOne {
 	iuo.mutation.ClearProduct()
 	return iuo
+}
+
+// RemoveInsurancePaymentIDs removes the insurance_payment edge to Payment by ids.
+func (iuo *InsuranceUpdateOne) RemoveInsurancePaymentIDs(ids ...int) *InsuranceUpdateOne {
+	iuo.mutation.RemoveInsurancePaymentIDs(ids...)
+	return iuo
+}
+
+// RemoveInsurancePayment removes insurance_payment edges to Payment.
+func (iuo *InsuranceUpdateOne) RemoveInsurancePayment(p ...*Payment) *InsuranceUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return iuo.RemoveInsurancePaymentIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -826,6 +925,44 @@ func (iuo *InsuranceUpdateOne) sqlSave(ctx context.Context) (i *Insurance, err e
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: product.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := iuo.mutation.RemovedInsurancePaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   insurance.InsurancePaymentTable,
+			Columns: []string{insurance.InsurancePaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := iuo.mutation.InsurancePaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   insurance.InsurancePaymentTable,
+			Columns: []string{insurance.InsurancePaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
 				},
 			},
 		}

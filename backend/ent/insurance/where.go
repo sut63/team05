@@ -607,6 +607,34 @@ func HasProductWith(preds ...predicate.Product) predicate.Insurance {
 	})
 }
 
+// HasInsurancePayment applies the HasEdge predicate on the "insurance_payment" edge.
+func HasInsurancePayment() predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(InsurancePaymentTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, InsurancePaymentTable, InsurancePaymentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasInsurancePaymentWith applies the HasEdge predicate on the "insurance_payment" edge with a given conditions (other predicates).
+func HasInsurancePaymentWith(preds ...predicate.Payment) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(InsurancePaymentInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, InsurancePaymentTable, InsurancePaymentColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Insurance) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {

@@ -5,10 +5,13 @@ package ent
 import (
 	"time"
 
+	"github.com/sut63/team05/ent/bank"
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
+	"github.com/sut63/team05/ent/moneytransfer"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/schema"
 )
 
@@ -16,6 +19,12 @@ import (
 // code (default values, validators or hooks) and stitches it
 // to their package variables.
 func init() {
+	bankFields := schema.Bank{}.Fields()
+	_ = bankFields
+	// bankDescBankType is the schema descriptor for bank_type field.
+	bankDescBankType := bankFields[0].Descriptor()
+	// bank.BankTypeValidator is a validator for the "bank_type" field. It is called by the builders before save.
+	bank.BankTypeValidator = bankDescBankType.Validators[0].(func(string) error)
 	hospitalFields := schema.Hospital{}.Fields()
 	_ = hospitalFields
 	// hospitalDescHospitalName is the schema descriptor for hospital_name field.
@@ -54,6 +63,12 @@ func init() {
 	memberDescMemberPassword := memberFields[2].Descriptor()
 	// member.MemberPasswordValidator is a validator for the "member_password" field. It is called by the builders before save.
 	member.MemberPasswordValidator = memberDescMemberPassword.Validators[0].(func(string) error)
+	moneytransferFields := schema.MoneyTransfer{}.Fields()
+	_ = moneytransferFields
+	// moneytransferDescMoneytransferType is the schema descriptor for moneytransfer_type field.
+	moneytransferDescMoneytransferType := moneytransferFields[0].Descriptor()
+	// moneytransfer.MoneytransferTypeValidator is a validator for the "moneytransfer_type" field. It is called by the builders before save.
+	moneytransfer.MoneytransferTypeValidator = moneytransferDescMoneytransferType.Validators[0].(func(string) error)
 	officerFields := schema.Officer{}.Fields()
 	_ = officerFields
 	// officerDescOfficerEmail is the schema descriptor for officer_email field.
@@ -68,4 +83,18 @@ func init() {
 	officerDescOfficerPassword := officerFields[2].Descriptor()
 	// officer.OfficerPasswordValidator is a validator for the "officer_password" field. It is called by the builders before save.
 	officer.OfficerPasswordValidator = officerDescOfficerPassword.Validators[0].(func(string) error)
+	paymentFields := schema.Payment{}.Fields()
+	_ = paymentFields
+	// paymentDescAccountName is the schema descriptor for account_name field.
+	paymentDescAccountName := paymentFields[0].Descriptor()
+	// payment.AccountNameValidator is a validator for the "account_name" field. It is called by the builders before save.
+	payment.AccountNameValidator = paymentDescAccountName.Validators[0].(func(string) error)
+	// paymentDescAccountNumber is the schema descriptor for account_number field.
+	paymentDescAccountNumber := paymentFields[1].Descriptor()
+	// payment.AccountNumberValidator is a validator for the "account_number" field. It is called by the builders before save.
+	payment.AccountNumberValidator = paymentDescAccountNumber.Validators[0].(func(string) error)
+	// paymentDescTransferTime is the schema descriptor for transfer_time field.
+	paymentDescTransferTime := paymentFields[2].Descriptor()
+	// payment.DefaultTransferTime holds the default value on creation for the transfer_time field.
+	payment.DefaultTransferTime = paymentDescTransferTime.Default.(func() time.Time)
 }

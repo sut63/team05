@@ -14,6 +14,7 @@ import (
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/product"
 )
 
@@ -138,6 +139,21 @@ func (ic *InsuranceCreate) SetNillableProductID(id *int) *InsuranceCreate {
 // SetProduct sets the Product edge to Product.
 func (ic *InsuranceCreate) SetProduct(p *Product) *InsuranceCreate {
 	return ic.SetProductID(p.ID)
+}
+
+// AddInsurancePaymentIDs adds the insurance_payment edge to Payment by ids.
+func (ic *InsuranceCreate) AddInsurancePaymentIDs(ids ...int) *InsuranceCreate {
+	ic.mutation.AddInsurancePaymentIDs(ids...)
+	return ic
+}
+
+// AddInsurancePayment adds the insurance_payment edges to Payment.
+func (ic *InsuranceCreate) AddInsurancePayment(p ...*Payment) *InsuranceCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return ic.AddInsurancePaymentIDs(ids...)
 }
 
 // Mutation returns the InsuranceMutation object of the builder.
@@ -331,6 +347,25 @@ func (ic *InsuranceCreate) createSpec() (*Insurance, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: product.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ic.mutation.InsurancePaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   insurance.InsurancePaymentTable,
+			Columns: []string{insurance.InsurancePaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
 				},
 			},
 		}

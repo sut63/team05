@@ -47,9 +47,11 @@ type InsuranceEdges struct {
 	Officer *Officer
 	// Product holds the value of the Product edge.
 	Product *Product
+	// InsurancePayment holds the value of the insurance_payment edge.
+	InsurancePayment []*Payment
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 }
 
 // MemberOrErr returns the Member value or an error if the edge
@@ -106,6 +108,15 @@ func (e InsuranceEdges) ProductOrErr() (*Product, error) {
 		return e.Product, nil
 	}
 	return nil, &NotLoadedError{edge: "Product"}
+}
+
+// InsurancePaymentOrErr returns the InsurancePayment value or an error if the edge
+// was not loaded in eager-loading.
+func (e InsuranceEdges) InsurancePaymentOrErr() ([]*Payment, error) {
+	if e.loadedTypes[4] {
+		return e.InsurancePayment, nil
+	}
+	return nil, &NotLoadedError{edge: "insurance_payment"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -209,6 +220,11 @@ func (i *Insurance) QueryOfficer() *OfficerQuery {
 // QueryProduct queries the Product edge of the Insurance.
 func (i *Insurance) QueryProduct() *ProductQuery {
 	return (&InsuranceClient{config: i.config}).QueryProduct(i)
+}
+
+// QueryInsurancePayment queries the insurance_payment edge of the Insurance.
+func (i *Insurance) QueryInsurancePayment() *PaymentQuery {
+	return (&InsuranceClient{config: i.config}).QueryInsurancePayment(i)
 }
 
 // Update returns a builder for updating this Insurance.
