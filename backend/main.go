@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -10,37 +9,37 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/tanapon395/playlist-video/controllers"
-	"github.com/tanapon395/playlist-video/ent"
-	"github.com/tanapon395/playlist-video/ent/user"
+	"github.com/team05/app/controllers"
+	_ "github.com/team05/app/docs"
+	"github.com/team05/app/ent"
 )
 
-type Users struct {
-	User []User
+type Hospitals struct {
+	Hospital []Hospital
 }
 
-type User struct {
-	Name  string
-	Email string
+type Hospital struct {
+	HospitalName string
 }
 
-type Playlists struct {
-	Playlist []Playlist
+type Members struct {
+	Member []Member
 }
 
-type Playlist struct {
-	Title string
-	Owner int
+type Member struct {
+	MemberEmail    string
+	MemberName     string
+	MemberPassword string
 }
 
-type Videos struct {
-	Video []Video
+type Officers struct {
+	Officer []Officer
 }
 
-type Video struct {
-	Name  string
-	Url   string
-	Owner int
+type Officer struct {
+	OfficerEmail    string
+	OfficerName     string
+	OfficerPassword string
 }
 
 // @title SUT SA Example API Playlist Vidoe
@@ -99,93 +98,58 @@ func main() {
 	}
 
 	v1 := router.Group("/api/v1")
-	controllers.NewUserController(v1, client)
-	controllers.NewVideoController(v1, client)
-	controllers.NewResolutionController(v1, client)
-	controllers.NewPlaylistController(v1, client)
-	controllers.NewPlaylistVideoController(v1, client)
+	controllers.NewMemberController(v1, client)
+	controllers.NewHospitalController(v1, client)
+	controllers.NewOfficerController(v1, client)
 
-	// Set Users Data
-	users := Users{
-		User: []User{
-			User{"Chanwit Kaewkasi", "chanwit@gmail.com"},
-			User{"Name Surname", "me@example.com"},
-		},
+	// Set Members Data
+	members := Members{
+		Member: []Member{
+			Member{"b6115296@g.sut.ac.th","Teerapat Saiprom","123456789"},
+			Member{"b6132552@g.sut.ac.th","Teerasuk Supawaha","123456789"},
+		}
 	}
 
-	for _, u := range users.User {
+	for _, m := range members.Member {
 		client.User.
 			Create().
-			SetEmail(u.Email).
-			SetName(u.Name).
+			SetMemberEmail(m.MemberEmail).
+			SetMemberName(m.MemberName).
+			SetMemberPassword(m.MemberPassword).
 			Save(context.Background())
 	}
 
-	// Set Resolutions Data
-	resolutions := []int{240, 360, 480, 720, 1080}
-	for _, r := range resolutions {
-		client.Resolution.
-			Create().
-			SetValue(r).
-			Save(context.Background())
-	}
-
-	// Set Playlist Data
-	playlists := Playlists{
-		Playlist: []Playlist{
-			Playlist{"Watched", 1},
-			Playlist{"Watch Later", 1},
-			Playlist{"Watch Later", 2},
-		},
-	}
-
-	for _, p := range playlists.Playlist {
-
-		u, err := client.User.
-			Query().
-			Where(user.IDEQ(int(p.Owner))).
-			Only(context.Background())
-
-		if err != nil {
-			fmt.Println(err.Error())
-			return
+	// Set Hospitals Data
+	hospitals := Hospitals{
+		Hospital: []Hospital{
+			Hospital{"Suranaree"},
+			Hospital{"Maharat (Nakhon ratchasima)"},
 		}
+	}
 
-		client.Playlist.
+	for _, h := range hospitals.Hospital {
+		client.Hospital.
 			Create().
-			SetTitle(p.Title).
-			SetOwner(u).
+			SetHospitalName(h.HospitalName).
 			Save(context.Background())
 	}
 
-	// Set Videos Data
-	videos := Videos{
-		Video: []Video{
-			Video{"SA Lecture 4", "http://google.con", 1},
-			Video{"React and TypeScript - Getting Started", "https://www.youtube.com/watch?v=I9jfsIRnySs&ab_channel=JamesQQuick", 2},
-		},
-	}
-
-	for _, v := range videos.Video {
-
-		u, err := client.User.
-			Query().
-			Where(user.IDEQ(int(v.Owner))).
-			Only(context.Background())
-
-		if err != nil {
-			fmt.Println(err.Error())
-			return
+	// Set Officers Data
+	officers := Officers{
+		Officer: []Officer{
+			Officer{"b6123456@g.sut.ac.th","Panyaporn Ngaosri","123456789"},
+			Officer{"b6123457@g.sut.ac.th","Somsak Supawaha","123456789"},
 		}
-
-		client.Video.
-			Create().
-			SetName(v.Name).
-			SetURL(v.Url).
-			SetOwner(u).
-			Save(context.Background())
 	}
 
+	for _, of := range officers.Officer {
+		client.Officer.
+			Create().
+			SetOfficerEmail(of.OfficerEmail).
+			SetOfficerName(of.OfficerName).
+			SetOfficerPassword(of.OfficerPassword).
+			Save(context.Background())
+	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run()
 }
