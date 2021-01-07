@@ -26,9 +26,9 @@ func (Product) Fields() []ent.Field {
 // Edges of the Product.
 func (Product) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("Gender", Gender.Type).Ref("genders").Unique(),
-		edge.From("Group_Of_Age", GroupOfAge.Type).Ref("gropages").Unique(),
-		edge.From("Officer", Officer.Type).Ref("officers").Unique(),
+		edge.From("product_gender", Gender.Type).Ref("genders").Unique(),
+		edge.From("product_groupage", GroupOfAge.Type).Ref("groupage_product").Unique(),
+		edge.From("product_officer", Officer.Type).Ref("officer_product").Unique(),
 		edge.To("product_insurance", Insurance.Type).StorageKey(edge.Column("product_id")),
 		edge.To("product_inquiry", Inquiry.Type).StorageKey(edge.Column("product_id")),
 	}

@@ -40,19 +40,19 @@ func (goau *GroupOfAgeUpdate) SetGroupOfAgeAge(s string) *GroupOfAgeUpdate {
 	return goau
 }
 
-// AddGropageIDs adds the gropages edge to Product by ids.
-func (goau *GroupOfAgeUpdate) AddGropageIDs(ids ...int) *GroupOfAgeUpdate {
-	goau.mutation.AddGropageIDs(ids...)
+// AddGroupageProductIDs adds the groupage_product edge to Product by ids.
+func (goau *GroupOfAgeUpdate) AddGroupageProductIDs(ids ...int) *GroupOfAgeUpdate {
+	goau.mutation.AddGroupageProductIDs(ids...)
 	return goau
 }
 
-// AddGropages adds the gropages edges to Product.
-func (goau *GroupOfAgeUpdate) AddGropages(p ...*Product) *GroupOfAgeUpdate {
+// AddGroupageProduct adds the groupage_product edges to Product.
+func (goau *GroupOfAgeUpdate) AddGroupageProduct(p ...*Product) *GroupOfAgeUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return goau.AddGropageIDs(ids...)
+	return goau.AddGroupageProductIDs(ids...)
 }
 
 // Mutation returns the GroupOfAgeMutation object of the builder.
@@ -60,19 +60,19 @@ func (goau *GroupOfAgeUpdate) Mutation() *GroupOfAgeMutation {
 	return goau.mutation
 }
 
-// RemoveGropageIDs removes the gropages edge to Product by ids.
-func (goau *GroupOfAgeUpdate) RemoveGropageIDs(ids ...int) *GroupOfAgeUpdate {
-	goau.mutation.RemoveGropageIDs(ids...)
+// RemoveGroupageProductIDs removes the groupage_product edge to Product by ids.
+func (goau *GroupOfAgeUpdate) RemoveGroupageProductIDs(ids ...int) *GroupOfAgeUpdate {
+	goau.mutation.RemoveGroupageProductIDs(ids...)
 	return goau
 }
 
-// RemoveGropages removes gropages edges to Product.
-func (goau *GroupOfAgeUpdate) RemoveGropages(p ...*Product) *GroupOfAgeUpdate {
+// RemoveGroupageProduct removes groupage_product edges to Product.
+func (goau *GroupOfAgeUpdate) RemoveGroupageProduct(p ...*Product) *GroupOfAgeUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return goau.RemoveGropageIDs(ids...)
+	return goau.RemoveGroupageProductIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -159,12 +159,12 @@ func (goau *GroupOfAgeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: groupofage.FieldGroupOfAgeAge,
 		})
 	}
-	if nodes := goau.mutation.RemovedGropagesIDs(); len(nodes) > 0 {
+	if nodes := goau.mutation.RemovedGroupageProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   groupofage.GropagesTable,
-			Columns: []string{groupofage.GropagesColumn},
+			Table:   groupofage.GroupageProductTable,
+			Columns: []string{groupofage.GroupageProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -178,12 +178,12 @@ func (goau *GroupOfAgeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := goau.mutation.GropagesIDs(); len(nodes) > 0 {
+	if nodes := goau.mutation.GroupageProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   groupofage.GropagesTable,
-			Columns: []string{groupofage.GropagesColumn},
+			Table:   groupofage.GroupageProductTable,
+			Columns: []string{groupofage.GroupageProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -227,19 +227,19 @@ func (goauo *GroupOfAgeUpdateOne) SetGroupOfAgeAge(s string) *GroupOfAgeUpdateOn
 	return goauo
 }
 
-// AddGropageIDs adds the gropages edge to Product by ids.
-func (goauo *GroupOfAgeUpdateOne) AddGropageIDs(ids ...int) *GroupOfAgeUpdateOne {
-	goauo.mutation.AddGropageIDs(ids...)
+// AddGroupageProductIDs adds the groupage_product edge to Product by ids.
+func (goauo *GroupOfAgeUpdateOne) AddGroupageProductIDs(ids ...int) *GroupOfAgeUpdateOne {
+	goauo.mutation.AddGroupageProductIDs(ids...)
 	return goauo
 }
 
-// AddGropages adds the gropages edges to Product.
-func (goauo *GroupOfAgeUpdateOne) AddGropages(p ...*Product) *GroupOfAgeUpdateOne {
+// AddGroupageProduct adds the groupage_product edges to Product.
+func (goauo *GroupOfAgeUpdateOne) AddGroupageProduct(p ...*Product) *GroupOfAgeUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return goauo.AddGropageIDs(ids...)
+	return goauo.AddGroupageProductIDs(ids...)
 }
 
 // Mutation returns the GroupOfAgeMutation object of the builder.
@@ -247,19 +247,19 @@ func (goauo *GroupOfAgeUpdateOne) Mutation() *GroupOfAgeMutation {
 	return goauo.mutation
 }
 
-// RemoveGropageIDs removes the gropages edge to Product by ids.
-func (goauo *GroupOfAgeUpdateOne) RemoveGropageIDs(ids ...int) *GroupOfAgeUpdateOne {
-	goauo.mutation.RemoveGropageIDs(ids...)
+// RemoveGroupageProductIDs removes the groupage_product edge to Product by ids.
+func (goauo *GroupOfAgeUpdateOne) RemoveGroupageProductIDs(ids ...int) *GroupOfAgeUpdateOne {
+	goauo.mutation.RemoveGroupageProductIDs(ids...)
 	return goauo
 }
 
-// RemoveGropages removes gropages edges to Product.
-func (goauo *GroupOfAgeUpdateOne) RemoveGropages(p ...*Product) *GroupOfAgeUpdateOne {
+// RemoveGroupageProduct removes groupage_product edges to Product.
+func (goauo *GroupOfAgeUpdateOne) RemoveGroupageProduct(p ...*Product) *GroupOfAgeUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return goauo.RemoveGropageIDs(ids...)
+	return goauo.RemoveGroupageProductIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -344,12 +344,12 @@ func (goauo *GroupOfAgeUpdateOne) sqlSave(ctx context.Context) (goa *GroupOfAge,
 			Column: groupofage.FieldGroupOfAgeAge,
 		})
 	}
-	if nodes := goauo.mutation.RemovedGropagesIDs(); len(nodes) > 0 {
+	if nodes := goauo.mutation.RemovedGroupageProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   groupofage.GropagesTable,
-			Columns: []string{groupofage.GropagesColumn},
+			Table:   groupofage.GroupageProductTable,
+			Columns: []string{groupofage.GroupageProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -363,12 +363,12 @@ func (goauo *GroupOfAgeUpdateOne) sqlSave(ctx context.Context) (goa *GroupOfAge,
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := goauo.mutation.GropagesIDs(); len(nodes) > 0 {
+	if nodes := goauo.mutation.GroupageProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   groupofage.GropagesTable,
-			Columns: []string{groupofage.GropagesColumn},
+			Table:   groupofage.GroupageProductTable,
+			Columns: []string{groupofage.GroupageProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

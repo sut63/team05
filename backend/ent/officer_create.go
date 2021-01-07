@@ -40,19 +40,19 @@ func (oc *OfficerCreate) SetOfficerPassword(s string) *OfficerCreate {
 	return oc
 }
 
-// AddOfficerIDs adds the officers edge to Product by ids.
-func (oc *OfficerCreate) AddOfficerIDs(ids ...int) *OfficerCreate {
-	oc.mutation.AddOfficerIDs(ids...)
+// AddOfficerProductIDs adds the officer_product edge to Product by ids.
+func (oc *OfficerCreate) AddOfficerProductIDs(ids ...int) *OfficerCreate {
+	oc.mutation.AddOfficerProductIDs(ids...)
 	return oc
 }
 
-// AddOfficers adds the officers edges to Product.
-func (oc *OfficerCreate) AddOfficers(p ...*Product) *OfficerCreate {
+// AddOfficerProduct adds the officer_product edges to Product.
+func (oc *OfficerCreate) AddOfficerProduct(p ...*Product) *OfficerCreate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return oc.AddOfficerIDs(ids...)
+	return oc.AddOfficerProductIDs(ids...)
 }
 
 // AddOfficerInsuranceIDs adds the officer_insurance edge to Insurance by ids.
@@ -200,12 +200,12 @@ func (oc *OfficerCreate) createSpec() (*Officer, *sqlgraph.CreateSpec) {
 		})
 		o.OfficerPassword = value
 	}
-	if nodes := oc.mutation.OfficersIDs(); len(nodes) > 0 {
+	if nodes := oc.mutation.OfficerProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   officer.OfficersTable,
-			Columns: []string{officer.OfficersColumn},
+			Table:   officer.OfficerProductTable,
+			Columns: []string{officer.OfficerProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

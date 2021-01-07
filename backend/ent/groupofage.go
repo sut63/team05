@@ -26,20 +26,20 @@ type GroupOfAge struct {
 
 // GroupOfAgeEdges holds the relations/edges for other nodes in the graph.
 type GroupOfAgeEdges struct {
-	// Gropages holds the value of the gropages edge.
-	Gropages []*Product
+	// GroupageProduct holds the value of the groupage_product edge.
+	GroupageProduct []*Product
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// GropagesOrErr returns the Gropages value or an error if the edge
+// GroupageProductOrErr returns the GroupageProduct value or an error if the edge
 // was not loaded in eager-loading.
-func (e GroupOfAgeEdges) GropagesOrErr() ([]*Product, error) {
+func (e GroupOfAgeEdges) GroupageProductOrErr() ([]*Product, error) {
 	if e.loadedTypes[0] {
-		return e.Gropages, nil
+		return e.GroupageProduct, nil
 	}
-	return nil, &NotLoadedError{edge: "gropages"}
+	return nil, &NotLoadedError{edge: "groupage_product"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -76,9 +76,9 @@ func (goa *GroupOfAge) assignValues(values ...interface{}) error {
 	return nil
 }
 
-// QueryGropages queries the gropages edge of the GroupOfAge.
-func (goa *GroupOfAge) QueryGropages() *ProductQuery {
-	return (&GroupOfAgeClient{config: goa.config}).QueryGropages(goa)
+// QueryGroupageProduct queries the groupage_product edge of the GroupOfAge.
+func (goa *GroupOfAge) QueryGroupageProduct() *ProductQuery {
+	return (&GroupOfAgeClient{config: goa.config}).QueryGroupageProduct(goa)
 }
 
 // Update returns a builder for updating this GroupOfAge.

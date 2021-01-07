@@ -8,13 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/sut63/team05/controllers"
+	_ "github.com/sut63/team05/docs"
 	"github.com/sut63/team05/ent"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-<<<<<<< HEAD
-	"github.com/team05/app/controllers"
-	_ "github.com/team05/app/docs"
-	"github.com/team05/app/ent"
 )
 
 type Hospitals struct {
@@ -34,9 +31,6 @@ type Member struct {
 	MemberName     string
 	MemberPassword string
 }
-
-=======
-)
 
 // Genders struct input data
 type Genders struct {
@@ -60,15 +54,10 @@ type GroupOfAge struct {
 }
 
 // Officers struct
->>>>>>> 85dbb36 (สร้าง Controller สำหรับระบบบันทุกข้อมูลผลิตภัณฑ์ - close #34)
 type Officers struct {
 	Officer []Officer
 }
 
-<<<<<<< HEAD
-=======
-// Officer struct
->>>>>>> 85dbb36 (สร้าง Controller สำหรับระบบบันทุกข้อมูลผลิตภัณฑ์ - close #34)
 type Officer struct {
 	OfficerEmail    string
 	OfficerName     string
@@ -131,21 +120,23 @@ func main() {
 	}
 
 	v1 := router.Group("/api/v1")
-<<<<<<< HEAD
 	controllers.NewMemberController(v1, client)
 	controllers.NewHospitalController(v1, client)
+	controllers.NewGenderController(v1, client)
+	controllers.NewGroupOfAgeController(v1, client)
 	controllers.NewOfficerController(v1, client)
+	controllers.NewProductController(v1, client)
 
 	// Set Members Data
 	members := Members{
 		Member: []Member{
-			Member{"b6115296@g.sut.ac.th","Teerapat Saiprom","123456789"},
-			Member{"b6132552@g.sut.ac.th","Teerasuk Supawaha","123456789"},
-		}
+			Member{"b6115296@g.sut.ac.th", "Teerapat Saiprom", "123456789"},
+			Member{"b6132552@g.sut.ac.th", "Teerasuk Supawaha", "123456789"},
+		},
 	}
 
 	for _, m := range members.Member {
-		client.User.
+		client.Member.
 			Create().
 			SetMemberEmail(m.MemberEmail).
 			SetMemberName(m.MemberName).
@@ -158,7 +149,7 @@ func main() {
 		Hospital: []Hospital{
 			Hospital{"Suranaree"},
 			Hospital{"Maharat (Nakhon ratchasima)"},
-		}
+		},
 	}
 
 	for _, h := range hospitals.Hospital {
@@ -167,26 +158,6 @@ func main() {
 			SetHospitalName(h.HospitalName).
 			Save(context.Background())
 	}
-
-	// Set Officers Data
-	officers := Officers{
-		Officer: []Officer{
-			Officer{"b6123456@g.sut.ac.th","Panyaporn Ngaosri","123456789"},
-			Officer{"b6123457@g.sut.ac.th","Somsak Supawaha","123456789"},
-		}
-	}
-
-	for _, of := range officers.Officer {
-		client.Officer.
-			Create().
-			SetOfficerEmail(of.OfficerEmail).
-			SetOfficerName(of.OfficerName).
-			SetOfficerPassword(of.OfficerPassword).
-=======
-	controllers.NewGenderController(v1, client)
-	controllers.NewGroupOfAgeController(v1, client)
-	controllers.NewOfficerController(v1, client)
-	controllers.NewProductController(v1, client)
 
 	// Set Offices Data
 	officers := Officers{
@@ -237,7 +208,6 @@ func main() {
 		client.Gender.
 			Create().
 			SetGenderName(gd.GenderName).
->>>>>>> 85dbb36 (สร้าง Controller สำหรับระบบบันทุกข้อมูลผลิตภัณฑ์ - close #34)
 			Save(context.Background())
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

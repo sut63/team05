@@ -28,7 +28,7 @@ type OfficerQuery struct {
 	unique     []string
 	predicates []predicate.Officer
 	// eager-loading edges.
-	withOfficers         *ProductQuery
+	withOfficerProduct   *ProductQuery
 	withOfficerInsurance *InsuranceQuery
 	withOfficerInquiry   *InquiryQuery
 	// intermediate query (i.e. traversal path).
@@ -60,8 +60,8 @@ func (oq *OfficerQuery) Order(o ...OrderFunc) *OfficerQuery {
 	return oq
 }
 
-// QueryOfficers chains the current query on the officers edge.
-func (oq *OfficerQuery) QueryOfficers() *ProductQuery {
+// QueryOfficerProduct chains the current query on the officer_product edge.
+func (oq *OfficerQuery) QueryOfficerProduct() *ProductQuery {
 	query := &ProductQuery{config: oq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := oq.prepareQuery(ctx); err != nil {
@@ -70,7 +70,7 @@ func (oq *OfficerQuery) QueryOfficers() *ProductQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(officer.Table, officer.FieldID, oq.sqlQuery()),
 			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficersTable, officer.OfficersColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerProductTable, officer.OfficerProductColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(oq.driver.Dialect(), step)
 		return fromU, nil
@@ -293,14 +293,14 @@ func (oq *OfficerQuery) Clone() *OfficerQuery {
 	}
 }
 
-//  WithOfficers tells the query-builder to eager-loads the nodes that are connected to
-// the "officers" edge. The optional arguments used to configure the query builder of the edge.
-func (oq *OfficerQuery) WithOfficers(opts ...func(*ProductQuery)) *OfficerQuery {
+//  WithOfficerProduct tells the query-builder to eager-loads the nodes that are connected to
+// the "officer_product" edge. The optional arguments used to configure the query builder of the edge.
+func (oq *OfficerQuery) WithOfficerProduct(opts ...func(*ProductQuery)) *OfficerQuery {
 	query := &ProductQuery{config: oq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	oq.withOfficers = query
+	oq.withOfficerProduct = query
 	return oq
 }
 
@@ -393,7 +393,7 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 		nodes       = []*Officer{}
 		_spec       = oq.querySpec()
 		loadedTypes = [3]bool{
-			oq.withOfficers != nil,
+			oq.withOfficerProduct != nil,
 			oq.withOfficerInsurance != nil,
 			oq.withOfficerInquiry != nil,
 		}
@@ -419,7 +419,7 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 		return nodes, nil
 	}
 
-	if query := oq.withOfficers; query != nil {
+	if query := oq.withOfficerProduct; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*Officer)
 		for i := range nodes {
@@ -428,7 +428,7 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 		}
 		query.withFKs = true
 		query.Where(predicate.Product(func(s *sql.Selector) {
-			s.Where(sql.InValues(officer.OfficersColumn, fks...))
+			s.Where(sql.InValues(officer.OfficerProductColumn, fks...))
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
@@ -443,7 +443,7 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 			if !ok {
 				return nil, fmt.Errorf(`unexpected foreign-key "officer_id" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Officers = append(node.Edges.Officers, n)
+			node.Edges.OfficerProduct = append(node.Edges.OfficerProduct, n)
 		}
 	}
 

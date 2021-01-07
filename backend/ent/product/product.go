@@ -16,12 +16,12 @@ const (
 	// FieldProductPaymentOfYear holds the string denoting the product_payment_of_year field in the database.
 	FieldProductPaymentOfYear = "product_payment_of_year"
 
-	// EdgeGender holds the string denoting the gender edge name in mutations.
-	EdgeGender = "Gender"
-	// EdgeGroupOfAge holds the string denoting the group_of_age edge name in mutations.
-	EdgeGroupOfAge = "Group_Of_Age"
-	// EdgeOfficer holds the string denoting the officer edge name in mutations.
-	EdgeOfficer = "Officer"
+	// EdgeProductGender holds the string denoting the product_gender edge name in mutations.
+	EdgeProductGender = "product_gender"
+	// EdgeProductGroupage holds the string denoting the product_groupage edge name in mutations.
+	EdgeProductGroupage = "product_groupage"
+	// EdgeProductOfficer holds the string denoting the product_officer edge name in mutations.
+	EdgeProductOfficer = "product_officer"
 	// EdgeProductInsurance holds the string denoting the product_insurance edge name in mutations.
 	EdgeProductInsurance = "product_insurance"
 	// EdgeProductInquiry holds the string denoting the product_inquiry edge name in mutations.
@@ -29,27 +29,27 @@ const (
 
 	// Table holds the table name of the product in the database.
 	Table = "products"
-	// GenderTable is the table the holds the Gender relation/edge.
-	GenderTable = "products"
-	// GenderInverseTable is the table name for the Gender entity.
+	// ProductGenderTable is the table the holds the product_gender relation/edge.
+	ProductGenderTable = "products"
+	// ProductGenderInverseTable is the table name for the Gender entity.
 	// It exists in this package in order to avoid circular dependency with the "gender" package.
-	GenderInverseTable = "genders"
-	// GenderColumn is the table column denoting the Gender relation/edge.
-	GenderColumn = "gender_id"
-	// GroupOfAgeTable is the table the holds the Group_Of_Age relation/edge.
-	GroupOfAgeTable = "products"
-	// GroupOfAgeInverseTable is the table name for the GroupOfAge entity.
+	ProductGenderInverseTable = "genders"
+	// ProductGenderColumn is the table column denoting the product_gender relation/edge.
+	ProductGenderColumn = "gender_id"
+	// ProductGroupageTable is the table the holds the product_groupage relation/edge.
+	ProductGroupageTable = "products"
+	// ProductGroupageInverseTable is the table name for the GroupOfAge entity.
 	// It exists in this package in order to avoid circular dependency with the "groupofage" package.
-	GroupOfAgeInverseTable = "group_of_ages"
-	// GroupOfAgeColumn is the table column denoting the Group_Of_Age relation/edge.
-	GroupOfAgeColumn = "group_of_age_id"
-	// OfficerTable is the table the holds the Officer relation/edge.
-	OfficerTable = "products"
-	// OfficerInverseTable is the table name for the Officer entity.
+	ProductGroupageInverseTable = "group_of_ages"
+	// ProductGroupageColumn is the table column denoting the product_groupage relation/edge.
+	ProductGroupageColumn = "group_of_age_id"
+	// ProductOfficerTable is the table the holds the product_officer relation/edge.
+	ProductOfficerTable = "products"
+	// ProductOfficerInverseTable is the table name for the Officer entity.
 	// It exists in this package in order to avoid circular dependency with the "officer" package.
-	OfficerInverseTable = "officers"
-	// OfficerColumn is the table column denoting the Officer relation/edge.
-	OfficerColumn = "officer_id"
+	ProductOfficerInverseTable = "officers"
+	// ProductOfficerColumn is the table column denoting the product_officer relation/edge.
+	ProductOfficerColumn = "officer_id"
 	// ProductInsuranceTable is the table the holds the product_insurance relation/edge.
 	ProductInsuranceTable = "insurances"
 	// ProductInsuranceInverseTable is the table name for the Insurance entity.

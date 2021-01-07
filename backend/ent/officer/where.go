@@ -445,25 +445,25 @@ func OfficerPasswordContainsFold(v string) predicate.Officer {
 	})
 }
 
-// HasOfficers applies the HasEdge predicate on the "officers" edge.
-func HasOfficers() predicate.Officer {
+// HasOfficerProduct applies the HasEdge predicate on the "officer_product" edge.
+func HasOfficerProduct() predicate.Officer {
 	return predicate.Officer(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(OfficersTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, OfficersTable, OfficersColumn),
+			sqlgraph.To(OfficerProductTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, OfficerProductTable, OfficerProductColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasOfficersWith applies the HasEdge predicate on the "officers" edge with a given conditions (other predicates).
-func HasOfficersWith(preds ...predicate.Product) predicate.Officer {
+// HasOfficerProductWith applies the HasEdge predicate on the "officer_product" edge with a given conditions (other predicates).
+func HasOfficerProductWith(preds ...predicate.Product) predicate.Officer {
 	return predicate.Officer(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(OfficersInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, OfficersTable, OfficersColumn),
+			sqlgraph.To(OfficerProductInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, OfficerProductTable, OfficerProductColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

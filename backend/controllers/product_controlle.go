@@ -26,7 +26,7 @@ type Product struct {
 	ProductTime          int
 	ProductPaymentOfYear float64
 
-	Gender     int
+	GenderID   int
 	GroupOfAge int
 	Officer    int
 }
@@ -53,7 +53,7 @@ func (ctl *ProductController) CreateProduct(c *gin.Context) {
 
 	gd, err := ctl.client.Gender.
 		Query().
-		Where(gender.IDEQ(int(obj.Gender))).
+		Where(gender.IDEQ(int(obj.GenderID))).
 		Only(context.Background())
 
 	if err != nil {
@@ -93,9 +93,9 @@ func (ctl *ProductController) CreateProduct(c *gin.Context) {
 		SetProductPrice(obj.ProductPrice).
 		SetProductTime(obj.ProductTime).
 		SetProductPaymentOfYear(obj.ProductPaymentOfYear).
-		SetGender(gd).
-		SetGroupOfAge(goa).
-		SetOfficer(ofc).
+		SetProductGender(gd).
+		SetProductGroupage(goa).
+		SetProductOfficer(ofc).
 		Save(context.Background())
 
 	if err != nil {
@@ -241,9 +241,9 @@ func (ctl *ProductController) ListProduct(c *gin.Context) {
 
 	products, err := ctl.client.Product.
 		Query().
-		WithGender().
-		WithGroupOfAge().
-		WithOfficer().
+		WithProductGender().
+		WithProductGroupage().
+		WithProductOfficer().
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())

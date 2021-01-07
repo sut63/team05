@@ -275,14 +275,14 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "products_group_of_ages_gropages",
+				Symbol:  "products_group_of_ages_groupage_product",
 				Columns: []*schema.Column{ProductsColumns[6]},
 
 				RefColumns: []*schema.Column{GroupOfAgesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "products_officers_officers",
+				Symbol:  "products_officers_officer_product",
 				Columns: []*schema.Column{ProductsColumns[7]},
 
 				RefColumns: []*schema.Column{OfficersColumns[0]},
