@@ -26,10 +26,7 @@ func (Member) Edges() []ent.Edge {
 		edge.To("member_insurance", Insurance.Type).StorageKey(edge.Column("member_id")),
 		edge.To("member_payment", Payment.Type).StorageKey(edge.Column("member_id")),
 		edge.To("member_inquiry", Inquiry.Type).StorageKey(edge.Column("member_id")),
-<<<<<<< HEAD
 		edge.To("member_payback", Payback.Type).StorageKey(edge.Column("member_id")),
-=======
 		edge.To("member_recordinsurance", Recordinsurance.Type).StorageKey(edge.Column("member_id")),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}
 }
