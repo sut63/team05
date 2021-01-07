@@ -36,10 +36,10 @@ func init() {
 	hospital.HospitalNameValidator = hospitalDescHospitalName.Validators[0].(func(string) error)
 	inquiryFields := schema.Inquiry{}.Fields()
 	_ = inquiryFields
-	// inquiryDescInquiryInguiryMessages is the schema descriptor for Inquiry_inguiry_messages field.
-	inquiryDescInquiryInguiryMessages := inquiryFields[0].Descriptor()
-	// inquiry.InquiryInguiryMessagesValidator is a validator for the "Inquiry_inguiry_messages" field. It is called by the builders before save.
-	inquiry.InquiryInguiryMessagesValidator = inquiryDescInquiryInguiryMessages.Validators[0].(func(string) error)
+	// inquiryDescInquiryMessages is the schema descriptor for Inquiry_messages field.
+	inquiryDescInquiryMessages := inquiryFields[0].Descriptor()
+	// inquiry.InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
+	inquiry.InquiryMessagesValidator = inquiryDescInquiryMessages.Validators[0].(func(string) error)
 	// inquiryDescInquiryTimeMessages is the schema descriptor for Inquiry_time_messages field.
 	inquiryDescInquiryTimeMessages := inquiryFields[1].Descriptor()
 	// inquiry.DefaultInquiryTimeMessages holds the default value on creation for the Inquiry_time_messages field.

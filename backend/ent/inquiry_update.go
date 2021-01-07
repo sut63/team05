@@ -32,9 +32,9 @@ func (iu *InquiryUpdate) Where(ps ...predicate.Inquiry) *InquiryUpdate {
 	return iu
 }
 
-// SetInquiryInguiryMessages sets the Inquiry_inguiry_messages field.
-func (iu *InquiryUpdate) SetInquiryInguiryMessages(s string) *InquiryUpdate {
-	iu.mutation.SetInquiryInguiryMessages(s)
+// SetInquiryMessages sets the Inquiry_messages field.
+func (iu *InquiryUpdate) SetInquiryMessages(s string) *InquiryUpdate {
+	iu.mutation.SetInquiryMessages(s)
 	return iu
 }
 
@@ -159,9 +159,9 @@ func (iu *InquiryUpdate) ClearProduct() *InquiryUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (iu *InquiryUpdate) Save(ctx context.Context) (int, error) {
-	if v, ok := iu.mutation.InquiryInguiryMessages(); ok {
-		if err := inquiry.InquiryInguiryMessagesValidator(v); err != nil {
-			return 0, &ValidationError{Name: "Inquiry_inguiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_inguiry_messages\": %w", err)}
+	if v, ok := iu.mutation.InquiryMessages(); ok {
+		if err := inquiry.InquiryMessagesValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Inquiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_messages\": %w", err)}
 		}
 	}
 
@@ -232,11 +232,11 @@ func (iu *InquiryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := iu.mutation.InquiryInguiryMessages(); ok {
+	if value, ok := iu.mutation.InquiryMessages(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: inquiry.FieldInquiryInguiryMessages,
+			Column: inquiry.FieldInquiryMessages,
 		})
 	}
 	if value, ok := iu.mutation.InquiryTimeMessages(); ok {
@@ -404,9 +404,9 @@ type InquiryUpdateOne struct {
 	mutation *InquiryMutation
 }
 
-// SetInquiryInguiryMessages sets the Inquiry_inguiry_messages field.
-func (iuo *InquiryUpdateOne) SetInquiryInguiryMessages(s string) *InquiryUpdateOne {
-	iuo.mutation.SetInquiryInguiryMessages(s)
+// SetInquiryMessages sets the Inquiry_messages field.
+func (iuo *InquiryUpdateOne) SetInquiryMessages(s string) *InquiryUpdateOne {
+	iuo.mutation.SetInquiryMessages(s)
 	return iuo
 }
 
@@ -531,9 +531,9 @@ func (iuo *InquiryUpdateOne) ClearProduct() *InquiryUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (iuo *InquiryUpdateOne) Save(ctx context.Context) (*Inquiry, error) {
-	if v, ok := iuo.mutation.InquiryInguiryMessages(); ok {
-		if err := inquiry.InquiryInguiryMessagesValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Inquiry_inguiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_inguiry_messages\": %w", err)}
+	if v, ok := iuo.mutation.InquiryMessages(); ok {
+		if err := inquiry.InquiryMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Inquiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_messages\": %w", err)}
 		}
 	}
 
@@ -602,11 +602,11 @@ func (iuo *InquiryUpdateOne) sqlSave(ctx context.Context) (i *Inquiry, err error
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Inquiry.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := iuo.mutation.InquiryInguiryMessages(); ok {
+	if value, ok := iuo.mutation.InquiryMessages(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: inquiry.FieldInquiryInguiryMessages,
+			Column: inquiry.FieldInquiryMessages,
 		})
 	}
 	if value, ok := iuo.mutation.InquiryTimeMessages(); ok {

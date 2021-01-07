@@ -72,7 +72,7 @@ var (
 	// InquiriesColumns holds the columns for the "inquiries" table.
 	InquiriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "inquiry_inguiry_messages", Type: field.TypeString},
+		{Name: "inquiry_messages", Type: field.TypeString},
 		{Name: "inquiry_time_messages", Type: field.TypeTime},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
 		{Name: "member_id", Type: field.TypeInt, Nullable: true},
