@@ -17,6 +17,7 @@ import (
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
 )
@@ -35,6 +36,7 @@ type ProductQuery struct {
 	withProductOfficer   *OfficerQuery
 	withProductInsurance *InsuranceQuery
 	withProductInquiry   *InquiryQuery
+	withProductPayback   *PaybackQuery
 	withFKs              bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -148,6 +150,24 @@ func (pq *ProductQuery) QueryProductInquiry() *InquiryQuery {
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(inquiry.Table, inquiry.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductInquiryTable, product.ProductInquiryColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProductPayback chains the current query on the product_payback edge.
+func (pq *ProductQuery) QueryProductPayback() *PaybackQuery {
+	query := &PaybackQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
+			sqlgraph.To(payback.Table, payback.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductPaybackTable, product.ProductPaybackColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -389,6 +409,17 @@ func (pq *ProductQuery) WithProductInquiry(opts ...func(*InquiryQuery)) *Product
 	return pq
 }
 
+//  WithProductPayback tells the query-builder to eager-loads the nodes that are connected to
+// the "product_payback" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithProductPayback(opts ...func(*PaybackQuery)) *ProductQuery {
+	query := &PaybackQuery{config: pq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withProductPayback = query
+	return pq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -456,12 +487,13 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		nodes       = []*Product{}
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
-		loadedTypes = [5]bool{
+		loadedTypes = [6]bool{
 			pq.withProductGender != nil,
 			pq.withProductGroupage != nil,
 			pq.withProductOfficer != nil,
 			pq.withProductInsurance != nil,
 			pq.withProductInquiry != nil,
+			pq.withProductPayback != nil,
 		}
 	)
 	if pq.withProductGender != nil || pq.withProductGroupage != nil || pq.withProductOfficer != nil {
@@ -622,6 +654,34 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "product_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.ProductInquiry = append(node.Edges.ProductInquiry, n)
+		}
+	}
+
+	if query := pq.withProductPayback; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Product)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Payback(func(s *sql.Selector) {
+			s.Where(sql.InValues(product.ProductPaybackColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.product_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "product_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "product_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.ProductPayback = append(node.Edges.ProductPayback, n)
 		}
 	}
 

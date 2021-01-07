@@ -12,6 +12,7 @@ import (
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
 )
@@ -93,6 +94,21 @@ func (ou *OfficerUpdate) AddOfficerInquiry(i ...*Inquiry) *OfficerUpdate {
 	return ou.AddOfficerInquiryIDs(ids...)
 }
 
+// AddOfficerPaybackIDs adds the officer_payback edge to Payback by ids.
+func (ou *OfficerUpdate) AddOfficerPaybackIDs(ids ...int) *OfficerUpdate {
+	ou.mutation.AddOfficerPaybackIDs(ids...)
+	return ou
+}
+
+// AddOfficerPayback adds the officer_payback edges to Payback.
+func (ou *OfficerUpdate) AddOfficerPayback(p ...*Payback) *OfficerUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return ou.AddOfficerPaybackIDs(ids...)
+}
+
 // Mutation returns the OfficerMutation object of the builder.
 func (ou *OfficerUpdate) Mutation() *OfficerMutation {
 	return ou.mutation
@@ -141,6 +157,21 @@ func (ou *OfficerUpdate) RemoveOfficerInquiry(i ...*Inquiry) *OfficerUpdate {
 		ids[j] = i[j].ID
 	}
 	return ou.RemoveOfficerInquiryIDs(ids...)
+}
+
+// RemoveOfficerPaybackIDs removes the officer_payback edge to Payback by ids.
+func (ou *OfficerUpdate) RemoveOfficerPaybackIDs(ids ...int) *OfficerUpdate {
+	ou.mutation.RemoveOfficerPaybackIDs(ids...)
+	return ou
+}
+
+// RemoveOfficerPayback removes officer_payback edges to Payback.
+func (ou *OfficerUpdate) RemoveOfficerPayback(p ...*Payback) *OfficerUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return ou.RemoveOfficerPaybackIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -363,6 +394,44 @@ func (ou *OfficerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := ou.mutation.RemovedOfficerPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerPaybackTable,
+			Columns: []string{officer.OfficerPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ou.mutation.OfficerPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerPaybackTable,
+			Columns: []string{officer.OfficerPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ou.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{officer.Label}
@@ -444,6 +513,21 @@ func (ouo *OfficerUpdateOne) AddOfficerInquiry(i ...*Inquiry) *OfficerUpdateOne 
 	return ouo.AddOfficerInquiryIDs(ids...)
 }
 
+// AddOfficerPaybackIDs adds the officer_payback edge to Payback by ids.
+func (ouo *OfficerUpdateOne) AddOfficerPaybackIDs(ids ...int) *OfficerUpdateOne {
+	ouo.mutation.AddOfficerPaybackIDs(ids...)
+	return ouo
+}
+
+// AddOfficerPayback adds the officer_payback edges to Payback.
+func (ouo *OfficerUpdateOne) AddOfficerPayback(p ...*Payback) *OfficerUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return ouo.AddOfficerPaybackIDs(ids...)
+}
+
 // Mutation returns the OfficerMutation object of the builder.
 func (ouo *OfficerUpdateOne) Mutation() *OfficerMutation {
 	return ouo.mutation
@@ -492,6 +576,21 @@ func (ouo *OfficerUpdateOne) RemoveOfficerInquiry(i ...*Inquiry) *OfficerUpdateO
 		ids[j] = i[j].ID
 	}
 	return ouo.RemoveOfficerInquiryIDs(ids...)
+}
+
+// RemoveOfficerPaybackIDs removes the officer_payback edge to Payback by ids.
+func (ouo *OfficerUpdateOne) RemoveOfficerPaybackIDs(ids ...int) *OfficerUpdateOne {
+	ouo.mutation.RemoveOfficerPaybackIDs(ids...)
+	return ouo
+}
+
+// RemoveOfficerPayback removes officer_payback edges to Payback.
+func (ouo *OfficerUpdateOne) RemoveOfficerPayback(p ...*Payback) *OfficerUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return ouo.RemoveOfficerPaybackIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -704,6 +803,44 @@ func (ouo *OfficerUpdateOne) sqlSave(ctx context.Context) (o *Officer, err error
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := ouo.mutation.RemovedOfficerPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerPaybackTable,
+			Columns: []string{officer.OfficerPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ouo.mutation.OfficerPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerPaybackTable,
+			Columns: []string{officer.OfficerPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
 				},
 			},
 		}

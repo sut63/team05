@@ -139,6 +139,19 @@ func (f OfficerFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	return f(ctx, mv)
 }
 
+// The PaybackFunc type is an adapter to allow the use of ordinary
+// function as Payback mutator.
+type PaybackFunc func(context.Context, *ent.PaybackMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PaybackFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PaybackMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PaybackMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The PaymentFunc type is an adapter to allow the use of ordinary
 // function as Payment mutator.
 type PaymentFunc func(context.Context, *ent.PaymentMutation) (ent.Value, error)

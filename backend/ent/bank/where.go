@@ -237,6 +237,34 @@ func HasBankPaymentWith(preds ...predicate.Payment) predicate.Bank {
 	})
 }
 
+// HasBankPayback applies the HasEdge predicate on the "bank_payback" edge.
+func HasBankPayback() predicate.Bank {
+	return predicate.Bank(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(BankPaybackTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, BankPaybackTable, BankPaybackColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasBankPaybackWith applies the HasEdge predicate on the "bank_payback" edge with a given conditions (other predicates).
+func HasBankPaybackWith(preds ...predicate.Payback) predicate.Bank {
+	return predicate.Bank(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(BankPaybackInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, BankPaybackTable, BankPaybackColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Bank) predicate.Bank {
 	return predicate.Bank(func(s *sql.Selector) {

@@ -36,6 +36,9 @@ type MoneyTransfer func(*sql.Selector)
 // Officer is the predicate function for officer builders.
 type Officer func(*sql.Selector)
 
+// Payback is the predicate function for payback builders.
+type Payback func(*sql.Selector)
+
 // Payment is the predicate function for payment builders.
 type Payment func(*sql.Selector)
 

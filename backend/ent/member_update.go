@@ -12,6 +12,7 @@ import (
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
 )
@@ -93,6 +94,21 @@ func (mu *MemberUpdate) AddMemberInquiry(i ...*Inquiry) *MemberUpdate {
 	return mu.AddMemberInquiryIDs(ids...)
 }
 
+// AddMemberPaybackIDs adds the member_payback edge to Payback by ids.
+func (mu *MemberUpdate) AddMemberPaybackIDs(ids ...int) *MemberUpdate {
+	mu.mutation.AddMemberPaybackIDs(ids...)
+	return mu
+}
+
+// AddMemberPayback adds the member_payback edges to Payback.
+func (mu *MemberUpdate) AddMemberPayback(p ...*Payback) *MemberUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return mu.AddMemberPaybackIDs(ids...)
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (mu *MemberUpdate) Mutation() *MemberMutation {
 	return mu.mutation
@@ -141,6 +157,21 @@ func (mu *MemberUpdate) RemoveMemberInquiry(i ...*Inquiry) *MemberUpdate {
 		ids[j] = i[j].ID
 	}
 	return mu.RemoveMemberInquiryIDs(ids...)
+}
+
+// RemoveMemberPaybackIDs removes the member_payback edge to Payback by ids.
+func (mu *MemberUpdate) RemoveMemberPaybackIDs(ids ...int) *MemberUpdate {
+	mu.mutation.RemoveMemberPaybackIDs(ids...)
+	return mu
+}
+
+// RemoveMemberPayback removes member_payback edges to Payback.
+func (mu *MemberUpdate) RemoveMemberPayback(p ...*Payback) *MemberUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return mu.RemoveMemberPaybackIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -363,6 +394,44 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := mu.mutation.RemovedMemberPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberPaybackTable,
+			Columns: []string{member.MemberPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := mu.mutation.MemberPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberPaybackTable,
+			Columns: []string{member.MemberPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{member.Label}
@@ -444,6 +513,21 @@ func (muo *MemberUpdateOne) AddMemberInquiry(i ...*Inquiry) *MemberUpdateOne {
 	return muo.AddMemberInquiryIDs(ids...)
 }
 
+// AddMemberPaybackIDs adds the member_payback edge to Payback by ids.
+func (muo *MemberUpdateOne) AddMemberPaybackIDs(ids ...int) *MemberUpdateOne {
+	muo.mutation.AddMemberPaybackIDs(ids...)
+	return muo
+}
+
+// AddMemberPayback adds the member_payback edges to Payback.
+func (muo *MemberUpdateOne) AddMemberPayback(p ...*Payback) *MemberUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return muo.AddMemberPaybackIDs(ids...)
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (muo *MemberUpdateOne) Mutation() *MemberMutation {
 	return muo.mutation
@@ -492,6 +576,21 @@ func (muo *MemberUpdateOne) RemoveMemberInquiry(i ...*Inquiry) *MemberUpdateOne 
 		ids[j] = i[j].ID
 	}
 	return muo.RemoveMemberInquiryIDs(ids...)
+}
+
+// RemoveMemberPaybackIDs removes the member_payback edge to Payback by ids.
+func (muo *MemberUpdateOne) RemoveMemberPaybackIDs(ids ...int) *MemberUpdateOne {
+	muo.mutation.RemoveMemberPaybackIDs(ids...)
+	return muo
+}
+
+// RemoveMemberPayback removes member_payback edges to Payback.
+func (muo *MemberUpdateOne) RemoveMemberPayback(p ...*Payback) *MemberUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return muo.RemoveMemberPaybackIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -704,6 +803,44 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (m *Member, err error) 
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := muo.mutation.RemovedMemberPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberPaybackTable,
+			Columns: []string{member.MemberPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := muo.mutation.MemberPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberPaybackTable,
+			Columns: []string{member.MemberPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
 				},
 			},
 		}

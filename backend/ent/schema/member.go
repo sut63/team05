@@ -26,5 +26,6 @@ func (Member) Edges() []ent.Edge {
 		edge.To("member_insurance", Insurance.Type).StorageKey(edge.Column("member_id")),
 		edge.To("member_payment", Payment.Type).StorageKey(edge.Column("member_id")),
 		edge.To("member_inquiry", Inquiry.Type).StorageKey(edge.Column("member_id")),
+		edge.To("member_payback", Payback.Type).StorageKey(edge.Column("member_id")),
 	}
 }

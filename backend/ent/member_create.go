@@ -12,6 +12,7 @@ import (
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 )
 
@@ -83,6 +84,21 @@ func (mc *MemberCreate) AddMemberInquiry(i ...*Inquiry) *MemberCreate {
 		ids[j] = i[j].ID
 	}
 	return mc.AddMemberInquiryIDs(ids...)
+}
+
+// AddMemberPaybackIDs adds the member_payback edge to Payback by ids.
+func (mc *MemberCreate) AddMemberPaybackIDs(ids ...int) *MemberCreate {
+	mc.mutation.AddMemberPaybackIDs(ids...)
+	return mc
+}
+
+// AddMemberPayback adds the member_payback edges to Payback.
+func (mc *MemberCreate) AddMemberPayback(p ...*Payback) *MemberCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return mc.AddMemberPaybackIDs(ids...)
 }
 
 // Mutation returns the MemberMutation object of the builder.
@@ -249,6 +265,25 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := mc.mutation.MemberPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberPaybackTable,
+			Columns: []string{member.MemberPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
 				},
 			},
 		}

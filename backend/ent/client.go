@@ -19,6 +19,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/moneytransfer"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/product"
 
@@ -52,6 +53,8 @@ type Client struct {
 	MoneyTransfer *MoneyTransferClient
 	// Officer is the client for interacting with the Officer builders.
 	Officer *OfficerClient
+	// Payback is the client for interacting with the Payback builders.
+	Payback *PaybackClient
 	// Payment is the client for interacting with the Payment builders.
 	Payment *PaymentClient
 	// Product is the client for interacting with the Product builders.
@@ -79,6 +82,7 @@ func (c *Client) init() {
 	c.Member = NewMemberClient(c.config)
 	c.MoneyTransfer = NewMoneyTransferClient(c.config)
 	c.Officer = NewOfficerClient(c.config)
+	c.Payback = NewPaybackClient(c.config)
 	c.Payment = NewPaymentClient(c.config)
 	c.Product = NewProductClient(c.config)
 }
@@ -123,6 +127,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Member:        NewMemberClient(cfg),
 		MoneyTransfer: NewMoneyTransferClient(cfg),
 		Officer:       NewOfficerClient(cfg),
+		Payback:       NewPaybackClient(cfg),
 		Payment:       NewPaymentClient(cfg),
 		Product:       NewProductClient(cfg),
 	}, nil
@@ -150,6 +155,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Member:        NewMemberClient(cfg),
 		MoneyTransfer: NewMoneyTransferClient(cfg),
 		Officer:       NewOfficerClient(cfg),
+		Payback:       NewPaybackClient(cfg),
 		Payment:       NewPaymentClient(cfg),
 		Product:       NewProductClient(cfg),
 	}, nil
@@ -190,6 +196,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Member.Use(hooks...)
 	c.MoneyTransfer.Use(hooks...)
 	c.Officer.Use(hooks...)
+	c.Payback.Use(hooks...)
 	c.Payment.Use(hooks...)
 	c.Product.Use(hooks...)
 }
@@ -281,6 +288,22 @@ func (c *BankClient) QueryBankPayment(b *Bank) *PaymentQuery {
 			sqlgraph.From(bank.Table, bank.FieldID, id),
 			sqlgraph.To(payment.Table, payment.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, bank.BankPaymentTable, bank.BankPaymentColumn),
+		)
+		fromV = sqlgraph.Neighbors(b.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryBankPayback queries the bank_payback edge of a Bank.
+func (c *BankClient) QueryBankPayback(b *Bank) *PaybackQuery {
+	query := &PaybackQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := b.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bank.Table, bank.FieldID, id),
+			sqlgraph.To(payback.Table, payback.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, bank.BankPaybackTable, bank.BankPaybackColumn),
 		)
 		fromV = sqlgraph.Neighbors(b.driver.Dialect(), step)
 		return fromV, nil
@@ -1125,6 +1148,22 @@ func (c *MemberClient) QueryMemberInquiry(m *Member) *InquiryQuery {
 	return query
 }
 
+// QueryMemberPayback queries the member_payback edge of a Member.
+func (c *MemberClient) QueryMemberPayback(m *Member) *PaybackQuery {
+	query := &PaybackQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(member.Table, member.FieldID, id),
+			sqlgraph.To(payback.Table, payback.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberPaybackTable, member.MemberPaybackColumn),
+		)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *MemberClient) Hooks() []Hook {
 	return c.hooks.Member
@@ -1355,9 +1394,172 @@ func (c *OfficerClient) QueryOfficerInquiry(o *Officer) *InquiryQuery {
 	return query
 }
 
+// QueryOfficerPayback queries the officer_payback edge of a Officer.
+func (c *OfficerClient) QueryOfficerPayback(o *Officer) *PaybackQuery {
+	query := &PaybackQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := o.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(officer.Table, officer.FieldID, id),
+			sqlgraph.To(payback.Table, payback.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerPaybackTable, officer.OfficerPaybackColumn),
+		)
+		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *OfficerClient) Hooks() []Hook {
 	return c.hooks.Officer
+}
+
+// PaybackClient is a client for the Payback schema.
+type PaybackClient struct {
+	config
+}
+
+// NewPaybackClient returns a client for the Payback from the given config.
+func NewPaybackClient(c config) *PaybackClient {
+	return &PaybackClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `payback.Hooks(f(g(h())))`.
+func (c *PaybackClient) Use(hooks ...Hook) {
+	c.hooks.Payback = append(c.hooks.Payback, hooks...)
+}
+
+// Create returns a create builder for Payback.
+func (c *PaybackClient) Create() *PaybackCreate {
+	mutation := newPaybackMutation(c.config, OpCreate)
+	return &PaybackCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Update returns an update builder for Payback.
+func (c *PaybackClient) Update() *PaybackUpdate {
+	mutation := newPaybackMutation(c.config, OpUpdate)
+	return &PaybackUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PaybackClient) UpdateOne(pa *Payback) *PaybackUpdateOne {
+	mutation := newPaybackMutation(c.config, OpUpdateOne, withPayback(pa))
+	return &PaybackUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PaybackClient) UpdateOneID(id int) *PaybackUpdateOne {
+	mutation := newPaybackMutation(c.config, OpUpdateOne, withPaybackID(id))
+	return &PaybackUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Payback.
+func (c *PaybackClient) Delete() *PaybackDelete {
+	mutation := newPaybackMutation(c.config, OpDelete)
+	return &PaybackDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *PaybackClient) DeleteOne(pa *Payback) *PaybackDeleteOne {
+	return c.DeleteOneID(pa.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *PaybackClient) DeleteOneID(id int) *PaybackDeleteOne {
+	builder := c.Delete().Where(payback.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PaybackDeleteOne{builder}
+}
+
+// Create returns a query builder for Payback.
+func (c *PaybackClient) Query() *PaybackQuery {
+	return &PaybackQuery{config: c.config}
+}
+
+// Get returns a Payback entity by its id.
+func (c *PaybackClient) Get(ctx context.Context, id int) (*Payback, error) {
+	return c.Query().Where(payback.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PaybackClient) GetX(ctx context.Context, id int) *Payback {
+	pa, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return pa
+}
+
+// QueryOfficer queries the Officer edge of a Payback.
+func (c *PaybackClient) QueryOfficer(pa *Payback) *OfficerQuery {
+	query := &OfficerQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(payback.Table, payback.FieldID, id),
+			sqlgraph.To(officer.Table, officer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, payback.OfficerTable, payback.OfficerColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryMember queries the Member edge of a Payback.
+func (c *PaybackClient) QueryMember(pa *Payback) *MemberQuery {
+	query := &MemberQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(payback.Table, payback.FieldID, id),
+			sqlgraph.To(member.Table, member.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, payback.MemberTable, payback.MemberColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProduct queries the Product edge of a Payback.
+func (c *PaybackClient) QueryProduct(pa *Payback) *ProductQuery {
+	query := &ProductQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(payback.Table, payback.FieldID, id),
+			sqlgraph.To(product.Table, product.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, payback.ProductTable, payback.ProductColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryBank queries the Bank edge of a Payback.
+func (c *PaybackClient) QueryBank(pa *Payback) *BankQuery {
+	query := &BankQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(payback.Table, payback.FieldID, id),
+			sqlgraph.To(bank.Table, bank.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, payback.BankTable, payback.BankColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *PaybackClient) Hooks() []Hook {
+	return c.hooks.Payback
 }
 
 // PaymentClient is a client for the Payment schema.
@@ -1658,6 +1860,22 @@ func (c *ProductClient) QueryProductInquiry(pr *Product) *InquiryQuery {
 			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(inquiry.Table, inquiry.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductInquiryTable, product.ProductInquiryColumn),
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProductPayback queries the product_payback edge of a Product.
+func (c *ProductClient) QueryProductPayback(pr *Product) *PaybackQuery {
+	query := &PaybackQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(product.Table, product.FieldID, id),
+			sqlgraph.To(payback.Table, payback.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductPaybackTable, product.ProductPaybackColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
