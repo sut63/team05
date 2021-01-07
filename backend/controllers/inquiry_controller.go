@@ -21,7 +21,7 @@ type InquiryController struct {
 }
 
 // inquiry defines the struct for the inquiry
-type inquiry struct {
+type Inquiry struct {
 	ProductID           int
 	MemberID            int
 	CategoryID          int
@@ -36,12 +36,12 @@ type inquiry struct {
 // @ID create-inquiry
 // @Accept   json
 // @Produce  json
-// @Param inquiry body inquiry true "Inquiry entity"
+// @Param inquiry body Inquiry true "Inquiry entity"
 // @Success 200 {object} ent.Inquiry
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
 // @Router /inquirys [post]
-func (ctl *InquiryController) Createinquiry(c *gin.Context) {
+func (ctl *InquiryController) CreateInquiry(c *gin.Context) {
 	obj := Inquiry{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
@@ -74,7 +74,7 @@ func (ctl *InquiryController) Createinquiry(c *gin.Context) {
 		return
 	}
 
-	cg, err := ctl.client.Hospital.
+	cg, err := ctl.client.Category.
 		Query().
 		Where(category.IDEQ(int(obj.CategoryID))).
 		Only(context.Background())
@@ -97,8 +97,7 @@ func (ctl *InquiryController) Createinquiry(c *gin.Context) {
 		})
 		return
 	}
-	timeb, err := time.Parse(time.RFC3339, obj.inquiryTimeBuy)
-	timep, err := time.Parse(time.RFC3339, obj.inquiryTimeFirstpay)
+	timem, err := time.Parse(time.RFC3339, obj.InquiryTimeMessages)
 
 	in, err := ctl.client.Inquiry.
 		Create().
@@ -106,10 +105,8 @@ func (ctl *InquiryController) Createinquiry(c *gin.Context) {
 		SetMember(m).
 		SetCategory(cg).
 		SetOfficer(of).
-		SetI(obj.inquiryAddress).
-		SetinquiryInsurer(obj.inquiryInsurer).
-		SetinquiryTimeBuy(timeb).
-		SetinquiryTimeFirstpay(timep).
+		SetInquiryMessages(obj.InquiryMessages).
+		SetInquiryTimeMessages(timem).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -121,18 +118,18 @@ func (ctl *InquiryController) Createinquiry(c *gin.Context) {
 	c.JSON(200, in)
 }
 
-// Listinquiry handles request to get a list of inquiry entities
+// ListInquiry handles request to get a list of inquiry entities
 // @Summary List inquiry entities
 // @Description list inquiry entities
 // @ID list-inquiry
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
-// @Success 200 {array} ent.inquiry
+// @Success 200 {array} ent.Inquiry
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
 // @Router /inquirys [get]
-func (ctl *inquiryController) Listinquiry(c *gin.Context) {
+func (ctl *InquiryController) ListInquiry(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
 	if limitQuery != "" {
@@ -151,11 +148,11 @@ func (ctl *inquiryController) Listinquiry(c *gin.Context) {
 		}
 	}
 
-	inquirys, err := ctl.client.inquiry.
+	inquirys, err := ctl.client.Inquiry.
 		Query().
 		WithProduct().
 		WithMember().
-		WithHospital().
+		WithCategory().
 		WithOfficer().
 		Limit(limit).
 		Offset(offset).
@@ -168,18 +165,18 @@ func (ctl *inquiryController) Listinquiry(c *gin.Context) {
 	c.JSON(200, inquirys)
 }
 
-// Deleteinquiry handles DELETE requests to delete a inquiry entity
+// DeleteInquiry handles DELETE requests to delete a inquiry entity
 // @Summary Delete a inquiry entity by ID
 // @Description get inquiry by ID
 // @ID delete-inquiry
 // @Produce  json
-// @Param id path int true "inquiry ID"
+// @Param id path int true "Inquiry ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
 // @Router /inquirys/{id} [delete]
-func (ctl *inquiryController) Deleteinquiry(c *gin.Context) {
+func (ctl *InquiryController) DeleteInquiry(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -188,7 +185,7 @@ func (ctl *inquiryController) Deleteinquiry(c *gin.Context) {
 		return
 	}
 
-	err = ctl.client.inquiry.
+	err = ctl.client.Inquiry.
 		DeleteOneID(int(id)).
 		Exec(context.Background())
 	if err != nil {
@@ -201,9 +198,9 @@ func (ctl *inquiryController) Deleteinquiry(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// NewinquiryController creates and registers handles for the inquiry controller
-func NewinquiryController(router gin.IRouter, client *ent.Client) *inquiryController {
-	ic := &inquiryController{
+// NewInquiryController creates and registers handles for the inquiry controller
+func NewInquiryController(router gin.IRouter, client *ent.Client) *InquiryController {
+	ic := &InquiryController{
 		client: client,
 		router: router,
 	}
@@ -212,10 +209,10 @@ func NewinquiryController(router gin.IRouter, client *ent.Client) *inquiryContro
 }
 
 // InitinquiryController registers routes to the main engine
-func (ctl *inquiryController) register() {
+func (ctl *InquiryController) register() {
 	inquirys := ctl.router.Group("/inquirys")
 
-	inquirys.GET("", ctl.Listinquiry)
-	inquirys.POST("", ctl.Createinquiry)
-	inquirys.DELETE(":id", ctl.Deleteinquiry)
+	inquirys.GET("", ctl.ListInquiry)
+	inquirys.POST("", ctl.CreateInquiry)
+	inquirys.DELETE(":id", ctl.DeleteInquiry)
 }

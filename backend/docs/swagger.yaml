@@ -1,5 +1,20 @@
 basePath: /api/v1
 definitions:
+  controllers.Inquiry:
+    properties:
+      categoryID:
+        type: integer
+      inquiryMessages:
+        type: string
+      inquiryTimeMessages:
+        type: string
+      memberID:
+        type: integer
+      officerID:
+        type: integer
+      productID:
+        type: integer
+    type: object
   controllers.Insurance:
     properties:
       hospitalID:
@@ -193,9 +208,8 @@ definitions:
     type: object
   ent.Inquiry:
     properties:
-      Inquiry_inguiry_messages:
-        description: InquiryInguiryMessages holds the value of the "Inquiry_inguiry_messages"
-          field.
+      Inquiry_messages:
+        description: InquiryMessages holds the value of the "Inquiry_messages" field.
         type: string
       Inquiry_time_messages:
         description: InquiryTimeMessages holds the value of the "Inquiry_time_messages"
@@ -693,6 +707,157 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a Bank entity by ID
+  /categorys:
+    get:
+      description: list category entities
+      operationId: list-category
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Category'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List category entities
+    post:
+      consumes:
+      - application/json
+      description: Create category
+      operationId: create-category
+      parameters:
+      - description: Category entity
+        in: body
+        name: Category
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Category'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Category'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create category
+  /categorys/{id}:
+    delete:
+      description: get category by ID
+      operationId: delete-category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a category entity by ID
+    get:
+      description: get category by ID
+      operationId: get-category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Category'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a category entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update category by ID
+      operationId: update-category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category entity
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Category'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Category'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a category entity by ID
   /genders:
     get:
       description: list gender entities
@@ -1146,6 +1311,95 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a hospital entity by ID
+  /inquirys:
+    get:
+      description: list inquiry entities
+      operationId: list-inquiry
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Inquiry'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List inquiry entities
+    post:
+      consumes:
+      - application/json
+      description: Create inquiry
+      operationId: create-inquiry
+      parameters:
+      - description: Inquiry entity
+        in: body
+        name: inquiry
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Inquiry'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Inquiry'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create inquiry
+  /inquirys/{id}:
+    delete:
+      description: get inquiry by ID
+      operationId: delete-inquiry
+      parameters:
+      - description: Inquiry ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a inquiry entity by ID
   /insurances:
     get:
       description: list insurance entities
