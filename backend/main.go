@@ -64,6 +64,24 @@ type Officer struct {
 	OfficerPassword string
 }
 
+// MoneyTransfers struct
+type MoneyTransfers struct {
+	MoneyTransfer []MoneyTransfer
+}
+
+type MoneyTransfer struct {
+	MoneytransferType    string
+}
+
+// Banks struct
+type Banks struct {
+	Bank []Bank
+}
+
+type Bank struct {
+	BankType    string
+}
+
 // @title SUT SA Example API Playlist Vidoe
 // @version 1.0
 // @description This is a sample server for SUT SE 2563
@@ -109,7 +127,7 @@ func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-	client, err := ent.Open("sqlite3", "file:Product.db?cache=shared&_fk=1")
+	client, err := ent.Open("sqlite3", "file:Health.db?cache=shared&_fk=1")
 	if err != nil {
 		log.Fatalf("fail to open sqlite3: %v", err)
 	}
@@ -126,6 +144,7 @@ func main() {
 	controllers.NewGroupOfAgeController(v1, client)
 	controllers.NewOfficerController(v1, client)
 	controllers.NewProductController(v1, client)
+	controllers.NewMoneyTransferController(v1, client)
 
 	// Set Members Data
 	members := Members{
@@ -210,6 +229,48 @@ func main() {
 			SetGenderName(gd.GenderName).
 			Save(context.Background())
 	}
+
+	// Set MoneyTransfers Data
+	moneytransfers  := MoneyTransfers {
+		MoneyTransfer : []MoneyTransfer {
+			MoneyTransfer{"Internet banking"},
+			MoneyTransfer{"Moblie banking"},
+			MoneyTransfer{"ATM"},
+		},
+	}
+
+	for _, mn := range moneytransfers.MoneyTransfer {
+
+		client.MoneyTransfer.
+			Create().
+			SetMoneytransferType(mn.MoneytransferType).
+			Save(context.Background())
+	}
+
+	// Set Banks Data
+	banks  := Banks {
+		Bank : []Bank {
+			Bank {"ธนาคารกสิกรไทย"},
+			Bank {"ธนาคารกรุงเทพ"},
+			Bank {"ธนาคารกรุงศรีอยุธยา"},
+			Bank {"ธนาคารไทยพาณิชย์"},
+			Bank {"ธนาคารกรุงไทย"},
+			Bank {"ธนาคารทหารไทย"},
+			Bank {"ธนาคารธนาชาต"},
+			Bank {"ธนาคารออมสิน"},
+		},
+	}
+
+	for _, b := range banks.Bank {
+
+		client.Bank.
+			Create().
+			SetBankType(b.BankType).
+			Save(context.Background())
+	}
+
+
+
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run()
 }

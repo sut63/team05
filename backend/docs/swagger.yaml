@@ -19,6 +19,23 @@ definitions:
       productID:
         type: integer
     type: object
+  controllers.Payment:
+    properties:
+      accountName:
+        type: string
+      accountNumber:
+        type: string
+      bankID:
+        type: integer
+      insuranceID:
+        type: integer
+      memberID:
+        type: integer
+      moneytransferID:
+        type: integer
+      transferTime:
+        type: string
+    type: object
   controllers.Product:
     properties:
       genderID:
@@ -453,6 +470,157 @@ info:
   title: SUT SA Example API Playlist Vidoe
   version: "1.0"
 paths:
+  /banks:
+    get:
+      description: list Bank entities
+      operationId: list-Bank
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Bank'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List Bank entities
+    post:
+      consumes:
+      - application/json
+      description: Create Bank
+      operationId: create-Bank
+      parameters:
+      - description: Bank entity
+        in: body
+        name: Bank
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Bank'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Bank'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create Bank
+  /banks/{id}:
+    delete:
+      description: get Bank by ID
+      operationId: delete-Bank
+      parameters:
+      - description: Bank ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a Bank entity by ID
+    get:
+      description: get Bank by ID
+      operationId: get-Bank
+      parameters:
+      - description: Bank ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Bank'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a Bank entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update Bank by ID
+      operationId: update-Bank
+      parameters:
+      - description: Bank ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Bank entity
+        in: body
+        name: Bank
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Bank'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Bank'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a Bank entity by ID
   /genders:
     get:
       description: list gender entities
@@ -1146,6 +1314,157 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a member entity by ID
+  /moneyTransfers:
+    get:
+      description: list MoneyTransfer entities
+      operationId: list-MoneyTransfer
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.MoneyTransfer'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List MoneyTransfer entities
+    post:
+      consumes:
+      - application/json
+      description: Create MoneyTransfer
+      operationId: create-MoneyTransfer
+      parameters:
+      - description: MoneyTransfer entity
+        in: body
+        name: MoneyTransfer
+        required: true
+        schema:
+          $ref: '#/definitions/ent.MoneyTransfer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.MoneyTransfer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create MoneyTransfer
+  /moneyTransfers/{id}:
+    delete:
+      description: get MoneyTransfer by ID
+      operationId: delete-MoneyTransfer
+      parameters:
+      - description: MoneyTransfer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a MoneyTransfer entity by ID
+    get:
+      description: get MoneyTransfer by ID
+      operationId: get-MoneyTransfer
+      parameters:
+      - description: MoneyTransfer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.MoneyTransfer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a MoneyTransfer entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update MoneyTransfer by ID
+      operationId: update-MoneyTransfer
+      parameters:
+      - description: MoneyTransfer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: MoneyTransfer entity
+        in: body
+        name: MoneyTransfer
+        required: true
+        schema:
+          $ref: '#/definitions/ent.MoneyTransfer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.MoneyTransfer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a MoneyTransfer entity by ID
   /officers:
     get:
       description: list officer entities
@@ -1297,6 +1616,95 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a officer entity by ID
+  /payments:
+    get:
+      description: list Payment entities
+      operationId: list-Payment
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Payment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List Payment entities
+    post:
+      consumes:
+      - application/json
+      description: Create Payment
+      operationId: create-Payment
+      parameters:
+      - description: Payment entity
+        in: body
+        name: Payment
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Payment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Payment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create Payment
+  /payments/{id}:
+    delete:
+      description: get Payment by ID
+      operationId: delete-Payment
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a Payment entity by ID
   /products:
     get:
       description: list product entities
