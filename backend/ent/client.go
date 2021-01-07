@@ -1601,15 +1601,15 @@ func (c *ProductClient) QueryGender(pr *Product) *GenderQuery {
 	return query
 }
 
-// QueryGoupOfAge queries the Goup_Of_Age edge of a Product.
-func (c *ProductClient) QueryGoupOfAge(pr *Product) *GroupOfAgeQuery {
+// QueryGroupOfAge queries the Group_Of_Age edge of a Product.
+func (c *ProductClient) QueryGroupOfAge(pr *Product) *GroupOfAgeQuery {
 	query := &GroupOfAgeQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pr.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(groupofage.Table, groupofage.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.GoupOfAgeTable, product.GoupOfAgeColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.GroupOfAgeTable, product.GroupOfAgeColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil

@@ -1,0 +1,904 @@
+basePath: /api/v1
+definitions:
+  controllers.Product:
+    properties:
+      gender:
+        type: integer
+      groupOfAge:
+        type: integer
+      officer:
+        type: integer
+      productName:
+        type: string
+      productPaymentOfYear:
+        type: number
+      productPrice:
+        type: integer
+      productTime:
+        type: integer
+    type: object
+  ent.Gender:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.GenderEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the GenderQuery when eager-loading is set.
+        type: object
+      gender_name:
+        description: GenderName holds the value of the "gender_name" field.
+        type: string
+      id:
+        description: ID of the ent.
+        type: integer
+    type: object
+  ent.GenderEdges:
+    properties:
+      genders:
+        description: Genders holds the value of the genders edge.
+        items:
+          $ref: '#/definitions/ent.Product'
+        type: array
+    type: object
+  ent.GroupOfAge:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.GroupOfAgeEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the GroupOfAgeQuery when eager-loading is set.
+        type: object
+      group_of_age_age:
+        description: GroupOfAgeAge holds the value of the "group_of_age_age" field.
+        type: string
+      group_of_age_name:
+        description: GroupOfAgeName holds the value of the "group_of_age_name" field.
+        type: string
+      id:
+        description: ID of the ent.
+        type: integer
+    type: object
+  ent.GroupOfAgeEdges:
+    properties:
+      gropages:
+        description: Gropages holds the value of the gropages edge.
+        items:
+          $ref: '#/definitions/ent.Product'
+        type: array
+    type: object
+  ent.Hospital:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.HospitalEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the HospitalQuery when eager-loading is set.
+        type: object
+      hospital_name:
+        description: HospitalName holds the value of the "hospital_name" field.
+        type: string
+      id:
+        description: ID of the ent.
+        type: integer
+    type: object
+  ent.HospitalEdges:
+    properties:
+      hospitalInsurance:
+        description: HospitalInsurance holds the value of the hospital_insurance edge.
+        items:
+          $ref: '#/definitions/ent.Insurance'
+        type: array
+    type: object
+  ent.Insurance:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.InsuranceEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the InsuranceQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      insurance_address:
+        description: InsuranceAddress holds the value of the "insurance_address" field.
+        type: string
+      insurance_insurer:
+        description: InsuranceInsurer holds the value of the "insurance_insurer" field.
+        type: string
+      insurance_time_buy:
+        description: InsuranceTimeBuy holds the value of the "insurance_time_buy"
+          field.
+        type: string
+      insurance_time_firstpay:
+        description: InsuranceTimeFirstpay holds the value of the "insurance_time_firstpay"
+          field.
+        type: string
+    type: object
+  ent.InsuranceEdges:
+    properties:
+      hospital:
+        $ref: '#/definitions/ent.Hospital'
+        description: Hospital holds the value of the Hospital edge.
+        type: object
+      member:
+        $ref: '#/definitions/ent.Member'
+        description: Member holds the value of the Member edge.
+        type: object
+      officer:
+        $ref: '#/definitions/ent.Officer'
+        description: Officer holds the value of the Officer edge.
+        type: object
+      product:
+        $ref: '#/definitions/ent.Product'
+        description: Product holds the value of the Product edge.
+        type: object
+    type: object
+  ent.Member:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.MemberEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the MemberQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      member_email:
+        description: MemberEmail holds the value of the "member_email" field.
+        type: string
+      member_name:
+        description: MemberName holds the value of the "member_name" field.
+        type: string
+      member_password:
+        description: MemberPassword holds the value of the "member_password" field.
+        type: string
+    type: object
+  ent.MemberEdges:
+    properties:
+      memberInsurance:
+        description: MemberInsurance holds the value of the member_insurance edge.
+        items:
+          $ref: '#/definitions/ent.Insurance'
+        type: array
+    type: object
+  ent.Officer:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.OfficerEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the OfficerQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      officer_email:
+        description: OfficerEmail holds the value of the "officer_email" field.
+        type: string
+      officer_name:
+        description: OfficerName holds the value of the "officer_name" field.
+        type: string
+      officer_password:
+        description: OfficerPassword holds the value of the "officer_password" field.
+        type: string
+    type: object
+  ent.OfficerEdges:
+    properties:
+      officerInsurance:
+        description: OfficerInsurance holds the value of the officer_insurance edge.
+        items:
+          $ref: '#/definitions/ent.Insurance'
+        type: array
+      officers:
+        description: Officers holds the value of the officers edge.
+        items:
+          $ref: '#/definitions/ent.Product'
+        type: array
+    type: object
+  ent.Product:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.ProductEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the ProductQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      product_name:
+        description: ProductName holds the value of the "product_name" field.
+        type: string
+      product_payment_of_year:
+        description: ProductPaymentOfYear holds the value of the "product_payment_of_year"
+          field.
+        type: number
+      product_price:
+        description: ProductPrice holds the value of the "product_price" field.
+        type: integer
+      product_time:
+        description: ProductTime holds the value of the "product_time" field.
+        type: integer
+    type: object
+  ent.ProductEdges:
+    properties:
+      gender:
+        $ref: '#/definitions/ent.Gender'
+        description: Gender holds the value of the Gender edge.
+        type: object
+      groupOfAge:
+        $ref: '#/definitions/ent.GroupOfAge'
+        description: GroupOfAge holds the value of the Group_Of_Age edge.
+        type: object
+      officer:
+        $ref: '#/definitions/ent.Officer'
+        description: Officer holds the value of the Officer edge.
+        type: object
+      productInsurance:
+        description: ProductInsurance holds the value of the product_insurance edge.
+        items:
+          $ref: '#/definitions/ent.Insurance'
+        type: array
+    type: object
+  gin.H:
+    additionalProperties: true
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server for SUT SE 2563
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: SUT SA Example API Playlist Vidoe
+  version: "1.0"
+paths:
+  /genders:
+    get:
+      description: list gender entities
+      operationId: list-gender
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Gender'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List gender entities
+    post:
+      consumes:
+      - application/json
+      description: Create gender
+      operationId: create-gender
+      parameters:
+      - description: Gender entity
+        in: body
+        name: gender
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Gender'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Gender'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create gender
+  /genders/{id}:
+    delete:
+      description: get gender by ID
+      operationId: delete-gender
+      parameters:
+      - description: Gender ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a gender entity by ID
+    get:
+      description: get gender by ID
+      operationId: get-gender
+      parameters:
+      - description: Gender ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Gender'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a gender entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update gender by ID
+      operationId: update-gender
+      parameters:
+      - description: Gender ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Gender entity
+        in: body
+        name: gender
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Gender'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Gender'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a gender entity by ID
+  /groupofages:
+    get:
+      description: list groupofage entities
+      operationId: list-groupofage
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.GroupOfAge'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List groupofage entities
+    post:
+      consumes:
+      - application/json
+      description: Create groupofage
+      operationId: create-groupofage
+      parameters:
+      - description: GroupOfAge entity
+        in: body
+        name: groupofage
+        required: true
+        schema:
+          $ref: '#/definitions/ent.GroupOfAge'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.GroupOfAge'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create groupofage
+  /groupofages/{id}:
+    delete:
+      description: get groupofage by ID
+      operationId: delete-groupofage
+      parameters:
+      - description: GroupOfAge ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a groupofage entity by ID
+    get:
+      description: get groupofage by ID
+      operationId: get-groupofage
+      parameters:
+      - description: GroupOfAge ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.GroupOfAge'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a groupofage entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update groupofage by ID
+      operationId: update-groupofage
+      parameters:
+      - description: GroupOfAge ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: GroupOfAge entity
+        in: body
+        name: groupofage
+        required: true
+        schema:
+          $ref: '#/definitions/ent.GroupOfAge'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.GroupOfAge'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a groupofage entity by ID
+  /officers:
+    get:
+      description: list officer entities
+      operationId: list-officer
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Officer'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List officer entities
+    post:
+      consumes:
+      - application/json
+      description: Create officer
+      operationId: create-officer
+      parameters:
+      - description: Officer entity
+        in: body
+        name: officer
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Officer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Officer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create officer
+  /officers/{id}:
+    delete:
+      description: get officer by ID
+      operationId: delete-officer
+      parameters:
+      - description: Officer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a officer entity by ID
+    get:
+      description: get officer by ID
+      operationId: get-officer
+      parameters:
+      - description: Officer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Officer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a officer entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update officer by ID
+      operationId: update-officer
+      parameters:
+      - description: Officer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Officer entity
+        in: body
+        name: officer
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Officer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Officer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a officer entity by ID
+  /products:
+    get:
+      description: list product entities
+      operationId: list-product
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Product'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List product entities
+    post:
+      consumes:
+      - application/json
+      description: Create product
+      operationId: create-product
+      parameters:
+      - description: Product entity
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create product
+  /products/{id}:
+    delete:
+      description: get product by ID
+      operationId: delete-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a product entity by ID
+    get:
+      description: get product by ID
+      operationId: get-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a product entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update product by ID
+      operationId: update-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product entity
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a product entity by ID
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+  OAuth2AccessCode:
+    authorizationUrl: https://example.com/oauth/authorize
+    flow: accessCode
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+  OAuth2Application:
+    authorizationUrl: ""
+    flow: application
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+  OAuth2Implicit:
+    authorizationUrl: https://example.com/oauth/authorize
+    flow: implicit
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    type: oauth2
+  OAuth2Password:
+    authorizationUrl: ""
+    flow: password
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      read: ' Grants read access'
+      write: ' Grants write access'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+swagger: "2.0"
