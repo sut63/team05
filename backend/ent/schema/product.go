@@ -31,10 +31,7 @@ func (Product) Edges() []ent.Edge {
 		edge.From("product_officer", Officer.Type).Ref("officer_product").Unique(),
 		edge.To("product_insurance", Insurance.Type).StorageKey(edge.Column("product_id")),
 		edge.To("product_inquiry", Inquiry.Type).StorageKey(edge.Column("product_id")),
-<<<<<<< HEAD
 		edge.To("product_payback", Payback.Type).StorageKey(edge.Column("product_id")),
-=======
 		edge.To("product_recordinsurance", Recordinsurance.Type).StorageKey(edge.Column("product_id")),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}
 }
