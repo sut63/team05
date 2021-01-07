@@ -529,7 +529,6 @@ func HasOfficerInquiryWith(preds ...predicate.Inquiry) predicate.Officer {
 	})
 }
 
-<<<<<<< HEAD
 // HasOfficerPayback applies the HasEdge predicate on the "officer_payback" edge.
 func HasOfficerPayback() predicate.Officer {
 	return predicate.Officer(func(s *sql.Selector) {
@@ -537,21 +536,11 @@ func HasOfficerPayback() predicate.Officer {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(OfficerPaybackTable, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, OfficerPaybackTable, OfficerPaybackColumn),
-=======
-// HasOfficerRecordinsurance applies the HasEdge predicate on the "officer_recordinsurance" edge.
-func HasOfficerRecordinsurance() predicate.Officer {
-	return predicate.Officer(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(OfficerRecordinsuranceTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, OfficerRecordinsuranceTable, OfficerRecordinsuranceColumn),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-<<<<<<< HEAD
 // HasOfficerPaybackWith applies the HasEdge predicate on the "officer_payback" edge with a given conditions (other predicates).
 func HasOfficerPaybackWith(preds ...predicate.Payback) predicate.Officer {
 	return predicate.Officer(func(s *sql.Selector) {
@@ -559,7 +548,27 @@ func HasOfficerPaybackWith(preds ...predicate.Payback) predicate.Officer {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(OfficerPaybackInverseTable, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, OfficerPaybackTable, OfficerPaybackColumn),
-=======
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasOfficerRecordinsurance applies the HasEdge predicate on the "officer_recordinsurance" edge.
+func HasOfficerRecordinsurance() predicate.Officer {
+	return predicate.Officer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(OfficerRecordinsuranceTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, OfficerRecordinsuranceTable, OfficerRecordinsuranceColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
 // HasOfficerRecordinsuranceWith applies the HasEdge predicate on the "officer_recordinsurance" edge with a given conditions (other predicates).
 func HasOfficerRecordinsuranceWith(preds ...predicate.Recordinsurance) predicate.Officer {
 	return predicate.Officer(func(s *sql.Selector) {
@@ -567,7 +576,6 @@ func HasOfficerRecordinsuranceWith(preds ...predicate.Recordinsurance) predicate
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(OfficerRecordinsuranceInverseTable, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, OfficerRecordinsuranceTable, OfficerRecordinsuranceColumn),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

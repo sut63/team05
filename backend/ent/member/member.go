@@ -20,13 +20,10 @@ const (
 	EdgeMemberPayment = "member_payment"
 	// EdgeMemberInquiry holds the string denoting the member_inquiry edge name in mutations.
 	EdgeMemberInquiry = "member_inquiry"
-<<<<<<< HEAD
 	// EdgeMemberPayback holds the string denoting the member_payback edge name in mutations.
 	EdgeMemberPayback = "member_payback"
-=======
 	// EdgeMemberRecordinsurance holds the string denoting the member_recordinsurance edge name in mutations.
 	EdgeMemberRecordinsurance = "member_recordinsurance"
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 
 	// Table holds the table name of the member in the database.
 	Table = "members"
@@ -51,7 +48,6 @@ const (
 	MemberInquiryInverseTable = "inquiries"
 	// MemberInquiryColumn is the table column denoting the member_inquiry relation/edge.
 	MemberInquiryColumn = "member_id"
-<<<<<<< HEAD
 	// MemberPaybackTable is the table the holds the member_payback relation/edge.
 	MemberPaybackTable = "paybacks"
 	// MemberPaybackInverseTable is the table name for the Payback entity.
@@ -59,7 +55,6 @@ const (
 	MemberPaybackInverseTable = "paybacks"
 	// MemberPaybackColumn is the table column denoting the member_payback relation/edge.
 	MemberPaybackColumn = "member_id"
-=======
 	// MemberRecordinsuranceTable is the table the holds the member_recordinsurance relation/edge.
 	MemberRecordinsuranceTable = "recordinsurances"
 	// MemberRecordinsuranceInverseTable is the table name for the Recordinsurance entity.
@@ -67,7 +62,6 @@ const (
 	MemberRecordinsuranceInverseTable = "recordinsurances"
 	// MemberRecordinsuranceColumn is the table column denoting the member_recordinsurance relation/edge.
 	MemberRecordinsuranceColumn = "member_id"
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 )
 
 // Columns holds all SQL columns for member fields.

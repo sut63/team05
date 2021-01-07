@@ -20,13 +20,10 @@ const (
 	EdgeOfficerInsurance = "officer_insurance"
 	// EdgeOfficerInquiry holds the string denoting the officer_inquiry edge name in mutations.
 	EdgeOfficerInquiry = "officer_inquiry"
-<<<<<<< HEAD
 	// EdgeOfficerPayback holds the string denoting the officer_payback edge name in mutations.
 	EdgeOfficerPayback = "officer_payback"
-=======
 	// EdgeOfficerRecordinsurance holds the string denoting the officer_recordinsurance edge name in mutations.
 	EdgeOfficerRecordinsurance = "officer_recordinsurance"
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 
 	// Table holds the table name of the officer in the database.
 	Table = "officers"
@@ -51,7 +48,6 @@ const (
 	OfficerInquiryInverseTable = "inquiries"
 	// OfficerInquiryColumn is the table column denoting the officer_inquiry relation/edge.
 	OfficerInquiryColumn = "officer_id"
-<<<<<<< HEAD
 	// OfficerPaybackTable is the table the holds the officer_payback relation/edge.
 	OfficerPaybackTable = "paybacks"
 	// OfficerPaybackInverseTable is the table name for the Payback entity.
@@ -59,7 +55,6 @@ const (
 	OfficerPaybackInverseTable = "paybacks"
 	// OfficerPaybackColumn is the table column denoting the officer_payback relation/edge.
 	OfficerPaybackColumn = "officer_id"
-=======
 	// OfficerRecordinsuranceTable is the table the holds the officer_recordinsurance relation/edge.
 	OfficerRecordinsuranceTable = "recordinsurances"
 	// OfficerRecordinsuranceInverseTable is the table name for the Recordinsurance entity.
@@ -67,7 +62,6 @@ const (
 	OfficerRecordinsuranceInverseTable = "recordinsurances"
 	// OfficerRecordinsuranceColumn is the table column denoting the officer_recordinsurance relation/edge.
 	OfficerRecordinsuranceColumn = "officer_id"
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 )
 
 // Columns holds all SQL columns for officer fields.

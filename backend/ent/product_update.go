@@ -166,7 +166,6 @@ func (pu *ProductUpdate) AddProductInquiry(i ...*Inquiry) *ProductUpdate {
 	return pu.AddProductInquiryIDs(ids...)
 }
 
-<<<<<<< HEAD
 // AddProductPaybackIDs adds the product_payback edge to Payback by ids.
 func (pu *ProductUpdate) AddProductPaybackIDs(ids ...int) *ProductUpdate {
 	pu.mutation.AddProductPaybackIDs(ids...)
@@ -180,7 +179,8 @@ func (pu *ProductUpdate) AddProductPayback(p ...*Payback) *ProductUpdate {
 		ids[i] = p[i].ID
 	}
 	return pu.AddProductPaybackIDs(ids...)
-=======
+}
+
 // AddProductRecordinsuranceIDs adds the product_recordinsurance edge to Recordinsurance by ids.
 func (pu *ProductUpdate) AddProductRecordinsuranceIDs(ids ...int) *ProductUpdate {
 	pu.mutation.AddProductRecordinsuranceIDs(ids...)
@@ -194,7 +194,6 @@ func (pu *ProductUpdate) AddProductRecordinsurance(r ...*Recordinsurance) *Produ
 		ids[i] = r[i].ID
 	}
 	return pu.AddProductRecordinsuranceIDs(ids...)
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Mutation returns the ProductMutation object of the builder.
@@ -250,7 +249,6 @@ func (pu *ProductUpdate) RemoveProductInquiry(i ...*Inquiry) *ProductUpdate {
 	return pu.RemoveProductInquiryIDs(ids...)
 }
 
-<<<<<<< HEAD
 // RemoveProductPaybackIDs removes the product_payback edge to Payback by ids.
 func (pu *ProductUpdate) RemoveProductPaybackIDs(ids ...int) *ProductUpdate {
 	pu.mutation.RemoveProductPaybackIDs(ids...)
@@ -264,7 +262,8 @@ func (pu *ProductUpdate) RemoveProductPayback(p ...*Payback) *ProductUpdate {
 		ids[i] = p[i].ID
 	}
 	return pu.RemoveProductPaybackIDs(ids...)
-=======
+}
+
 // RemoveProductRecordinsuranceIDs removes the product_recordinsurance edge to Recordinsurance by ids.
 func (pu *ProductUpdate) RemoveProductRecordinsuranceIDs(ids ...int) *ProductUpdate {
 	pu.mutation.RemoveProductRecordinsuranceIDs(ids...)
@@ -278,7 +277,6 @@ func (pu *ProductUpdate) RemoveProductRecordinsurance(r ...*Recordinsurance) *Pr
 		ids[i] = r[i].ID
 	}
 	return pu.RemoveProductRecordinsuranceIDs(ids...)
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -581,30 +579,17 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-<<<<<<< HEAD
 	if nodes := pu.mutation.RemovedProductPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   product.ProductPaybackTable,
 			Columns: []string{product.ProductPaybackColumn},
-=======
-	if nodes := pu.mutation.RemovedProductRecordinsuranceIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.ProductRecordinsuranceTable,
-			Columns: []string{product.ProductRecordinsuranceColumn},
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-<<<<<<< HEAD
 					Column: payback.FieldID,
-=======
-					Column: recordinsurance.FieldID,
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -613,30 +598,55 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-<<<<<<< HEAD
 	if nodes := pu.mutation.ProductPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   product.ProductPaybackTable,
 			Columns: []string{product.ProductPaybackColumn},
-=======
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := pu.mutation.RemovedProductRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductRecordinsuranceTable,
+			Columns: []string{product.ProductRecordinsuranceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
 	if nodes := pu.mutation.ProductRecordinsuranceIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   product.ProductRecordinsuranceTable,
 			Columns: []string{product.ProductRecordinsuranceColumn},
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-<<<<<<< HEAD
-					Column: payback.FieldID,
-=======
 					Column: recordinsurance.FieldID,
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -795,7 +805,6 @@ func (puo *ProductUpdateOne) AddProductInquiry(i ...*Inquiry) *ProductUpdateOne 
 	return puo.AddProductInquiryIDs(ids...)
 }
 
-<<<<<<< HEAD
 // AddProductPaybackIDs adds the product_payback edge to Payback by ids.
 func (puo *ProductUpdateOne) AddProductPaybackIDs(ids ...int) *ProductUpdateOne {
 	puo.mutation.AddProductPaybackIDs(ids...)
@@ -809,7 +818,8 @@ func (puo *ProductUpdateOne) AddProductPayback(p ...*Payback) *ProductUpdateOne 
 		ids[i] = p[i].ID
 	}
 	return puo.AddProductPaybackIDs(ids...)
-=======
+}
+
 // AddProductRecordinsuranceIDs adds the product_recordinsurance edge to Recordinsurance by ids.
 func (puo *ProductUpdateOne) AddProductRecordinsuranceIDs(ids ...int) *ProductUpdateOne {
 	puo.mutation.AddProductRecordinsuranceIDs(ids...)
@@ -823,7 +833,6 @@ func (puo *ProductUpdateOne) AddProductRecordinsurance(r ...*Recordinsurance) *P
 		ids[i] = r[i].ID
 	}
 	return puo.AddProductRecordinsuranceIDs(ids...)
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Mutation returns the ProductMutation object of the builder.
@@ -879,7 +888,6 @@ func (puo *ProductUpdateOne) RemoveProductInquiry(i ...*Inquiry) *ProductUpdateO
 	return puo.RemoveProductInquiryIDs(ids...)
 }
 
-<<<<<<< HEAD
 // RemoveProductPaybackIDs removes the product_payback edge to Payback by ids.
 func (puo *ProductUpdateOne) RemoveProductPaybackIDs(ids ...int) *ProductUpdateOne {
 	puo.mutation.RemoveProductPaybackIDs(ids...)
@@ -893,7 +901,8 @@ func (puo *ProductUpdateOne) RemoveProductPayback(p ...*Payback) *ProductUpdateO
 		ids[i] = p[i].ID
 	}
 	return puo.RemoveProductPaybackIDs(ids...)
-=======
+}
+
 // RemoveProductRecordinsuranceIDs removes the product_recordinsurance edge to Recordinsurance by ids.
 func (puo *ProductUpdateOne) RemoveProductRecordinsuranceIDs(ids ...int) *ProductUpdateOne {
 	puo.mutation.RemoveProductRecordinsuranceIDs(ids...)
@@ -907,7 +916,6 @@ func (puo *ProductUpdateOne) RemoveProductRecordinsurance(r ...*Recordinsurance)
 		ids[i] = r[i].ID
 	}
 	return puo.RemoveProductRecordinsuranceIDs(ids...)
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Save executes the query and returns the updated entity.
@@ -1208,30 +1216,17 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (pr *Product, err erro
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-<<<<<<< HEAD
 	if nodes := puo.mutation.RemovedProductPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   product.ProductPaybackTable,
 			Columns: []string{product.ProductPaybackColumn},
-=======
-	if nodes := puo.mutation.RemovedProductRecordinsuranceIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
-			Inverse: false,
-			Table:   product.ProductRecordinsuranceTable,
-			Columns: []string{product.ProductRecordinsuranceColumn},
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-<<<<<<< HEAD
 					Column: payback.FieldID,
-=======
-					Column: recordinsurance.FieldID,
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -1240,30 +1235,55 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (pr *Product, err erro
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-<<<<<<< HEAD
 	if nodes := puo.mutation.ProductPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   product.ProductPaybackTable,
 			Columns: []string{product.ProductPaybackColumn},
-=======
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := puo.mutation.RemovedProductRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductRecordinsuranceTable,
+			Columns: []string{product.ProductRecordinsuranceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
 	if nodes := puo.mutation.ProductRecordinsuranceIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   product.ProductRecordinsuranceTable,
 			Columns: []string{product.ProductRecordinsuranceColumn},
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-<<<<<<< HEAD
-					Column: payback.FieldID,
-=======
 					Column: recordinsurance.FieldID,
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}

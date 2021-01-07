@@ -34,16 +34,13 @@ type OfficerEdges struct {
 	OfficerInsurance []*Insurance
 	// OfficerInquiry holds the value of the officer_inquiry edge.
 	OfficerInquiry []*Inquiry
-<<<<<<< HEAD
 	// OfficerPayback holds the value of the officer_payback edge.
 	OfficerPayback []*Payback
-=======
 	// OfficerRecordinsurance holds the value of the officer_recordinsurance edge.
 	OfficerRecordinsurance []*Recordinsurance
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 }
 
 // OfficerProductOrErr returns the OfficerProduct value or an error if the edge
@@ -73,7 +70,6 @@ func (e OfficerEdges) OfficerInquiryOrErr() ([]*Inquiry, error) {
 	return nil, &NotLoadedError{edge: "officer_inquiry"}
 }
 
-<<<<<<< HEAD
 // OfficerPaybackOrErr returns the OfficerPayback value or an error if the edge
 // was not loaded in eager-loading.
 func (e OfficerEdges) OfficerPaybackOrErr() ([]*Payback, error) {
@@ -81,15 +77,15 @@ func (e OfficerEdges) OfficerPaybackOrErr() ([]*Payback, error) {
 		return e.OfficerPayback, nil
 	}
 	return nil, &NotLoadedError{edge: "officer_payback"}
-=======
+}
+
 // OfficerRecordinsuranceOrErr returns the OfficerRecordinsurance value or an error if the edge
 // was not loaded in eager-loading.
 func (e OfficerEdges) OfficerRecordinsuranceOrErr() ([]*Recordinsurance, error) {
-	if e.loadedTypes[3] {
+	if e.loadedTypes[4] {
 		return e.OfficerRecordinsurance, nil
 	}
 	return nil, &NotLoadedError{edge: "officer_recordinsurance"}
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -147,15 +143,14 @@ func (o *Officer) QueryOfficerInquiry() *InquiryQuery {
 	return (&OfficerClient{config: o.config}).QueryOfficerInquiry(o)
 }
 
-<<<<<<< HEAD
 // QueryOfficerPayback queries the officer_payback edge of the Officer.
 func (o *Officer) QueryOfficerPayback() *PaybackQuery {
 	return (&OfficerClient{config: o.config}).QueryOfficerPayback(o)
-=======
+}
+
 // QueryOfficerRecordinsurance queries the officer_recordinsurance edge of the Officer.
 func (o *Officer) QueryOfficerRecordinsurance() *RecordinsuranceQuery {
 	return (&OfficerClient{config: o.config}).QueryOfficerRecordinsurance(o)
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Update returns a builder for updating this Officer.
