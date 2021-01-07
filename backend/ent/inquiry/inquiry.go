@@ -11,8 +11,8 @@ const (
 	Label = "inquiry"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldInquiryInguiryMessages holds the string denoting the inquiry_inguiry_messages field in the database.
-	FieldInquiryInguiryMessages = "inquiry_inguiry_messages"
+	// FieldInquiryMessages holds the string denoting the inquiry_messages field in the database.
+	FieldInquiryMessages = "inquiry_messages"
 	// FieldInquiryTimeMessages holds the string denoting the inquiry_time_messages field in the database.
 	FieldInquiryTimeMessages = "inquiry_time_messages"
 
@@ -60,7 +60,7 @@ const (
 // Columns holds all SQL columns for inquiry fields.
 var Columns = []string{
 	FieldID,
-	FieldInquiryInguiryMessages,
+	FieldInquiryMessages,
 	FieldInquiryTimeMessages,
 }
 
@@ -73,8 +73,8 @@ var ForeignKeys = []string{
 }
 
 var (
-	// InquiryInguiryMessagesValidator is a validator for the "Inquiry_inguiry_messages" field. It is called by the builders before save.
-	InquiryInguiryMessagesValidator func(string) error
+	// InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
+	InquiryMessagesValidator func(string) error
 	// DefaultInquiryTimeMessages holds the default value on creation for the Inquiry_time_messages field.
 	DefaultInquiryTimeMessages func() time.Time
 )

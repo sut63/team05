@@ -20,8 +20,8 @@ type Inquiry struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// InquiryInguiryMessages holds the value of the "Inquiry_inguiry_messages" field.
-	InquiryInguiryMessages string `json:"Inquiry_inguiry_messages,omitempty"`
+	// InquiryMessages holds the value of the "Inquiry_messages" field.
+	InquiryMessages string `json:"Inquiry_messages,omitempty"`
 	// InquiryTimeMessages holds the value of the "Inquiry_time_messages" field.
 	InquiryTimeMessages time.Time `json:"Inquiry_time_messages,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -108,7 +108,7 @@ func (e InquiryEdges) ProductOrErr() (*Product, error) {
 func (*Inquiry) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
-		&sql.NullString{}, // Inquiry_inguiry_messages
+		&sql.NullString{}, // Inquiry_messages
 		&sql.NullTime{},   // Inquiry_time_messages
 	}
 }
@@ -136,9 +136,9 @@ func (i *Inquiry) assignValues(values ...interface{}) error {
 	i.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field Inquiry_inguiry_messages", values[0])
+		return fmt.Errorf("unexpected type %T for field Inquiry_messages", values[0])
 	} else if value.Valid {
-		i.InquiryInguiryMessages = value.String
+		i.InquiryMessages = value.String
 	}
 	if value, ok := values[1].(*sql.NullTime); !ok {
 		return fmt.Errorf("unexpected type %T for field Inquiry_time_messages", values[1])
@@ -218,8 +218,8 @@ func (i *Inquiry) String() string {
 	var builder strings.Builder
 	builder.WriteString("Inquiry(")
 	builder.WriteString(fmt.Sprintf("id=%v", i.ID))
-	builder.WriteString(", Inquiry_inguiry_messages=")
-	builder.WriteString(i.InquiryInguiryMessages)
+	builder.WriteString(", Inquiry_messages=")
+	builder.WriteString(i.InquiryMessages)
 	builder.WriteString(", Inquiry_time_messages=")
 	builder.WriteString(i.InquiryTimeMessages.Format(time.ANSIC))
 	builder.WriteByte(')')

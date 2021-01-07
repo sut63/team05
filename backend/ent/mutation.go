@@ -2013,22 +2013,22 @@ func (m *HospitalMutation) ResetEdge(name string) error {
 // nodes in the graph.
 type InquiryMutation struct {
 	config
-	op                        Op
-	typ                       string
-	id                        *int
-	_Inquiry_inguiry_messages *string
-	_Inquiry_time_messages    *time.Time
-	clearedFields             map[string]struct{}
-	_Member                   *int
-	cleared_Member            bool
-	_Category                 *int
-	cleared_Category          bool
-	_Officer                  *int
-	cleared_Officer           bool
-	_Product                  *int
-	cleared_Product           bool
-	done                      bool
-	oldValue                  func(context.Context) (*Inquiry, error)
+	op                     Op
+	typ                    string
+	id                     *int
+	_Inquiry_messages      *string
+	_Inquiry_time_messages *time.Time
+	clearedFields          map[string]struct{}
+	_Member                *int
+	cleared_Member         bool
+	_Category              *int
+	cleared_Category       bool
+	_Officer               *int
+	cleared_Officer        bool
+	_Product               *int
+	cleared_Product        bool
+	done                   bool
+	oldValue               func(context.Context) (*Inquiry, error)
 }
 
 var _ ent.Mutation = (*InquiryMutation)(nil)
@@ -2110,41 +2110,41 @@ func (m *InquiryMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetInquiryInguiryMessages sets the Inquiry_inguiry_messages field.
-func (m *InquiryMutation) SetInquiryInguiryMessages(s string) {
-	m._Inquiry_inguiry_messages = &s
+// SetInquiryMessages sets the Inquiry_messages field.
+func (m *InquiryMutation) SetInquiryMessages(s string) {
+	m._Inquiry_messages = &s
 }
 
-// InquiryInguiryMessages returns the Inquiry_inguiry_messages value in the mutation.
-func (m *InquiryMutation) InquiryInguiryMessages() (r string, exists bool) {
-	v := m._Inquiry_inguiry_messages
+// InquiryMessages returns the Inquiry_messages value in the mutation.
+func (m *InquiryMutation) InquiryMessages() (r string, exists bool) {
+	v := m._Inquiry_messages
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldInquiryInguiryMessages returns the old Inquiry_inguiry_messages value of the Inquiry.
+// OldInquiryMessages returns the old Inquiry_messages value of the Inquiry.
 // If the Inquiry object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *InquiryMutation) OldInquiryInguiryMessages(ctx context.Context) (v string, err error) {
+func (m *InquiryMutation) OldInquiryMessages(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldInquiryInguiryMessages is allowed only on UpdateOne operations")
+		return v, fmt.Errorf("OldInquiryMessages is allowed only on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldInquiryInguiryMessages requires an ID field in the mutation")
+		return v, fmt.Errorf("OldInquiryMessages requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldInquiryInguiryMessages: %w", err)
+		return v, fmt.Errorf("querying old value for OldInquiryMessages: %w", err)
 	}
-	return oldValue.InquiryInguiryMessages, nil
+	return oldValue.InquiryMessages, nil
 }
 
-// ResetInquiryInguiryMessages reset all changes of the "Inquiry_inguiry_messages" field.
-func (m *InquiryMutation) ResetInquiryInguiryMessages() {
-	m._Inquiry_inguiry_messages = nil
+// ResetInquiryMessages reset all changes of the "Inquiry_messages" field.
+func (m *InquiryMutation) ResetInquiryMessages() {
+	m._Inquiry_messages = nil
 }
 
 // SetInquiryTimeMessages sets the Inquiry_time_messages field.
@@ -2355,8 +2355,8 @@ func (m *InquiryMutation) Type() string {
 // fields that were in/decremented, call AddedFields().
 func (m *InquiryMutation) Fields() []string {
 	fields := make([]string, 0, 2)
-	if m._Inquiry_inguiry_messages != nil {
-		fields = append(fields, inquiry.FieldInquiryInguiryMessages)
+	if m._Inquiry_messages != nil {
+		fields = append(fields, inquiry.FieldInquiryMessages)
 	}
 	if m._Inquiry_time_messages != nil {
 		fields = append(fields, inquiry.FieldInquiryTimeMessages)
@@ -2369,8 +2369,8 @@ func (m *InquiryMutation) Fields() []string {
 // not set, or was not define in the schema.
 func (m *InquiryMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case inquiry.FieldInquiryInguiryMessages:
-		return m.InquiryInguiryMessages()
+	case inquiry.FieldInquiryMessages:
+		return m.InquiryMessages()
 	case inquiry.FieldInquiryTimeMessages:
 		return m.InquiryTimeMessages()
 	}
@@ -2382,8 +2382,8 @@ func (m *InquiryMutation) Field(name string) (ent.Value, bool) {
 // or the query to the database was failed.
 func (m *InquiryMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case inquiry.FieldInquiryInguiryMessages:
-		return m.OldInquiryInguiryMessages(ctx)
+	case inquiry.FieldInquiryMessages:
+		return m.OldInquiryMessages(ctx)
 	case inquiry.FieldInquiryTimeMessages:
 		return m.OldInquiryTimeMessages(ctx)
 	}
@@ -2395,12 +2395,12 @@ func (m *InquiryMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type mismatch the field type.
 func (m *InquiryMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case inquiry.FieldInquiryInguiryMessages:
+	case inquiry.FieldInquiryMessages:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetInquiryInguiryMessages(v)
+		m.SetInquiryMessages(v)
 		return nil
 	case inquiry.FieldInquiryTimeMessages:
 		v, ok := value.(time.Time)
@@ -2459,8 +2459,8 @@ func (m *InquiryMutation) ClearField(name string) error {
 // defined in the schema.
 func (m *InquiryMutation) ResetField(name string) error {
 	switch name {
-	case inquiry.FieldInquiryInguiryMessages:
-		m.ResetInquiryInguiryMessages()
+	case inquiry.FieldInquiryMessages:
+		m.ResetInquiryMessages()
 		return nil
 	case inquiry.FieldInquiryTimeMessages:
 		m.ResetInquiryTimeMessages()

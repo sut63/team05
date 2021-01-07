@@ -16,7 +16,7 @@ type Inquiry struct {
 // Fields of the Inquiry.
 func (Inquiry) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("Inquiry_inguiry_messages").NotEmpty(),
+		field.String("Inquiry_messages").NotEmpty(),
 		field.Time("Inquiry_time_messages").Default(time.Now),
 	}
 }

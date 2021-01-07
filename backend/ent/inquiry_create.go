@@ -24,9 +24,9 @@ type InquiryCreate struct {
 	hooks    []Hook
 }
 
-// SetInquiryInguiryMessages sets the Inquiry_inguiry_messages field.
-func (ic *InquiryCreate) SetInquiryInguiryMessages(s string) *InquiryCreate {
-	ic.mutation.SetInquiryInguiryMessages(s)
+// SetInquiryMessages sets the Inquiry_messages field.
+func (ic *InquiryCreate) SetInquiryMessages(s string) *InquiryCreate {
+	ic.mutation.SetInquiryMessages(s)
 	return ic
 }
 
@@ -127,12 +127,12 @@ func (ic *InquiryCreate) Mutation() *InquiryMutation {
 
 // Save creates the Inquiry in the database.
 func (ic *InquiryCreate) Save(ctx context.Context) (*Inquiry, error) {
-	if _, ok := ic.mutation.InquiryInguiryMessages(); !ok {
-		return nil, &ValidationError{Name: "Inquiry_inguiry_messages", err: errors.New("ent: missing required field \"Inquiry_inguiry_messages\"")}
+	if _, ok := ic.mutation.InquiryMessages(); !ok {
+		return nil, &ValidationError{Name: "Inquiry_messages", err: errors.New("ent: missing required field \"Inquiry_messages\"")}
 	}
-	if v, ok := ic.mutation.InquiryInguiryMessages(); ok {
-		if err := inquiry.InquiryInguiryMessagesValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Inquiry_inguiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_inguiry_messages\": %w", err)}
+	if v, ok := ic.mutation.InquiryMessages(); ok {
+		if err := inquiry.InquiryMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Inquiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_messages\": %w", err)}
 		}
 	}
 	if _, ok := ic.mutation.InquiryTimeMessages(); !ok {
@@ -199,13 +199,13 @@ func (ic *InquiryCreate) createSpec() (*Inquiry, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := ic.mutation.InquiryInguiryMessages(); ok {
+	if value, ok := ic.mutation.InquiryMessages(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: inquiry.FieldInquiryInguiryMessages,
+			Column: inquiry.FieldInquiryMessages,
 		})
-		i.InquiryInguiryMessages = value
+		i.InquiryMessages = value
 	}
 	if value, ok := ic.mutation.InquiryTimeMessages(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
