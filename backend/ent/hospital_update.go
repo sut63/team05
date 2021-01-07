@@ -12,6 +12,7 @@ import (
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/predicate"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // HospitalUpdate is the builder for updating Hospital entities.
@@ -49,6 +50,21 @@ func (hu *HospitalUpdate) AddHospitalInsurance(i ...*Insurance) *HospitalUpdate 
 	return hu.AddHospitalInsuranceIDs(ids...)
 }
 
+// AddHospitalRecordinsuranceIDs adds the hospital_recordinsurance edge to Recordinsurance by ids.
+func (hu *HospitalUpdate) AddHospitalRecordinsuranceIDs(ids ...int) *HospitalUpdate {
+	hu.mutation.AddHospitalRecordinsuranceIDs(ids...)
+	return hu
+}
+
+// AddHospitalRecordinsurance adds the hospital_recordinsurance edges to Recordinsurance.
+func (hu *HospitalUpdate) AddHospitalRecordinsurance(r ...*Recordinsurance) *HospitalUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return hu.AddHospitalRecordinsuranceIDs(ids...)
+}
+
 // Mutation returns the HospitalMutation object of the builder.
 func (hu *HospitalUpdate) Mutation() *HospitalMutation {
 	return hu.mutation
@@ -67,6 +83,21 @@ func (hu *HospitalUpdate) RemoveHospitalInsurance(i ...*Insurance) *HospitalUpda
 		ids[j] = i[j].ID
 	}
 	return hu.RemoveHospitalInsuranceIDs(ids...)
+}
+
+// RemoveHospitalRecordinsuranceIDs removes the hospital_recordinsurance edge to Recordinsurance by ids.
+func (hu *HospitalUpdate) RemoveHospitalRecordinsuranceIDs(ids ...int) *HospitalUpdate {
+	hu.mutation.RemoveHospitalRecordinsuranceIDs(ids...)
+	return hu
+}
+
+// RemoveHospitalRecordinsurance removes hospital_recordinsurance edges to Recordinsurance.
+func (hu *HospitalUpdate) RemoveHospitalRecordinsurance(r ...*Recordinsurance) *HospitalUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return hu.RemoveHospitalRecordinsuranceIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -189,6 +220,44 @@ func (hu *HospitalUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := hu.mutation.RemovedHospitalRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   hospital.HospitalRecordinsuranceTable,
+			Columns: []string{hospital.HospitalRecordinsuranceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := hu.mutation.HospitalRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   hospital.HospitalRecordinsuranceTable,
+			Columns: []string{hospital.HospitalRecordinsuranceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, hu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{hospital.Label}
@@ -228,6 +297,21 @@ func (huo *HospitalUpdateOne) AddHospitalInsurance(i ...*Insurance) *HospitalUpd
 	return huo.AddHospitalInsuranceIDs(ids...)
 }
 
+// AddHospitalRecordinsuranceIDs adds the hospital_recordinsurance edge to Recordinsurance by ids.
+func (huo *HospitalUpdateOne) AddHospitalRecordinsuranceIDs(ids ...int) *HospitalUpdateOne {
+	huo.mutation.AddHospitalRecordinsuranceIDs(ids...)
+	return huo
+}
+
+// AddHospitalRecordinsurance adds the hospital_recordinsurance edges to Recordinsurance.
+func (huo *HospitalUpdateOne) AddHospitalRecordinsurance(r ...*Recordinsurance) *HospitalUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return huo.AddHospitalRecordinsuranceIDs(ids...)
+}
+
 // Mutation returns the HospitalMutation object of the builder.
 func (huo *HospitalUpdateOne) Mutation() *HospitalMutation {
 	return huo.mutation
@@ -246,6 +330,21 @@ func (huo *HospitalUpdateOne) RemoveHospitalInsurance(i ...*Insurance) *Hospital
 		ids[j] = i[j].ID
 	}
 	return huo.RemoveHospitalInsuranceIDs(ids...)
+}
+
+// RemoveHospitalRecordinsuranceIDs removes the hospital_recordinsurance edge to Recordinsurance by ids.
+func (huo *HospitalUpdateOne) RemoveHospitalRecordinsuranceIDs(ids ...int) *HospitalUpdateOne {
+	huo.mutation.RemoveHospitalRecordinsuranceIDs(ids...)
+	return huo
+}
+
+// RemoveHospitalRecordinsurance removes hospital_recordinsurance edges to Recordinsurance.
+func (huo *HospitalUpdateOne) RemoveHospitalRecordinsurance(r ...*Recordinsurance) *HospitalUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return huo.RemoveHospitalRecordinsuranceIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -358,6 +457,44 @@ func (huo *HospitalUpdateOne) sqlSave(ctx context.Context) (h *Hospital, err err
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: insurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := huo.mutation.RemovedHospitalRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   hospital.HospitalRecordinsuranceTable,
+			Columns: []string{hospital.HospitalRecordinsuranceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := huo.mutation.HospitalRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   hospital.HospitalRecordinsuranceTable,
+			Columns: []string{hospital.HospitalRecordinsuranceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: recordinsurance.FieldID,
 				},
 			},
 		}

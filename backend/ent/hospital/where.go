@@ -237,6 +237,34 @@ func HasHospitalInsuranceWith(preds ...predicate.Insurance) predicate.Hospital {
 	})
 }
 
+// HasHospitalRecordinsurance applies the HasEdge predicate on the "hospital_recordinsurance" edge.
+func HasHospitalRecordinsurance() predicate.Hospital {
+	return predicate.Hospital(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(HospitalRecordinsuranceTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, HospitalRecordinsuranceTable, HospitalRecordinsuranceColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasHospitalRecordinsuranceWith applies the HasEdge predicate on the "hospital_recordinsurance" edge with a given conditions (other predicates).
+func HasHospitalRecordinsuranceWith(preds ...predicate.Recordinsurance) predicate.Hospital {
+	return predicate.Hospital(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(HospitalRecordinsuranceInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, HospitalRecordinsuranceTable, HospitalRecordinsuranceColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Hospital) predicate.Hospital {
 	return predicate.Hospital(func(s *sql.Selector) {

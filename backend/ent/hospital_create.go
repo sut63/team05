@@ -11,6 +11,7 @@ import (
 	"github.com/facebookincubator/ent/schema/field"
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/insurance"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // HospitalCreate is the builder for creating a Hospital entity.
@@ -39,6 +40,21 @@ func (hc *HospitalCreate) AddHospitalInsurance(i ...*Insurance) *HospitalCreate 
 		ids[j] = i[j].ID
 	}
 	return hc.AddHospitalInsuranceIDs(ids...)
+}
+
+// AddHospitalRecordinsuranceIDs adds the hospital_recordinsurance edge to Recordinsurance by ids.
+func (hc *HospitalCreate) AddHospitalRecordinsuranceIDs(ids ...int) *HospitalCreate {
+	hc.mutation.AddHospitalRecordinsuranceIDs(ids...)
+	return hc
+}
+
+// AddHospitalRecordinsurance adds the hospital_recordinsurance edges to Recordinsurance.
+func (hc *HospitalCreate) AddHospitalRecordinsurance(r ...*Recordinsurance) *HospitalCreate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return hc.AddHospitalRecordinsuranceIDs(ids...)
 }
 
 // Mutation returns the HospitalMutation object of the builder.
@@ -135,6 +151,25 @@ func (hc *HospitalCreate) createSpec() (*Hospital, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: insurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := hc.mutation.HospitalRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   hospital.HospitalRecordinsuranceTable,
+			Columns: []string{hospital.HospitalRecordinsuranceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: recordinsurance.FieldID,
 				},
 			},
 		}

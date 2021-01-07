@@ -38,6 +38,8 @@ type Tx struct {
 	Payment *PaymentClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
+	// Recordinsurance is the client for interacting with the Recordinsurance builders.
+	Recordinsurance *RecordinsuranceClient
 
 	// lazily loaded.
 	client     *Client
@@ -186,6 +188,7 @@ func (tx *Tx) init() {
 	tx.Payback = NewPaybackClient(tx.config)
 	tx.Payment = NewPaymentClient(tx.config)
 	tx.Product = NewProductClient(tx.config)
+	tx.Recordinsurance = NewRecordinsuranceClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

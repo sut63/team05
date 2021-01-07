@@ -18,6 +18,7 @@ import (
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // OfficerQuery is the builder for querying Officer entities.
@@ -29,10 +30,17 @@ type OfficerQuery struct {
 	unique     []string
 	predicates []predicate.Officer
 	// eager-loading edges.
+<<<<<<< HEAD
 	withOfficerProduct   *ProductQuery
 	withOfficerInsurance *InsuranceQuery
 	withOfficerInquiry   *InquiryQuery
 	withOfficerPayback   *PaybackQuery
+=======
+	withOfficerProduct         *ProductQuery
+	withOfficerInsurance       *InsuranceQuery
+	withOfficerInquiry         *InquiryQuery
+	withOfficerRecordinsurance *RecordinsuranceQuery
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -116,17 +124,28 @@ func (oq *OfficerQuery) QueryOfficerInquiry() *InquiryQuery {
 	return query
 }
 
+<<<<<<< HEAD
 // QueryOfficerPayback chains the current query on the officer_payback edge.
 func (oq *OfficerQuery) QueryOfficerPayback() *PaybackQuery {
 	query := &PaybackQuery{config: oq.config}
+=======
+// QueryOfficerRecordinsurance chains the current query on the officer_recordinsurance edge.
+func (oq *OfficerQuery) QueryOfficerRecordinsurance() *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: oq.config}
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := oq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(officer.Table, officer.FieldID, oq.sqlQuery()),
+<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerPaybackTable, officer.OfficerPaybackColumn),
+=======
+			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerRecordinsuranceTable, officer.OfficerRecordinsuranceColumn),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromU = sqlgraph.SetNeighbors(oq.driver.Dialect(), step)
 		return fromU, nil
@@ -346,6 +365,7 @@ func (oq *OfficerQuery) WithOfficerInquiry(opts ...func(*InquiryQuery)) *Officer
 	return oq
 }
 
+<<<<<<< HEAD
 //  WithOfficerPayback tells the query-builder to eager-loads the nodes that are connected to
 // the "officer_payback" edge. The optional arguments used to configure the query builder of the edge.
 func (oq *OfficerQuery) WithOfficerPayback(opts ...func(*PaybackQuery)) *OfficerQuery {
@@ -354,6 +374,16 @@ func (oq *OfficerQuery) WithOfficerPayback(opts ...func(*PaybackQuery)) *Officer
 		opt(query)
 	}
 	oq.withOfficerPayback = query
+=======
+//  WithOfficerRecordinsurance tells the query-builder to eager-loads the nodes that are connected to
+// the "officer_recordinsurance" edge. The optional arguments used to configure the query builder of the edge.
+func (oq *OfficerQuery) WithOfficerRecordinsurance(opts ...func(*RecordinsuranceQuery)) *OfficerQuery {
+	query := &RecordinsuranceQuery{config: oq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	oq.withOfficerRecordinsurance = query
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	return oq
 }
 
@@ -427,7 +457,11 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 			oq.withOfficerProduct != nil,
 			oq.withOfficerInsurance != nil,
 			oq.withOfficerInquiry != nil,
+<<<<<<< HEAD
 			oq.withOfficerPayback != nil,
+=======
+			oq.withOfficerRecordinsurance != nil,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
@@ -535,7 +569,11 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 		}
 	}
 
+<<<<<<< HEAD
 	if query := oq.withOfficerPayback; query != nil {
+=======
+	if query := oq.withOfficerRecordinsurance; query != nil {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*Officer)
 		for i := range nodes {
@@ -543,8 +581,13 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 			nodeids[nodes[i].ID] = nodes[i]
 		}
 		query.withFKs = true
+<<<<<<< HEAD
 		query.Where(predicate.Payback(func(s *sql.Selector) {
 			s.Where(sql.InValues(officer.OfficerPaybackColumn, fks...))
+=======
+		query.Where(predicate.Recordinsurance(func(s *sql.Selector) {
+			s.Where(sql.InValues(officer.OfficerRecordinsuranceColumn, fks...))
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
@@ -559,7 +602,11 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 			if !ok {
 				return nil, fmt.Errorf(`unexpected foreign-key "officer_id" returned %v for node %v`, *fk, n.ID)
 			}
+<<<<<<< HEAD
 			node.Edges.OfficerPayback = append(node.Edges.OfficerPayback, n)
+=======
+			node.Edges.OfficerRecordinsurance = append(node.Edges.OfficerRecordinsurance, n)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}
 	}
 

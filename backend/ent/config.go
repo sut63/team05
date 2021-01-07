@@ -24,6 +24,7 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
+<<<<<<< HEAD
 	Bank          []ent.Hook
 	Category      []ent.Hook
 	Gender        []ent.Hook
@@ -37,6 +38,21 @@ type hooks struct {
 	Payback       []ent.Hook
 	Payment       []ent.Hook
 	Product       []ent.Hook
+=======
+	Bank            []ent.Hook
+	Category        []ent.Hook
+	Gender          []ent.Hook
+	GroupOfAge      []ent.Hook
+	Hospital        []ent.Hook
+	Inquiry         []ent.Hook
+	Insurance       []ent.Hook
+	Member          []ent.Hook
+	MoneyTransfer   []ent.Hook
+	Officer         []ent.Hook
+	Payment         []ent.Hook
+	Product         []ent.Hook
+	Recordinsurance []ent.Hook
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Options applies the options on the config object.

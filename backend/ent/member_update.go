@@ -15,6 +15,7 @@ import (
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // MemberUpdate is the builder for updating Member entities.
@@ -94,6 +95,7 @@ func (mu *MemberUpdate) AddMemberInquiry(i ...*Inquiry) *MemberUpdate {
 	return mu.AddMemberInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // AddMemberPaybackIDs adds the member_payback edge to Payback by ids.
 func (mu *MemberUpdate) AddMemberPaybackIDs(ids ...int) *MemberUpdate {
 	mu.mutation.AddMemberPaybackIDs(ids...)
@@ -107,6 +109,21 @@ func (mu *MemberUpdate) AddMemberPayback(p ...*Payback) *MemberUpdate {
 		ids[i] = p[i].ID
 	}
 	return mu.AddMemberPaybackIDs(ids...)
+=======
+// AddMemberRecordinsuranceIDs adds the member_recordinsurance edge to Recordinsurance by ids.
+func (mu *MemberUpdate) AddMemberRecordinsuranceIDs(ids ...int) *MemberUpdate {
+	mu.mutation.AddMemberRecordinsuranceIDs(ids...)
+	return mu
+}
+
+// AddMemberRecordinsurance adds the member_recordinsurance edges to Recordinsurance.
+func (mu *MemberUpdate) AddMemberRecordinsurance(r ...*Recordinsurance) *MemberUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return mu.AddMemberRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Mutation returns the MemberMutation object of the builder.
@@ -159,6 +176,7 @@ func (mu *MemberUpdate) RemoveMemberInquiry(i ...*Inquiry) *MemberUpdate {
 	return mu.RemoveMemberInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // RemoveMemberPaybackIDs removes the member_payback edge to Payback by ids.
 func (mu *MemberUpdate) RemoveMemberPaybackIDs(ids ...int) *MemberUpdate {
 	mu.mutation.RemoveMemberPaybackIDs(ids...)
@@ -172,6 +190,21 @@ func (mu *MemberUpdate) RemoveMemberPayback(p ...*Payback) *MemberUpdate {
 		ids[i] = p[i].ID
 	}
 	return mu.RemoveMemberPaybackIDs(ids...)
+=======
+// RemoveMemberRecordinsuranceIDs removes the member_recordinsurance edge to Recordinsurance by ids.
+func (mu *MemberUpdate) RemoveMemberRecordinsuranceIDs(ids ...int) *MemberUpdate {
+	mu.mutation.RemoveMemberRecordinsuranceIDs(ids...)
+	return mu
+}
+
+// RemoveMemberRecordinsurance removes member_recordinsurance edges to Recordinsurance.
+func (mu *MemberUpdate) RemoveMemberRecordinsurance(r ...*Recordinsurance) *MemberUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return mu.RemoveMemberRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -394,17 +427,30 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+<<<<<<< HEAD
 	if nodes := mu.mutation.RemovedMemberPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   member.MemberPaybackTable,
 			Columns: []string{member.MemberPaybackColumn},
+=======
+	if nodes := mu.mutation.RemovedMemberRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberRecordinsuranceTable,
+			Columns: []string{member.MemberRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -413,17 +459,30 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+<<<<<<< HEAD
 	if nodes := mu.mutation.MemberPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   member.MemberPaybackTable,
 			Columns: []string{member.MemberPaybackColumn},
+=======
+	if nodes := mu.mutation.MemberRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberRecordinsuranceTable,
+			Columns: []string{member.MemberRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -513,6 +572,7 @@ func (muo *MemberUpdateOne) AddMemberInquiry(i ...*Inquiry) *MemberUpdateOne {
 	return muo.AddMemberInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // AddMemberPaybackIDs adds the member_payback edge to Payback by ids.
 func (muo *MemberUpdateOne) AddMemberPaybackIDs(ids ...int) *MemberUpdateOne {
 	muo.mutation.AddMemberPaybackIDs(ids...)
@@ -526,6 +586,21 @@ func (muo *MemberUpdateOne) AddMemberPayback(p ...*Payback) *MemberUpdateOne {
 		ids[i] = p[i].ID
 	}
 	return muo.AddMemberPaybackIDs(ids...)
+=======
+// AddMemberRecordinsuranceIDs adds the member_recordinsurance edge to Recordinsurance by ids.
+func (muo *MemberUpdateOne) AddMemberRecordinsuranceIDs(ids ...int) *MemberUpdateOne {
+	muo.mutation.AddMemberRecordinsuranceIDs(ids...)
+	return muo
+}
+
+// AddMemberRecordinsurance adds the member_recordinsurance edges to Recordinsurance.
+func (muo *MemberUpdateOne) AddMemberRecordinsurance(r ...*Recordinsurance) *MemberUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return muo.AddMemberRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Mutation returns the MemberMutation object of the builder.
@@ -578,6 +653,7 @@ func (muo *MemberUpdateOne) RemoveMemberInquiry(i ...*Inquiry) *MemberUpdateOne 
 	return muo.RemoveMemberInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // RemoveMemberPaybackIDs removes the member_payback edge to Payback by ids.
 func (muo *MemberUpdateOne) RemoveMemberPaybackIDs(ids ...int) *MemberUpdateOne {
 	muo.mutation.RemoveMemberPaybackIDs(ids...)
@@ -591,6 +667,21 @@ func (muo *MemberUpdateOne) RemoveMemberPayback(p ...*Payback) *MemberUpdateOne 
 		ids[i] = p[i].ID
 	}
 	return muo.RemoveMemberPaybackIDs(ids...)
+=======
+// RemoveMemberRecordinsuranceIDs removes the member_recordinsurance edge to Recordinsurance by ids.
+func (muo *MemberUpdateOne) RemoveMemberRecordinsuranceIDs(ids ...int) *MemberUpdateOne {
+	muo.mutation.RemoveMemberRecordinsuranceIDs(ids...)
+	return muo
+}
+
+// RemoveMemberRecordinsurance removes member_recordinsurance edges to Recordinsurance.
+func (muo *MemberUpdateOne) RemoveMemberRecordinsurance(r ...*Recordinsurance) *MemberUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return muo.RemoveMemberRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Save executes the query and returns the updated entity.
@@ -811,17 +902,30 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (m *Member, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+<<<<<<< HEAD
 	if nodes := muo.mutation.RemovedMemberPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   member.MemberPaybackTable,
 			Columns: []string{member.MemberPaybackColumn},
+=======
+	if nodes := muo.mutation.RemovedMemberRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberRecordinsuranceTable,
+			Columns: []string{member.MemberRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -830,17 +934,30 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (m *Member, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+<<<<<<< HEAD
 	if nodes := muo.mutation.MemberPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   member.MemberPaybackTable,
 			Columns: []string{member.MemberPaybackColumn},
+=======
+	if nodes := muo.mutation.MemberRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   member.MemberRecordinsuranceTable,
+			Columns: []string{member.MemberRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}

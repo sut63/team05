@@ -18,6 +18,7 @@ import (
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // MemberQuery is the builder for querying Member entities.
@@ -29,10 +30,17 @@ type MemberQuery struct {
 	unique     []string
 	predicates []predicate.Member
 	// eager-loading edges.
+<<<<<<< HEAD
 	withMemberInsurance *InsuranceQuery
 	withMemberPayment   *PaymentQuery
 	withMemberInquiry   *InquiryQuery
 	withMemberPayback   *PaybackQuery
+=======
+	withMemberInsurance       *InsuranceQuery
+	withMemberPayment         *PaymentQuery
+	withMemberInquiry         *InquiryQuery
+	withMemberRecordinsurance *RecordinsuranceQuery
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -116,17 +124,28 @@ func (mq *MemberQuery) QueryMemberInquiry() *InquiryQuery {
 	return query
 }
 
+<<<<<<< HEAD
 // QueryMemberPayback chains the current query on the member_payback edge.
 func (mq *MemberQuery) QueryMemberPayback() *PaybackQuery {
 	query := &PaybackQuery{config: mq.config}
+=======
+// QueryMemberRecordinsurance chains the current query on the member_recordinsurance edge.
+func (mq *MemberQuery) QueryMemberRecordinsurance() *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: mq.config}
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := mq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(member.Table, member.FieldID, mq.sqlQuery()),
+<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberPaybackTable, member.MemberPaybackColumn),
+=======
+			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberRecordinsuranceTable, member.MemberRecordinsuranceColumn),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
 		return fromU, nil
@@ -346,6 +365,7 @@ func (mq *MemberQuery) WithMemberInquiry(opts ...func(*InquiryQuery)) *MemberQue
 	return mq
 }
 
+<<<<<<< HEAD
 //  WithMemberPayback tells the query-builder to eager-loads the nodes that are connected to
 // the "member_payback" edge. The optional arguments used to configure the query builder of the edge.
 func (mq *MemberQuery) WithMemberPayback(opts ...func(*PaybackQuery)) *MemberQuery {
@@ -354,6 +374,16 @@ func (mq *MemberQuery) WithMemberPayback(opts ...func(*PaybackQuery)) *MemberQue
 		opt(query)
 	}
 	mq.withMemberPayback = query
+=======
+//  WithMemberRecordinsurance tells the query-builder to eager-loads the nodes that are connected to
+// the "member_recordinsurance" edge. The optional arguments used to configure the query builder of the edge.
+func (mq *MemberQuery) WithMemberRecordinsurance(opts ...func(*RecordinsuranceQuery)) *MemberQuery {
+	query := &RecordinsuranceQuery{config: mq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	mq.withMemberRecordinsurance = query
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	return mq
 }
 
@@ -427,7 +457,11 @@ func (mq *MemberQuery) sqlAll(ctx context.Context) ([]*Member, error) {
 			mq.withMemberInsurance != nil,
 			mq.withMemberPayment != nil,
 			mq.withMemberInquiry != nil,
+<<<<<<< HEAD
 			mq.withMemberPayback != nil,
+=======
+			mq.withMemberRecordinsurance != nil,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
@@ -535,7 +569,11 @@ func (mq *MemberQuery) sqlAll(ctx context.Context) ([]*Member, error) {
 		}
 	}
 
+<<<<<<< HEAD
 	if query := mq.withMemberPayback; query != nil {
+=======
+	if query := mq.withMemberRecordinsurance; query != nil {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*Member)
 		for i := range nodes {
@@ -543,8 +581,13 @@ func (mq *MemberQuery) sqlAll(ctx context.Context) ([]*Member, error) {
 			nodeids[nodes[i].ID] = nodes[i]
 		}
 		query.withFKs = true
+<<<<<<< HEAD
 		query.Where(predicate.Payback(func(s *sql.Selector) {
 			s.Where(sql.InValues(member.MemberPaybackColumn, fks...))
+=======
+		query.Where(predicate.Recordinsurance(func(s *sql.Selector) {
+			s.Where(sql.InValues(member.MemberRecordinsuranceColumn, fks...))
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
@@ -559,7 +602,11 @@ func (mq *MemberQuery) sqlAll(ctx context.Context) ([]*Member, error) {
 			if !ok {
 				return nil, fmt.Errorf(`unexpected foreign-key "member_id" returned %v for node %v`, *fk, n.ID)
 			}
+<<<<<<< HEAD
 			node.Edges.MemberPayback = append(node.Edges.MemberPayback, n)
+=======
+			node.Edges.MemberRecordinsurance = append(node.Edges.MemberRecordinsurance, n)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}
 	}
 
