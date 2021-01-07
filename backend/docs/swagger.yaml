@@ -19,6 +19,21 @@ definitions:
       productID:
         type: integer
     type: object
+  controllers.Payback:
+    properties:
+      accountnumber:
+        type: string
+      bankID:
+        type: integer
+      memberID:
+        type: integer
+      officerID:
+        type: integer
+      productID:
+        type: integer
+      transfertime:
+        type: string
+    type: object
   controllers.Payment:
     properties:
       accountName:
@@ -70,6 +85,11 @@ definitions:
     type: object
   ent.BankEdges:
     properties:
+      bankPayback:
+        description: BankPayback holds the value of the bank_payback edge.
+        items:
+          $ref: '#/definitions/ent.Payback'
+        type: array
       bankPayment:
         description: BankPayment holds the value of the bank_payment edge.
         items:
@@ -293,6 +313,11 @@ definitions:
         items:
           $ref: '#/definitions/ent.Insurance'
         type: array
+      memberPayback:
+        description: MemberPayback holds the value of the member_payback edge.
+        items:
+          $ref: '#/definitions/ent.Payback'
+        type: array
       memberPayment:
         description: MemberPayment holds the value of the member_payment edge.
         items:
@@ -357,11 +382,53 @@ definitions:
         items:
           $ref: '#/definitions/ent.Insurance'
         type: array
+      officerPayback:
+        description: OfficerPayback holds the value of the officer_payback edge.
+        items:
+          $ref: '#/definitions/ent.Payback'
+        type: array
       officerProduct:
         description: OfficerProduct holds the value of the officer_product edge.
         items:
           $ref: '#/definitions/ent.Product'
         type: array
+    type: object
+  ent.Payback:
+    properties:
+      Accountnumber:
+        description: Accountnumber holds the value of the "Accountnumber" field.
+        type: string
+      Transfertime:
+        description: Transfertime holds the value of the "Transfertime" field.
+        type: string
+      edges:
+        $ref: '#/definitions/ent.PaybackEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the PaybackQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+    type: object
+  ent.PaybackEdges:
+    properties:
+      bank:
+        $ref: '#/definitions/ent.Bank'
+        description: Bank holds the value of the Bank edge.
+        type: object
+      member:
+        $ref: '#/definitions/ent.Member'
+        description: Member holds the value of the Member edge.
+        type: object
+      officer:
+        $ref: '#/definitions/ent.Officer'
+        description: Officer holds the value of the Officer edge.
+        type: object
+      product:
+        $ref: '#/definitions/ent.Product'
+        description: Product holds the value of the Product edge.
+        type: object
     type: object
   ent.Payment:
     properties:
@@ -452,6 +519,11 @@ definitions:
         $ref: '#/definitions/ent.Officer'
         description: ProductOfficer holds the value of the product_officer edge.
         type: object
+      productPayback:
+        description: ProductPayback holds the value of the product_payback edge.
+        items:
+          $ref: '#/definitions/ent.Payback'
+        type: array
     type: object
   gin.H:
     additionalProperties: true
@@ -1616,6 +1688,95 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a officer entity by ID
+  /paybacks:
+    get:
+      description: list payback entities
+      operationId: list-payback
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Payback'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List payback entities
+    post:
+      consumes:
+      - application/json
+      description: Create payback
+      operationId: create-payback
+      parameters:
+      - description: Payback entity
+        in: body
+        name: payback
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Payback'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Payback'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create payback
+  /paybacks/{id}:
+    delete:
+      description: get payback by ID
+      operationId: delete-payback
+      parameters:
+      - description: Payback ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a payback entity by ID
   /payments:
     get:
       description: list Payment entities
