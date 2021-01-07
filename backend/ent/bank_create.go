@@ -10,6 +10,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
 	"github.com/sut63/team05/ent/bank"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 )
 
@@ -39,6 +40,21 @@ func (bc *BankCreate) AddBankPayment(p ...*Payment) *BankCreate {
 		ids[i] = p[i].ID
 	}
 	return bc.AddBankPaymentIDs(ids...)
+}
+
+// AddBankPaybackIDs adds the bank_payback edge to Payback by ids.
+func (bc *BankCreate) AddBankPaybackIDs(ids ...int) *BankCreate {
+	bc.mutation.AddBankPaybackIDs(ids...)
+	return bc
+}
+
+// AddBankPayback adds the bank_payback edges to Payback.
+func (bc *BankCreate) AddBankPayback(p ...*Payback) *BankCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return bc.AddBankPaybackIDs(ids...)
 }
 
 // Mutation returns the BankMutation object of the builder.
@@ -135,6 +151,25 @@ func (bc *BankCreate) createSpec() (*Bank, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := bc.mutation.BankPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bank.BankPaybackTable,
+			Columns: []string{bank.BankPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
 				},
 			},
 		}

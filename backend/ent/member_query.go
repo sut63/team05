@@ -15,6 +15,7 @@ import (
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
 )
@@ -31,6 +32,7 @@ type MemberQuery struct {
 	withMemberInsurance *InsuranceQuery
 	withMemberPayment   *PaymentQuery
 	withMemberInquiry   *InquiryQuery
+	withMemberPayback   *PaybackQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -107,6 +109,24 @@ func (mq *MemberQuery) QueryMemberInquiry() *InquiryQuery {
 			sqlgraph.From(member.Table, member.FieldID, mq.sqlQuery()),
 			sqlgraph.To(inquiry.Table, inquiry.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberInquiryTable, member.MemberInquiryColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryMemberPayback chains the current query on the member_payback edge.
+func (mq *MemberQuery) QueryMemberPayback() *PaybackQuery {
+	query := &PaybackQuery{config: mq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := mq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(member.Table, member.FieldID, mq.sqlQuery()),
+			sqlgraph.To(payback.Table, payback.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberPaybackTable, member.MemberPaybackColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
 		return fromU, nil
@@ -326,6 +346,17 @@ func (mq *MemberQuery) WithMemberInquiry(opts ...func(*InquiryQuery)) *MemberQue
 	return mq
 }
 
+//  WithMemberPayback tells the query-builder to eager-loads the nodes that are connected to
+// the "member_payback" edge. The optional arguments used to configure the query builder of the edge.
+func (mq *MemberQuery) WithMemberPayback(opts ...func(*PaybackQuery)) *MemberQuery {
+	query := &PaybackQuery{config: mq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	mq.withMemberPayback = query
+	return mq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -392,10 +423,11 @@ func (mq *MemberQuery) sqlAll(ctx context.Context) ([]*Member, error) {
 	var (
 		nodes       = []*Member{}
 		_spec       = mq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			mq.withMemberInsurance != nil,
 			mq.withMemberPayment != nil,
 			mq.withMemberInquiry != nil,
+			mq.withMemberPayback != nil,
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
@@ -500,6 +532,34 @@ func (mq *MemberQuery) sqlAll(ctx context.Context) ([]*Member, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "member_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.MemberInquiry = append(node.Edges.MemberInquiry, n)
+		}
+	}
+
+	if query := mq.withMemberPayback; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Member)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Payback(func(s *sql.Selector) {
+			s.Where(sql.InValues(member.MemberPaybackColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.member_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "member_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "member_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.MemberPayback = append(node.Edges.MemberPayback, n)
 		}
 	}
 

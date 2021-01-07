@@ -26,6 +26,8 @@ const (
 	EdgeProductInsurance = "product_insurance"
 	// EdgeProductInquiry holds the string denoting the product_inquiry edge name in mutations.
 	EdgeProductInquiry = "product_inquiry"
+	// EdgeProductPayback holds the string denoting the product_payback edge name in mutations.
+	EdgeProductPayback = "product_payback"
 
 	// Table holds the table name of the product in the database.
 	Table = "products"
@@ -64,6 +66,13 @@ const (
 	ProductInquiryInverseTable = "inquiries"
 	// ProductInquiryColumn is the table column denoting the product_inquiry relation/edge.
 	ProductInquiryColumn = "product_id"
+	// ProductPaybackTable is the table the holds the product_payback relation/edge.
+	ProductPaybackTable = "paybacks"
+	// ProductPaybackInverseTable is the table name for the Payback entity.
+	// It exists in this package in order to avoid circular dependency with the "payback" package.
+	ProductPaybackInverseTable = "paybacks"
+	// ProductPaybackColumn is the table column denoting the product_payback relation/edge.
+	ProductPaybackColumn = "product_id"
 )
 
 // Columns holds all SQL columns for product fields.

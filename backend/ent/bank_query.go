@@ -13,6 +13,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
 	"github.com/sut63/team05/ent/bank"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
 )
@@ -27,6 +28,7 @@ type BankQuery struct {
 	predicates []predicate.Bank
 	// eager-loading edges.
 	withBankPayment *PaymentQuery
+	withBankPayback *PaybackQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -67,6 +69,24 @@ func (bq *BankQuery) QueryBankPayment() *PaymentQuery {
 			sqlgraph.From(bank.Table, bank.FieldID, bq.sqlQuery()),
 			sqlgraph.To(payment.Table, payment.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, bank.BankPaymentTable, bank.BankPaymentColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(bq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryBankPayback chains the current query on the bank_payback edge.
+func (bq *BankQuery) QueryBankPayback() *PaybackQuery {
+	query := &PaybackQuery{config: bq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := bq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bank.Table, bank.FieldID, bq.sqlQuery()),
+			sqlgraph.To(payback.Table, payback.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, bank.BankPaybackTable, bank.BankPaybackColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(bq.driver.Dialect(), step)
 		return fromU, nil
@@ -264,6 +284,17 @@ func (bq *BankQuery) WithBankPayment(opts ...func(*PaymentQuery)) *BankQuery {
 	return bq
 }
 
+//  WithBankPayback tells the query-builder to eager-loads the nodes that are connected to
+// the "bank_payback" edge. The optional arguments used to configure the query builder of the edge.
+func (bq *BankQuery) WithBankPayback(opts ...func(*PaybackQuery)) *BankQuery {
+	query := &PaybackQuery{config: bq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	bq.withBankPayback = query
+	return bq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -330,8 +361,9 @@ func (bq *BankQuery) sqlAll(ctx context.Context) ([]*Bank, error) {
 	var (
 		nodes       = []*Bank{}
 		_spec       = bq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [2]bool{
 			bq.withBankPayment != nil,
+			bq.withBankPayback != nil,
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
@@ -380,6 +412,34 @@ func (bq *BankQuery) sqlAll(ctx context.Context) ([]*Bank, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "bank_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.BankPayment = append(node.Edges.BankPayment, n)
+		}
+	}
+
+	if query := bq.withBankPayback; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Bank)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Payback(func(s *sql.Selector) {
+			s.Where(sql.InValues(bank.BankPaybackColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.bank_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "bank_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "bank_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.BankPayback = append(node.Edges.BankPayback, n)
 		}
 	}
 

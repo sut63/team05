@@ -14,6 +14,7 @@ import (
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
 )
@@ -164,6 +165,21 @@ func (pu *ProductUpdate) AddProductInquiry(i ...*Inquiry) *ProductUpdate {
 	return pu.AddProductInquiryIDs(ids...)
 }
 
+// AddProductPaybackIDs adds the product_payback edge to Payback by ids.
+func (pu *ProductUpdate) AddProductPaybackIDs(ids ...int) *ProductUpdate {
+	pu.mutation.AddProductPaybackIDs(ids...)
+	return pu
+}
+
+// AddProductPayback adds the product_payback edges to Payback.
+func (pu *ProductUpdate) AddProductPayback(p ...*Payback) *ProductUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pu.AddProductPaybackIDs(ids...)
+}
+
 // Mutation returns the ProductMutation object of the builder.
 func (pu *ProductUpdate) Mutation() *ProductMutation {
 	return pu.mutation
@@ -215,6 +231,21 @@ func (pu *ProductUpdate) RemoveProductInquiry(i ...*Inquiry) *ProductUpdate {
 		ids[j] = i[j].ID
 	}
 	return pu.RemoveProductInquiryIDs(ids...)
+}
+
+// RemoveProductPaybackIDs removes the product_payback edge to Payback by ids.
+func (pu *ProductUpdate) RemoveProductPaybackIDs(ids ...int) *ProductUpdate {
+	pu.mutation.RemoveProductPaybackIDs(ids...)
+	return pu
+}
+
+// RemoveProductPayback removes product_payback edges to Payback.
+func (pu *ProductUpdate) RemoveProductPayback(p ...*Payback) *ProductUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pu.RemoveProductPaybackIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -517,6 +548,44 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := pu.mutation.RemovedProductPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductPaybackTable,
+			Columns: []string{product.ProductPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.ProductPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductPaybackTable,
+			Columns: []string{product.ProductPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{product.Label}
@@ -667,6 +736,21 @@ func (puo *ProductUpdateOne) AddProductInquiry(i ...*Inquiry) *ProductUpdateOne 
 	return puo.AddProductInquiryIDs(ids...)
 }
 
+// AddProductPaybackIDs adds the product_payback edge to Payback by ids.
+func (puo *ProductUpdateOne) AddProductPaybackIDs(ids ...int) *ProductUpdateOne {
+	puo.mutation.AddProductPaybackIDs(ids...)
+	return puo
+}
+
+// AddProductPayback adds the product_payback edges to Payback.
+func (puo *ProductUpdateOne) AddProductPayback(p ...*Payback) *ProductUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return puo.AddProductPaybackIDs(ids...)
+}
+
 // Mutation returns the ProductMutation object of the builder.
 func (puo *ProductUpdateOne) Mutation() *ProductMutation {
 	return puo.mutation
@@ -718,6 +802,21 @@ func (puo *ProductUpdateOne) RemoveProductInquiry(i ...*Inquiry) *ProductUpdateO
 		ids[j] = i[j].ID
 	}
 	return puo.RemoveProductInquiryIDs(ids...)
+}
+
+// RemoveProductPaybackIDs removes the product_payback edge to Payback by ids.
+func (puo *ProductUpdateOne) RemoveProductPaybackIDs(ids ...int) *ProductUpdateOne {
+	puo.mutation.RemoveProductPaybackIDs(ids...)
+	return puo
+}
+
+// RemoveProductPayback removes product_payback edges to Payback.
+func (puo *ProductUpdateOne) RemoveProductPayback(p ...*Payback) *ProductUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return puo.RemoveProductPaybackIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -1010,6 +1109,44 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (pr *Product, err erro
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := puo.mutation.RemovedProductPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductPaybackTable,
+			Columns: []string{product.ProductPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.ProductPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductPaybackTable,
+			Columns: []string{product.ProductPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
 				},
 			},
 		}

@@ -529,6 +529,34 @@ func HasOfficerInquiryWith(preds ...predicate.Inquiry) predicate.Officer {
 	})
 }
 
+// HasOfficerPayback applies the HasEdge predicate on the "officer_payback" edge.
+func HasOfficerPayback() predicate.Officer {
+	return predicate.Officer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(OfficerPaybackTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, OfficerPaybackTable, OfficerPaybackColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasOfficerPaybackWith applies the HasEdge predicate on the "officer_payback" edge with a given conditions (other predicates).
+func HasOfficerPaybackWith(preds ...predicate.Payback) predicate.Officer {
+	return predicate.Officer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(OfficerPaybackInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, OfficerPaybackTable, OfficerPaybackColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Officer) predicate.Officer {
 	return predicate.Officer(func(s *sql.Selector) {

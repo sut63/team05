@@ -34,6 +34,7 @@ type hooks struct {
 	Member        []ent.Hook
 	MoneyTransfer []ent.Hook
 	Officer       []ent.Hook
+	Payback       []ent.Hook
 	Payment       []ent.Hook
 	Product       []ent.Hook
 }

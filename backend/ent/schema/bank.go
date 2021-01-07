@@ -22,5 +22,6 @@ func (Bank) Fields() []ent.Field {
 func (Bank) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("bank_payment", Payment.Type).StorageKey(edge.Column("bank_id")),
+		edge.To("bank_payback", Payback.Type).StorageKey(edge.Column("bank_id")),
 	}
 }

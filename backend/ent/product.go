@@ -46,9 +46,11 @@ type ProductEdges struct {
 	ProductInsurance []*Insurance
 	// ProductInquiry holds the value of the product_inquiry edge.
 	ProductInquiry []*Inquiry
+	// ProductPayback holds the value of the product_payback edge.
+	ProductPayback []*Payback
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [5]bool
+	loadedTypes [6]bool
 }
 
 // ProductGenderOrErr returns the ProductGender value or an error if the edge
@@ -109,6 +111,15 @@ func (e ProductEdges) ProductInquiryOrErr() ([]*Inquiry, error) {
 		return e.ProductInquiry, nil
 	}
 	return nil, &NotLoadedError{edge: "product_inquiry"}
+}
+
+// ProductPaybackOrErr returns the ProductPayback value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProductEdges) ProductPaybackOrErr() ([]*Payback, error) {
+	if e.loadedTypes[5] {
+		return e.ProductPayback, nil
+	}
+	return nil, &NotLoadedError{edge: "product_payback"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -210,6 +221,11 @@ func (pr *Product) QueryProductInsurance() *InsuranceQuery {
 // QueryProductInquiry queries the product_inquiry edge of the Product.
 func (pr *Product) QueryProductInquiry() *InquiryQuery {
 	return (&ProductClient{config: pr.config}).QueryProductInquiry(pr)
+}
+
+// QueryProductPayback queries the product_payback edge of the Product.
+func (pr *Product) QueryProductPayback() *PaybackQuery {
+	return (&ProductClient{config: pr.config}).QueryProductPayback(pr)
 }
 
 // Update returns a builder for updating this Product.

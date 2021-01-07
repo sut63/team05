@@ -10,6 +10,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
 	"github.com/sut63/team05/ent/bank"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
 )
@@ -49,6 +50,21 @@ func (bu *BankUpdate) AddBankPayment(p ...*Payment) *BankUpdate {
 	return bu.AddBankPaymentIDs(ids...)
 }
 
+// AddBankPaybackIDs adds the bank_payback edge to Payback by ids.
+func (bu *BankUpdate) AddBankPaybackIDs(ids ...int) *BankUpdate {
+	bu.mutation.AddBankPaybackIDs(ids...)
+	return bu
+}
+
+// AddBankPayback adds the bank_payback edges to Payback.
+func (bu *BankUpdate) AddBankPayback(p ...*Payback) *BankUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return bu.AddBankPaybackIDs(ids...)
+}
+
 // Mutation returns the BankMutation object of the builder.
 func (bu *BankUpdate) Mutation() *BankMutation {
 	return bu.mutation
@@ -67,6 +83,21 @@ func (bu *BankUpdate) RemoveBankPayment(p ...*Payment) *BankUpdate {
 		ids[i] = p[i].ID
 	}
 	return bu.RemoveBankPaymentIDs(ids...)
+}
+
+// RemoveBankPaybackIDs removes the bank_payback edge to Payback by ids.
+func (bu *BankUpdate) RemoveBankPaybackIDs(ids ...int) *BankUpdate {
+	bu.mutation.RemoveBankPaybackIDs(ids...)
+	return bu
+}
+
+// RemoveBankPayback removes bank_payback edges to Payback.
+func (bu *BankUpdate) RemoveBankPayback(p ...*Payback) *BankUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return bu.RemoveBankPaybackIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -189,6 +220,44 @@ func (bu *BankUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := bu.mutation.RemovedBankPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bank.BankPaybackTable,
+			Columns: []string{bank.BankPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := bu.mutation.BankPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bank.BankPaybackTable,
+			Columns: []string{bank.BankPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, bu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{bank.Label}
@@ -228,6 +297,21 @@ func (buo *BankUpdateOne) AddBankPayment(p ...*Payment) *BankUpdateOne {
 	return buo.AddBankPaymentIDs(ids...)
 }
 
+// AddBankPaybackIDs adds the bank_payback edge to Payback by ids.
+func (buo *BankUpdateOne) AddBankPaybackIDs(ids ...int) *BankUpdateOne {
+	buo.mutation.AddBankPaybackIDs(ids...)
+	return buo
+}
+
+// AddBankPayback adds the bank_payback edges to Payback.
+func (buo *BankUpdateOne) AddBankPayback(p ...*Payback) *BankUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return buo.AddBankPaybackIDs(ids...)
+}
+
 // Mutation returns the BankMutation object of the builder.
 func (buo *BankUpdateOne) Mutation() *BankMutation {
 	return buo.mutation
@@ -246,6 +330,21 @@ func (buo *BankUpdateOne) RemoveBankPayment(p ...*Payment) *BankUpdateOne {
 		ids[i] = p[i].ID
 	}
 	return buo.RemoveBankPaymentIDs(ids...)
+}
+
+// RemoveBankPaybackIDs removes the bank_payback edge to Payback by ids.
+func (buo *BankUpdateOne) RemoveBankPaybackIDs(ids ...int) *BankUpdateOne {
+	buo.mutation.RemoveBankPaybackIDs(ids...)
+	return buo
+}
+
+// RemoveBankPayback removes bank_payback edges to Payback.
+func (buo *BankUpdateOne) RemoveBankPayback(p ...*Payback) *BankUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return buo.RemoveBankPaybackIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -358,6 +457,44 @@ func (buo *BankUpdateOne) sqlSave(ctx context.Context) (b *Bank, err error) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := buo.mutation.RemovedBankPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bank.BankPaybackTable,
+			Columns: []string{bank.BankPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := buo.mutation.BankPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bank.BankPaybackTable,
+			Columns: []string{bank.BankPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
 				},
 			},
 		}

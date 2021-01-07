@@ -12,6 +12,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/moneytransfer"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/schema"
 )
@@ -94,6 +95,16 @@ func init() {
 	officerDescOfficerPassword := officerFields[2].Descriptor()
 	// officer.OfficerPasswordValidator is a validator for the "officer_password" field. It is called by the builders before save.
 	officer.OfficerPasswordValidator = officerDescOfficerPassword.Validators[0].(func(string) error)
+	paybackFields := schema.Payback{}.Fields()
+	_ = paybackFields
+	// paybackDescAccountnumber is the schema descriptor for Accountnumber field.
+	paybackDescAccountnumber := paybackFields[0].Descriptor()
+	// payback.AccountnumberValidator is a validator for the "Accountnumber" field. It is called by the builders before save.
+	payback.AccountnumberValidator = paybackDescAccountnumber.Validators[0].(func(string) error)
+	// paybackDescTransfertime is the schema descriptor for Transfertime field.
+	paybackDescTransfertime := paybackFields[1].Descriptor()
+	// payback.DefaultTransfertime holds the default value on creation for the Transfertime field.
+	payback.DefaultTransfertime = paybackDescTransfertime.Default.(func() time.Time)
 	paymentFields := schema.Payment{}.Fields()
 	_ = paymentFields
 	// paymentDescAccountName is the schema descriptor for account_name field.

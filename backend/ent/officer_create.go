@@ -12,6 +12,7 @@ import (
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/product"
 )
 
@@ -83,6 +84,21 @@ func (oc *OfficerCreate) AddOfficerInquiry(i ...*Inquiry) *OfficerCreate {
 		ids[j] = i[j].ID
 	}
 	return oc.AddOfficerInquiryIDs(ids...)
+}
+
+// AddOfficerPaybackIDs adds the officer_payback edge to Payback by ids.
+func (oc *OfficerCreate) AddOfficerPaybackIDs(ids ...int) *OfficerCreate {
+	oc.mutation.AddOfficerPaybackIDs(ids...)
+	return oc
+}
+
+// AddOfficerPayback adds the officer_payback edges to Payback.
+func (oc *OfficerCreate) AddOfficerPayback(p ...*Payback) *OfficerCreate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return oc.AddOfficerPaybackIDs(ids...)
 }
 
 // Mutation returns the OfficerMutation object of the builder.
@@ -249,6 +265,25 @@ func (oc *OfficerCreate) createSpec() (*Officer, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: inquiry.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := oc.mutation.OfficerPaybackIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerPaybackTable,
+			Columns: []string{officer.OfficerPaybackColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
 				},
 			},
 		}

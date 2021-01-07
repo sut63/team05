@@ -32,6 +32,8 @@ type Tx struct {
 	MoneyTransfer *MoneyTransferClient
 	// Officer is the client for interacting with the Officer builders.
 	Officer *OfficerClient
+	// Payback is the client for interacting with the Payback builders.
+	Payback *PaybackClient
 	// Payment is the client for interacting with the Payment builders.
 	Payment *PaymentClient
 	// Product is the client for interacting with the Product builders.
@@ -181,6 +183,7 @@ func (tx *Tx) init() {
 	tx.Member = NewMemberClient(tx.config)
 	tx.MoneyTransfer = NewMoneyTransferClient(tx.config)
 	tx.Officer = NewOfficerClient(tx.config)
+	tx.Payback = NewPaybackClient(tx.config)
 	tx.Payment = NewPaymentClient(tx.config)
 	tx.Product = NewProductClient(tx.config)
 }

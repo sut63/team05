@@ -18,6 +18,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/moneytransfer"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/product"
 
@@ -43,6 +44,7 @@ const (
 	TypeMember        = "Member"
 	TypeMoneyTransfer = "MoneyTransfer"
 	TypeOfficer       = "Officer"
+	TypePayback       = "Payback"
 	TypePayment       = "Payment"
 	TypeProduct       = "Product"
 )
@@ -58,6 +60,8 @@ type BankMutation struct {
 	clearedFields       map[string]struct{}
 	bank_payment        map[int]struct{}
 	removedbank_payment map[int]struct{}
+	bank_payback        map[int]struct{}
+	removedbank_payback map[int]struct{}
 	done                bool
 	oldValue            func(context.Context) (*Bank, error)
 }
@@ -220,6 +224,48 @@ func (m *BankMutation) ResetBankPayment() {
 	m.removedbank_payment = nil
 }
 
+// AddBankPaybackIDs adds the bank_payback edge to Payback by ids.
+func (m *BankMutation) AddBankPaybackIDs(ids ...int) {
+	if m.bank_payback == nil {
+		m.bank_payback = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.bank_payback[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveBankPaybackIDs removes the bank_payback edge to Payback by ids.
+func (m *BankMutation) RemoveBankPaybackIDs(ids ...int) {
+	if m.removedbank_payback == nil {
+		m.removedbank_payback = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedbank_payback[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedBankPayback returns the removed ids of bank_payback.
+func (m *BankMutation) RemovedBankPaybackIDs() (ids []int) {
+	for id := range m.removedbank_payback {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// BankPaybackIDs returns the bank_payback ids in the mutation.
+func (m *BankMutation) BankPaybackIDs() (ids []int) {
+	for id := range m.bank_payback {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetBankPayback reset all changes of the "bank_payback" edge.
+func (m *BankMutation) ResetBankPayback() {
+	m.bank_payback = nil
+	m.removedbank_payback = nil
+}
+
 // Op returns the operation name.
 func (m *BankMutation) Op() Op {
 	return m.op
@@ -335,9 +381,12 @@ func (m *BankMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *BankMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.bank_payment != nil {
 		edges = append(edges, bank.EdgeBankPayment)
+	}
+	if m.bank_payback != nil {
+		edges = append(edges, bank.EdgeBankPayback)
 	}
 	return edges
 }
@@ -352,6 +401,12 @@ func (m *BankMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case bank.EdgeBankPayback:
+		ids := make([]ent.Value, 0, len(m.bank_payback))
+		for id := range m.bank_payback {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -359,9 +414,12 @@ func (m *BankMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *BankMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.removedbank_payment != nil {
 		edges = append(edges, bank.EdgeBankPayment)
+	}
+	if m.removedbank_payback != nil {
+		edges = append(edges, bank.EdgeBankPayback)
 	}
 	return edges
 }
@@ -376,6 +434,12 @@ func (m *BankMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case bank.EdgeBankPayback:
+		ids := make([]ent.Value, 0, len(m.removedbank_payback))
+		for id := range m.removedbank_payback {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -383,7 +447,7 @@ func (m *BankMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *BankMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	return edges
 }
 
@@ -410,6 +474,9 @@ func (m *BankMutation) ResetEdge(name string) error {
 	switch name {
 	case bank.EdgeBankPayment:
 		m.ResetBankPayment()
+		return nil
+	case bank.EdgeBankPayback:
+		m.ResetBankPayback()
 		return nil
 	}
 	return fmt.Errorf("unknown Bank edge %s", name)
@@ -3322,6 +3389,8 @@ type MemberMutation struct {
 	removedmember_payment   map[int]struct{}
 	member_inquiry          map[int]struct{}
 	removedmember_inquiry   map[int]struct{}
+	member_payback          map[int]struct{}
+	removedmember_payback   map[int]struct{}
 	done                    bool
 	oldValue                func(context.Context) (*Member, error)
 }
@@ -3642,6 +3711,48 @@ func (m *MemberMutation) ResetMemberInquiry() {
 	m.removedmember_inquiry = nil
 }
 
+// AddMemberPaybackIDs adds the member_payback edge to Payback by ids.
+func (m *MemberMutation) AddMemberPaybackIDs(ids ...int) {
+	if m.member_payback == nil {
+		m.member_payback = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.member_payback[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveMemberPaybackIDs removes the member_payback edge to Payback by ids.
+func (m *MemberMutation) RemoveMemberPaybackIDs(ids ...int) {
+	if m.removedmember_payback == nil {
+		m.removedmember_payback = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedmember_payback[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedMemberPayback returns the removed ids of member_payback.
+func (m *MemberMutation) RemovedMemberPaybackIDs() (ids []int) {
+	for id := range m.removedmember_payback {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// MemberPaybackIDs returns the member_payback ids in the mutation.
+func (m *MemberMutation) MemberPaybackIDs() (ids []int) {
+	for id := range m.member_payback {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetMemberPayback reset all changes of the "member_payback" edge.
+func (m *MemberMutation) ResetMemberPayback() {
+	m.member_payback = nil
+	m.removedmember_payback = nil
+}
+
 // Op returns the operation name.
 func (m *MemberMutation) Op() Op {
 	return m.op
@@ -3791,7 +3902,7 @@ func (m *MemberMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *MemberMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.member_insurance != nil {
 		edges = append(edges, member.EdgeMemberInsurance)
 	}
@@ -3800,6 +3911,9 @@ func (m *MemberMutation) AddedEdges() []string {
 	}
 	if m.member_inquiry != nil {
 		edges = append(edges, member.EdgeMemberInquiry)
+	}
+	if m.member_payback != nil {
+		edges = append(edges, member.EdgeMemberPayback)
 	}
 	return edges
 }
@@ -3826,6 +3940,12 @@ func (m *MemberMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case member.EdgeMemberPayback:
+		ids := make([]ent.Value, 0, len(m.member_payback))
+		for id := range m.member_payback {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -3833,7 +3953,7 @@ func (m *MemberMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *MemberMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.removedmember_insurance != nil {
 		edges = append(edges, member.EdgeMemberInsurance)
 	}
@@ -3842,6 +3962,9 @@ func (m *MemberMutation) RemovedEdges() []string {
 	}
 	if m.removedmember_inquiry != nil {
 		edges = append(edges, member.EdgeMemberInquiry)
+	}
+	if m.removedmember_payback != nil {
+		edges = append(edges, member.EdgeMemberPayback)
 	}
 	return edges
 }
@@ -3868,6 +3991,12 @@ func (m *MemberMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case member.EdgeMemberPayback:
+		ids := make([]ent.Value, 0, len(m.removedmember_payback))
+		for id := range m.removedmember_payback {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -3875,7 +4004,7 @@ func (m *MemberMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *MemberMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	return edges
 }
 
@@ -3908,6 +4037,9 @@ func (m *MemberMutation) ResetEdge(name string) error {
 		return nil
 	case member.EdgeMemberInquiry:
 		m.ResetMemberInquiry()
+		return nil
+	case member.EdgeMemberPayback:
+		m.ResetMemberPayback()
 		return nil
 	}
 	return fmt.Errorf("unknown Member edge %s", name)
@@ -4298,6 +4430,8 @@ type OfficerMutation struct {
 	removedofficer_insurance map[int]struct{}
 	officer_inquiry          map[int]struct{}
 	removedofficer_inquiry   map[int]struct{}
+	officer_payback          map[int]struct{}
+	removedofficer_payback   map[int]struct{}
 	done                     bool
 	oldValue                 func(context.Context) (*Officer, error)
 }
@@ -4618,6 +4752,48 @@ func (m *OfficerMutation) ResetOfficerInquiry() {
 	m.removedofficer_inquiry = nil
 }
 
+// AddOfficerPaybackIDs adds the officer_payback edge to Payback by ids.
+func (m *OfficerMutation) AddOfficerPaybackIDs(ids ...int) {
+	if m.officer_payback == nil {
+		m.officer_payback = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.officer_payback[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveOfficerPaybackIDs removes the officer_payback edge to Payback by ids.
+func (m *OfficerMutation) RemoveOfficerPaybackIDs(ids ...int) {
+	if m.removedofficer_payback == nil {
+		m.removedofficer_payback = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedofficer_payback[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedOfficerPayback returns the removed ids of officer_payback.
+func (m *OfficerMutation) RemovedOfficerPaybackIDs() (ids []int) {
+	for id := range m.removedofficer_payback {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// OfficerPaybackIDs returns the officer_payback ids in the mutation.
+func (m *OfficerMutation) OfficerPaybackIDs() (ids []int) {
+	for id := range m.officer_payback {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetOfficerPayback reset all changes of the "officer_payback" edge.
+func (m *OfficerMutation) ResetOfficerPayback() {
+	m.officer_payback = nil
+	m.removedofficer_payback = nil
+}
+
 // Op returns the operation name.
 func (m *OfficerMutation) Op() Op {
 	return m.op
@@ -4767,7 +4943,7 @@ func (m *OfficerMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *OfficerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.officer_product != nil {
 		edges = append(edges, officer.EdgeOfficerProduct)
 	}
@@ -4776,6 +4952,9 @@ func (m *OfficerMutation) AddedEdges() []string {
 	}
 	if m.officer_inquiry != nil {
 		edges = append(edges, officer.EdgeOfficerInquiry)
+	}
+	if m.officer_payback != nil {
+		edges = append(edges, officer.EdgeOfficerPayback)
 	}
 	return edges
 }
@@ -4802,6 +4981,12 @@ func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case officer.EdgeOfficerPayback:
+		ids := make([]ent.Value, 0, len(m.officer_payback))
+		for id := range m.officer_payback {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -4809,7 +4994,7 @@ func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *OfficerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	if m.removedofficer_product != nil {
 		edges = append(edges, officer.EdgeOfficerProduct)
 	}
@@ -4818,6 +5003,9 @@ func (m *OfficerMutation) RemovedEdges() []string {
 	}
 	if m.removedofficer_inquiry != nil {
 		edges = append(edges, officer.EdgeOfficerInquiry)
+	}
+	if m.removedofficer_payback != nil {
+		edges = append(edges, officer.EdgeOfficerPayback)
 	}
 	return edges
 }
@@ -4844,6 +5032,12 @@ func (m *OfficerMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case officer.EdgeOfficerPayback:
+		ids := make([]ent.Value, 0, len(m.removedofficer_payback))
+		for id := range m.removedofficer_payback {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -4851,7 +5045,7 @@ func (m *OfficerMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *OfficerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 4)
 	return edges
 }
 
@@ -4885,8 +5079,605 @@ func (m *OfficerMutation) ResetEdge(name string) error {
 	case officer.EdgeOfficerInquiry:
 		m.ResetOfficerInquiry()
 		return nil
+	case officer.EdgeOfficerPayback:
+		m.ResetOfficerPayback()
+		return nil
 	}
 	return fmt.Errorf("unknown Officer edge %s", name)
+}
+
+// PaybackMutation represents an operation that mutate the Paybacks
+// nodes in the graph.
+type PaybackMutation struct {
+	config
+	op              Op
+	typ             string
+	id              *int
+	_Accountnumber  *string
+	_Transfertime   *time.Time
+	clearedFields   map[string]struct{}
+	_Officer        *int
+	cleared_Officer bool
+	_Member         *int
+	cleared_Member  bool
+	_Product        *int
+	cleared_Product bool
+	_Bank           *int
+	cleared_Bank    bool
+	done            bool
+	oldValue        func(context.Context) (*Payback, error)
+}
+
+var _ ent.Mutation = (*PaybackMutation)(nil)
+
+// paybackOption allows to manage the mutation configuration using functional options.
+type paybackOption func(*PaybackMutation)
+
+// newPaybackMutation creates new mutation for $n.Name.
+func newPaybackMutation(c config, op Op, opts ...paybackOption) *PaybackMutation {
+	m := &PaybackMutation{
+		config:        c,
+		op:            op,
+		typ:           TypePayback,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withPaybackID sets the id field of the mutation.
+func withPaybackID(id int) paybackOption {
+	return func(m *PaybackMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Payback
+		)
+		m.oldValue = func(ctx context.Context) (*Payback, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Payback.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withPayback sets the old Payback of the mutation.
+func withPayback(node *Payback) paybackOption {
+	return func(m *PaybackMutation) {
+		m.oldValue = func(context.Context) (*Payback, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m PaybackMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m PaybackMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the id value in the mutation. Note that, the id
+// is available only if it was provided to the builder.
+func (m *PaybackMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetAccountnumber sets the Accountnumber field.
+func (m *PaybackMutation) SetAccountnumber(s string) {
+	m._Accountnumber = &s
+}
+
+// Accountnumber returns the Accountnumber value in the mutation.
+func (m *PaybackMutation) Accountnumber() (r string, exists bool) {
+	v := m._Accountnumber
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccountnumber returns the old Accountnumber value of the Payback.
+// If the Payback object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *PaybackMutation) OldAccountnumber(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAccountnumber is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAccountnumber requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccountnumber: %w", err)
+	}
+	return oldValue.Accountnumber, nil
+}
+
+// ResetAccountnumber reset all changes of the "Accountnumber" field.
+func (m *PaybackMutation) ResetAccountnumber() {
+	m._Accountnumber = nil
+}
+
+// SetTransfertime sets the Transfertime field.
+func (m *PaybackMutation) SetTransfertime(t time.Time) {
+	m._Transfertime = &t
+}
+
+// Transfertime returns the Transfertime value in the mutation.
+func (m *PaybackMutation) Transfertime() (r time.Time, exists bool) {
+	v := m._Transfertime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTransfertime returns the old Transfertime value of the Payback.
+// If the Payback object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *PaybackMutation) OldTransfertime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldTransfertime is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldTransfertime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTransfertime: %w", err)
+	}
+	return oldValue.Transfertime, nil
+}
+
+// ResetTransfertime reset all changes of the "Transfertime" field.
+func (m *PaybackMutation) ResetTransfertime() {
+	m._Transfertime = nil
+}
+
+// SetOfficerID sets the Officer edge to Officer by id.
+func (m *PaybackMutation) SetOfficerID(id int) {
+	m._Officer = &id
+}
+
+// ClearOfficer clears the Officer edge to Officer.
+func (m *PaybackMutation) ClearOfficer() {
+	m.cleared_Officer = true
+}
+
+// OfficerCleared returns if the edge Officer was cleared.
+func (m *PaybackMutation) OfficerCleared() bool {
+	return m.cleared_Officer
+}
+
+// OfficerID returns the Officer id in the mutation.
+func (m *PaybackMutation) OfficerID() (id int, exists bool) {
+	if m._Officer != nil {
+		return *m._Officer, true
+	}
+	return
+}
+
+// OfficerIDs returns the Officer ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// OfficerID instead. It exists only for internal usage by the builders.
+func (m *PaybackMutation) OfficerIDs() (ids []int) {
+	if id := m._Officer; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetOfficer reset all changes of the "Officer" edge.
+func (m *PaybackMutation) ResetOfficer() {
+	m._Officer = nil
+	m.cleared_Officer = false
+}
+
+// SetMemberID sets the Member edge to Member by id.
+func (m *PaybackMutation) SetMemberID(id int) {
+	m._Member = &id
+}
+
+// ClearMember clears the Member edge to Member.
+func (m *PaybackMutation) ClearMember() {
+	m.cleared_Member = true
+}
+
+// MemberCleared returns if the edge Member was cleared.
+func (m *PaybackMutation) MemberCleared() bool {
+	return m.cleared_Member
+}
+
+// MemberID returns the Member id in the mutation.
+func (m *PaybackMutation) MemberID() (id int, exists bool) {
+	if m._Member != nil {
+		return *m._Member, true
+	}
+	return
+}
+
+// MemberIDs returns the Member ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// MemberID instead. It exists only for internal usage by the builders.
+func (m *PaybackMutation) MemberIDs() (ids []int) {
+	if id := m._Member; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetMember reset all changes of the "Member" edge.
+func (m *PaybackMutation) ResetMember() {
+	m._Member = nil
+	m.cleared_Member = false
+}
+
+// SetProductID sets the Product edge to Product by id.
+func (m *PaybackMutation) SetProductID(id int) {
+	m._Product = &id
+}
+
+// ClearProduct clears the Product edge to Product.
+func (m *PaybackMutation) ClearProduct() {
+	m.cleared_Product = true
+}
+
+// ProductCleared returns if the edge Product was cleared.
+func (m *PaybackMutation) ProductCleared() bool {
+	return m.cleared_Product
+}
+
+// ProductID returns the Product id in the mutation.
+func (m *PaybackMutation) ProductID() (id int, exists bool) {
+	if m._Product != nil {
+		return *m._Product, true
+	}
+	return
+}
+
+// ProductIDs returns the Product ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// ProductID instead. It exists only for internal usage by the builders.
+func (m *PaybackMutation) ProductIDs() (ids []int) {
+	if id := m._Product; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetProduct reset all changes of the "Product" edge.
+func (m *PaybackMutation) ResetProduct() {
+	m._Product = nil
+	m.cleared_Product = false
+}
+
+// SetBankID sets the Bank edge to Bank by id.
+func (m *PaybackMutation) SetBankID(id int) {
+	m._Bank = &id
+}
+
+// ClearBank clears the Bank edge to Bank.
+func (m *PaybackMutation) ClearBank() {
+	m.cleared_Bank = true
+}
+
+// BankCleared returns if the edge Bank was cleared.
+func (m *PaybackMutation) BankCleared() bool {
+	return m.cleared_Bank
+}
+
+// BankID returns the Bank id in the mutation.
+func (m *PaybackMutation) BankID() (id int, exists bool) {
+	if m._Bank != nil {
+		return *m._Bank, true
+	}
+	return
+}
+
+// BankIDs returns the Bank ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// BankID instead. It exists only for internal usage by the builders.
+func (m *PaybackMutation) BankIDs() (ids []int) {
+	if id := m._Bank; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetBank reset all changes of the "Bank" edge.
+func (m *PaybackMutation) ResetBank() {
+	m._Bank = nil
+	m.cleared_Bank = false
+}
+
+// Op returns the operation name.
+func (m *PaybackMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Payback).
+func (m *PaybackMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during
+// this mutation. Note that, in order to get all numeric
+// fields that were in/decremented, call AddedFields().
+func (m *PaybackMutation) Fields() []string {
+	fields := make([]string, 0, 2)
+	if m._Accountnumber != nil {
+		fields = append(fields, payback.FieldAccountnumber)
+	}
+	if m._Transfertime != nil {
+		fields = append(fields, payback.FieldTransfertime)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name.
+// The second boolean value indicates that this field was
+// not set, or was not define in the schema.
+func (m *PaybackMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case payback.FieldAccountnumber:
+		return m.Accountnumber()
+	case payback.FieldTransfertime:
+		return m.Transfertime()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database.
+// An error is returned if the mutation operation is not UpdateOne,
+// or the query to the database was failed.
+func (m *PaybackMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case payback.FieldAccountnumber:
+		return m.OldAccountnumber(ctx)
+	case payback.FieldTransfertime:
+		return m.OldTransfertime(ctx)
+	}
+	return nil, fmt.Errorf("unknown Payback field %s", name)
+}
+
+// SetField sets the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *PaybackMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case payback.FieldAccountnumber:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccountnumber(v)
+		return nil
+	case payback.FieldTransfertime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTransfertime(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Payback field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented
+// or decremented during this mutation.
+func (m *PaybackMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was in/decremented
+// from a field with the given name. The second value indicates
+// that this field was not set, or was not define in the schema.
+func (m *PaybackMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *PaybackMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Payback numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared
+// during this mutation.
+func (m *PaybackMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicates if this field was
+// cleared in this mutation.
+func (m *PaybackMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value for the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *PaybackMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Payback nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation regarding the
+// given field name. It returns an error if the field is not
+// defined in the schema.
+func (m *PaybackMutation) ResetField(name string) error {
+	switch name {
+	case payback.FieldAccountnumber:
+		m.ResetAccountnumber()
+		return nil
+	case payback.FieldTransfertime:
+		m.ResetTransfertime()
+		return nil
+	}
+	return fmt.Errorf("unknown Payback field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this
+// mutation.
+func (m *PaybackMutation) AddedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m._Officer != nil {
+		edges = append(edges, payback.EdgeOfficer)
+	}
+	if m._Member != nil {
+		edges = append(edges, payback.EdgeMember)
+	}
+	if m._Product != nil {
+		edges = append(edges, payback.EdgeProduct)
+	}
+	if m._Bank != nil {
+		edges = append(edges, payback.EdgeBank)
+	}
+	return edges
+}
+
+// AddedIDs returns all ids (to other nodes) that were added for
+// the given edge name.
+func (m *PaybackMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case payback.EdgeOfficer:
+		if id := m._Officer; id != nil {
+			return []ent.Value{*id}
+		}
+	case payback.EdgeMember:
+		if id := m._Member; id != nil {
+			return []ent.Value{*id}
+		}
+	case payback.EdgeProduct:
+		if id := m._Product; id != nil {
+			return []ent.Value{*id}
+		}
+	case payback.EdgeBank:
+		if id := m._Bank; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this
+// mutation.
+func (m *PaybackMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 4)
+	return edges
+}
+
+// RemovedIDs returns all ids (to other nodes) that were removed for
+// the given edge name.
+func (m *PaybackMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this
+// mutation.
+func (m *PaybackMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m.cleared_Officer {
+		edges = append(edges, payback.EdgeOfficer)
+	}
+	if m.cleared_Member {
+		edges = append(edges, payback.EdgeMember)
+	}
+	if m.cleared_Product {
+		edges = append(edges, payback.EdgeProduct)
+	}
+	if m.cleared_Bank {
+		edges = append(edges, payback.EdgeBank)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean indicates if this edge was
+// cleared in this mutation.
+func (m *PaybackMutation) EdgeCleared(name string) bool {
+	switch name {
+	case payback.EdgeOfficer:
+		return m.cleared_Officer
+	case payback.EdgeMember:
+		return m.cleared_Member
+	case payback.EdgeProduct:
+		return m.cleared_Product
+	case payback.EdgeBank:
+		return m.cleared_Bank
+	}
+	return false
+}
+
+// ClearEdge clears the value for the given name. It returns an
+// error if the edge name is not defined in the schema.
+func (m *PaybackMutation) ClearEdge(name string) error {
+	switch name {
+	case payback.EdgeOfficer:
+		m.ClearOfficer()
+		return nil
+	case payback.EdgeMember:
+		m.ClearMember()
+		return nil
+	case payback.EdgeProduct:
+		m.ClearProduct()
+		return nil
+	case payback.EdgeBank:
+		m.ClearBank()
+		return nil
+	}
+	return fmt.Errorf("unknown Payback unique edge %s", name)
+}
+
+// ResetEdge resets all changes in the mutation regarding the
+// given edge name. It returns an error if the edge is not
+// defined in the schema.
+func (m *PaybackMutation) ResetEdge(name string) error {
+	switch name {
+	case payback.EdgeOfficer:
+		m.ResetOfficer()
+		return nil
+	case payback.EdgeMember:
+		m.ResetMember()
+		return nil
+	case payback.EdgeProduct:
+		m.ResetProduct()
+		return nil
+	case payback.EdgeBank:
+		m.ResetBank()
+		return nil
+	}
+	return fmt.Errorf("unknown Payback edge %s", name)
 }
 
 // PaymentMutation represents an operation that mutate the Payments
@@ -5563,6 +6354,8 @@ type ProductMutation struct {
 	removedproduct_insurance   map[int]struct{}
 	product_inquiry            map[int]struct{}
 	removedproduct_inquiry     map[int]struct{}
+	product_payback            map[int]struct{}
+	removedproduct_payback     map[int]struct{}
 	done                       bool
 	oldValue                   func(context.Context) (*Product, error)
 }
@@ -6055,6 +6848,48 @@ func (m *ProductMutation) ResetProductInquiry() {
 	m.removedproduct_inquiry = nil
 }
 
+// AddProductPaybackIDs adds the product_payback edge to Payback by ids.
+func (m *ProductMutation) AddProductPaybackIDs(ids ...int) {
+	if m.product_payback == nil {
+		m.product_payback = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.product_payback[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveProductPaybackIDs removes the product_payback edge to Payback by ids.
+func (m *ProductMutation) RemoveProductPaybackIDs(ids ...int) {
+	if m.removedproduct_payback == nil {
+		m.removedproduct_payback = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedproduct_payback[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedProductPayback returns the removed ids of product_payback.
+func (m *ProductMutation) RemovedProductPaybackIDs() (ids []int) {
+	for id := range m.removedproduct_payback {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ProductPaybackIDs returns the product_payback ids in the mutation.
+func (m *ProductMutation) ProductPaybackIDs() (ids []int) {
+	for id := range m.product_payback {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetProductPayback reset all changes of the "product_payback" edge.
+func (m *ProductMutation) ResetProductPayback() {
+	m.product_payback = nil
+	m.removedproduct_payback = nil
+}
+
 // Op returns the operation name.
 func (m *ProductMutation) Op() Op {
 	return m.op
@@ -6260,7 +7095,7 @@ func (m *ProductMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *ProductMutation) AddedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.product_gender != nil {
 		edges = append(edges, product.EdgeProductGender)
 	}
@@ -6275,6 +7110,9 @@ func (m *ProductMutation) AddedEdges() []string {
 	}
 	if m.product_inquiry != nil {
 		edges = append(edges, product.EdgeProductInquiry)
+	}
+	if m.product_payback != nil {
+		edges = append(edges, product.EdgeProductPayback)
 	}
 	return edges
 }
@@ -6307,6 +7145,12 @@ func (m *ProductMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case product.EdgeProductPayback:
+		ids := make([]ent.Value, 0, len(m.product_payback))
+		for id := range m.product_payback {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -6314,12 +7158,15 @@ func (m *ProductMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *ProductMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.removedproduct_insurance != nil {
 		edges = append(edges, product.EdgeProductInsurance)
 	}
 	if m.removedproduct_inquiry != nil {
 		edges = append(edges, product.EdgeProductInquiry)
+	}
+	if m.removedproduct_payback != nil {
+		edges = append(edges, product.EdgeProductPayback)
 	}
 	return edges
 }
@@ -6340,6 +7187,12 @@ func (m *ProductMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case product.EdgeProductPayback:
+		ids := make([]ent.Value, 0, len(m.removedproduct_payback))
+		for id := range m.removedproduct_payback {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -6347,7 +7200,7 @@ func (m *ProductMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *ProductMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.clearedproduct_gender {
 		edges = append(edges, product.EdgeProductGender)
 	}
@@ -6410,6 +7263,9 @@ func (m *ProductMutation) ResetEdge(name string) error {
 		return nil
 	case product.EdgeProductInquiry:
 		m.ResetProductInquiry()
+		return nil
+	case product.EdgeProductPayback:
+		m.ResetProductPayback()
 		return nil
 	}
 	return fmt.Errorf("unknown Product edge %s", name)

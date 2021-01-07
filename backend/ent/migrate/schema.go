@@ -203,6 +203,52 @@ var (
 		PrimaryKey:  []*schema.Column{OfficersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
+	// PaybacksColumns holds the columns for the "paybacks" table.
+	PaybacksColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "accountnumber", Type: field.TypeString},
+		{Name: "transfertime", Type: field.TypeTime},
+		{Name: "bank_id", Type: field.TypeInt, Nullable: true},
+		{Name: "member_id", Type: field.TypeInt, Nullable: true},
+		{Name: "officer_id", Type: field.TypeInt, Nullable: true},
+		{Name: "product_id", Type: field.TypeInt, Nullable: true},
+	}
+	// PaybacksTable holds the schema information for the "paybacks" table.
+	PaybacksTable = &schema.Table{
+		Name:       "paybacks",
+		Columns:    PaybacksColumns,
+		PrimaryKey: []*schema.Column{PaybacksColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "paybacks_banks_bank_payback",
+				Columns: []*schema.Column{PaybacksColumns[3]},
+
+				RefColumns: []*schema.Column{BanksColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "paybacks_members_member_payback",
+				Columns: []*schema.Column{PaybacksColumns[4]},
+
+				RefColumns: []*schema.Column{MembersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "paybacks_officers_officer_payback",
+				Columns: []*schema.Column{PaybacksColumns[5]},
+
+				RefColumns: []*schema.Column{OfficersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "paybacks_products_product_payback",
+				Columns: []*schema.Column{PaybacksColumns[6]},
+
+				RefColumns: []*schema.Column{ProductsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
 	// PaymentsColumns holds the columns for the "payments" table.
 	PaymentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -302,6 +348,7 @@ var (
 		MembersTable,
 		MoneyTransfersTable,
 		OfficersTable,
+		PaybacksTable,
 		PaymentsTable,
 		ProductsTable,
 	}
@@ -316,6 +363,10 @@ func init() {
 	InsurancesTable.ForeignKeys[1].RefTable = MembersTable
 	InsurancesTable.ForeignKeys[2].RefTable = OfficersTable
 	InsurancesTable.ForeignKeys[3].RefTable = ProductsTable
+	PaybacksTable.ForeignKeys[0].RefTable = BanksTable
+	PaybacksTable.ForeignKeys[1].RefTable = MembersTable
+	PaybacksTable.ForeignKeys[2].RefTable = OfficersTable
+	PaybacksTable.ForeignKeys[3].RefTable = ProductsTable
 	PaymentsTable.ForeignKeys[0].RefTable = BanksTable
 	PaymentsTable.ForeignKeys[1].RefTable = InsurancesTable
 	PaymentsTable.ForeignKeys[2].RefTable = MembersTable

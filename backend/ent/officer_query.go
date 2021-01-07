@@ -15,6 +15,7 @@ import (
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
 )
@@ -31,6 +32,7 @@ type OfficerQuery struct {
 	withOfficerProduct   *ProductQuery
 	withOfficerInsurance *InsuranceQuery
 	withOfficerInquiry   *InquiryQuery
+	withOfficerPayback   *PaybackQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -107,6 +109,24 @@ func (oq *OfficerQuery) QueryOfficerInquiry() *InquiryQuery {
 			sqlgraph.From(officer.Table, officer.FieldID, oq.sqlQuery()),
 			sqlgraph.To(inquiry.Table, inquiry.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerInquiryTable, officer.OfficerInquiryColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(oq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryOfficerPayback chains the current query on the officer_payback edge.
+func (oq *OfficerQuery) QueryOfficerPayback() *PaybackQuery {
+	query := &PaybackQuery{config: oq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := oq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(officer.Table, officer.FieldID, oq.sqlQuery()),
+			sqlgraph.To(payback.Table, payback.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerPaybackTable, officer.OfficerPaybackColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(oq.driver.Dialect(), step)
 		return fromU, nil
@@ -326,6 +346,17 @@ func (oq *OfficerQuery) WithOfficerInquiry(opts ...func(*InquiryQuery)) *Officer
 	return oq
 }
 
+//  WithOfficerPayback tells the query-builder to eager-loads the nodes that are connected to
+// the "officer_payback" edge. The optional arguments used to configure the query builder of the edge.
+func (oq *OfficerQuery) WithOfficerPayback(opts ...func(*PaybackQuery)) *OfficerQuery {
+	query := &PaybackQuery{config: oq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	oq.withOfficerPayback = query
+	return oq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -392,10 +423,11 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 	var (
 		nodes       = []*Officer{}
 		_spec       = oq.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			oq.withOfficerProduct != nil,
 			oq.withOfficerInsurance != nil,
 			oq.withOfficerInquiry != nil,
+			oq.withOfficerPayback != nil,
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
@@ -500,6 +532,34 @@ func (oq *OfficerQuery) sqlAll(ctx context.Context) ([]*Officer, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "officer_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.OfficerInquiry = append(node.Edges.OfficerInquiry, n)
+		}
+	}
+
+	if query := oq.withOfficerPayback; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Officer)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Payback(func(s *sql.Selector) {
+			s.Where(sql.InValues(officer.OfficerPaybackColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.officer_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "officer_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "officer_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.OfficerPayback = append(node.Edges.OfficerPayback, n)
 		}
 	}
 

@@ -12,6 +12,8 @@ const (
 
 	// EdgeBankPayment holds the string denoting the bank_payment edge name in mutations.
 	EdgeBankPayment = "bank_payment"
+	// EdgeBankPayback holds the string denoting the bank_payback edge name in mutations.
+	EdgeBankPayback = "bank_payback"
 
 	// Table holds the table name of the bank in the database.
 	Table = "banks"
@@ -22,6 +24,13 @@ const (
 	BankPaymentInverseTable = "payments"
 	// BankPaymentColumn is the table column denoting the bank_payment relation/edge.
 	BankPaymentColumn = "bank_id"
+	// BankPaybackTable is the table the holds the bank_payback relation/edge.
+	BankPaybackTable = "paybacks"
+	// BankPaybackInverseTable is the table name for the Payback entity.
+	// It exists in this package in order to avoid circular dependency with the "payback" package.
+	BankPaybackInverseTable = "paybacks"
+	// BankPaybackColumn is the table column denoting the bank_payback relation/edge.
+	BankPaybackColumn = "bank_id"
 )
 
 // Columns holds all SQL columns for bank fields.

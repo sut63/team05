@@ -450,6 +450,30 @@ func (f OfficerMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutatio
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.OfficerMutation", m)
 }
 
+// The PaybackQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type PaybackQueryRuleFunc func(context.Context, *ent.PaybackQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f PaybackQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.PaybackQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PaybackQuery", q)
+}
+
+// The PaybackMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type PaybackMutationRuleFunc func(context.Context, *ent.PaybackMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f PaybackMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.PaybackMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PaybackMutation", m)
+}
+
 // The PaymentQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type PaymentQueryRuleFunc func(context.Context, *ent.PaymentQuery) error

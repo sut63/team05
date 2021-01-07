@@ -20,6 +20,8 @@ const (
 	EdgeOfficerInsurance = "officer_insurance"
 	// EdgeOfficerInquiry holds the string denoting the officer_inquiry edge name in mutations.
 	EdgeOfficerInquiry = "officer_inquiry"
+	// EdgeOfficerPayback holds the string denoting the officer_payback edge name in mutations.
+	EdgeOfficerPayback = "officer_payback"
 
 	// Table holds the table name of the officer in the database.
 	Table = "officers"
@@ -44,6 +46,13 @@ const (
 	OfficerInquiryInverseTable = "inquiries"
 	// OfficerInquiryColumn is the table column denoting the officer_inquiry relation/edge.
 	OfficerInquiryColumn = "officer_id"
+	// OfficerPaybackTable is the table the holds the officer_payback relation/edge.
+	OfficerPaybackTable = "paybacks"
+	// OfficerPaybackInverseTable is the table name for the Payback entity.
+	// It exists in this package in order to avoid circular dependency with the "payback" package.
+	OfficerPaybackInverseTable = "paybacks"
+	// OfficerPaybackColumn is the table column denoting the officer_payback relation/edge.
+	OfficerPaybackColumn = "officer_id"
 )
 
 // Columns holds all SQL columns for officer fields.

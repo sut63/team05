@@ -26,9 +26,11 @@ type Bank struct {
 type BankEdges struct {
 	// BankPayment holds the value of the bank_payment edge.
 	BankPayment []*Payment
+	// BankPayback holds the value of the bank_payback edge.
+	BankPayback []*Payback
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 }
 
 // BankPaymentOrErr returns the BankPayment value or an error if the edge
@@ -38,6 +40,15 @@ func (e BankEdges) BankPaymentOrErr() ([]*Payment, error) {
 		return e.BankPayment, nil
 	}
 	return nil, &NotLoadedError{edge: "bank_payment"}
+}
+
+// BankPaybackOrErr returns the BankPayback value or an error if the edge
+// was not loaded in eager-loading.
+func (e BankEdges) BankPaybackOrErr() ([]*Payback, error) {
+	if e.loadedTypes[1] {
+		return e.BankPayback, nil
+	}
+	return nil, &NotLoadedError{edge: "bank_payback"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -71,6 +82,11 @@ func (b *Bank) assignValues(values ...interface{}) error {
 // QueryBankPayment queries the bank_payment edge of the Bank.
 func (b *Bank) QueryBankPayment() *PaymentQuery {
 	return (&BankClient{config: b.config}).QueryBankPayment(b)
+}
+
+// QueryBankPayback queries the bank_payback edge of the Bank.
+func (b *Bank) QueryBankPayback() *PaybackQuery {
+	return (&BankClient{config: b.config}).QueryBankPayback(b)
 }
 
 // Update returns a builder for updating this Bank.
