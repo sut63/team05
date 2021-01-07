@@ -1749,6 +1749,140 @@ var doc = `{
                 }
             }
         },
+        "/paybacks": {
+            "get": {
+                "description": "list payback entities",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List payback entities",
+                "operationId": "list-payback",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Payback"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create payback",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create payback",
+                "operationId": "create-payback",
+                "parameters": [
+                    {
+                        "description": "Payback entity",
+                        "name": "payback",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Payback"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Payback"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/paybacks/{id}": {
+            "delete": {
+                "description": "get payback by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a payback entity by ID",
+                "operationId": "delete-payback",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Payback ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/payments": {
             "get": {
                 "description": "list Payment entities",
@@ -2140,6 +2274,29 @@ var doc = `{
                 }
             }
         },
+        "controllers.Payback": {
+            "type": "object",
+            "properties": {
+                "accountnumber": {
+                    "type": "string"
+                },
+                "bankID": {
+                    "type": "integer"
+                },
+                "memberID": {
+                    "type": "integer"
+                },
+                "officerID": {
+                    "type": "integer"
+                },
+                "productID": {
+                    "type": "integer"
+                },
+                "transfertime": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.Payment": {
             "type": "object",
             "properties": {
@@ -2213,6 +2370,13 @@ var doc = `{
         "ent.BankEdges": {
             "type": "object",
             "properties": {
+                "bankPayback": {
+                    "description": "BankPayback holds the value of the bank_payback edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Payback"
+                    }
+                },
                 "bankPayment": {
                     "description": "BankPayment holds the value of the bank_payment edge.",
                     "type": "array",
@@ -2498,6 +2662,13 @@ var doc = `{
                         "$ref": "#/definitions/ent.Insurance"
                     }
                 },
+                "memberPayback": {
+                    "description": "MemberPayback holds the value of the member_payback edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Payback"
+                    }
+                },
                 "memberPayment": {
                     "description": "MemberPayment holds the value of the member_payment edge.",
                     "type": "array",
@@ -2580,12 +2751,66 @@ var doc = `{
                         "$ref": "#/definitions/ent.Insurance"
                     }
                 },
+                "officerPayback": {
+                    "description": "OfficerPayback holds the value of the officer_payback edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Payback"
+                    }
+                },
                 "officerProduct": {
                     "description": "OfficerProduct holds the value of the officer_product edge.",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/ent.Product"
                     }
+                }
+            }
+        },
+        "ent.Payback": {
+            "type": "object",
+            "properties": {
+                "Accountnumber": {
+                    "description": "Accountnumber holds the value of the \"Accountnumber\" field.",
+                    "type": "string"
+                },
+                "Transfertime": {
+                    "description": "Transfertime holds the value of the \"Transfertime\" field.",
+                    "type": "string"
+                },
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the PaybackQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.PaybackEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                }
+            }
+        },
+        "ent.PaybackEdges": {
+            "type": "object",
+            "properties": {
+                "bank": {
+                    "description": "Bank holds the value of the Bank edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Bank"
+                },
+                "member": {
+                    "description": "Member holds the value of the Member edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Member"
+                },
+                "officer": {
+                    "description": "Officer holds the value of the Officer edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Officer"
+                },
+                "product": {
+                    "description": "Product holds the value of the Product edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Product"
                 }
             }
         },
@@ -2701,6 +2926,13 @@ var doc = `{
                     "description": "ProductOfficer holds the value of the product_officer edge.",
                     "type": "object",
                     "$ref": "#/definitions/ent.Officer"
+                },
+                "productPayback": {
+                    "description": "ProductPayback holds the value of the product_payback edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Payback"
+                    }
                 }
             }
         },
