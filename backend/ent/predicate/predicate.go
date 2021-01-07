@@ -44,3 +44,6 @@ type Payment func(*sql.Selector)
 
 // Product is the predicate function for product builders.
 type Product func(*sql.Selector)
+
+// Recordinsurance is the predicate function for recordinsurance builders.
+type Recordinsurance func(*sql.Selector)

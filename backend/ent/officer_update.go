@@ -15,6 +15,7 @@ import (
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // OfficerUpdate is the builder for updating Officer entities.
@@ -94,6 +95,7 @@ func (ou *OfficerUpdate) AddOfficerInquiry(i ...*Inquiry) *OfficerUpdate {
 	return ou.AddOfficerInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // AddOfficerPaybackIDs adds the officer_payback edge to Payback by ids.
 func (ou *OfficerUpdate) AddOfficerPaybackIDs(ids ...int) *OfficerUpdate {
 	ou.mutation.AddOfficerPaybackIDs(ids...)
@@ -107,6 +109,21 @@ func (ou *OfficerUpdate) AddOfficerPayback(p ...*Payback) *OfficerUpdate {
 		ids[i] = p[i].ID
 	}
 	return ou.AddOfficerPaybackIDs(ids...)
+=======
+// AddOfficerRecordinsuranceIDs adds the officer_recordinsurance edge to Recordinsurance by ids.
+func (ou *OfficerUpdate) AddOfficerRecordinsuranceIDs(ids ...int) *OfficerUpdate {
+	ou.mutation.AddOfficerRecordinsuranceIDs(ids...)
+	return ou
+}
+
+// AddOfficerRecordinsurance adds the officer_recordinsurance edges to Recordinsurance.
+func (ou *OfficerUpdate) AddOfficerRecordinsurance(r ...*Recordinsurance) *OfficerUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return ou.AddOfficerRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Mutation returns the OfficerMutation object of the builder.
@@ -159,6 +176,7 @@ func (ou *OfficerUpdate) RemoveOfficerInquiry(i ...*Inquiry) *OfficerUpdate {
 	return ou.RemoveOfficerInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // RemoveOfficerPaybackIDs removes the officer_payback edge to Payback by ids.
 func (ou *OfficerUpdate) RemoveOfficerPaybackIDs(ids ...int) *OfficerUpdate {
 	ou.mutation.RemoveOfficerPaybackIDs(ids...)
@@ -172,6 +190,21 @@ func (ou *OfficerUpdate) RemoveOfficerPayback(p ...*Payback) *OfficerUpdate {
 		ids[i] = p[i].ID
 	}
 	return ou.RemoveOfficerPaybackIDs(ids...)
+=======
+// RemoveOfficerRecordinsuranceIDs removes the officer_recordinsurance edge to Recordinsurance by ids.
+func (ou *OfficerUpdate) RemoveOfficerRecordinsuranceIDs(ids ...int) *OfficerUpdate {
+	ou.mutation.RemoveOfficerRecordinsuranceIDs(ids...)
+	return ou
+}
+
+// RemoveOfficerRecordinsurance removes officer_recordinsurance edges to Recordinsurance.
+func (ou *OfficerUpdate) RemoveOfficerRecordinsurance(r ...*Recordinsurance) *OfficerUpdate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return ou.RemoveOfficerRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -394,17 +427,30 @@ func (ou *OfficerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+<<<<<<< HEAD
 	if nodes := ou.mutation.RemovedOfficerPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   officer.OfficerPaybackTable,
 			Columns: []string{officer.OfficerPaybackColumn},
+=======
+	if nodes := ou.mutation.RemovedOfficerRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerRecordinsuranceTable,
+			Columns: []string{officer.OfficerRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -413,17 +459,30 @@ func (ou *OfficerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+<<<<<<< HEAD
 	if nodes := ou.mutation.OfficerPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   officer.OfficerPaybackTable,
 			Columns: []string{officer.OfficerPaybackColumn},
+=======
+	if nodes := ou.mutation.OfficerRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerRecordinsuranceTable,
+			Columns: []string{officer.OfficerRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -513,6 +572,7 @@ func (ouo *OfficerUpdateOne) AddOfficerInquiry(i ...*Inquiry) *OfficerUpdateOne 
 	return ouo.AddOfficerInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // AddOfficerPaybackIDs adds the officer_payback edge to Payback by ids.
 func (ouo *OfficerUpdateOne) AddOfficerPaybackIDs(ids ...int) *OfficerUpdateOne {
 	ouo.mutation.AddOfficerPaybackIDs(ids...)
@@ -526,6 +586,21 @@ func (ouo *OfficerUpdateOne) AddOfficerPayback(p ...*Payback) *OfficerUpdateOne 
 		ids[i] = p[i].ID
 	}
 	return ouo.AddOfficerPaybackIDs(ids...)
+=======
+// AddOfficerRecordinsuranceIDs adds the officer_recordinsurance edge to Recordinsurance by ids.
+func (ouo *OfficerUpdateOne) AddOfficerRecordinsuranceIDs(ids ...int) *OfficerUpdateOne {
+	ouo.mutation.AddOfficerRecordinsuranceIDs(ids...)
+	return ouo
+}
+
+// AddOfficerRecordinsurance adds the officer_recordinsurance edges to Recordinsurance.
+func (ouo *OfficerUpdateOne) AddOfficerRecordinsurance(r ...*Recordinsurance) *OfficerUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return ouo.AddOfficerRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Mutation returns the OfficerMutation object of the builder.
@@ -578,6 +653,7 @@ func (ouo *OfficerUpdateOne) RemoveOfficerInquiry(i ...*Inquiry) *OfficerUpdateO
 	return ouo.RemoveOfficerInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // RemoveOfficerPaybackIDs removes the officer_payback edge to Payback by ids.
 func (ouo *OfficerUpdateOne) RemoveOfficerPaybackIDs(ids ...int) *OfficerUpdateOne {
 	ouo.mutation.RemoveOfficerPaybackIDs(ids...)
@@ -591,6 +667,21 @@ func (ouo *OfficerUpdateOne) RemoveOfficerPayback(p ...*Payback) *OfficerUpdateO
 		ids[i] = p[i].ID
 	}
 	return ouo.RemoveOfficerPaybackIDs(ids...)
+=======
+// RemoveOfficerRecordinsuranceIDs removes the officer_recordinsurance edge to Recordinsurance by ids.
+func (ouo *OfficerUpdateOne) RemoveOfficerRecordinsuranceIDs(ids ...int) *OfficerUpdateOne {
+	ouo.mutation.RemoveOfficerRecordinsuranceIDs(ids...)
+	return ouo
+}
+
+// RemoveOfficerRecordinsurance removes officer_recordinsurance edges to Recordinsurance.
+func (ouo *OfficerUpdateOne) RemoveOfficerRecordinsurance(r ...*Recordinsurance) *OfficerUpdateOne {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return ouo.RemoveOfficerRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Save executes the query and returns the updated entity.
@@ -811,17 +902,30 @@ func (ouo *OfficerUpdateOne) sqlSave(ctx context.Context) (o *Officer, err error
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+<<<<<<< HEAD
 	if nodes := ouo.mutation.RemovedOfficerPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   officer.OfficerPaybackTable,
 			Columns: []string{officer.OfficerPaybackColumn},
+=======
+	if nodes := ouo.mutation.RemovedOfficerRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerRecordinsuranceTable,
+			Columns: []string{officer.OfficerRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}
@@ -830,17 +934,30 @@ func (ouo *OfficerUpdateOne) sqlSave(ctx context.Context) (o *Officer, err error
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
+<<<<<<< HEAD
 	if nodes := ouo.mutation.OfficerPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   officer.OfficerPaybackTable,
 			Columns: []string{officer.OfficerPaybackColumn},
+=======
+	if nodes := ouo.mutation.OfficerRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerRecordinsuranceTable,
+			Columns: []string{officer.OfficerRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}

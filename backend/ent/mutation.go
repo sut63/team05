@@ -21,6 +21,7 @@ import (
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/product"
+	"github.com/sut63/team05/ent/recordinsurance"
 
 	"github.com/facebookincubator/ent"
 )
@@ -34,6 +35,7 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
+<<<<<<< HEAD
 	TypeBank          = "Bank"
 	TypeCategory      = "Category"
 	TypeGender        = "Gender"
@@ -47,6 +49,21 @@ const (
 	TypePayback       = "Payback"
 	TypePayment       = "Payment"
 	TypeProduct       = "Product"
+=======
+	TypeBank            = "Bank"
+	TypeCategory        = "Category"
+	TypeGender          = "Gender"
+	TypeGroupOfAge      = "GroupOfAge"
+	TypeHospital        = "Hospital"
+	TypeInquiry         = "Inquiry"
+	TypeInsurance       = "Insurance"
+	TypeMember          = "Member"
+	TypeMoneyTransfer   = "MoneyTransfer"
+	TypeOfficer         = "Officer"
+	TypePayment         = "Payment"
+	TypeProduct         = "Product"
+	TypeRecordinsurance = "Recordinsurance"
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 )
 
 // BankMutation represents an operation that mutate the Banks
@@ -1645,15 +1662,17 @@ func (m *GroupOfAgeMutation) ResetEdge(name string) error {
 // nodes in the graph.
 type HospitalMutation struct {
 	config
-	op                        Op
-	typ                       string
-	id                        *int
-	hospital_name             *string
-	clearedFields             map[string]struct{}
-	hospital_insurance        map[int]struct{}
-	removedhospital_insurance map[int]struct{}
-	done                      bool
-	oldValue                  func(context.Context) (*Hospital, error)
+	op                              Op
+	typ                             string
+	id                              *int
+	hospital_name                   *string
+	clearedFields                   map[string]struct{}
+	hospital_insurance              map[int]struct{}
+	removedhospital_insurance       map[int]struct{}
+	hospital_recordinsurance        map[int]struct{}
+	removedhospital_recordinsurance map[int]struct{}
+	done                            bool
+	oldValue                        func(context.Context) (*Hospital, error)
 }
 
 var _ ent.Mutation = (*HospitalMutation)(nil)
@@ -1814,6 +1833,48 @@ func (m *HospitalMutation) ResetHospitalInsurance() {
 	m.removedhospital_insurance = nil
 }
 
+// AddHospitalRecordinsuranceIDs adds the hospital_recordinsurance edge to Recordinsurance by ids.
+func (m *HospitalMutation) AddHospitalRecordinsuranceIDs(ids ...int) {
+	if m.hospital_recordinsurance == nil {
+		m.hospital_recordinsurance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.hospital_recordinsurance[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveHospitalRecordinsuranceIDs removes the hospital_recordinsurance edge to Recordinsurance by ids.
+func (m *HospitalMutation) RemoveHospitalRecordinsuranceIDs(ids ...int) {
+	if m.removedhospital_recordinsurance == nil {
+		m.removedhospital_recordinsurance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedhospital_recordinsurance[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedHospitalRecordinsurance returns the removed ids of hospital_recordinsurance.
+func (m *HospitalMutation) RemovedHospitalRecordinsuranceIDs() (ids []int) {
+	for id := range m.removedhospital_recordinsurance {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// HospitalRecordinsuranceIDs returns the hospital_recordinsurance ids in the mutation.
+func (m *HospitalMutation) HospitalRecordinsuranceIDs() (ids []int) {
+	for id := range m.hospital_recordinsurance {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetHospitalRecordinsurance reset all changes of the "hospital_recordinsurance" edge.
+func (m *HospitalMutation) ResetHospitalRecordinsurance() {
+	m.hospital_recordinsurance = nil
+	m.removedhospital_recordinsurance = nil
+}
+
 // Op returns the operation name.
 func (m *HospitalMutation) Op() Op {
 	return m.op
@@ -1929,9 +1990,12 @@ func (m *HospitalMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *HospitalMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.hospital_insurance != nil {
 		edges = append(edges, hospital.EdgeHospitalInsurance)
+	}
+	if m.hospital_recordinsurance != nil {
+		edges = append(edges, hospital.EdgeHospitalRecordinsurance)
 	}
 	return edges
 }
@@ -1946,6 +2010,12 @@ func (m *HospitalMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case hospital.EdgeHospitalRecordinsurance:
+		ids := make([]ent.Value, 0, len(m.hospital_recordinsurance))
+		for id := range m.hospital_recordinsurance {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -1953,9 +2023,12 @@ func (m *HospitalMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *HospitalMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.removedhospital_insurance != nil {
 		edges = append(edges, hospital.EdgeHospitalInsurance)
+	}
+	if m.removedhospital_recordinsurance != nil {
+		edges = append(edges, hospital.EdgeHospitalRecordinsurance)
 	}
 	return edges
 }
@@ -1970,6 +2043,12 @@ func (m *HospitalMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case hospital.EdgeHospitalRecordinsurance:
+		ids := make([]ent.Value, 0, len(m.removedhospital_recordinsurance))
+		for id := range m.removedhospital_recordinsurance {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -1977,7 +2056,7 @@ func (m *HospitalMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *HospitalMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	return edges
 }
 
@@ -2004,6 +2083,9 @@ func (m *HospitalMutation) ResetEdge(name string) error {
 	switch name {
 	case hospital.EdgeHospitalInsurance:
 		m.ResetHospitalInsurance()
+		return nil
+	case hospital.EdgeHospitalRecordinsurance:
+		m.ResetHospitalRecordinsurance()
 		return nil
 	}
 	return fmt.Errorf("unknown Hospital edge %s", name)
@@ -3376,6 +3458,7 @@ func (m *InsuranceMutation) ResetEdge(name string) error {
 // nodes in the graph.
 type MemberMutation struct {
 	config
+<<<<<<< HEAD
 	op                      Op
 	typ                     string
 	id                      *int
@@ -3393,6 +3476,25 @@ type MemberMutation struct {
 	removedmember_payback   map[int]struct{}
 	done                    bool
 	oldValue                func(context.Context) (*Member, error)
+=======
+	op                            Op
+	typ                           string
+	id                            *int
+	member_email                  *string
+	member_name                   *string
+	member_password               *string
+	clearedFields                 map[string]struct{}
+	member_insurance              map[int]struct{}
+	removedmember_insurance       map[int]struct{}
+	member_payment                map[int]struct{}
+	removedmember_payment         map[int]struct{}
+	member_inquiry                map[int]struct{}
+	removedmember_inquiry         map[int]struct{}
+	member_recordinsurance        map[int]struct{}
+	removedmember_recordinsurance map[int]struct{}
+	done                          bool
+	oldValue                      func(context.Context) (*Member, error)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 var _ ent.Mutation = (*MemberMutation)(nil)
@@ -3711,6 +3813,7 @@ func (m *MemberMutation) ResetMemberInquiry() {
 	m.removedmember_inquiry = nil
 }
 
+<<<<<<< HEAD
 // AddMemberPaybackIDs adds the member_payback edge to Payback by ids.
 func (m *MemberMutation) AddMemberPaybackIDs(ids ...int) {
 	if m.member_payback == nil {
@@ -3734,23 +3837,61 @@ func (m *MemberMutation) RemoveMemberPaybackIDs(ids ...int) {
 // RemovedMemberPayback returns the removed ids of member_payback.
 func (m *MemberMutation) RemovedMemberPaybackIDs() (ids []int) {
 	for id := range m.removedmember_payback {
+=======
+// AddMemberRecordinsuranceIDs adds the member_recordinsurance edge to Recordinsurance by ids.
+func (m *MemberMutation) AddMemberRecordinsuranceIDs(ids ...int) {
+	if m.member_recordinsurance == nil {
+		m.member_recordinsurance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.member_recordinsurance[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveMemberRecordinsuranceIDs removes the member_recordinsurance edge to Recordinsurance by ids.
+func (m *MemberMutation) RemoveMemberRecordinsuranceIDs(ids ...int) {
+	if m.removedmember_recordinsurance == nil {
+		m.removedmember_recordinsurance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedmember_recordinsurance[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedMemberRecordinsurance returns the removed ids of member_recordinsurance.
+func (m *MemberMutation) RemovedMemberRecordinsuranceIDs() (ids []int) {
+	for id := range m.removedmember_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		ids = append(ids, id)
 	}
 	return
 }
 
+<<<<<<< HEAD
 // MemberPaybackIDs returns the member_payback ids in the mutation.
 func (m *MemberMutation) MemberPaybackIDs() (ids []int) {
 	for id := range m.member_payback {
+=======
+// MemberRecordinsuranceIDs returns the member_recordinsurance ids in the mutation.
+func (m *MemberMutation) MemberRecordinsuranceIDs() (ids []int) {
+	for id := range m.member_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		ids = append(ids, id)
 	}
 	return
 }
 
+<<<<<<< HEAD
 // ResetMemberPayback reset all changes of the "member_payback" edge.
 func (m *MemberMutation) ResetMemberPayback() {
 	m.member_payback = nil
 	m.removedmember_payback = nil
+=======
+// ResetMemberRecordinsurance reset all changes of the "member_recordinsurance" edge.
+func (m *MemberMutation) ResetMemberRecordinsurance() {
+	m.member_recordinsurance = nil
+	m.removedmember_recordinsurance = nil
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Op returns the operation name.
@@ -3912,8 +4053,13 @@ func (m *MemberMutation) AddedEdges() []string {
 	if m.member_inquiry != nil {
 		edges = append(edges, member.EdgeMemberInquiry)
 	}
+<<<<<<< HEAD
 	if m.member_payback != nil {
 		edges = append(edges, member.EdgeMemberPayback)
+=======
+	if m.member_recordinsurance != nil {
+		edges = append(edges, member.EdgeMemberRecordinsurance)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}
 	return edges
 }
@@ -3940,9 +4086,15 @@ func (m *MemberMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+<<<<<<< HEAD
 	case member.EdgeMemberPayback:
 		ids := make([]ent.Value, 0, len(m.member_payback))
 		for id := range m.member_payback {
+=======
+	case member.EdgeMemberRecordinsurance:
+		ids := make([]ent.Value, 0, len(m.member_recordinsurance))
+		for id := range m.member_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			ids = append(ids, id)
 		}
 		return ids
@@ -3963,8 +4115,13 @@ func (m *MemberMutation) RemovedEdges() []string {
 	if m.removedmember_inquiry != nil {
 		edges = append(edges, member.EdgeMemberInquiry)
 	}
+<<<<<<< HEAD
 	if m.removedmember_payback != nil {
 		edges = append(edges, member.EdgeMemberPayback)
+=======
+	if m.removedmember_recordinsurance != nil {
+		edges = append(edges, member.EdgeMemberRecordinsurance)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}
 	return edges
 }
@@ -3991,9 +4148,15 @@ func (m *MemberMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+<<<<<<< HEAD
 	case member.EdgeMemberPayback:
 		ids := make([]ent.Value, 0, len(m.removedmember_payback))
 		for id := range m.removedmember_payback {
+=======
+	case member.EdgeMemberRecordinsurance:
+		ids := make([]ent.Value, 0, len(m.removedmember_recordinsurance))
+		for id := range m.removedmember_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			ids = append(ids, id)
 		}
 		return ids
@@ -4038,8 +4201,13 @@ func (m *MemberMutation) ResetEdge(name string) error {
 	case member.EdgeMemberInquiry:
 		m.ResetMemberInquiry()
 		return nil
+<<<<<<< HEAD
 	case member.EdgeMemberPayback:
 		m.ResetMemberPayback()
+=======
+	case member.EdgeMemberRecordinsurance:
+		m.ResetMemberRecordinsurance()
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		return nil
 	}
 	return fmt.Errorf("unknown Member edge %s", name)
@@ -4417,6 +4585,7 @@ func (m *MoneyTransferMutation) ResetEdge(name string) error {
 // nodes in the graph.
 type OfficerMutation struct {
 	config
+<<<<<<< HEAD
 	op                       Op
 	typ                      string
 	id                       *int
@@ -4434,6 +4603,25 @@ type OfficerMutation struct {
 	removedofficer_payback   map[int]struct{}
 	done                     bool
 	oldValue                 func(context.Context) (*Officer, error)
+=======
+	op                             Op
+	typ                            string
+	id                             *int
+	officer_email                  *string
+	officer_name                   *string
+	officer_password               *string
+	clearedFields                  map[string]struct{}
+	officer_product                map[int]struct{}
+	removedofficer_product         map[int]struct{}
+	officer_insurance              map[int]struct{}
+	removedofficer_insurance       map[int]struct{}
+	officer_inquiry                map[int]struct{}
+	removedofficer_inquiry         map[int]struct{}
+	officer_recordinsurance        map[int]struct{}
+	removedofficer_recordinsurance map[int]struct{}
+	done                           bool
+	oldValue                       func(context.Context) (*Officer, error)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 var _ ent.Mutation = (*OfficerMutation)(nil)
@@ -4752,6 +4940,7 @@ func (m *OfficerMutation) ResetOfficerInquiry() {
 	m.removedofficer_inquiry = nil
 }
 
+<<<<<<< HEAD
 // AddOfficerPaybackIDs adds the officer_payback edge to Payback by ids.
 func (m *OfficerMutation) AddOfficerPaybackIDs(ids ...int) {
 	if m.officer_payback == nil {
@@ -4775,23 +4964,61 @@ func (m *OfficerMutation) RemoveOfficerPaybackIDs(ids ...int) {
 // RemovedOfficerPayback returns the removed ids of officer_payback.
 func (m *OfficerMutation) RemovedOfficerPaybackIDs() (ids []int) {
 	for id := range m.removedofficer_payback {
+=======
+// AddOfficerRecordinsuranceIDs adds the officer_recordinsurance edge to Recordinsurance by ids.
+func (m *OfficerMutation) AddOfficerRecordinsuranceIDs(ids ...int) {
+	if m.officer_recordinsurance == nil {
+		m.officer_recordinsurance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.officer_recordinsurance[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveOfficerRecordinsuranceIDs removes the officer_recordinsurance edge to Recordinsurance by ids.
+func (m *OfficerMutation) RemoveOfficerRecordinsuranceIDs(ids ...int) {
+	if m.removedofficer_recordinsurance == nil {
+		m.removedofficer_recordinsurance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedofficer_recordinsurance[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedOfficerRecordinsurance returns the removed ids of officer_recordinsurance.
+func (m *OfficerMutation) RemovedOfficerRecordinsuranceIDs() (ids []int) {
+	for id := range m.removedofficer_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		ids = append(ids, id)
 	}
 	return
 }
 
+<<<<<<< HEAD
 // OfficerPaybackIDs returns the officer_payback ids in the mutation.
 func (m *OfficerMutation) OfficerPaybackIDs() (ids []int) {
 	for id := range m.officer_payback {
+=======
+// OfficerRecordinsuranceIDs returns the officer_recordinsurance ids in the mutation.
+func (m *OfficerMutation) OfficerRecordinsuranceIDs() (ids []int) {
+	for id := range m.officer_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		ids = append(ids, id)
 	}
 	return
 }
 
+<<<<<<< HEAD
 // ResetOfficerPayback reset all changes of the "officer_payback" edge.
 func (m *OfficerMutation) ResetOfficerPayback() {
 	m.officer_payback = nil
 	m.removedofficer_payback = nil
+=======
+// ResetOfficerRecordinsurance reset all changes of the "officer_recordinsurance" edge.
+func (m *OfficerMutation) ResetOfficerRecordinsurance() {
+	m.officer_recordinsurance = nil
+	m.removedofficer_recordinsurance = nil
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Op returns the operation name.
@@ -4953,8 +5180,13 @@ func (m *OfficerMutation) AddedEdges() []string {
 	if m.officer_inquiry != nil {
 		edges = append(edges, officer.EdgeOfficerInquiry)
 	}
+<<<<<<< HEAD
 	if m.officer_payback != nil {
 		edges = append(edges, officer.EdgeOfficerPayback)
+=======
+	if m.officer_recordinsurance != nil {
+		edges = append(edges, officer.EdgeOfficerRecordinsurance)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}
 	return edges
 }
@@ -4981,9 +5213,15 @@ func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+<<<<<<< HEAD
 	case officer.EdgeOfficerPayback:
 		ids := make([]ent.Value, 0, len(m.officer_payback))
 		for id := range m.officer_payback {
+=======
+	case officer.EdgeOfficerRecordinsurance:
+		ids := make([]ent.Value, 0, len(m.officer_recordinsurance))
+		for id := range m.officer_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			ids = append(ids, id)
 		}
 		return ids
@@ -5004,8 +5242,13 @@ func (m *OfficerMutation) RemovedEdges() []string {
 	if m.removedofficer_inquiry != nil {
 		edges = append(edges, officer.EdgeOfficerInquiry)
 	}
+<<<<<<< HEAD
 	if m.removedofficer_payback != nil {
 		edges = append(edges, officer.EdgeOfficerPayback)
+=======
+	if m.removedofficer_recordinsurance != nil {
+		edges = append(edges, officer.EdgeOfficerRecordinsurance)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}
 	return edges
 }
@@ -5032,9 +5275,15 @@ func (m *OfficerMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+<<<<<<< HEAD
 	case officer.EdgeOfficerPayback:
 		ids := make([]ent.Value, 0, len(m.removedofficer_payback))
 		for id := range m.removedofficer_payback {
+=======
+	case officer.EdgeOfficerRecordinsurance:
+		ids := make([]ent.Value, 0, len(m.removedofficer_recordinsurance))
+		for id := range m.removedofficer_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			ids = append(ids, id)
 		}
 		return ids
@@ -5079,8 +5328,13 @@ func (m *OfficerMutation) ResetEdge(name string) error {
 	case officer.EdgeOfficerInquiry:
 		m.ResetOfficerInquiry()
 		return nil
+<<<<<<< HEAD
 	case officer.EdgeOfficerPayback:
 		m.ResetOfficerPayback()
+=======
+	case officer.EdgeOfficerRecordinsurance:
+		m.ResetOfficerRecordinsurance()
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		return nil
 	}
 	return fmt.Errorf("unknown Officer edge %s", name)
@@ -6333,6 +6587,7 @@ func (m *PaymentMutation) ResetEdge(name string) error {
 // nodes in the graph.
 type ProductMutation struct {
 	config
+<<<<<<< HEAD
 	op                         Op
 	typ                        string
 	id                         *int
@@ -6358,6 +6613,33 @@ type ProductMutation struct {
 	removedproduct_payback     map[int]struct{}
 	done                       bool
 	oldValue                   func(context.Context) (*Product, error)
+=======
+	op                             Op
+	typ                            string
+	id                             *int
+	product_name                   *string
+	product_price                  *int
+	addproduct_price               *int
+	product_time                   *int
+	addproduct_time                *int
+	product_payment_of_year        *float64
+	addproduct_payment_of_year     *float64
+	clearedFields                  map[string]struct{}
+	product_gender                 *int
+	clearedproduct_gender          bool
+	product_groupage               *int
+	clearedproduct_groupage        bool
+	product_officer                *int
+	clearedproduct_officer         bool
+	product_insurance              map[int]struct{}
+	removedproduct_insurance       map[int]struct{}
+	product_inquiry                map[int]struct{}
+	removedproduct_inquiry         map[int]struct{}
+	product_recordinsurance        map[int]struct{}
+	removedproduct_recordinsurance map[int]struct{}
+	done                           bool
+	oldValue                       func(context.Context) (*Product, error)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 var _ ent.Mutation = (*ProductMutation)(nil)
@@ -6848,6 +7130,7 @@ func (m *ProductMutation) ResetProductInquiry() {
 	m.removedproduct_inquiry = nil
 }
 
+<<<<<<< HEAD
 // AddProductPaybackIDs adds the product_payback edge to Payback by ids.
 func (m *ProductMutation) AddProductPaybackIDs(ids ...int) {
 	if m.product_payback == nil {
@@ -6871,23 +7154,61 @@ func (m *ProductMutation) RemoveProductPaybackIDs(ids ...int) {
 // RemovedProductPayback returns the removed ids of product_payback.
 func (m *ProductMutation) RemovedProductPaybackIDs() (ids []int) {
 	for id := range m.removedproduct_payback {
+=======
+// AddProductRecordinsuranceIDs adds the product_recordinsurance edge to Recordinsurance by ids.
+func (m *ProductMutation) AddProductRecordinsuranceIDs(ids ...int) {
+	if m.product_recordinsurance == nil {
+		m.product_recordinsurance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.product_recordinsurance[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveProductRecordinsuranceIDs removes the product_recordinsurance edge to Recordinsurance by ids.
+func (m *ProductMutation) RemoveProductRecordinsuranceIDs(ids ...int) {
+	if m.removedproduct_recordinsurance == nil {
+		m.removedproduct_recordinsurance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedproduct_recordinsurance[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedProductRecordinsurance returns the removed ids of product_recordinsurance.
+func (m *ProductMutation) RemovedProductRecordinsuranceIDs() (ids []int) {
+	for id := range m.removedproduct_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		ids = append(ids, id)
 	}
 	return
 }
 
+<<<<<<< HEAD
 // ProductPaybackIDs returns the product_payback ids in the mutation.
 func (m *ProductMutation) ProductPaybackIDs() (ids []int) {
 	for id := range m.product_payback {
+=======
+// ProductRecordinsuranceIDs returns the product_recordinsurance ids in the mutation.
+func (m *ProductMutation) ProductRecordinsuranceIDs() (ids []int) {
+	for id := range m.product_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		ids = append(ids, id)
 	}
 	return
 }
 
+<<<<<<< HEAD
 // ResetProductPayback reset all changes of the "product_payback" edge.
 func (m *ProductMutation) ResetProductPayback() {
 	m.product_payback = nil
 	m.removedproduct_payback = nil
+=======
+// ResetProductRecordinsurance reset all changes of the "product_recordinsurance" edge.
+func (m *ProductMutation) ResetProductRecordinsurance() {
+	m.product_recordinsurance = nil
+	m.removedproduct_recordinsurance = nil
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Op returns the operation name.
@@ -7111,8 +7432,13 @@ func (m *ProductMutation) AddedEdges() []string {
 	if m.product_inquiry != nil {
 		edges = append(edges, product.EdgeProductInquiry)
 	}
+<<<<<<< HEAD
 	if m.product_payback != nil {
 		edges = append(edges, product.EdgeProductPayback)
+=======
+	if m.product_recordinsurance != nil {
+		edges = append(edges, product.EdgeProductRecordinsurance)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}
 	return edges
 }
@@ -7145,9 +7471,15 @@ func (m *ProductMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+<<<<<<< HEAD
 	case product.EdgeProductPayback:
 		ids := make([]ent.Value, 0, len(m.product_payback))
 		for id := range m.product_payback {
+=======
+	case product.EdgeProductRecordinsurance:
+		ids := make([]ent.Value, 0, len(m.product_recordinsurance))
+		for id := range m.product_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			ids = append(ids, id)
 		}
 		return ids
@@ -7165,8 +7497,13 @@ func (m *ProductMutation) RemovedEdges() []string {
 	if m.removedproduct_inquiry != nil {
 		edges = append(edges, product.EdgeProductInquiry)
 	}
+<<<<<<< HEAD
 	if m.removedproduct_payback != nil {
 		edges = append(edges, product.EdgeProductPayback)
+=======
+	if m.removedproduct_recordinsurance != nil {
+		edges = append(edges, product.EdgeProductRecordinsurance)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}
 	return edges
 }
@@ -7187,9 +7524,15 @@ func (m *ProductMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+<<<<<<< HEAD
 	case product.EdgeProductPayback:
 		ids := make([]ent.Value, 0, len(m.removedproduct_payback))
 		for id := range m.removedproduct_payback {
+=======
+	case product.EdgeProductRecordinsurance:
+		ids := make([]ent.Value, 0, len(m.removedproduct_recordinsurance))
+		for id := range m.removedproduct_recordinsurance {
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			ids = append(ids, id)
 		}
 		return ids
@@ -7264,9 +7607,608 @@ func (m *ProductMutation) ResetEdge(name string) error {
 	case product.EdgeProductInquiry:
 		m.ResetProductInquiry()
 		return nil
+<<<<<<< HEAD
 	case product.EdgeProductPayback:
 		m.ResetProductPayback()
+=======
+	case product.EdgeProductRecordinsurance:
+		m.ResetProductRecordinsurance()
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		return nil
 	}
 	return fmt.Errorf("unknown Product edge %s", name)
+}
+
+// RecordinsuranceMutation represents an operation that mutate the Recordinsurances
+// nodes in the graph.
+type RecordinsuranceMutation struct {
+	config
+	op                   Op
+	typ                  string
+	id                   *int
+	recordinsurance_time *time.Time
+	amountpaid           *string
+	clearedFields        map[string]struct{}
+	_Member              *int
+	cleared_Member       bool
+	_Hospital            *int
+	cleared_Hospital     bool
+	_Officer             *int
+	cleared_Officer      bool
+	_Product             *int
+	cleared_Product      bool
+	done                 bool
+	oldValue             func(context.Context) (*Recordinsurance, error)
+}
+
+var _ ent.Mutation = (*RecordinsuranceMutation)(nil)
+
+// recordinsuranceOption allows to manage the mutation configuration using functional options.
+type recordinsuranceOption func(*RecordinsuranceMutation)
+
+// newRecordinsuranceMutation creates new mutation for $n.Name.
+func newRecordinsuranceMutation(c config, op Op, opts ...recordinsuranceOption) *RecordinsuranceMutation {
+	m := &RecordinsuranceMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeRecordinsurance,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withRecordinsuranceID sets the id field of the mutation.
+func withRecordinsuranceID(id int) recordinsuranceOption {
+	return func(m *RecordinsuranceMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Recordinsurance
+		)
+		m.oldValue = func(ctx context.Context) (*Recordinsurance, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Recordinsurance.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withRecordinsurance sets the old Recordinsurance of the mutation.
+func withRecordinsurance(node *Recordinsurance) recordinsuranceOption {
+	return func(m *RecordinsuranceMutation) {
+		m.oldValue = func(context.Context) (*Recordinsurance, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m RecordinsuranceMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m RecordinsuranceMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the id value in the mutation. Note that, the id
+// is available only if it was provided to the builder.
+func (m *RecordinsuranceMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetRecordinsuranceTime sets the recordinsurance_time field.
+func (m *RecordinsuranceMutation) SetRecordinsuranceTime(t time.Time) {
+	m.recordinsurance_time = &t
+}
+
+// RecordinsuranceTime returns the recordinsurance_time value in the mutation.
+func (m *RecordinsuranceMutation) RecordinsuranceTime() (r time.Time, exists bool) {
+	v := m.recordinsurance_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRecordinsuranceTime returns the old recordinsurance_time value of the Recordinsurance.
+// If the Recordinsurance object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RecordinsuranceMutation) OldRecordinsuranceTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldRecordinsuranceTime is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldRecordinsuranceTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRecordinsuranceTime: %w", err)
+	}
+	return oldValue.RecordinsuranceTime, nil
+}
+
+// ResetRecordinsuranceTime reset all changes of the "recordinsurance_time" field.
+func (m *RecordinsuranceMutation) ResetRecordinsuranceTime() {
+	m.recordinsurance_time = nil
+}
+
+// SetAmountpaid sets the amountpaid field.
+func (m *RecordinsuranceMutation) SetAmountpaid(s string) {
+	m.amountpaid = &s
+}
+
+// Amountpaid returns the amountpaid value in the mutation.
+func (m *RecordinsuranceMutation) Amountpaid() (r string, exists bool) {
+	v := m.amountpaid
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAmountpaid returns the old amountpaid value of the Recordinsurance.
+// If the Recordinsurance object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RecordinsuranceMutation) OldAmountpaid(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAmountpaid is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAmountpaid requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAmountpaid: %w", err)
+	}
+	return oldValue.Amountpaid, nil
+}
+
+// ResetAmountpaid reset all changes of the "amountpaid" field.
+func (m *RecordinsuranceMutation) ResetAmountpaid() {
+	m.amountpaid = nil
+}
+
+// SetMemberID sets the Member edge to Member by id.
+func (m *RecordinsuranceMutation) SetMemberID(id int) {
+	m._Member = &id
+}
+
+// ClearMember clears the Member edge to Member.
+func (m *RecordinsuranceMutation) ClearMember() {
+	m.cleared_Member = true
+}
+
+// MemberCleared returns if the edge Member was cleared.
+func (m *RecordinsuranceMutation) MemberCleared() bool {
+	return m.cleared_Member
+}
+
+// MemberID returns the Member id in the mutation.
+func (m *RecordinsuranceMutation) MemberID() (id int, exists bool) {
+	if m._Member != nil {
+		return *m._Member, true
+	}
+	return
+}
+
+// MemberIDs returns the Member ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// MemberID instead. It exists only for internal usage by the builders.
+func (m *RecordinsuranceMutation) MemberIDs() (ids []int) {
+	if id := m._Member; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetMember reset all changes of the "Member" edge.
+func (m *RecordinsuranceMutation) ResetMember() {
+	m._Member = nil
+	m.cleared_Member = false
+}
+
+// SetHospitalID sets the Hospital edge to Hospital by id.
+func (m *RecordinsuranceMutation) SetHospitalID(id int) {
+	m._Hospital = &id
+}
+
+// ClearHospital clears the Hospital edge to Hospital.
+func (m *RecordinsuranceMutation) ClearHospital() {
+	m.cleared_Hospital = true
+}
+
+// HospitalCleared returns if the edge Hospital was cleared.
+func (m *RecordinsuranceMutation) HospitalCleared() bool {
+	return m.cleared_Hospital
+}
+
+// HospitalID returns the Hospital id in the mutation.
+func (m *RecordinsuranceMutation) HospitalID() (id int, exists bool) {
+	if m._Hospital != nil {
+		return *m._Hospital, true
+	}
+	return
+}
+
+// HospitalIDs returns the Hospital ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// HospitalID instead. It exists only for internal usage by the builders.
+func (m *RecordinsuranceMutation) HospitalIDs() (ids []int) {
+	if id := m._Hospital; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetHospital reset all changes of the "Hospital" edge.
+func (m *RecordinsuranceMutation) ResetHospital() {
+	m._Hospital = nil
+	m.cleared_Hospital = false
+}
+
+// SetOfficerID sets the Officer edge to Officer by id.
+func (m *RecordinsuranceMutation) SetOfficerID(id int) {
+	m._Officer = &id
+}
+
+// ClearOfficer clears the Officer edge to Officer.
+func (m *RecordinsuranceMutation) ClearOfficer() {
+	m.cleared_Officer = true
+}
+
+// OfficerCleared returns if the edge Officer was cleared.
+func (m *RecordinsuranceMutation) OfficerCleared() bool {
+	return m.cleared_Officer
+}
+
+// OfficerID returns the Officer id in the mutation.
+func (m *RecordinsuranceMutation) OfficerID() (id int, exists bool) {
+	if m._Officer != nil {
+		return *m._Officer, true
+	}
+	return
+}
+
+// OfficerIDs returns the Officer ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// OfficerID instead. It exists only for internal usage by the builders.
+func (m *RecordinsuranceMutation) OfficerIDs() (ids []int) {
+	if id := m._Officer; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetOfficer reset all changes of the "Officer" edge.
+func (m *RecordinsuranceMutation) ResetOfficer() {
+	m._Officer = nil
+	m.cleared_Officer = false
+}
+
+// SetProductID sets the Product edge to Product by id.
+func (m *RecordinsuranceMutation) SetProductID(id int) {
+	m._Product = &id
+}
+
+// ClearProduct clears the Product edge to Product.
+func (m *RecordinsuranceMutation) ClearProduct() {
+	m.cleared_Product = true
+}
+
+// ProductCleared returns if the edge Product was cleared.
+func (m *RecordinsuranceMutation) ProductCleared() bool {
+	return m.cleared_Product
+}
+
+// ProductID returns the Product id in the mutation.
+func (m *RecordinsuranceMutation) ProductID() (id int, exists bool) {
+	if m._Product != nil {
+		return *m._Product, true
+	}
+	return
+}
+
+// ProductIDs returns the Product ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// ProductID instead. It exists only for internal usage by the builders.
+func (m *RecordinsuranceMutation) ProductIDs() (ids []int) {
+	if id := m._Product; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetProduct reset all changes of the "Product" edge.
+func (m *RecordinsuranceMutation) ResetProduct() {
+	m._Product = nil
+	m.cleared_Product = false
+}
+
+// Op returns the operation name.
+func (m *RecordinsuranceMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Recordinsurance).
+func (m *RecordinsuranceMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during
+// this mutation. Note that, in order to get all numeric
+// fields that were in/decremented, call AddedFields().
+func (m *RecordinsuranceMutation) Fields() []string {
+	fields := make([]string, 0, 2)
+	if m.recordinsurance_time != nil {
+		fields = append(fields, recordinsurance.FieldRecordinsuranceTime)
+	}
+	if m.amountpaid != nil {
+		fields = append(fields, recordinsurance.FieldAmountpaid)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name.
+// The second boolean value indicates that this field was
+// not set, or was not define in the schema.
+func (m *RecordinsuranceMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case recordinsurance.FieldRecordinsuranceTime:
+		return m.RecordinsuranceTime()
+	case recordinsurance.FieldAmountpaid:
+		return m.Amountpaid()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database.
+// An error is returned if the mutation operation is not UpdateOne,
+// or the query to the database was failed.
+func (m *RecordinsuranceMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case recordinsurance.FieldRecordinsuranceTime:
+		return m.OldRecordinsuranceTime(ctx)
+	case recordinsurance.FieldAmountpaid:
+		return m.OldAmountpaid(ctx)
+	}
+	return nil, fmt.Errorf("unknown Recordinsurance field %s", name)
+}
+
+// SetField sets the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *RecordinsuranceMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case recordinsurance.FieldRecordinsuranceTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRecordinsuranceTime(v)
+		return nil
+	case recordinsurance.FieldAmountpaid:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAmountpaid(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Recordinsurance field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented
+// or decremented during this mutation.
+func (m *RecordinsuranceMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was in/decremented
+// from a field with the given name. The second value indicates
+// that this field was not set, or was not define in the schema.
+func (m *RecordinsuranceMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *RecordinsuranceMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Recordinsurance numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared
+// during this mutation.
+func (m *RecordinsuranceMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicates if this field was
+// cleared in this mutation.
+func (m *RecordinsuranceMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value for the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *RecordinsuranceMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Recordinsurance nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation regarding the
+// given field name. It returns an error if the field is not
+// defined in the schema.
+func (m *RecordinsuranceMutation) ResetField(name string) error {
+	switch name {
+	case recordinsurance.FieldRecordinsuranceTime:
+		m.ResetRecordinsuranceTime()
+		return nil
+	case recordinsurance.FieldAmountpaid:
+		m.ResetAmountpaid()
+		return nil
+	}
+	return fmt.Errorf("unknown Recordinsurance field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this
+// mutation.
+func (m *RecordinsuranceMutation) AddedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m._Member != nil {
+		edges = append(edges, recordinsurance.EdgeMember)
+	}
+	if m._Hospital != nil {
+		edges = append(edges, recordinsurance.EdgeHospital)
+	}
+	if m._Officer != nil {
+		edges = append(edges, recordinsurance.EdgeOfficer)
+	}
+	if m._Product != nil {
+		edges = append(edges, recordinsurance.EdgeProduct)
+	}
+	return edges
+}
+
+// AddedIDs returns all ids (to other nodes) that were added for
+// the given edge name.
+func (m *RecordinsuranceMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case recordinsurance.EdgeMember:
+		if id := m._Member; id != nil {
+			return []ent.Value{*id}
+		}
+	case recordinsurance.EdgeHospital:
+		if id := m._Hospital; id != nil {
+			return []ent.Value{*id}
+		}
+	case recordinsurance.EdgeOfficer:
+		if id := m._Officer; id != nil {
+			return []ent.Value{*id}
+		}
+	case recordinsurance.EdgeProduct:
+		if id := m._Product; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this
+// mutation.
+func (m *RecordinsuranceMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 4)
+	return edges
+}
+
+// RemovedIDs returns all ids (to other nodes) that were removed for
+// the given edge name.
+func (m *RecordinsuranceMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this
+// mutation.
+func (m *RecordinsuranceMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 4)
+	if m.cleared_Member {
+		edges = append(edges, recordinsurance.EdgeMember)
+	}
+	if m.cleared_Hospital {
+		edges = append(edges, recordinsurance.EdgeHospital)
+	}
+	if m.cleared_Officer {
+		edges = append(edges, recordinsurance.EdgeOfficer)
+	}
+	if m.cleared_Product {
+		edges = append(edges, recordinsurance.EdgeProduct)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean indicates if this edge was
+// cleared in this mutation.
+func (m *RecordinsuranceMutation) EdgeCleared(name string) bool {
+	switch name {
+	case recordinsurance.EdgeMember:
+		return m.cleared_Member
+	case recordinsurance.EdgeHospital:
+		return m.cleared_Hospital
+	case recordinsurance.EdgeOfficer:
+		return m.cleared_Officer
+	case recordinsurance.EdgeProduct:
+		return m.cleared_Product
+	}
+	return false
+}
+
+// ClearEdge clears the value for the given name. It returns an
+// error if the edge name is not defined in the schema.
+func (m *RecordinsuranceMutation) ClearEdge(name string) error {
+	switch name {
+	case recordinsurance.EdgeMember:
+		m.ClearMember()
+		return nil
+	case recordinsurance.EdgeHospital:
+		m.ClearHospital()
+		return nil
+	case recordinsurance.EdgeOfficer:
+		m.ClearOfficer()
+		return nil
+	case recordinsurance.EdgeProduct:
+		m.ClearProduct()
+		return nil
+	}
+	return fmt.Errorf("unknown Recordinsurance unique edge %s", name)
+}
+
+// ResetEdge resets all changes in the mutation regarding the
+// given edge name. It returns an error if the edge is not
+// defined in the schema.
+func (m *RecordinsuranceMutation) ResetEdge(name string) error {
+	switch name {
+	case recordinsurance.EdgeMember:
+		m.ResetMember()
+		return nil
+	case recordinsurance.EdgeHospital:
+		m.ResetHospital()
+		return nil
+	case recordinsurance.EdgeOfficer:
+		m.ResetOfficer()
+		return nil
+	case recordinsurance.EdgeProduct:
+		m.ResetProduct()
+		return nil
+	}
+	return fmt.Errorf("unknown Recordinsurance edge %s", name)
 }

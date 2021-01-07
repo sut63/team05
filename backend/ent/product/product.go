@@ -26,8 +26,13 @@ const (
 	EdgeProductInsurance = "product_insurance"
 	// EdgeProductInquiry holds the string denoting the product_inquiry edge name in mutations.
 	EdgeProductInquiry = "product_inquiry"
+<<<<<<< HEAD
 	// EdgeProductPayback holds the string denoting the product_payback edge name in mutations.
 	EdgeProductPayback = "product_payback"
+=======
+	// EdgeProductRecordinsurance holds the string denoting the product_recordinsurance edge name in mutations.
+	EdgeProductRecordinsurance = "product_recordinsurance"
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 
 	// Table holds the table name of the product in the database.
 	Table = "products"
@@ -66,6 +71,7 @@ const (
 	ProductInquiryInverseTable = "inquiries"
 	// ProductInquiryColumn is the table column denoting the product_inquiry relation/edge.
 	ProductInquiryColumn = "product_id"
+<<<<<<< HEAD
 	// ProductPaybackTable is the table the holds the product_payback relation/edge.
 	ProductPaybackTable = "paybacks"
 	// ProductPaybackInverseTable is the table name for the Payback entity.
@@ -73,6 +79,15 @@ const (
 	ProductPaybackInverseTable = "paybacks"
 	// ProductPaybackColumn is the table column denoting the product_payback relation/edge.
 	ProductPaybackColumn = "product_id"
+=======
+	// ProductRecordinsuranceTable is the table the holds the product_recordinsurance relation/edge.
+	ProductRecordinsuranceTable = "recordinsurances"
+	// ProductRecordinsuranceInverseTable is the table name for the Recordinsurance entity.
+	// It exists in this package in order to avoid circular dependency with the "recordinsurance" package.
+	ProductRecordinsuranceInverseTable = "recordinsurances"
+	// ProductRecordinsuranceColumn is the table column denoting the product_recordinsurance relation/edge.
+	ProductRecordinsuranceColumn = "product_id"
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 )
 
 // Columns holds all SQL columns for product fields.

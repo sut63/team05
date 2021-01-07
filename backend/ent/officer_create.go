@@ -14,6 +14,7 @@ import (
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/product"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // OfficerCreate is the builder for creating a Officer entity.
@@ -86,6 +87,7 @@ func (oc *OfficerCreate) AddOfficerInquiry(i ...*Inquiry) *OfficerCreate {
 	return oc.AddOfficerInquiryIDs(ids...)
 }
 
+<<<<<<< HEAD
 // AddOfficerPaybackIDs adds the officer_payback edge to Payback by ids.
 func (oc *OfficerCreate) AddOfficerPaybackIDs(ids ...int) *OfficerCreate {
 	oc.mutation.AddOfficerPaybackIDs(ids...)
@@ -99,6 +101,21 @@ func (oc *OfficerCreate) AddOfficerPayback(p ...*Payback) *OfficerCreate {
 		ids[i] = p[i].ID
 	}
 	return oc.AddOfficerPaybackIDs(ids...)
+=======
+// AddOfficerRecordinsuranceIDs adds the officer_recordinsurance edge to Recordinsurance by ids.
+func (oc *OfficerCreate) AddOfficerRecordinsuranceIDs(ids ...int) *OfficerCreate {
+	oc.mutation.AddOfficerRecordinsuranceIDs(ids...)
+	return oc
+}
+
+// AddOfficerRecordinsurance adds the officer_recordinsurance edges to Recordinsurance.
+func (oc *OfficerCreate) AddOfficerRecordinsurance(r ...*Recordinsurance) *OfficerCreate {
+	ids := make([]int, len(r))
+	for i := range r {
+		ids[i] = r[i].ID
+	}
+	return oc.AddOfficerRecordinsuranceIDs(ids...)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Mutation returns the OfficerMutation object of the builder.
@@ -273,17 +290,30 @@ func (oc *OfficerCreate) createSpec() (*Officer, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
+<<<<<<< HEAD
 	if nodes := oc.mutation.OfficerPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   officer.OfficerPaybackTable,
 			Columns: []string{officer.OfficerPaybackColumn},
+=======
+	if nodes := oc.mutation.OfficerRecordinsuranceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   officer.OfficerRecordinsuranceTable,
+			Columns: []string{officer.OfficerRecordinsuranceColumn},
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
+<<<<<<< HEAD
 					Column: payback.FieldID,
+=======
+					Column: recordinsurance.FieldID,
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}

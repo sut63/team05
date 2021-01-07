@@ -22,5 +22,6 @@ func (Hospital) Fields() []ent.Field {
 func (Hospital) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("hospital_insurance", Insurance.Type).StorageKey(edge.Column("hospital_id")),
+		edge.To("hospital_recordinsurance", Recordinsurance.Type).StorageKey(edge.Column("hospital_id")),
 	}
 }

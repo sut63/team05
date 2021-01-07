@@ -598,6 +598,7 @@ func HasProductInquiryWith(preds ...predicate.Inquiry) predicate.Product {
 	})
 }
 
+<<<<<<< HEAD
 // HasProductPayback applies the HasEdge predicate on the "product_payback" edge.
 func HasProductPayback() predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
@@ -605,11 +606,21 @@ func HasProductPayback() predicate.Product {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(ProductPaybackTable, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, ProductPaybackTable, ProductPaybackColumn),
+=======
+// HasProductRecordinsurance applies the HasEdge predicate on the "product_recordinsurance" edge.
+func HasProductRecordinsurance() predicate.Product {
+	return predicate.Product(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ProductRecordinsuranceTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProductRecordinsuranceTable, ProductRecordinsuranceColumn),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
+<<<<<<< HEAD
 // HasProductPaybackWith applies the HasEdge predicate on the "product_payback" edge with a given conditions (other predicates).
 func HasProductPaybackWith(preds ...predicate.Payback) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
@@ -617,6 +628,15 @@ func HasProductPaybackWith(preds ...predicate.Payback) predicate.Product {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(ProductPaybackInverseTable, FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, ProductPaybackTable, ProductPaybackColumn),
+=======
+// HasProductRecordinsuranceWith applies the HasEdge predicate on the "product_recordinsurance" edge with a given conditions (other predicates).
+func HasProductRecordinsuranceWith(preds ...predicate.Recordinsurance) predicate.Product {
+	return predicate.Product(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ProductRecordinsuranceInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProductRecordinsuranceTable, ProductRecordinsuranceColumn),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

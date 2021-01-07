@@ -46,8 +46,13 @@ type ProductEdges struct {
 	ProductInsurance []*Insurance
 	// ProductInquiry holds the value of the product_inquiry edge.
 	ProductInquiry []*Inquiry
+<<<<<<< HEAD
 	// ProductPayback holds the value of the product_payback edge.
 	ProductPayback []*Payback
+=======
+	// ProductRecordinsurance holds the value of the product_recordinsurance edge.
+	ProductRecordinsurance []*Recordinsurance
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [6]bool
@@ -113,6 +118,7 @@ func (e ProductEdges) ProductInquiryOrErr() ([]*Inquiry, error) {
 	return nil, &NotLoadedError{edge: "product_inquiry"}
 }
 
+<<<<<<< HEAD
 // ProductPaybackOrErr returns the ProductPayback value or an error if the edge
 // was not loaded in eager-loading.
 func (e ProductEdges) ProductPaybackOrErr() ([]*Payback, error) {
@@ -120,6 +126,15 @@ func (e ProductEdges) ProductPaybackOrErr() ([]*Payback, error) {
 		return e.ProductPayback, nil
 	}
 	return nil, &NotLoadedError{edge: "product_payback"}
+=======
+// ProductRecordinsuranceOrErr returns the ProductRecordinsurance value or an error if the edge
+// was not loaded in eager-loading.
+func (e ProductEdges) ProductRecordinsuranceOrErr() ([]*Recordinsurance, error) {
+	if e.loadedTypes[5] {
+		return e.ProductRecordinsurance, nil
+	}
+	return nil, &NotLoadedError{edge: "product_recordinsurance"}
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -223,9 +238,15 @@ func (pr *Product) QueryProductInquiry() *InquiryQuery {
 	return (&ProductClient{config: pr.config}).QueryProductInquiry(pr)
 }
 
+<<<<<<< HEAD
 // QueryProductPayback queries the product_payback edge of the Product.
 func (pr *Product) QueryProductPayback() *PaybackQuery {
 	return (&ProductClient{config: pr.config}).QueryProductPayback(pr)
+=======
+// QueryProductRecordinsurance queries the product_recordinsurance edge of the Product.
+func (pr *Product) QueryProductRecordinsurance() *RecordinsuranceQuery {
+	return (&ProductClient{config: pr.config}).QueryProductRecordinsurance(pr)
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Update returns a builder for updating this Product.

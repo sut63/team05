@@ -22,6 +22,7 @@ import (
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/product"
+	"github.com/sut63/team05/ent/recordinsurance"
 
 	"github.com/facebookincubator/ent/dialect"
 	"github.com/facebookincubator/ent/dialect/sql"
@@ -59,6 +60,8 @@ type Client struct {
 	Payment *PaymentClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
+	// Recordinsurance is the client for interacting with the Recordinsurance builders.
+	Recordinsurance *RecordinsuranceClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -85,6 +88,7 @@ func (c *Client) init() {
 	c.Payback = NewPaybackClient(c.config)
 	c.Payment = NewPaymentClient(c.config)
 	c.Product = NewProductClient(c.config)
+	c.Recordinsurance = NewRecordinsuranceClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -115,6 +119,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	}
 	cfg := config{driver: tx, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
+<<<<<<< HEAD
 		ctx:           ctx,
 		config:        cfg,
 		Bank:          NewBankClient(cfg),
@@ -130,6 +135,23 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Payback:       NewPaybackClient(cfg),
 		Payment:       NewPaymentClient(cfg),
 		Product:       NewProductClient(cfg),
+=======
+		ctx:             ctx,
+		config:          cfg,
+		Bank:            NewBankClient(cfg),
+		Category:        NewCategoryClient(cfg),
+		Gender:          NewGenderClient(cfg),
+		GroupOfAge:      NewGroupOfAgeClient(cfg),
+		Hospital:        NewHospitalClient(cfg),
+		Inquiry:         NewInquiryClient(cfg),
+		Insurance:       NewInsuranceClient(cfg),
+		Member:          NewMemberClient(cfg),
+		MoneyTransfer:   NewMoneyTransferClient(cfg),
+		Officer:         NewOfficerClient(cfg),
+		Payment:         NewPaymentClient(cfg),
+		Product:         NewProductClient(cfg),
+		Recordinsurance: NewRecordinsuranceClient(cfg),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}, nil
 }
 
@@ -144,6 +166,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	}
 	cfg := config{driver: &txDriver{tx: tx, drv: c.driver}, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
+<<<<<<< HEAD
 		config:        cfg,
 		Bank:          NewBankClient(cfg),
 		Category:      NewCategoryClient(cfg),
@@ -158,6 +181,22 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Payback:       NewPaybackClient(cfg),
 		Payment:       NewPaymentClient(cfg),
 		Product:       NewProductClient(cfg),
+=======
+		config:          cfg,
+		Bank:            NewBankClient(cfg),
+		Category:        NewCategoryClient(cfg),
+		Gender:          NewGenderClient(cfg),
+		GroupOfAge:      NewGroupOfAgeClient(cfg),
+		Hospital:        NewHospitalClient(cfg),
+		Inquiry:         NewInquiryClient(cfg),
+		Insurance:       NewInsuranceClient(cfg),
+		Member:          NewMemberClient(cfg),
+		MoneyTransfer:   NewMoneyTransferClient(cfg),
+		Officer:         NewOfficerClient(cfg),
+		Payment:         NewPaymentClient(cfg),
+		Product:         NewProductClient(cfg),
+		Recordinsurance: NewRecordinsuranceClient(cfg),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}, nil
 }
 
@@ -199,6 +238,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Payback.Use(hooks...)
 	c.Payment.Use(hooks...)
 	c.Product.Use(hooks...)
+	c.Recordinsurance.Use(hooks...)
 }
 
 // BankClient is a client for the Bank schema.
@@ -707,6 +747,22 @@ func (c *HospitalClient) QueryHospitalInsurance(h *Hospital) *InsuranceQuery {
 	return query
 }
 
+// QueryHospitalRecordinsurance queries the hospital_recordinsurance edge of a Hospital.
+func (c *HospitalClient) QueryHospitalRecordinsurance(h *Hospital) *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := h.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(hospital.Table, hospital.FieldID, id),
+			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, hospital.HospitalRecordinsuranceTable, hospital.HospitalRecordinsuranceColumn),
+		)
+		fromV = sqlgraph.Neighbors(h.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *HospitalClient) Hooks() []Hook {
 	return c.hooks.Hospital
@@ -1148,15 +1204,26 @@ func (c *MemberClient) QueryMemberInquiry(m *Member) *InquiryQuery {
 	return query
 }
 
+<<<<<<< HEAD
 // QueryMemberPayback queries the member_payback edge of a Member.
 func (c *MemberClient) QueryMemberPayback(m *Member) *PaybackQuery {
 	query := &PaybackQuery{config: c.config}
+=======
+// QueryMemberRecordinsurance queries the member_recordinsurance edge of a Member.
+func (c *MemberClient) QueryMemberRecordinsurance(m *Member) *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: c.config}
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(member.Table, member.FieldID, id),
+<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberPaybackTable, member.MemberPaybackColumn),
+=======
+			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberRecordinsuranceTable, member.MemberRecordinsuranceColumn),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
 		return fromV, nil
@@ -1394,15 +1461,26 @@ func (c *OfficerClient) QueryOfficerInquiry(o *Officer) *InquiryQuery {
 	return query
 }
 
+<<<<<<< HEAD
 // QueryOfficerPayback queries the officer_payback edge of a Officer.
 func (c *OfficerClient) QueryOfficerPayback(o *Officer) *PaybackQuery {
 	query := &PaybackQuery{config: c.config}
+=======
+// QueryOfficerRecordinsurance queries the officer_recordinsurance edge of a Officer.
+func (c *OfficerClient) QueryOfficerRecordinsurance(o *Officer) *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: c.config}
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := o.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(officer.Table, officer.FieldID, id),
+<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerPaybackTable, officer.OfficerPaybackColumn),
+=======
+			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerRecordinsuranceTable, officer.OfficerRecordinsuranceColumn),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
 		return fromV, nil
@@ -1867,15 +1945,26 @@ func (c *ProductClient) QueryProductInquiry(pr *Product) *InquiryQuery {
 	return query
 }
 
+<<<<<<< HEAD
 // QueryProductPayback queries the product_payback edge of a Product.
 func (c *ProductClient) QueryProductPayback(pr *Product) *PaybackQuery {
 	query := &PaybackQuery{config: c.config}
+=======
+// QueryProductRecordinsurance queries the product_recordinsurance edge of a Product.
+func (c *ProductClient) QueryProductRecordinsurance(pr *Product) *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: c.config}
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pr.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, id),
+<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductPaybackTable, product.ProductPaybackColumn),
+=======
+			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductRecordinsuranceTable, product.ProductRecordinsuranceColumn),
+>>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -1886,4 +1975,151 @@ func (c *ProductClient) QueryProductPayback(pr *Product) *PaybackQuery {
 // Hooks returns the client hooks.
 func (c *ProductClient) Hooks() []Hook {
 	return c.hooks.Product
+}
+
+// RecordinsuranceClient is a client for the Recordinsurance schema.
+type RecordinsuranceClient struct {
+	config
+}
+
+// NewRecordinsuranceClient returns a client for the Recordinsurance from the given config.
+func NewRecordinsuranceClient(c config) *RecordinsuranceClient {
+	return &RecordinsuranceClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `recordinsurance.Hooks(f(g(h())))`.
+func (c *RecordinsuranceClient) Use(hooks ...Hook) {
+	c.hooks.Recordinsurance = append(c.hooks.Recordinsurance, hooks...)
+}
+
+// Create returns a create builder for Recordinsurance.
+func (c *RecordinsuranceClient) Create() *RecordinsuranceCreate {
+	mutation := newRecordinsuranceMutation(c.config, OpCreate)
+	return &RecordinsuranceCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Update returns an update builder for Recordinsurance.
+func (c *RecordinsuranceClient) Update() *RecordinsuranceUpdate {
+	mutation := newRecordinsuranceMutation(c.config, OpUpdate)
+	return &RecordinsuranceUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *RecordinsuranceClient) UpdateOne(r *Recordinsurance) *RecordinsuranceUpdateOne {
+	mutation := newRecordinsuranceMutation(c.config, OpUpdateOne, withRecordinsurance(r))
+	return &RecordinsuranceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *RecordinsuranceClient) UpdateOneID(id int) *RecordinsuranceUpdateOne {
+	mutation := newRecordinsuranceMutation(c.config, OpUpdateOne, withRecordinsuranceID(id))
+	return &RecordinsuranceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Recordinsurance.
+func (c *RecordinsuranceClient) Delete() *RecordinsuranceDelete {
+	mutation := newRecordinsuranceMutation(c.config, OpDelete)
+	return &RecordinsuranceDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *RecordinsuranceClient) DeleteOne(r *Recordinsurance) *RecordinsuranceDeleteOne {
+	return c.DeleteOneID(r.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *RecordinsuranceClient) DeleteOneID(id int) *RecordinsuranceDeleteOne {
+	builder := c.Delete().Where(recordinsurance.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &RecordinsuranceDeleteOne{builder}
+}
+
+// Create returns a query builder for Recordinsurance.
+func (c *RecordinsuranceClient) Query() *RecordinsuranceQuery {
+	return &RecordinsuranceQuery{config: c.config}
+}
+
+// Get returns a Recordinsurance entity by its id.
+func (c *RecordinsuranceClient) Get(ctx context.Context, id int) (*Recordinsurance, error) {
+	return c.Query().Where(recordinsurance.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *RecordinsuranceClient) GetX(ctx context.Context, id int) *Recordinsurance {
+	r, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return r
+}
+
+// QueryMember queries the Member edge of a Recordinsurance.
+func (c *RecordinsuranceClient) QueryMember(r *Recordinsurance) *MemberQuery {
+	query := &MemberQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(recordinsurance.Table, recordinsurance.FieldID, id),
+			sqlgraph.To(member.Table, member.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, recordinsurance.MemberTable, recordinsurance.MemberColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryHospital queries the Hospital edge of a Recordinsurance.
+func (c *RecordinsuranceClient) QueryHospital(r *Recordinsurance) *HospitalQuery {
+	query := &HospitalQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(recordinsurance.Table, recordinsurance.FieldID, id),
+			sqlgraph.To(hospital.Table, hospital.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, recordinsurance.HospitalTable, recordinsurance.HospitalColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOfficer queries the Officer edge of a Recordinsurance.
+func (c *RecordinsuranceClient) QueryOfficer(r *Recordinsurance) *OfficerQuery {
+	query := &OfficerQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(recordinsurance.Table, recordinsurance.FieldID, id),
+			sqlgraph.To(officer.Table, officer.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, recordinsurance.OfficerTable, recordinsurance.OfficerColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProduct queries the Product edge of a Recordinsurance.
+func (c *RecordinsuranceClient) QueryProduct(r *Recordinsurance) *ProductQuery {
+	query := &ProductQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(recordinsurance.Table, recordinsurance.FieldID, id),
+			sqlgraph.To(product.Table, product.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, recordinsurance.ProductTable, recordinsurance.ProductColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *RecordinsuranceClient) Hooks() []Hook {
+	return c.hooks.Recordinsurance
 }

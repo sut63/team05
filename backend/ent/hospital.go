@@ -26,9 +26,11 @@ type Hospital struct {
 type HospitalEdges struct {
 	// HospitalInsurance holds the value of the hospital_insurance edge.
 	HospitalInsurance []*Insurance
+	// HospitalRecordinsurance holds the value of the hospital_recordinsurance edge.
+	HospitalRecordinsurance []*Recordinsurance
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 }
 
 // HospitalInsuranceOrErr returns the HospitalInsurance value or an error if the edge
@@ -38,6 +40,15 @@ func (e HospitalEdges) HospitalInsuranceOrErr() ([]*Insurance, error) {
 		return e.HospitalInsurance, nil
 	}
 	return nil, &NotLoadedError{edge: "hospital_insurance"}
+}
+
+// HospitalRecordinsuranceOrErr returns the HospitalRecordinsurance value or an error if the edge
+// was not loaded in eager-loading.
+func (e HospitalEdges) HospitalRecordinsuranceOrErr() ([]*Recordinsurance, error) {
+	if e.loadedTypes[1] {
+		return e.HospitalRecordinsurance, nil
+	}
+	return nil, &NotLoadedError{edge: "hospital_recordinsurance"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -71,6 +82,11 @@ func (h *Hospital) assignValues(values ...interface{}) error {
 // QueryHospitalInsurance queries the hospital_insurance edge of the Hospital.
 func (h *Hospital) QueryHospitalInsurance() *InsuranceQuery {
 	return (&HospitalClient{config: h.config}).QueryHospitalInsurance(h)
+}
+
+// QueryHospitalRecordinsurance queries the hospital_recordinsurance edge of the Hospital.
+func (h *Hospital) QueryHospitalRecordinsurance() *RecordinsuranceQuery {
+	return (&HospitalClient{config: h.config}).QueryHospitalRecordinsurance(h)
 }
 
 // Update returns a builder for updating this Hospital.

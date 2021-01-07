@@ -15,6 +15,7 @@ import (
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/predicate"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // HospitalQuery is the builder for querying Hospital entities.
@@ -26,7 +27,8 @@ type HospitalQuery struct {
 	unique     []string
 	predicates []predicate.Hospital
 	// eager-loading edges.
-	withHospitalInsurance *InsuranceQuery
+	withHospitalInsurance       *InsuranceQuery
+	withHospitalRecordinsurance *RecordinsuranceQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -67,6 +69,24 @@ func (hq *HospitalQuery) QueryHospitalInsurance() *InsuranceQuery {
 			sqlgraph.From(hospital.Table, hospital.FieldID, hq.sqlQuery()),
 			sqlgraph.To(insurance.Table, insurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, hospital.HospitalInsuranceTable, hospital.HospitalInsuranceColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(hq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryHospitalRecordinsurance chains the current query on the hospital_recordinsurance edge.
+func (hq *HospitalQuery) QueryHospitalRecordinsurance() *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: hq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := hq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(hospital.Table, hospital.FieldID, hq.sqlQuery()),
+			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, hospital.HospitalRecordinsuranceTable, hospital.HospitalRecordinsuranceColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(hq.driver.Dialect(), step)
 		return fromU, nil
@@ -264,6 +284,17 @@ func (hq *HospitalQuery) WithHospitalInsurance(opts ...func(*InsuranceQuery)) *H
 	return hq
 }
 
+//  WithHospitalRecordinsurance tells the query-builder to eager-loads the nodes that are connected to
+// the "hospital_recordinsurance" edge. The optional arguments used to configure the query builder of the edge.
+func (hq *HospitalQuery) WithHospitalRecordinsurance(opts ...func(*RecordinsuranceQuery)) *HospitalQuery {
+	query := &RecordinsuranceQuery{config: hq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	hq.withHospitalRecordinsurance = query
+	return hq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -330,8 +361,9 @@ func (hq *HospitalQuery) sqlAll(ctx context.Context) ([]*Hospital, error) {
 	var (
 		nodes       = []*Hospital{}
 		_spec       = hq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [2]bool{
 			hq.withHospitalInsurance != nil,
+			hq.withHospitalRecordinsurance != nil,
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
@@ -380,6 +412,34 @@ func (hq *HospitalQuery) sqlAll(ctx context.Context) ([]*Hospital, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "hospital_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.HospitalInsurance = append(node.Edges.HospitalInsurance, n)
+		}
+	}
+
+	if query := hq.withHospitalRecordinsurance; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Hospital)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Recordinsurance(func(s *sql.Selector) {
+			s.Where(sql.InValues(hospital.HospitalRecordinsuranceColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.hospital_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "hospital_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "hospital_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.HospitalRecordinsurance = append(node.Edges.HospitalRecordinsurance, n)
 		}
 	}
 

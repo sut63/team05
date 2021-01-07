@@ -336,6 +336,52 @@ var (
 			},
 		},
 	}
+	// RecordinsurancesColumns holds the columns for the "recordinsurances" table.
+	RecordinsurancesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "recordinsurance_time", Type: field.TypeTime},
+		{Name: "amountpaid", Type: field.TypeString},
+		{Name: "hospital_id", Type: field.TypeInt, Nullable: true},
+		{Name: "member_id", Type: field.TypeInt, Nullable: true},
+		{Name: "officer_id", Type: field.TypeInt, Nullable: true},
+		{Name: "product_id", Type: field.TypeInt, Nullable: true},
+	}
+	// RecordinsurancesTable holds the schema information for the "recordinsurances" table.
+	RecordinsurancesTable = &schema.Table{
+		Name:       "recordinsurances",
+		Columns:    RecordinsurancesColumns,
+		PrimaryKey: []*schema.Column{RecordinsurancesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "recordinsurances_hospitals_hospital_recordinsurance",
+				Columns: []*schema.Column{RecordinsurancesColumns[3]},
+
+				RefColumns: []*schema.Column{HospitalsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "recordinsurances_members_member_recordinsurance",
+				Columns: []*schema.Column{RecordinsurancesColumns[4]},
+
+				RefColumns: []*schema.Column{MembersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "recordinsurances_officers_officer_recordinsurance",
+				Columns: []*schema.Column{RecordinsurancesColumns[5]},
+
+				RefColumns: []*schema.Column{OfficersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "recordinsurances_products_product_recordinsurance",
+				Columns: []*schema.Column{RecordinsurancesColumns[6]},
+
+				RefColumns: []*schema.Column{ProductsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BanksTable,
@@ -351,6 +397,7 @@ var (
 		PaybacksTable,
 		PaymentsTable,
 		ProductsTable,
+		RecordinsurancesTable,
 	}
 )
 
@@ -374,4 +421,8 @@ func init() {
 	ProductsTable.ForeignKeys[0].RefTable = GendersTable
 	ProductsTable.ForeignKeys[1].RefTable = GroupOfAgesTable
 	ProductsTable.ForeignKeys[2].RefTable = OfficersTable
+	RecordinsurancesTable.ForeignKeys[0].RefTable = HospitalsTable
+	RecordinsurancesTable.ForeignKeys[1].RefTable = MembersTable
+	RecordinsurancesTable.ForeignKeys[2].RefTable = OfficersTable
+	RecordinsurancesTable.ForeignKeys[3].RefTable = ProductsTable
 }
