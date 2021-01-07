@@ -6,6 +6,9 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 )
 
+// Amountpaid is the predicate function for amountpaid builders.
+type Amountpaid func(*sql.Selector)
+
 // Bank is the predicate function for bank builders.
 type Bank func(*sql.Selector)
 

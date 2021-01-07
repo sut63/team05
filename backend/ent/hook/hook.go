@@ -9,6 +9,19 @@ import (
 	"github.com/sut63/team05/ent"
 )
 
+// The AmountpaidFunc type is an adapter to allow the use of ordinary
+// function as Amountpaid mutator.
+type AmountpaidFunc func(context.Context, *ent.AmountpaidMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f AmountpaidFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.AmountpaidMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.AmountpaidMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The BankFunc type is an adapter to allow the use of ordinary
 // function as Bank mutator.
 type BankFunc func(context.Context, *ent.BankMutation) (ent.Value, error)

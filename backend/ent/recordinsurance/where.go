@@ -100,13 +100,6 @@ func RecordinsuranceTime(v time.Time) predicate.Recordinsurance {
 	})
 }
 
-// Amountpaid applies equality check predicate on the "amountpaid" field. It's identical to AmountpaidEQ.
-func Amountpaid(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAmountpaid), v))
-	})
-}
-
 // RecordinsuranceTimeEQ applies the EQ predicate on the "recordinsurance_time" field.
 func RecordinsuranceTimeEQ(v time.Time) predicate.Recordinsurance {
 	return predicate.Recordinsurance(func(s *sql.Selector) {
@@ -180,117 +173,6 @@ func RecordinsuranceTimeLT(v time.Time) predicate.Recordinsurance {
 func RecordinsuranceTimeLTE(v time.Time) predicate.Recordinsurance {
 	return predicate.Recordinsurance(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldRecordinsuranceTime), v))
-	})
-}
-
-// AmountpaidEQ applies the EQ predicate on the "amountpaid" field.
-func AmountpaidEQ(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidNEQ applies the NEQ predicate on the "amountpaid" field.
-func AmountpaidNEQ(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidIn applies the In predicate on the "amountpaid" field.
-func AmountpaidIn(vs ...string) predicate.Recordinsurance {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldAmountpaid), v...))
-	})
-}
-
-// AmountpaidNotIn applies the NotIn predicate on the "amountpaid" field.
-func AmountpaidNotIn(vs ...string) predicate.Recordinsurance {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldAmountpaid), v...))
-	})
-}
-
-// AmountpaidGT applies the GT predicate on the "amountpaid" field.
-func AmountpaidGT(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidGTE applies the GTE predicate on the "amountpaid" field.
-func AmountpaidGTE(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidLT applies the LT predicate on the "amountpaid" field.
-func AmountpaidLT(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidLTE applies the LTE predicate on the "amountpaid" field.
-func AmountpaidLTE(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidContains applies the Contains predicate on the "amountpaid" field.
-func AmountpaidContains(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidHasPrefix applies the HasPrefix predicate on the "amountpaid" field.
-func AmountpaidHasPrefix(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidHasSuffix applies the HasSuffix predicate on the "amountpaid" field.
-func AmountpaidHasSuffix(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidEqualFold applies the EqualFold predicate on the "amountpaid" field.
-func AmountpaidEqualFold(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldAmountpaid), v))
-	})
-}
-
-// AmountpaidContainsFold applies the ContainsFold predicate on the "amountpaid" field.
-func AmountpaidContainsFold(v string) predicate.Recordinsurance {
-	return predicate.Recordinsurance(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldAmountpaid), v))
 	})
 }
 
@@ -397,6 +279,34 @@ func HasProductWith(preds ...predicate.Product) predicate.Recordinsurance {
 			sqlgraph.From(Table, FieldID),
 			sqlgraph.To(ProductInverseTable, FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasAmountpaid applies the HasEdge predicate on the "Amountpaid" edge.
+func HasAmountpaid() predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AmountpaidTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, AmountpaidTable, AmountpaidColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAmountpaidWith applies the HasEdge predicate on the "Amountpaid" edge with a given conditions (other predicates).
+func HasAmountpaidWith(preds ...predicate.Amountpaid) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AmountpaidInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, AmountpaidTable, AmountpaidColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

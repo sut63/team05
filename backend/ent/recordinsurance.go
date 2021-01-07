@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/facebookincubator/ent/dialect/sql"
+	"github.com/sut63/team05/ent/amountpaid"
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
@@ -22,15 +23,14 @@ type Recordinsurance struct {
 	ID int `json:"id,omitempty"`
 	// RecordinsuranceTime holds the value of the "recordinsurance_time" field.
 	RecordinsuranceTime time.Time `json:"recordinsurance_time,omitempty"`
-	// Amountpaid holds the value of the "amountpaid" field.
-	Amountpaid string `json:"amountpaid,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the RecordinsuranceQuery when eager-loading is set.
-	Edges       RecordinsuranceEdges `json:"edges"`
-	hospital_id *int
-	member_id   *int
-	officer_id  *int
-	product_id  *int
+	Edges         RecordinsuranceEdges `json:"edges"`
+	amountpaid_id *int
+	hospital_id   *int
+	member_id     *int
+	officer_id    *int
+	product_id    *int
 }
 
 // RecordinsuranceEdges holds the relations/edges for other nodes in the graph.
@@ -43,9 +43,11 @@ type RecordinsuranceEdges struct {
 	Officer *Officer
 	// Product holds the value of the Product edge.
 	Product *Product
+	// Amountpaid holds the value of the Amountpaid edge.
+	Amountpaid *Amountpaid
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 }
 
 // MemberOrErr returns the Member value or an error if the edge
@@ -104,18 +106,32 @@ func (e RecordinsuranceEdges) ProductOrErr() (*Product, error) {
 	return nil, &NotLoadedError{edge: "Product"}
 }
 
+// AmountpaidOrErr returns the Amountpaid value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e RecordinsuranceEdges) AmountpaidOrErr() (*Amountpaid, error) {
+	if e.loadedTypes[4] {
+		if e.Amountpaid == nil {
+			// The edge Amountpaid was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: amountpaid.Label}
+		}
+		return e.Amountpaid, nil
+	}
+	return nil, &NotLoadedError{edge: "Amountpaid"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Recordinsurance) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{},  // id
-		&sql.NullTime{},   // recordinsurance_time
-		&sql.NullString{}, // amountpaid
+		&sql.NullInt64{}, // id
+		&sql.NullTime{},  // recordinsurance_time
 	}
 }
 
 // fkValues returns the types for scanning foreign-keys values from sql.Rows.
 func (*Recordinsurance) fkValues() []interface{} {
 	return []interface{}{
+		&sql.NullInt64{}, // amountpaid_id
 		&sql.NullInt64{}, // hospital_id
 		&sql.NullInt64{}, // member_id
 		&sql.NullInt64{}, // officer_id
@@ -140,32 +156,33 @@ func (r *Recordinsurance) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		r.RecordinsuranceTime = value.Time
 	}
-	if value, ok := values[1].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field amountpaid", values[1])
-	} else if value.Valid {
-		r.Amountpaid = value.String
-	}
-	values = values[2:]
+	values = values[1:]
 	if len(values) == len(recordinsurance.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
+			return fmt.Errorf("unexpected type %T for edge-field amountpaid_id", value)
+		} else if value.Valid {
+			r.amountpaid_id = new(int)
+			*r.amountpaid_id = int(value.Int64)
+		}
+		if value, ok := values[1].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field hospital_id", value)
 		} else if value.Valid {
 			r.hospital_id = new(int)
 			*r.hospital_id = int(value.Int64)
 		}
-		if value, ok := values[1].(*sql.NullInt64); !ok {
+		if value, ok := values[2].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field member_id", value)
 		} else if value.Valid {
 			r.member_id = new(int)
 			*r.member_id = int(value.Int64)
 		}
-		if value, ok := values[2].(*sql.NullInt64); !ok {
+		if value, ok := values[3].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field officer_id", value)
 		} else if value.Valid {
 			r.officer_id = new(int)
 			*r.officer_id = int(value.Int64)
 		}
-		if value, ok := values[3].(*sql.NullInt64); !ok {
+		if value, ok := values[4].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field product_id", value)
 		} else if value.Valid {
 			r.product_id = new(int)
@@ -195,6 +212,11 @@ func (r *Recordinsurance) QueryProduct() *ProductQuery {
 	return (&RecordinsuranceClient{config: r.config}).QueryProduct(r)
 }
 
+// QueryAmountpaid queries the Amountpaid edge of the Recordinsurance.
+func (r *Recordinsurance) QueryAmountpaid() *AmountpaidQuery {
+	return (&RecordinsuranceClient{config: r.config}).QueryAmountpaid(r)
+}
+
 // Update returns a builder for updating this Recordinsurance.
 // Note that, you need to call Recordinsurance.Unwrap() before calling this method, if this Recordinsurance
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -220,8 +242,6 @@ func (r *Recordinsurance) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", r.ID))
 	builder.WriteString(", recordinsurance_time=")
 	builder.WriteString(r.RecordinsuranceTime.Format(time.ANSIC))
-	builder.WriteString(", amountpaid=")
-	builder.WriteString(r.Amountpaid)
 	builder.WriteByte(')')
 	return builder.String()
 }

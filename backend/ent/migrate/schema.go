@@ -8,6 +8,18 @@ import (
 )
 
 var (
+	// AmountpaidsColumns holds the columns for the "amountpaids" table.
+	AmountpaidsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "amountpaid_money", Type: field.TypeFloat64, Unique: true},
+	}
+	// AmountpaidsTable holds the schema information for the "amountpaids" table.
+	AmountpaidsTable = &schema.Table{
+		Name:        "amountpaids",
+		Columns:     AmountpaidsColumns,
+		PrimaryKey:  []*schema.Column{AmountpaidsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
+	}
 	// BanksColumns holds the columns for the "banks" table.
 	BanksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -340,7 +352,7 @@ var (
 	RecordinsurancesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "recordinsurance_time", Type: field.TypeTime},
-		{Name: "amountpaid", Type: field.TypeString},
+		{Name: "amountpaid_id", Type: field.TypeInt, Nullable: true},
 		{Name: "hospital_id", Type: field.TypeInt, Nullable: true},
 		{Name: "member_id", Type: field.TypeInt, Nullable: true},
 		{Name: "officer_id", Type: field.TypeInt, Nullable: true},
@@ -352,6 +364,13 @@ var (
 		Columns:    RecordinsurancesColumns,
 		PrimaryKey: []*schema.Column{RecordinsurancesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "recordinsurances_amountpaids_amountpaid_recordinsurance",
+				Columns: []*schema.Column{RecordinsurancesColumns[2]},
+
+				RefColumns: []*schema.Column{AmountpaidsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
 			{
 				Symbol:  "recordinsurances_hospitals_hospital_recordinsurance",
 				Columns: []*schema.Column{RecordinsurancesColumns[3]},
@@ -384,6 +403,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		AmountpaidsTable,
 		BanksTable,
 		CategoriesTable,
 		GendersTable,
@@ -421,8 +441,9 @@ func init() {
 	ProductsTable.ForeignKeys[0].RefTable = GendersTable
 	ProductsTable.ForeignKeys[1].RefTable = GroupOfAgesTable
 	ProductsTable.ForeignKeys[2].RefTable = OfficersTable
-	RecordinsurancesTable.ForeignKeys[0].RefTable = HospitalsTable
-	RecordinsurancesTable.ForeignKeys[1].RefTable = MembersTable
-	RecordinsurancesTable.ForeignKeys[2].RefTable = OfficersTable
-	RecordinsurancesTable.ForeignKeys[3].RefTable = ProductsTable
+	RecordinsurancesTable.ForeignKeys[0].RefTable = AmountpaidsTable
+	RecordinsurancesTable.ForeignKeys[1].RefTable = HospitalsTable
+	RecordinsurancesTable.ForeignKeys[2].RefTable = MembersTable
+	RecordinsurancesTable.ForeignKeys[3].RefTable = OfficersTable
+	RecordinsurancesTable.ForeignKeys[4].RefTable = ProductsTable
 }

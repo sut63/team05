@@ -10,6 +10,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team05/ent/amountpaid"
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
@@ -43,12 +44,6 @@ func (ru *RecordinsuranceUpdate) SetNillableRecordinsuranceTime(t *time.Time) *R
 	if t != nil {
 		ru.SetRecordinsuranceTime(*t)
 	}
-	return ru
-}
-
-// SetAmountpaid sets the amountpaid field.
-func (ru *RecordinsuranceUpdate) SetAmountpaid(s string) *RecordinsuranceUpdate {
-	ru.mutation.SetAmountpaid(s)
 	return ru
 }
 
@@ -128,6 +123,25 @@ func (ru *RecordinsuranceUpdate) SetProduct(p *Product) *RecordinsuranceUpdate {
 	return ru.SetProductID(p.ID)
 }
 
+// SetAmountpaidID sets the Amountpaid edge to Amountpaid by id.
+func (ru *RecordinsuranceUpdate) SetAmountpaidID(id int) *RecordinsuranceUpdate {
+	ru.mutation.SetAmountpaidID(id)
+	return ru
+}
+
+// SetNillableAmountpaidID sets the Amountpaid edge to Amountpaid by id if the given value is not nil.
+func (ru *RecordinsuranceUpdate) SetNillableAmountpaidID(id *int) *RecordinsuranceUpdate {
+	if id != nil {
+		ru = ru.SetAmountpaidID(*id)
+	}
+	return ru
+}
+
+// SetAmountpaid sets the Amountpaid edge to Amountpaid.
+func (ru *RecordinsuranceUpdate) SetAmountpaid(a *Amountpaid) *RecordinsuranceUpdate {
+	return ru.SetAmountpaidID(a.ID)
+}
+
 // Mutation returns the RecordinsuranceMutation object of the builder.
 func (ru *RecordinsuranceUpdate) Mutation() *RecordinsuranceMutation {
 	return ru.mutation
@@ -157,13 +171,14 @@ func (ru *RecordinsuranceUpdate) ClearProduct() *RecordinsuranceUpdate {
 	return ru
 }
 
+// ClearAmountpaid clears the Amountpaid edge to Amountpaid.
+func (ru *RecordinsuranceUpdate) ClearAmountpaid() *RecordinsuranceUpdate {
+	ru.mutation.ClearAmountpaid()
+	return ru
+}
+
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (ru *RecordinsuranceUpdate) Save(ctx context.Context) (int, error) {
-	if v, ok := ru.mutation.Amountpaid(); ok {
-		if err := recordinsurance.AmountpaidValidator(v); err != nil {
-			return 0, &ValidationError{Name: "amountpaid", err: fmt.Errorf("ent: validator failed for field \"amountpaid\": %w", err)}
-		}
-	}
 
 	var (
 		err      error
@@ -237,13 +252,6 @@ func (ru *RecordinsuranceUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: recordinsurance.FieldRecordinsuranceTime,
-		})
-	}
-	if value, ok := ru.mutation.Amountpaid(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: recordinsurance.FieldAmountpaid,
 		})
 	}
 	if ru.mutation.MemberCleared() {
@@ -386,6 +394,41 @@ func (ru *RecordinsuranceUpdate) sqlSave(ctx context.Context) (n int, err error)
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if ru.mutation.AmountpaidCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   recordinsurance.AmountpaidTable,
+			Columns: []string{recordinsurance.AmountpaidColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: amountpaid.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ru.mutation.AmountpaidIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   recordinsurance.AmountpaidTable,
+			Columns: []string{recordinsurance.AmountpaidColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: amountpaid.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{recordinsurance.Label}
@@ -415,12 +458,6 @@ func (ruo *RecordinsuranceUpdateOne) SetNillableRecordinsuranceTime(t *time.Time
 	if t != nil {
 		ruo.SetRecordinsuranceTime(*t)
 	}
-	return ruo
-}
-
-// SetAmountpaid sets the amountpaid field.
-func (ruo *RecordinsuranceUpdateOne) SetAmountpaid(s string) *RecordinsuranceUpdateOne {
-	ruo.mutation.SetAmountpaid(s)
 	return ruo
 }
 
@@ -500,6 +537,25 @@ func (ruo *RecordinsuranceUpdateOne) SetProduct(p *Product) *RecordinsuranceUpda
 	return ruo.SetProductID(p.ID)
 }
 
+// SetAmountpaidID sets the Amountpaid edge to Amountpaid by id.
+func (ruo *RecordinsuranceUpdateOne) SetAmountpaidID(id int) *RecordinsuranceUpdateOne {
+	ruo.mutation.SetAmountpaidID(id)
+	return ruo
+}
+
+// SetNillableAmountpaidID sets the Amountpaid edge to Amountpaid by id if the given value is not nil.
+func (ruo *RecordinsuranceUpdateOne) SetNillableAmountpaidID(id *int) *RecordinsuranceUpdateOne {
+	if id != nil {
+		ruo = ruo.SetAmountpaidID(*id)
+	}
+	return ruo
+}
+
+// SetAmountpaid sets the Amountpaid edge to Amountpaid.
+func (ruo *RecordinsuranceUpdateOne) SetAmountpaid(a *Amountpaid) *RecordinsuranceUpdateOne {
+	return ruo.SetAmountpaidID(a.ID)
+}
+
 // Mutation returns the RecordinsuranceMutation object of the builder.
 func (ruo *RecordinsuranceUpdateOne) Mutation() *RecordinsuranceMutation {
 	return ruo.mutation
@@ -529,13 +585,14 @@ func (ruo *RecordinsuranceUpdateOne) ClearProduct() *RecordinsuranceUpdateOne {
 	return ruo
 }
 
+// ClearAmountpaid clears the Amountpaid edge to Amountpaid.
+func (ruo *RecordinsuranceUpdateOne) ClearAmountpaid() *RecordinsuranceUpdateOne {
+	ruo.mutation.ClearAmountpaid()
+	return ruo
+}
+
 // Save executes the query and returns the updated entity.
 func (ruo *RecordinsuranceUpdateOne) Save(ctx context.Context) (*Recordinsurance, error) {
-	if v, ok := ruo.mutation.Amountpaid(); ok {
-		if err := recordinsurance.AmountpaidValidator(v); err != nil {
-			return nil, &ValidationError{Name: "amountpaid", err: fmt.Errorf("ent: validator failed for field \"amountpaid\": %w", err)}
-		}
-	}
 
 	var (
 		err  error
@@ -607,13 +664,6 @@ func (ruo *RecordinsuranceUpdateOne) sqlSave(ctx context.Context) (r *Recordinsu
 			Type:   field.TypeTime,
 			Value:  value,
 			Column: recordinsurance.FieldRecordinsuranceTime,
-		})
-	}
-	if value, ok := ruo.mutation.Amountpaid(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: recordinsurance.FieldAmountpaid,
 		})
 	}
 	if ruo.mutation.MemberCleared() {
@@ -748,6 +798,41 @@ func (ruo *RecordinsuranceUpdateOne) sqlSave(ctx context.Context) (r *Recordinsu
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: product.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ruo.mutation.AmountpaidCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   recordinsurance.AmountpaidTable,
+			Columns: []string{recordinsurance.AmountpaidColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: amountpaid.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ruo.mutation.AmountpaidIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   recordinsurance.AmountpaidTable,
+			Columns: []string{recordinsurance.AmountpaidColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: amountpaid.FieldID,
 				},
 			},
 		}
