@@ -17,7 +17,6 @@ type Recordinsurance struct {
 func (Recordinsurance) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("recordinsurance_time").Default(time.Now),
-		field.String("amountpaid").NotEmpty(),
 	}
 }
 
@@ -28,5 +27,6 @@ func (Recordinsurance) Edges() []ent.Edge {
 		edge.From("Hospital", Hospital.Type).Ref("hospital_recordinsurance").Unique(),
 		edge.From("Officer", Officer.Type).Ref("officer_recordinsurance").Unique(),
 		edge.From("Product", Product.Type).Ref("product_recordinsurance").Unique(),
+		edge.From("Amountpaid", Amountpaid.Type).Ref("amountpaid_recordinsurance").Unique(),
 	}
 }

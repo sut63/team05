@@ -210,6 +210,30 @@ func DenyMutationOperationRule(op ent.Op) MutationRule {
 	return OnMutationOperation(rule, op)
 }
 
+// The AmountpaidQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type AmountpaidQueryRuleFunc func(context.Context, *ent.AmountpaidQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f AmountpaidQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.AmountpaidQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.AmountpaidQuery", q)
+}
+
+// The AmountpaidMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type AmountpaidMutationRuleFunc func(context.Context, *ent.AmountpaidMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f AmountpaidMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.AmountpaidMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.AmountpaidMutation", m)
+}
+
 // The BankQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type BankQueryRuleFunc func(context.Context, *ent.BankQuery) error

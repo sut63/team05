@@ -11,6 +11,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team05/ent/amountpaid"
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
@@ -28,11 +29,12 @@ type RecordinsuranceQuery struct {
 	unique     []string
 	predicates []predicate.Recordinsurance
 	// eager-loading edges.
-	withMember   *MemberQuery
-	withHospital *HospitalQuery
-	withOfficer  *OfficerQuery
-	withProduct  *ProductQuery
-	withFKs      bool
+	withMember     *MemberQuery
+	withHospital   *HospitalQuery
+	withOfficer    *OfficerQuery
+	withProduct    *ProductQuery
+	withAmountpaid *AmountpaidQuery
+	withFKs        bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -127,6 +129,24 @@ func (rq *RecordinsuranceQuery) QueryProduct() *ProductQuery {
 			sqlgraph.From(recordinsurance.Table, recordinsurance.FieldID, rq.sqlQuery()),
 			sqlgraph.To(product.Table, product.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, recordinsurance.ProductTable, recordinsurance.ProductColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(rq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryAmountpaid chains the current query on the Amountpaid edge.
+func (rq *RecordinsuranceQuery) QueryAmountpaid() *AmountpaidQuery {
+	query := &AmountpaidQuery{config: rq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := rq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(recordinsurance.Table, recordinsurance.FieldID, rq.sqlQuery()),
+			sqlgraph.To(amountpaid.Table, amountpaid.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, recordinsurance.AmountpaidTable, recordinsurance.AmountpaidColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(rq.driver.Dialect(), step)
 		return fromU, nil
@@ -357,6 +377,17 @@ func (rq *RecordinsuranceQuery) WithProduct(opts ...func(*ProductQuery)) *Record
 	return rq
 }
 
+//  WithAmountpaid tells the query-builder to eager-loads the nodes that are connected to
+// the "Amountpaid" edge. The optional arguments used to configure the query builder of the edge.
+func (rq *RecordinsuranceQuery) WithAmountpaid(opts ...func(*AmountpaidQuery)) *RecordinsuranceQuery {
+	query := &AmountpaidQuery{config: rq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	rq.withAmountpaid = query
+	return rq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -424,14 +455,15 @@ func (rq *RecordinsuranceQuery) sqlAll(ctx context.Context) ([]*Recordinsurance,
 		nodes       = []*Recordinsurance{}
 		withFKs     = rq.withFKs
 		_spec       = rq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			rq.withMember != nil,
 			rq.withHospital != nil,
 			rq.withOfficer != nil,
 			rq.withProduct != nil,
+			rq.withAmountpaid != nil,
 		}
 	)
-	if rq.withMember != nil || rq.withHospital != nil || rq.withOfficer != nil || rq.withProduct != nil {
+	if rq.withMember != nil || rq.withHospital != nil || rq.withOfficer != nil || rq.withProduct != nil || rq.withAmountpaid != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -557,6 +589,31 @@ func (rq *RecordinsuranceQuery) sqlAll(ctx context.Context) ([]*Recordinsurance,
 			}
 			for i := range nodes {
 				nodes[i].Edges.Product = n
+			}
+		}
+	}
+
+	if query := rq.withAmountpaid; query != nil {
+		ids := make([]int, 0, len(nodes))
+		nodeids := make(map[int][]*Recordinsurance)
+		for i := range nodes {
+			if fk := nodes[i].amountpaid_id; fk != nil {
+				ids = append(ids, *fk)
+				nodeids[*fk] = append(nodeids[*fk], nodes[i])
+			}
+		}
+		query.Where(amountpaid.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "amountpaid_id" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Amountpaid = n
 			}
 		}
 	}

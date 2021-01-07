@@ -9,6 +9,7 @@ import (
 
 	"github.com/sut63/team05/ent/migrate"
 
+	"github.com/sut63/team05/ent/amountpaid"
 	"github.com/sut63/team05/ent/bank"
 	"github.com/sut63/team05/ent/category"
 	"github.com/sut63/team05/ent/gender"
@@ -34,6 +35,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// Amountpaid is the client for interacting with the Amountpaid builders.
+	Amountpaid *AmountpaidClient
 	// Bank is the client for interacting with the Bank builders.
 	Bank *BankClient
 	// Category is the client for interacting with the Category builders.
@@ -75,6 +78,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.Amountpaid = NewAmountpaidClient(c.config)
 	c.Bank = NewBankClient(c.config)
 	c.Category = NewCategoryClient(c.config)
 	c.Gender = NewGenderClient(c.config)
@@ -121,6 +125,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:             ctx,
 		config:          cfg,
+		Amountpaid:      NewAmountpaidClient(cfg),
 		Bank:            NewBankClient(cfg),
 		Category:        NewCategoryClient(cfg),
 		Gender:          NewGenderClient(cfg),
@@ -150,6 +155,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := config{driver: &txDriver{tx: tx, drv: c.driver}, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
 		config:          cfg,
+		Amountpaid:      NewAmountpaidClient(cfg),
 		Bank:            NewBankClient(cfg),
 		Category:        NewCategoryClient(cfg),
 		Gender:          NewGenderClient(cfg),
@@ -170,7 +176,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Bank.
+//		Amountpaid.
 //		Query().
 //		Count(ctx)
 //
@@ -192,6 +198,7 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.Amountpaid.Use(hooks...)
 	c.Bank.Use(hooks...)
 	c.Category.Use(hooks...)
 	c.Gender.Use(hooks...)
@@ -206,6 +213,105 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Payment.Use(hooks...)
 	c.Product.Use(hooks...)
 	c.Recordinsurance.Use(hooks...)
+}
+
+// AmountpaidClient is a client for the Amountpaid schema.
+type AmountpaidClient struct {
+	config
+}
+
+// NewAmountpaidClient returns a client for the Amountpaid from the given config.
+func NewAmountpaidClient(c config) *AmountpaidClient {
+	return &AmountpaidClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `amountpaid.Hooks(f(g(h())))`.
+func (c *AmountpaidClient) Use(hooks ...Hook) {
+	c.hooks.Amountpaid = append(c.hooks.Amountpaid, hooks...)
+}
+
+// Create returns a create builder for Amountpaid.
+func (c *AmountpaidClient) Create() *AmountpaidCreate {
+	mutation := newAmountpaidMutation(c.config, OpCreate)
+	return &AmountpaidCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Update returns an update builder for Amountpaid.
+func (c *AmountpaidClient) Update() *AmountpaidUpdate {
+	mutation := newAmountpaidMutation(c.config, OpUpdate)
+	return &AmountpaidUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *AmountpaidClient) UpdateOne(a *Amountpaid) *AmountpaidUpdateOne {
+	mutation := newAmountpaidMutation(c.config, OpUpdateOne, withAmountpaid(a))
+	return &AmountpaidUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *AmountpaidClient) UpdateOneID(id int) *AmountpaidUpdateOne {
+	mutation := newAmountpaidMutation(c.config, OpUpdateOne, withAmountpaidID(id))
+	return &AmountpaidUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Amountpaid.
+func (c *AmountpaidClient) Delete() *AmountpaidDelete {
+	mutation := newAmountpaidMutation(c.config, OpDelete)
+	return &AmountpaidDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *AmountpaidClient) DeleteOne(a *Amountpaid) *AmountpaidDeleteOne {
+	return c.DeleteOneID(a.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *AmountpaidClient) DeleteOneID(id int) *AmountpaidDeleteOne {
+	builder := c.Delete().Where(amountpaid.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &AmountpaidDeleteOne{builder}
+}
+
+// Create returns a query builder for Amountpaid.
+func (c *AmountpaidClient) Query() *AmountpaidQuery {
+	return &AmountpaidQuery{config: c.config}
+}
+
+// Get returns a Amountpaid entity by its id.
+func (c *AmountpaidClient) Get(ctx context.Context, id int) (*Amountpaid, error) {
+	return c.Query().Where(amountpaid.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *AmountpaidClient) GetX(ctx context.Context, id int) *Amountpaid {
+	a, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return a
+}
+
+// QueryAmountpaidRecordinsurance queries the amountpaid_recordinsurance edge of a Amountpaid.
+func (c *AmountpaidClient) QueryAmountpaidRecordinsurance(a *Amountpaid) *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(amountpaid.Table, amountpaid.FieldID, id),
+			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, amountpaid.AmountpaidRecordinsuranceTable, amountpaid.AmountpaidRecordinsuranceColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *AmountpaidClient) Hooks() []Hook {
+	return c.hooks.Amountpaid
 }
 
 // BankClient is a client for the Bank schema.
@@ -2094,6 +2200,22 @@ func (c *RecordinsuranceClient) QueryProduct(r *Recordinsurance) *ProductQuery {
 			sqlgraph.From(recordinsurance.Table, recordinsurance.FieldID, id),
 			sqlgraph.To(product.Table, product.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, recordinsurance.ProductTable, recordinsurance.ProductColumn),
+		)
+		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryAmountpaid queries the Amountpaid edge of a Recordinsurance.
+func (c *RecordinsuranceClient) QueryAmountpaid(r *Recordinsurance) *AmountpaidQuery {
+	query := &AmountpaidQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := r.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(recordinsurance.Table, recordinsurance.FieldID, id),
+			sqlgraph.To(amountpaid.Table, amountpaid.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, recordinsurance.AmountpaidTable, recordinsurance.AmountpaidColumn),
 		)
 		fromV = sqlgraph.Neighbors(r.driver.Dialect(), step)
 		return fromV, nil

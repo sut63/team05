@@ -13,8 +13,6 @@ const (
 	FieldID = "id"
 	// FieldRecordinsuranceTime holds the string denoting the recordinsurance_time field in the database.
 	FieldRecordinsuranceTime = "recordinsurance_time"
-	// FieldAmountpaid holds the string denoting the amountpaid field in the database.
-	FieldAmountpaid = "amountpaid"
 
 	// EdgeMember holds the string denoting the member edge name in mutations.
 	EdgeMember = "Member"
@@ -24,6 +22,8 @@ const (
 	EdgeOfficer = "Officer"
 	// EdgeProduct holds the string denoting the product edge name in mutations.
 	EdgeProduct = "Product"
+	// EdgeAmountpaid holds the string denoting the amountpaid edge name in mutations.
+	EdgeAmountpaid = "Amountpaid"
 
 	// Table holds the table name of the recordinsurance in the database.
 	Table = "recordinsurances"
@@ -55,17 +55,24 @@ const (
 	ProductInverseTable = "products"
 	// ProductColumn is the table column denoting the Product relation/edge.
 	ProductColumn = "product_id"
+	// AmountpaidTable is the table the holds the Amountpaid relation/edge.
+	AmountpaidTable = "recordinsurances"
+	// AmountpaidInverseTable is the table name for the Amountpaid entity.
+	// It exists in this package in order to avoid circular dependency with the "amountpaid" package.
+	AmountpaidInverseTable = "amountpaids"
+	// AmountpaidColumn is the table column denoting the Amountpaid relation/edge.
+	AmountpaidColumn = "amountpaid_id"
 )
 
 // Columns holds all SQL columns for recordinsurance fields.
 var Columns = []string{
 	FieldID,
 	FieldRecordinsuranceTime,
-	FieldAmountpaid,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Recordinsurance type.
 var ForeignKeys = []string{
+	"amountpaid_id",
 	"hospital_id",
 	"member_id",
 	"officer_id",
@@ -75,6 +82,4 @@ var ForeignKeys = []string{
 var (
 	// DefaultRecordinsuranceTime holds the default value on creation for the recordinsurance_time field.
 	DefaultRecordinsuranceTime func() time.Time
-	// AmountpaidValidator is a validator for the "amountpaid" field. It is called by the builders before save.
-	AmountpaidValidator func(string) error
 )

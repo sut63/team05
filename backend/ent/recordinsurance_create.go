@@ -4,12 +4,12 @@ package ent
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team05/ent/amountpaid"
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
@@ -35,12 +35,6 @@ func (rc *RecordinsuranceCreate) SetNillableRecordinsuranceTime(t *time.Time) *R
 	if t != nil {
 		rc.SetRecordinsuranceTime(*t)
 	}
-	return rc
-}
-
-// SetAmountpaid sets the amountpaid field.
-func (rc *RecordinsuranceCreate) SetAmountpaid(s string) *RecordinsuranceCreate {
-	rc.mutation.SetAmountpaid(s)
 	return rc
 }
 
@@ -120,6 +114,25 @@ func (rc *RecordinsuranceCreate) SetProduct(p *Product) *RecordinsuranceCreate {
 	return rc.SetProductID(p.ID)
 }
 
+// SetAmountpaidID sets the Amountpaid edge to Amountpaid by id.
+func (rc *RecordinsuranceCreate) SetAmountpaidID(id int) *RecordinsuranceCreate {
+	rc.mutation.SetAmountpaidID(id)
+	return rc
+}
+
+// SetNillableAmountpaidID sets the Amountpaid edge to Amountpaid by id if the given value is not nil.
+func (rc *RecordinsuranceCreate) SetNillableAmountpaidID(id *int) *RecordinsuranceCreate {
+	if id != nil {
+		rc = rc.SetAmountpaidID(*id)
+	}
+	return rc
+}
+
+// SetAmountpaid sets the Amountpaid edge to Amountpaid.
+func (rc *RecordinsuranceCreate) SetAmountpaid(a *Amountpaid) *RecordinsuranceCreate {
+	return rc.SetAmountpaidID(a.ID)
+}
+
 // Mutation returns the RecordinsuranceMutation object of the builder.
 func (rc *RecordinsuranceCreate) Mutation() *RecordinsuranceMutation {
 	return rc.mutation
@@ -130,14 +143,6 @@ func (rc *RecordinsuranceCreate) Save(ctx context.Context) (*Recordinsurance, er
 	if _, ok := rc.mutation.RecordinsuranceTime(); !ok {
 		v := recordinsurance.DefaultRecordinsuranceTime()
 		rc.mutation.SetRecordinsuranceTime(v)
-	}
-	if _, ok := rc.mutation.Amountpaid(); !ok {
-		return nil, &ValidationError{Name: "amountpaid", err: errors.New("ent: missing required field \"amountpaid\"")}
-	}
-	if v, ok := rc.mutation.Amountpaid(); ok {
-		if err := recordinsurance.AmountpaidValidator(v); err != nil {
-			return nil, &ValidationError{Name: "amountpaid", err: fmt.Errorf("ent: validator failed for field \"amountpaid\": %w", err)}
-		}
 	}
 	var (
 		err  error
@@ -207,14 +212,6 @@ func (rc *RecordinsuranceCreate) createSpec() (*Recordinsurance, *sqlgraph.Creat
 		})
 		r.RecordinsuranceTime = value
 	}
-	if value, ok := rc.mutation.Amountpaid(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: recordinsurance.FieldAmountpaid,
-		})
-		r.Amountpaid = value
-	}
 	if nodes := rc.mutation.MemberIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -283,6 +280,25 @@ func (rc *RecordinsuranceCreate) createSpec() (*Recordinsurance, *sqlgraph.Creat
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: product.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := rc.mutation.AmountpaidIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   recordinsurance.AmountpaidTable,
+			Columns: []string{recordinsurance.AmountpaidColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: amountpaid.FieldID,
 				},
 			},
 		}
