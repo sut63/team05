@@ -96,23 +96,23 @@ func (pu *ProductUpdate) SetGender(g *Gender) *ProductUpdate {
 	return pu.SetGenderID(g.ID)
 }
 
-// SetGoupOfAgeID sets the Goup_Of_Age edge to GroupOfAge by id.
-func (pu *ProductUpdate) SetGoupOfAgeID(id int) *ProductUpdate {
-	pu.mutation.SetGoupOfAgeID(id)
+// SetGroupOfAgeID sets the Group_Of_Age edge to GroupOfAge by id.
+func (pu *ProductUpdate) SetGroupOfAgeID(id int) *ProductUpdate {
+	pu.mutation.SetGroupOfAgeID(id)
 	return pu
 }
 
-// SetNillableGoupOfAgeID sets the Goup_Of_Age edge to GroupOfAge by id if the given value is not nil.
-func (pu *ProductUpdate) SetNillableGoupOfAgeID(id *int) *ProductUpdate {
+// SetNillableGroupOfAgeID sets the Group_Of_Age edge to GroupOfAge by id if the given value is not nil.
+func (pu *ProductUpdate) SetNillableGroupOfAgeID(id *int) *ProductUpdate {
 	if id != nil {
-		pu = pu.SetGoupOfAgeID(*id)
+		pu = pu.SetGroupOfAgeID(*id)
 	}
 	return pu
 }
 
-// SetGoupOfAge sets the Goup_Of_Age edge to GroupOfAge.
-func (pu *ProductUpdate) SetGoupOfAge(g *GroupOfAge) *ProductUpdate {
-	return pu.SetGoupOfAgeID(g.ID)
+// SetGroupOfAge sets the Group_Of_Age edge to GroupOfAge.
+func (pu *ProductUpdate) SetGroupOfAge(g *GroupOfAge) *ProductUpdate {
+	return pu.SetGroupOfAgeID(g.ID)
 }
 
 // SetOfficerID sets the Officer edge to Officer by id.
@@ -175,9 +175,9 @@ func (pu *ProductUpdate) ClearGender() *ProductUpdate {
 	return pu
 }
 
-// ClearGoupOfAge clears the Goup_Of_Age edge to GroupOfAge.
-func (pu *ProductUpdate) ClearGoupOfAge() *ProductUpdate {
-	pu.mutation.ClearGoupOfAge()
+// ClearGroupOfAge clears the Group_Of_Age edge to GroupOfAge.
+func (pu *ProductUpdate) ClearGroupOfAge() *ProductUpdate {
+	pu.mutation.ClearGroupOfAge()
 	return pu
 }
 
@@ -371,12 +371,12 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if pu.mutation.GoupOfAgeCleared() {
+	if pu.mutation.GroupOfAgeCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   product.GoupOfAgeTable,
-			Columns: []string{product.GoupOfAgeColumn},
+			Table:   product.GroupOfAgeTable,
+			Columns: []string{product.GroupOfAgeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -387,12 +387,12 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := pu.mutation.GoupOfAgeIDs(); len(nodes) > 0 {
+	if nodes := pu.mutation.GroupOfAgeIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   product.GoupOfAgeTable,
-			Columns: []string{product.GoupOfAgeColumn},
+			Table:   product.GroupOfAgeTable,
+			Columns: []string{product.GroupOfAgeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -599,23 +599,23 @@ func (puo *ProductUpdateOne) SetGender(g *Gender) *ProductUpdateOne {
 	return puo.SetGenderID(g.ID)
 }
 
-// SetGoupOfAgeID sets the Goup_Of_Age edge to GroupOfAge by id.
-func (puo *ProductUpdateOne) SetGoupOfAgeID(id int) *ProductUpdateOne {
-	puo.mutation.SetGoupOfAgeID(id)
+// SetGroupOfAgeID sets the Group_Of_Age edge to GroupOfAge by id.
+func (puo *ProductUpdateOne) SetGroupOfAgeID(id int) *ProductUpdateOne {
+	puo.mutation.SetGroupOfAgeID(id)
 	return puo
 }
 
-// SetNillableGoupOfAgeID sets the Goup_Of_Age edge to GroupOfAge by id if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableGoupOfAgeID(id *int) *ProductUpdateOne {
+// SetNillableGroupOfAgeID sets the Group_Of_Age edge to GroupOfAge by id if the given value is not nil.
+func (puo *ProductUpdateOne) SetNillableGroupOfAgeID(id *int) *ProductUpdateOne {
 	if id != nil {
-		puo = puo.SetGoupOfAgeID(*id)
+		puo = puo.SetGroupOfAgeID(*id)
 	}
 	return puo
 }
 
-// SetGoupOfAge sets the Goup_Of_Age edge to GroupOfAge.
-func (puo *ProductUpdateOne) SetGoupOfAge(g *GroupOfAge) *ProductUpdateOne {
-	return puo.SetGoupOfAgeID(g.ID)
+// SetGroupOfAge sets the Group_Of_Age edge to GroupOfAge.
+func (puo *ProductUpdateOne) SetGroupOfAge(g *GroupOfAge) *ProductUpdateOne {
+	return puo.SetGroupOfAgeID(g.ID)
 }
 
 // SetOfficerID sets the Officer edge to Officer by id.
@@ -678,9 +678,9 @@ func (puo *ProductUpdateOne) ClearGender() *ProductUpdateOne {
 	return puo
 }
 
-// ClearGoupOfAge clears the Goup_Of_Age edge to GroupOfAge.
-func (puo *ProductUpdateOne) ClearGoupOfAge() *ProductUpdateOne {
-	puo.mutation.ClearGoupOfAge()
+// ClearGroupOfAge clears the Group_Of_Age edge to GroupOfAge.
+func (puo *ProductUpdateOne) ClearGroupOfAge() *ProductUpdateOne {
+	puo.mutation.ClearGroupOfAge()
 	return puo
 }
 
@@ -872,12 +872,12 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (pr *Product, err erro
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if puo.mutation.GoupOfAgeCleared() {
+	if puo.mutation.GroupOfAgeCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   product.GoupOfAgeTable,
-			Columns: []string{product.GoupOfAgeColumn},
+			Table:   product.GroupOfAgeTable,
+			Columns: []string{product.GroupOfAgeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -888,12 +888,12 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (pr *Product, err erro
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := puo.mutation.GoupOfAgeIDs(); len(nodes) > 0 {
+	if nodes := puo.mutation.GroupOfAgeIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   product.GoupOfAgeTable,
-			Columns: []string{product.GoupOfAgeColumn},
+			Table:   product.GroupOfAgeTable,
+			Columns: []string{product.GroupOfAgeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

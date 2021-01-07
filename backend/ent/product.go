@@ -38,8 +38,8 @@ type Product struct {
 type ProductEdges struct {
 	// Gender holds the value of the Gender edge.
 	Gender *Gender
-	// GoupOfAge holds the value of the Goup_Of_Age edge.
-	GoupOfAge *GroupOfAge
+	// GroupOfAge holds the value of the Group_Of_Age edge.
+	GroupOfAge *GroupOfAge
 	// Officer holds the value of the Officer edge.
 	Officer *Officer
 	// ProductInsurance holds the value of the product_insurance edge.
@@ -65,18 +65,18 @@ func (e ProductEdges) GenderOrErr() (*Gender, error) {
 	return nil, &NotLoadedError{edge: "Gender"}
 }
 
-// GoupOfAgeOrErr returns the GoupOfAge value or an error if the edge
+// GroupOfAgeOrErr returns the GroupOfAge value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e ProductEdges) GoupOfAgeOrErr() (*GroupOfAge, error) {
+func (e ProductEdges) GroupOfAgeOrErr() (*GroupOfAge, error) {
 	if e.loadedTypes[1] {
-		if e.GoupOfAge == nil {
-			// The edge Goup_Of_Age was loaded in eager-loading,
+		if e.GroupOfAge == nil {
+			// The edge Group_Of_Age was loaded in eager-loading,
 			// but was not found.
 			return nil, &NotFoundError{label: groupofage.Label}
 		}
-		return e.GoupOfAge, nil
+		return e.GroupOfAge, nil
 	}
-	return nil, &NotLoadedError{edge: "Goup_Of_Age"}
+	return nil, &NotLoadedError{edge: "Group_Of_Age"}
 }
 
 // OfficerOrErr returns the Officer value or an error if the edge
@@ -192,9 +192,9 @@ func (pr *Product) QueryGender() *GenderQuery {
 	return (&ProductClient{config: pr.config}).QueryGender(pr)
 }
 
-// QueryGoupOfAge queries the Goup_Of_Age edge of the Product.
-func (pr *Product) QueryGoupOfAge() *GroupOfAgeQuery {
-	return (&ProductClient{config: pr.config}).QueryGoupOfAge(pr)
+// QueryGroupOfAge queries the Group_Of_Age edge of the Product.
+func (pr *Product) QueryGroupOfAge() *GroupOfAgeQuery {
+	return (&ProductClient{config: pr.config}).QueryGroupOfAge(pr)
 }
 
 // QueryOfficer queries the Officer edge of the Product.

@@ -18,8 +18,8 @@ const (
 
 	// EdgeGender holds the string denoting the gender edge name in mutations.
 	EdgeGender = "Gender"
-	// EdgeGoupOfAge holds the string denoting the goup_of_age edge name in mutations.
-	EdgeGoupOfAge = "Goup_Of_Age"
+	// EdgeGroupOfAge holds the string denoting the group_of_age edge name in mutations.
+	EdgeGroupOfAge = "Group_Of_Age"
 	// EdgeOfficer holds the string denoting the officer edge name in mutations.
 	EdgeOfficer = "Officer"
 	// EdgeProductInsurance holds the string denoting the product_insurance edge name in mutations.
@@ -36,13 +36,13 @@ const (
 	GenderInverseTable = "genders"
 	// GenderColumn is the table column denoting the Gender relation/edge.
 	GenderColumn = "gender_id"
-	// GoupOfAgeTable is the table the holds the Goup_Of_Age relation/edge.
-	GoupOfAgeTable = "products"
-	// GoupOfAgeInverseTable is the table name for the GroupOfAge entity.
+	// GroupOfAgeTable is the table the holds the Group_Of_Age relation/edge.
+	GroupOfAgeTable = "products"
+	// GroupOfAgeInverseTable is the table name for the GroupOfAge entity.
 	// It exists in this package in order to avoid circular dependency with the "groupofage" package.
-	GoupOfAgeInverseTable = "group_of_ages"
-	// GoupOfAgeColumn is the table column denoting the Goup_Of_Age relation/edge.
-	GoupOfAgeColumn = "group_of_age_id"
+	GroupOfAgeInverseTable = "group_of_ages"
+	// GroupOfAgeColumn is the table column denoting the Group_Of_Age relation/edge.
+	GroupOfAgeColumn = "group_of_age_id"
 	// OfficerTable is the table the holds the Officer relation/edge.
 	OfficerTable = "products"
 	// OfficerInverseTable is the table name for the Officer entity.

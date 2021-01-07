@@ -31,7 +31,7 @@ type ProductQuery struct {
 	predicates []predicate.Product
 	// eager-loading edges.
 	withGender           *GenderQuery
-	withGoupOfAge        *GroupOfAgeQuery
+	withGroupOfAge       *GroupOfAgeQuery
 	withOfficer          *OfficerQuery
 	withProductInsurance *InsuranceQuery
 	withProductInquiry   *InquiryQuery
@@ -83,8 +83,8 @@ func (pq *ProductQuery) QueryGender() *GenderQuery {
 	return query
 }
 
-// QueryGoupOfAge chains the current query on the Goup_Of_Age edge.
-func (pq *ProductQuery) QueryGoupOfAge() *GroupOfAgeQuery {
+// QueryGroupOfAge chains the current query on the Group_Of_Age edge.
+func (pq *ProductQuery) QueryGroupOfAge() *GroupOfAgeQuery {
 	query := &GroupOfAgeQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -93,7 +93,7 @@ func (pq *ProductQuery) QueryGoupOfAge() *GroupOfAgeQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(groupofage.Table, groupofage.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.GoupOfAgeTable, product.GoupOfAgeColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.GroupOfAgeTable, product.GroupOfAgeColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -345,14 +345,14 @@ func (pq *ProductQuery) WithGender(opts ...func(*GenderQuery)) *ProductQuery {
 	return pq
 }
 
-//  WithGoupOfAge tells the query-builder to eager-loads the nodes that are connected to
-// the "Goup_Of_Age" edge. The optional arguments used to configure the query builder of the edge.
-func (pq *ProductQuery) WithGoupOfAge(opts ...func(*GroupOfAgeQuery)) *ProductQuery {
+//  WithGroupOfAge tells the query-builder to eager-loads the nodes that are connected to
+// the "Group_Of_Age" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithGroupOfAge(opts ...func(*GroupOfAgeQuery)) *ProductQuery {
 	query := &GroupOfAgeQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withGoupOfAge = query
+	pq.withGroupOfAge = query
 	return pq
 }
 
@@ -458,13 +458,13 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		_spec       = pq.querySpec()
 		loadedTypes = [5]bool{
 			pq.withGender != nil,
-			pq.withGoupOfAge != nil,
+			pq.withGroupOfAge != nil,
 			pq.withOfficer != nil,
 			pq.withProductInsurance != nil,
 			pq.withProductInquiry != nil,
 		}
 	)
-	if pq.withGender != nil || pq.withGoupOfAge != nil || pq.withOfficer != nil {
+	if pq.withGender != nil || pq.withGroupOfAge != nil || pq.withOfficer != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -519,7 +519,7 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		}
 	}
 
-	if query := pq.withGoupOfAge; query != nil {
+	if query := pq.withGroupOfAge; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Product)
 		for i := range nodes {
@@ -539,7 +539,7 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "group_of_age_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.GoupOfAge = n
+				nodes[i].Edges.GroupOfAge = n
 			}
 		}
 	}
