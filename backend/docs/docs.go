@@ -485,6 +485,592 @@ var doc = `{
                 }
             }
         },
+        "/hospitals": {
+            "get": {
+                "description": "list hospital entities",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List hospital entities",
+                "operationId": "list-hospital",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Hospital"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create hospital",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create hospital",
+                "operationId": "create-hospital",
+                "parameters": [
+                    {
+                        "description": "Hospital entity",
+                        "name": "Hospital",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ent.Hospital"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Hospital"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/hospitals/{id}": {
+            "get": {
+                "description": "get hospital by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a hospital entity by ID",
+                "operationId": "get-hospital",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Hospital ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Hospital"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update hospital by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update a hospital entity by ID",
+                "operationId": "update-hospital",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Hospital ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Hospital entity",
+                        "name": "hospital",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ent.Hospital"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Hospital"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "get hospital by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a hospital entity by ID",
+                "operationId": "delete-hospital",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Hospital ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/insurances": {
+            "get": {
+                "description": "list insurance entities",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List insurance entities",
+                "operationId": "list-insurance",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Insurance"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create insurance",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create insurance",
+                "operationId": "create-insurance",
+                "parameters": [
+                    {
+                        "description": "Insurance entity",
+                        "name": "insurance",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Insurance"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Insurance"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/insurances/{id}": {
+            "delete": {
+                "description": "get insurance by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a insurance entity by ID",
+                "operationId": "delete-insurance",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Insurance ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/members": {
+            "get": {
+                "description": "list member entities",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List member entities",
+                "operationId": "list-member",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Member"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create member",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create member",
+                "operationId": "create-member",
+                "parameters": [
+                    {
+                        "description": "Member entity",
+                        "name": "Member",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ent.Member"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Member"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/members/{id}": {
+            "get": {
+                "description": "get member by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a member entity by ID",
+                "operationId": "get-member",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Member ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Member"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update member by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update a member entity by ID",
+                "operationId": "update-member",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Member ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Member entity",
+                        "name": "member",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ent.Member"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Member"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "get member by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a member entity by ID",
+                "operationId": "delete-member",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Member ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/officers": {
             "get": {
                 "description": "list officer entities",
@@ -939,10 +1525,39 @@ var doc = `{
         }
     },
     "definitions": {
+        "controllers.Insurance": {
+            "type": "object",
+            "properties": {
+                "hospitalID": {
+                    "type": "integer"
+                },
+                "insuranceAddress": {
+                    "type": "string"
+                },
+                "insuranceInsurer": {
+                    "type": "string"
+                },
+                "insuranceTimeBuy": {
+                    "type": "string"
+                },
+                "insuranceTimeFirstpay": {
+                    "type": "string"
+                },
+                "memberID": {
+                    "type": "integer"
+                },
+                "officerID": {
+                    "type": "integer"
+                },
+                "productID": {
+                    "type": "integer"
+                }
+            }
+        },
         "controllers.Product": {
             "type": "object",
             "properties": {
-                "gender": {
+                "genderID": {
                     "type": "integer"
                 },
                 "groupOfAge": {
@@ -962,6 +1577,66 @@ var doc = `{
                 },
                 "productTime": {
                     "type": "integer"
+                }
+            }
+        },
+        "ent.Bank": {
+            "type": "object",
+            "properties": {
+                "bank_type": {
+                    "description": "BankType holds the value of the \"bank_type\" field.",
+                    "type": "string"
+                },
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the BankQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.BankEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                }
+            }
+        },
+        "ent.BankEdges": {
+            "type": "object",
+            "properties": {
+                "bankPayment": {
+                    "description": "BankPayment holds the value of the bank_payment edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Payment"
+                    }
+                }
+            }
+        },
+        "ent.Category": {
+            "type": "object",
+            "properties": {
+                "category_name": {
+                    "description": "CategoryName holds the value of the \"category_name\" field.",
+                    "type": "string"
+                },
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the CategoryQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.CategoryEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                }
+            }
+        },
+        "ent.CategoryEdges": {
+            "type": "object",
+            "properties": {
+                "categoryInquiry": {
+                    "description": "CategoryInquiry holds the value of the category_inquiry edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Inquiry"
+                    }
                 }
             }
         },
@@ -1020,8 +1695,8 @@ var doc = `{
         "ent.GroupOfAgeEdges": {
             "type": "object",
             "properties": {
-                "gropages": {
-                    "description": "Gropages holds the value of the gropages edge.",
+                "groupageProduct": {
+                    "description": "GroupageProduct holds the value of the groupage_product edge.",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/ent.Product"
@@ -1056,6 +1731,53 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/ent.Insurance"
                     }
+                }
+            }
+        },
+        "ent.Inquiry": {
+            "type": "object",
+            "properties": {
+                "Inquiry_inguiry_messages": {
+                    "description": "InquiryInguiryMessages holds the value of the \"Inquiry_inguiry_messages\" field.",
+                    "type": "string"
+                },
+                "Inquiry_time_messages": {
+                    "description": "InquiryTimeMessages holds the value of the \"Inquiry_time_messages\" field.",
+                    "type": "string"
+                },
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the InquiryQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.InquiryEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                }
+            }
+        },
+        "ent.InquiryEdges": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "description": "Category holds the value of the Category edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Category"
+                },
+                "member": {
+                    "description": "Member holds the value of the Member edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Member"
+                },
+                "officer": {
+                    "description": "Officer holds the value of the Officer edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Officer"
+                },
+                "product": {
+                    "description": "Product holds the value of the Product edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Product"
                 }
             }
         },
@@ -1096,6 +1818,13 @@ var doc = `{
                     "description": "Hospital holds the value of the Hospital edge.",
                     "type": "object",
                     "$ref": "#/definitions/ent.Hospital"
+                },
+                "insurancePayment": {
+                    "description": "InsurancePayment holds the value of the insurance_payment edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Payment"
+                    }
                 },
                 "member": {
                     "description": "Member holds the value of the Member edge.",
@@ -1143,11 +1872,55 @@ var doc = `{
         "ent.MemberEdges": {
             "type": "object",
             "properties": {
+                "memberInquiry": {
+                    "description": "MemberInquiry holds the value of the member_inquiry edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Inquiry"
+                    }
+                },
                 "memberInsurance": {
                     "description": "MemberInsurance holds the value of the member_insurance edge.",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/ent.Insurance"
+                    }
+                },
+                "memberPayment": {
+                    "description": "MemberPayment holds the value of the member_payment edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Payment"
+                    }
+                }
+            }
+        },
+        "ent.MoneyTransfer": {
+            "type": "object",
+            "properties": {
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the MoneyTransferQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.MoneyTransferEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                },
+                "moneytransfer_type": {
+                    "description": "MoneytransferType holds the value of the \"moneytransfer_type\" field.",
+                    "type": "string"
+                }
+            }
+        },
+        "ent.MoneyTransferEdges": {
+            "type": "object",
+            "properties": {
+                "moneytransferPayment": {
+                    "description": "MoneytransferPayment holds the value of the moneytransfer_payment edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Payment"
                     }
                 }
             }
@@ -1181,6 +1954,13 @@ var doc = `{
         "ent.OfficerEdges": {
             "type": "object",
             "properties": {
+                "officerInquiry": {
+                    "description": "OfficerInquiry holds the value of the officer_inquiry edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Inquiry"
+                    }
+                },
                 "officerInsurance": {
                     "description": "OfficerInsurance holds the value of the officer_insurance edge.",
                     "type": "array",
@@ -1188,12 +1968,63 @@ var doc = `{
                         "$ref": "#/definitions/ent.Insurance"
                     }
                 },
-                "officers": {
-                    "description": "Officers holds the value of the officers edge.",
+                "officerProduct": {
+                    "description": "OfficerProduct holds the value of the officer_product edge.",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/ent.Product"
                     }
+                }
+            }
+        },
+        "ent.Payment": {
+            "type": "object",
+            "properties": {
+                "account_name": {
+                    "description": "AccountName holds the value of the \"account_name\" field.",
+                    "type": "string"
+                },
+                "account_number": {
+                    "description": "AccountNumber holds the value of the \"account_number\" field.",
+                    "type": "string"
+                },
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the PaymentQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.PaymentEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                },
+                "transfer_time": {
+                    "description": "TransferTime holds the value of the \"transfer_time\" field.",
+                    "type": "string"
+                }
+            }
+        },
+        "ent.PaymentEdges": {
+            "type": "object",
+            "properties": {
+                "bank": {
+                    "description": "Bank holds the value of the Bank edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Bank"
+                },
+                "insurance": {
+                    "description": "Insurance holds the value of the Insurance edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Insurance"
+                },
+                "member": {
+                    "description": "Member holds the value of the Member edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Member"
+                },
+                "moneyTransfer": {
+                    "description": "MoneyTransfer holds the value of the MoneyTransfer edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.MoneyTransfer"
                 }
             }
         },
@@ -1230,20 +2061,22 @@ var doc = `{
         "ent.ProductEdges": {
             "type": "object",
             "properties": {
-                "gender": {
-                    "description": "Gender holds the value of the Gender edge.",
+                "productGender": {
+                    "description": "ProductGender holds the value of the product_gender edge.",
                     "type": "object",
                     "$ref": "#/definitions/ent.Gender"
                 },
-                "groupOfAge": {
-                    "description": "GroupOfAge holds the value of the Group_Of_Age edge.",
+                "productGroupage": {
+                    "description": "ProductGroupage holds the value of the product_groupage edge.",
                     "type": "object",
                     "$ref": "#/definitions/ent.GroupOfAge"
                 },
-                "officer": {
-                    "description": "Officer holds the value of the Officer edge.",
-                    "type": "object",
-                    "$ref": "#/definitions/ent.Officer"
+                "productInquiry": {
+                    "description": "ProductInquiry holds the value of the product_inquiry edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Inquiry"
+                    }
                 },
                 "productInsurance": {
                     "description": "ProductInsurance holds the value of the product_insurance edge.",
@@ -1251,6 +2084,11 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/ent.Insurance"
                     }
+                },
+                "productOfficer": {
+                    "description": "ProductOfficer holds the value of the product_officer edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Officer"
                 }
             }
         },

@@ -48,19 +48,19 @@ func (ou *OfficerUpdate) SetOfficerPassword(s string) *OfficerUpdate {
 	return ou
 }
 
-// AddOfficerIDs adds the officers edge to Product by ids.
-func (ou *OfficerUpdate) AddOfficerIDs(ids ...int) *OfficerUpdate {
-	ou.mutation.AddOfficerIDs(ids...)
+// AddOfficerProductIDs adds the officer_product edge to Product by ids.
+func (ou *OfficerUpdate) AddOfficerProductIDs(ids ...int) *OfficerUpdate {
+	ou.mutation.AddOfficerProductIDs(ids...)
 	return ou
 }
 
-// AddOfficers adds the officers edges to Product.
-func (ou *OfficerUpdate) AddOfficers(p ...*Product) *OfficerUpdate {
+// AddOfficerProduct adds the officer_product edges to Product.
+func (ou *OfficerUpdate) AddOfficerProduct(p ...*Product) *OfficerUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return ou.AddOfficerIDs(ids...)
+	return ou.AddOfficerProductIDs(ids...)
 }
 
 // AddOfficerInsuranceIDs adds the officer_insurance edge to Insurance by ids.
@@ -98,19 +98,19 @@ func (ou *OfficerUpdate) Mutation() *OfficerMutation {
 	return ou.mutation
 }
 
-// RemoveOfficerIDs removes the officers edge to Product by ids.
-func (ou *OfficerUpdate) RemoveOfficerIDs(ids ...int) *OfficerUpdate {
-	ou.mutation.RemoveOfficerIDs(ids...)
+// RemoveOfficerProductIDs removes the officer_product edge to Product by ids.
+func (ou *OfficerUpdate) RemoveOfficerProductIDs(ids ...int) *OfficerUpdate {
+	ou.mutation.RemoveOfficerProductIDs(ids...)
 	return ou
 }
 
-// RemoveOfficers removes officers edges to Product.
-func (ou *OfficerUpdate) RemoveOfficers(p ...*Product) *OfficerUpdate {
+// RemoveOfficerProduct removes officer_product edges to Product.
+func (ou *OfficerUpdate) RemoveOfficerProduct(p ...*Product) *OfficerUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return ou.RemoveOfficerIDs(ids...)
+	return ou.RemoveOfficerProductIDs(ids...)
 }
 
 // RemoveOfficerInsuranceIDs removes the officer_insurance edge to Insurance by ids.
@@ -249,12 +249,12 @@ func (ou *OfficerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: officer.FieldOfficerPassword,
 		})
 	}
-	if nodes := ou.mutation.RemovedOfficersIDs(); len(nodes) > 0 {
+	if nodes := ou.mutation.RemovedOfficerProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   officer.OfficersTable,
-			Columns: []string{officer.OfficersColumn},
+			Table:   officer.OfficerProductTable,
+			Columns: []string{officer.OfficerProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -268,12 +268,12 @@ func (ou *OfficerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ou.mutation.OfficersIDs(); len(nodes) > 0 {
+	if nodes := ou.mutation.OfficerProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   officer.OfficersTable,
-			Columns: []string{officer.OfficersColumn},
+			Table:   officer.OfficerProductTable,
+			Columns: []string{officer.OfficerProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -399,19 +399,19 @@ func (ouo *OfficerUpdateOne) SetOfficerPassword(s string) *OfficerUpdateOne {
 	return ouo
 }
 
-// AddOfficerIDs adds the officers edge to Product by ids.
-func (ouo *OfficerUpdateOne) AddOfficerIDs(ids ...int) *OfficerUpdateOne {
-	ouo.mutation.AddOfficerIDs(ids...)
+// AddOfficerProductIDs adds the officer_product edge to Product by ids.
+func (ouo *OfficerUpdateOne) AddOfficerProductIDs(ids ...int) *OfficerUpdateOne {
+	ouo.mutation.AddOfficerProductIDs(ids...)
 	return ouo
 }
 
-// AddOfficers adds the officers edges to Product.
-func (ouo *OfficerUpdateOne) AddOfficers(p ...*Product) *OfficerUpdateOne {
+// AddOfficerProduct adds the officer_product edges to Product.
+func (ouo *OfficerUpdateOne) AddOfficerProduct(p ...*Product) *OfficerUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return ouo.AddOfficerIDs(ids...)
+	return ouo.AddOfficerProductIDs(ids...)
 }
 
 // AddOfficerInsuranceIDs adds the officer_insurance edge to Insurance by ids.
@@ -449,19 +449,19 @@ func (ouo *OfficerUpdateOne) Mutation() *OfficerMutation {
 	return ouo.mutation
 }
 
-// RemoveOfficerIDs removes the officers edge to Product by ids.
-func (ouo *OfficerUpdateOne) RemoveOfficerIDs(ids ...int) *OfficerUpdateOne {
-	ouo.mutation.RemoveOfficerIDs(ids...)
+// RemoveOfficerProductIDs removes the officer_product edge to Product by ids.
+func (ouo *OfficerUpdateOne) RemoveOfficerProductIDs(ids ...int) *OfficerUpdateOne {
+	ouo.mutation.RemoveOfficerProductIDs(ids...)
 	return ouo
 }
 
-// RemoveOfficers removes officers edges to Product.
-func (ouo *OfficerUpdateOne) RemoveOfficers(p ...*Product) *OfficerUpdateOne {
+// RemoveOfficerProduct removes officer_product edges to Product.
+func (ouo *OfficerUpdateOne) RemoveOfficerProduct(p ...*Product) *OfficerUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return ouo.RemoveOfficerIDs(ids...)
+	return ouo.RemoveOfficerProductIDs(ids...)
 }
 
 // RemoveOfficerInsuranceIDs removes the officer_insurance edge to Insurance by ids.
@@ -598,12 +598,12 @@ func (ouo *OfficerUpdateOne) sqlSave(ctx context.Context) (o *Officer, err error
 			Column: officer.FieldOfficerPassword,
 		})
 	}
-	if nodes := ouo.mutation.RemovedOfficersIDs(); len(nodes) > 0 {
+	if nodes := ouo.mutation.RemovedOfficerProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   officer.OfficersTable,
-			Columns: []string{officer.OfficersColumn},
+			Table:   officer.OfficerProductTable,
+			Columns: []string{officer.OfficerProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -617,12 +617,12 @@ func (ouo *OfficerUpdateOne) sqlSave(ctx context.Context) (o *Officer, err error
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ouo.mutation.OfficersIDs(); len(nodes) > 0 {
+	if nodes := ouo.mutation.OfficerProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   officer.OfficersTable,
-			Columns: []string{officer.OfficersColumn},
+			Table:   officer.OfficerProductTable,
+			Columns: []string{officer.OfficerProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

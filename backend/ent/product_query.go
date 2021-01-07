@@ -30,9 +30,9 @@ type ProductQuery struct {
 	unique     []string
 	predicates []predicate.Product
 	// eager-loading edges.
-	withGender           *GenderQuery
-	withGroupOfAge       *GroupOfAgeQuery
-	withOfficer          *OfficerQuery
+	withProductGender    *GenderQuery
+	withProductGroupage  *GroupOfAgeQuery
+	withProductOfficer   *OfficerQuery
 	withProductInsurance *InsuranceQuery
 	withProductInquiry   *InquiryQuery
 	withFKs              bool
@@ -65,8 +65,8 @@ func (pq *ProductQuery) Order(o ...OrderFunc) *ProductQuery {
 	return pq
 }
 
-// QueryGender chains the current query on the Gender edge.
-func (pq *ProductQuery) QueryGender() *GenderQuery {
+// QueryProductGender chains the current query on the product_gender edge.
+func (pq *ProductQuery) QueryProductGender() *GenderQuery {
 	query := &GenderQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -75,7 +75,7 @@ func (pq *ProductQuery) QueryGender() *GenderQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(gender.Table, gender.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.GenderTable, product.GenderColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductGenderTable, product.ProductGenderColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -83,8 +83,8 @@ func (pq *ProductQuery) QueryGender() *GenderQuery {
 	return query
 }
 
-// QueryGroupOfAge chains the current query on the Group_Of_Age edge.
-func (pq *ProductQuery) QueryGroupOfAge() *GroupOfAgeQuery {
+// QueryProductGroupage chains the current query on the product_groupage edge.
+func (pq *ProductQuery) QueryProductGroupage() *GroupOfAgeQuery {
 	query := &GroupOfAgeQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -93,7 +93,7 @@ func (pq *ProductQuery) QueryGroupOfAge() *GroupOfAgeQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(groupofage.Table, groupofage.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.GroupOfAgeTable, product.GroupOfAgeColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductGroupageTable, product.ProductGroupageColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -101,8 +101,8 @@ func (pq *ProductQuery) QueryGroupOfAge() *GroupOfAgeQuery {
 	return query
 }
 
-// QueryOfficer chains the current query on the Officer edge.
-func (pq *ProductQuery) QueryOfficer() *OfficerQuery {
+// QueryProductOfficer chains the current query on the product_officer edge.
+func (pq *ProductQuery) QueryProductOfficer() *OfficerQuery {
 	query := &OfficerQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -111,7 +111,7 @@ func (pq *ProductQuery) QueryOfficer() *OfficerQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(officer.Table, officer.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.OfficerTable, product.OfficerColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductOfficerTable, product.ProductOfficerColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -334,36 +334,36 @@ func (pq *ProductQuery) Clone() *ProductQuery {
 	}
 }
 
-//  WithGender tells the query-builder to eager-loads the nodes that are connected to
-// the "Gender" edge. The optional arguments used to configure the query builder of the edge.
-func (pq *ProductQuery) WithGender(opts ...func(*GenderQuery)) *ProductQuery {
+//  WithProductGender tells the query-builder to eager-loads the nodes that are connected to
+// the "product_gender" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithProductGender(opts ...func(*GenderQuery)) *ProductQuery {
 	query := &GenderQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withGender = query
+	pq.withProductGender = query
 	return pq
 }
 
-//  WithGroupOfAge tells the query-builder to eager-loads the nodes that are connected to
-// the "Group_Of_Age" edge. The optional arguments used to configure the query builder of the edge.
-func (pq *ProductQuery) WithGroupOfAge(opts ...func(*GroupOfAgeQuery)) *ProductQuery {
+//  WithProductGroupage tells the query-builder to eager-loads the nodes that are connected to
+// the "product_groupage" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithProductGroupage(opts ...func(*GroupOfAgeQuery)) *ProductQuery {
 	query := &GroupOfAgeQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withGroupOfAge = query
+	pq.withProductGroupage = query
 	return pq
 }
 
-//  WithOfficer tells the query-builder to eager-loads the nodes that are connected to
-// the "Officer" edge. The optional arguments used to configure the query builder of the edge.
-func (pq *ProductQuery) WithOfficer(opts ...func(*OfficerQuery)) *ProductQuery {
+//  WithProductOfficer tells the query-builder to eager-loads the nodes that are connected to
+// the "product_officer" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithProductOfficer(opts ...func(*OfficerQuery)) *ProductQuery {
 	query := &OfficerQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withOfficer = query
+	pq.withProductOfficer = query
 	return pq
 }
 
@@ -457,14 +457,14 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
 		loadedTypes = [5]bool{
-			pq.withGender != nil,
-			pq.withGroupOfAge != nil,
-			pq.withOfficer != nil,
+			pq.withProductGender != nil,
+			pq.withProductGroupage != nil,
+			pq.withProductOfficer != nil,
 			pq.withProductInsurance != nil,
 			pq.withProductInquiry != nil,
 		}
 	)
-	if pq.withGender != nil || pq.withGroupOfAge != nil || pq.withOfficer != nil {
+	if pq.withProductGender != nil || pq.withProductGroupage != nil || pq.withProductOfficer != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -494,7 +494,7 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		return nodes, nil
 	}
 
-	if query := pq.withGender; query != nil {
+	if query := pq.withProductGender; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Product)
 		for i := range nodes {
@@ -514,12 +514,12 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "gender_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.Gender = n
+				nodes[i].Edges.ProductGender = n
 			}
 		}
 	}
 
-	if query := pq.withGroupOfAge; query != nil {
+	if query := pq.withProductGroupage; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Product)
 		for i := range nodes {
@@ -539,12 +539,12 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "group_of_age_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.GroupOfAge = n
+				nodes[i].Edges.ProductGroupage = n
 			}
 		}
 	}
 
-	if query := pq.withOfficer; query != nil {
+	if query := pq.withProductOfficer; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Product)
 		for i := range nodes {
@@ -564,7 +564,7 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "officer_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.Officer = n
+				nodes[i].Edges.ProductOfficer = n
 			}
 		}
 	}

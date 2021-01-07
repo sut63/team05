@@ -458,25 +458,25 @@ func ProductPaymentOfYearLTE(v float64) predicate.Product {
 	})
 }
 
-// HasGender applies the HasEdge predicate on the "Gender" edge.
-func HasGender() predicate.Product {
+// HasProductGender applies the HasEdge predicate on the "product_gender" edge.
+func HasProductGender() predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(GenderTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, GenderTable, GenderColumn),
+			sqlgraph.To(ProductGenderTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductGenderTable, ProductGenderColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasGenderWith applies the HasEdge predicate on the "Gender" edge with a given conditions (other predicates).
-func HasGenderWith(preds ...predicate.Gender) predicate.Product {
+// HasProductGenderWith applies the HasEdge predicate on the "product_gender" edge with a given conditions (other predicates).
+func HasProductGenderWith(preds ...predicate.Gender) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(GenderInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, GenderTable, GenderColumn),
+			sqlgraph.To(ProductGenderInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductGenderTable, ProductGenderColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
@@ -486,25 +486,25 @@ func HasGenderWith(preds ...predicate.Gender) predicate.Product {
 	})
 }
 
-// HasGroupOfAge applies the HasEdge predicate on the "Group_Of_Age" edge.
-func HasGroupOfAge() predicate.Product {
+// HasProductGroupage applies the HasEdge predicate on the "product_groupage" edge.
+func HasProductGroupage() predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(GroupOfAgeTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, GroupOfAgeTable, GroupOfAgeColumn),
+			sqlgraph.To(ProductGroupageTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductGroupageTable, ProductGroupageColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasGroupOfAgeWith applies the HasEdge predicate on the "Group_Of_Age" edge with a given conditions (other predicates).
-func HasGroupOfAgeWith(preds ...predicate.GroupOfAge) predicate.Product {
+// HasProductGroupageWith applies the HasEdge predicate on the "product_groupage" edge with a given conditions (other predicates).
+func HasProductGroupageWith(preds ...predicate.GroupOfAge) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(GroupOfAgeInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, GroupOfAgeTable, GroupOfAgeColumn),
+			sqlgraph.To(ProductGroupageInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductGroupageTable, ProductGroupageColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
@@ -514,25 +514,25 @@ func HasGroupOfAgeWith(preds ...predicate.GroupOfAge) predicate.Product {
 	})
 }
 
-// HasOfficer applies the HasEdge predicate on the "Officer" edge.
-func HasOfficer() predicate.Product {
+// HasProductOfficer applies the HasEdge predicate on the "product_officer" edge.
+func HasProductOfficer() predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(OfficerTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, OfficerTable, OfficerColumn),
+			sqlgraph.To(ProductOfficerTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductOfficerTable, ProductOfficerColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasOfficerWith applies the HasEdge predicate on the "Officer" edge with a given conditions (other predicates).
-func HasOfficerWith(preds ...predicate.Officer) predicate.Product {
+// HasProductOfficerWith applies the HasEdge predicate on the "product_officer" edge with a given conditions (other predicates).
+func HasProductOfficerWith(preds ...predicate.Officer) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(OfficerInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, OfficerTable, OfficerColumn),
+			sqlgraph.To(ProductOfficerInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductOfficerTable, ProductOfficerColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

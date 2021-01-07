@@ -14,8 +14,8 @@ const (
 	// FieldOfficerPassword holds the string denoting the officer_password field in the database.
 	FieldOfficerPassword = "officer_password"
 
-	// EdgeOfficers holds the string denoting the officers edge name in mutations.
-	EdgeOfficers = "officers"
+	// EdgeOfficerProduct holds the string denoting the officer_product edge name in mutations.
+	EdgeOfficerProduct = "officer_product"
 	// EdgeOfficerInsurance holds the string denoting the officer_insurance edge name in mutations.
 	EdgeOfficerInsurance = "officer_insurance"
 	// EdgeOfficerInquiry holds the string denoting the officer_inquiry edge name in mutations.
@@ -23,13 +23,13 @@ const (
 
 	// Table holds the table name of the officer in the database.
 	Table = "officers"
-	// OfficersTable is the table the holds the officers relation/edge.
-	OfficersTable = "products"
-	// OfficersInverseTable is the table name for the Product entity.
+	// OfficerProductTable is the table the holds the officer_product relation/edge.
+	OfficerProductTable = "products"
+	// OfficerProductInverseTable is the table name for the Product entity.
 	// It exists in this package in order to avoid circular dependency with the "product" package.
-	OfficersInverseTable = "products"
-	// OfficersColumn is the table column denoting the officers relation/edge.
-	OfficersColumn = "officer_id"
+	OfficerProductInverseTable = "products"
+	// OfficerProductColumn is the table column denoting the officer_product relation/edge.
+	OfficerProductColumn = "officer_id"
 	// OfficerInsuranceTable is the table the holds the officer_insurance relation/edge.
 	OfficerInsuranceTable = "insurances"
 	// OfficerInsuranceInverseTable is the table name for the Insurance entity.

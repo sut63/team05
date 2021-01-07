@@ -1155,16 +1155,16 @@ func (m *GenderMutation) ResetEdge(name string) error {
 // nodes in the graph.
 type GroupOfAgeMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	group_of_age_name *string
-	group_of_age_age  *string
-	clearedFields     map[string]struct{}
-	gropages          map[int]struct{}
-	removedgropages   map[int]struct{}
-	done              bool
-	oldValue          func(context.Context) (*GroupOfAge, error)
+	op                      Op
+	typ                     string
+	id                      *int
+	group_of_age_name       *string
+	group_of_age_age        *string
+	clearedFields           map[string]struct{}
+	groupage_product        map[int]struct{}
+	removedgroupage_product map[int]struct{}
+	done                    bool
+	oldValue                func(context.Context) (*GroupOfAge, error)
 }
 
 var _ ent.Mutation = (*GroupOfAgeMutation)(nil)
@@ -1320,46 +1320,46 @@ func (m *GroupOfAgeMutation) ResetGroupOfAgeAge() {
 	m.group_of_age_age = nil
 }
 
-// AddGropageIDs adds the gropages edge to Product by ids.
-func (m *GroupOfAgeMutation) AddGropageIDs(ids ...int) {
-	if m.gropages == nil {
-		m.gropages = make(map[int]struct{})
+// AddGroupageProductIDs adds the groupage_product edge to Product by ids.
+func (m *GroupOfAgeMutation) AddGroupageProductIDs(ids ...int) {
+	if m.groupage_product == nil {
+		m.groupage_product = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.gropages[ids[i]] = struct{}{}
+		m.groupage_product[ids[i]] = struct{}{}
 	}
 }
 
-// RemoveGropageIDs removes the gropages edge to Product by ids.
-func (m *GroupOfAgeMutation) RemoveGropageIDs(ids ...int) {
-	if m.removedgropages == nil {
-		m.removedgropages = make(map[int]struct{})
+// RemoveGroupageProductIDs removes the groupage_product edge to Product by ids.
+func (m *GroupOfAgeMutation) RemoveGroupageProductIDs(ids ...int) {
+	if m.removedgroupage_product == nil {
+		m.removedgroupage_product = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.removedgropages[ids[i]] = struct{}{}
+		m.removedgroupage_product[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedGropages returns the removed ids of gropages.
-func (m *GroupOfAgeMutation) RemovedGropagesIDs() (ids []int) {
-	for id := range m.removedgropages {
+// RemovedGroupageProduct returns the removed ids of groupage_product.
+func (m *GroupOfAgeMutation) RemovedGroupageProductIDs() (ids []int) {
+	for id := range m.removedgroupage_product {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// GropagesIDs returns the gropages ids in the mutation.
-func (m *GroupOfAgeMutation) GropagesIDs() (ids []int) {
-	for id := range m.gropages {
+// GroupageProductIDs returns the groupage_product ids in the mutation.
+func (m *GroupOfAgeMutation) GroupageProductIDs() (ids []int) {
+	for id := range m.groupage_product {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetGropages reset all changes of the "gropages" edge.
-func (m *GroupOfAgeMutation) ResetGropages() {
-	m.gropages = nil
-	m.removedgropages = nil
+// ResetGroupageProduct reset all changes of the "groupage_product" edge.
+func (m *GroupOfAgeMutation) ResetGroupageProduct() {
+	m.groupage_product = nil
+	m.removedgroupage_product = nil
 }
 
 // Op returns the operation name.
@@ -1495,8 +1495,8 @@ func (m *GroupOfAgeMutation) ResetField(name string) error {
 // mutation.
 func (m *GroupOfAgeMutation) AddedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.gropages != nil {
-		edges = append(edges, groupofage.EdgeGropages)
+	if m.groupage_product != nil {
+		edges = append(edges, groupofage.EdgeGroupageProduct)
 	}
 	return edges
 }
@@ -1505,9 +1505,9 @@ func (m *GroupOfAgeMutation) AddedEdges() []string {
 // the given edge name.
 func (m *GroupOfAgeMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case groupofage.EdgeGropages:
-		ids := make([]ent.Value, 0, len(m.gropages))
-		for id := range m.gropages {
+	case groupofage.EdgeGroupageProduct:
+		ids := make([]ent.Value, 0, len(m.groupage_product))
+		for id := range m.groupage_product {
 			ids = append(ids, id)
 		}
 		return ids
@@ -1519,8 +1519,8 @@ func (m *GroupOfAgeMutation) AddedIDs(name string) []ent.Value {
 // mutation.
 func (m *GroupOfAgeMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.removedgropages != nil {
-		edges = append(edges, groupofage.EdgeGropages)
+	if m.removedgroupage_product != nil {
+		edges = append(edges, groupofage.EdgeGroupageProduct)
 	}
 	return edges
 }
@@ -1529,9 +1529,9 @@ func (m *GroupOfAgeMutation) RemovedEdges() []string {
 // the given edge name.
 func (m *GroupOfAgeMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case groupofage.EdgeGropages:
-		ids := make([]ent.Value, 0, len(m.removedgropages))
-		for id := range m.removedgropages {
+	case groupofage.EdgeGroupageProduct:
+		ids := make([]ent.Value, 0, len(m.removedgroupage_product))
+		for id := range m.removedgroupage_product {
 			ids = append(ids, id)
 		}
 		return ids
@@ -1567,8 +1567,8 @@ func (m *GroupOfAgeMutation) ClearEdge(name string) error {
 // defined in the schema.
 func (m *GroupOfAgeMutation) ResetEdge(name string) error {
 	switch name {
-	case groupofage.EdgeGropages:
-		m.ResetGropages()
+	case groupofage.EdgeGroupageProduct:
+		m.ResetGroupageProduct()
 		return nil
 	}
 	return fmt.Errorf("unknown GroupOfAge edge %s", name)
@@ -4292,8 +4292,8 @@ type OfficerMutation struct {
 	officer_name             *string
 	officer_password         *string
 	clearedFields            map[string]struct{}
-	officers                 map[int]struct{}
-	removedofficers          map[int]struct{}
+	officer_product          map[int]struct{}
+	removedofficer_product   map[int]struct{}
 	officer_insurance        map[int]struct{}
 	removedofficer_insurance map[int]struct{}
 	officer_inquiry          map[int]struct{}
@@ -4492,46 +4492,46 @@ func (m *OfficerMutation) ResetOfficerPassword() {
 	m.officer_password = nil
 }
 
-// AddOfficerIDs adds the officers edge to Product by ids.
-func (m *OfficerMutation) AddOfficerIDs(ids ...int) {
-	if m.officers == nil {
-		m.officers = make(map[int]struct{})
+// AddOfficerProductIDs adds the officer_product edge to Product by ids.
+func (m *OfficerMutation) AddOfficerProductIDs(ids ...int) {
+	if m.officer_product == nil {
+		m.officer_product = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.officers[ids[i]] = struct{}{}
+		m.officer_product[ids[i]] = struct{}{}
 	}
 }
 
-// RemoveOfficerIDs removes the officers edge to Product by ids.
-func (m *OfficerMutation) RemoveOfficerIDs(ids ...int) {
-	if m.removedofficers == nil {
-		m.removedofficers = make(map[int]struct{})
+// RemoveOfficerProductIDs removes the officer_product edge to Product by ids.
+func (m *OfficerMutation) RemoveOfficerProductIDs(ids ...int) {
+	if m.removedofficer_product == nil {
+		m.removedofficer_product = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.removedofficers[ids[i]] = struct{}{}
+		m.removedofficer_product[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedOfficers returns the removed ids of officers.
-func (m *OfficerMutation) RemovedOfficersIDs() (ids []int) {
-	for id := range m.removedofficers {
+// RemovedOfficerProduct returns the removed ids of officer_product.
+func (m *OfficerMutation) RemovedOfficerProductIDs() (ids []int) {
+	for id := range m.removedofficer_product {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// OfficersIDs returns the officers ids in the mutation.
-func (m *OfficerMutation) OfficersIDs() (ids []int) {
-	for id := range m.officers {
+// OfficerProductIDs returns the officer_product ids in the mutation.
+func (m *OfficerMutation) OfficerProductIDs() (ids []int) {
+	for id := range m.officer_product {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetOfficers reset all changes of the "officers" edge.
-func (m *OfficerMutation) ResetOfficers() {
-	m.officers = nil
-	m.removedofficers = nil
+// ResetOfficerProduct reset all changes of the "officer_product" edge.
+func (m *OfficerMutation) ResetOfficerProduct() {
+	m.officer_product = nil
+	m.removedofficer_product = nil
 }
 
 // AddOfficerInsuranceIDs adds the officer_insurance edge to Insurance by ids.
@@ -4768,8 +4768,8 @@ func (m *OfficerMutation) ResetField(name string) error {
 // mutation.
 func (m *OfficerMutation) AddedEdges() []string {
 	edges := make([]string, 0, 3)
-	if m.officers != nil {
-		edges = append(edges, officer.EdgeOfficers)
+	if m.officer_product != nil {
+		edges = append(edges, officer.EdgeOfficerProduct)
 	}
 	if m.officer_insurance != nil {
 		edges = append(edges, officer.EdgeOfficerInsurance)
@@ -4784,9 +4784,9 @@ func (m *OfficerMutation) AddedEdges() []string {
 // the given edge name.
 func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case officer.EdgeOfficers:
-		ids := make([]ent.Value, 0, len(m.officers))
-		for id := range m.officers {
+	case officer.EdgeOfficerProduct:
+		ids := make([]ent.Value, 0, len(m.officer_product))
+		for id := range m.officer_product {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4810,8 +4810,8 @@ func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 // mutation.
 func (m *OfficerMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 3)
-	if m.removedofficers != nil {
-		edges = append(edges, officer.EdgeOfficers)
+	if m.removedofficer_product != nil {
+		edges = append(edges, officer.EdgeOfficerProduct)
 	}
 	if m.removedofficer_insurance != nil {
 		edges = append(edges, officer.EdgeOfficerInsurance)
@@ -4826,9 +4826,9 @@ func (m *OfficerMutation) RemovedEdges() []string {
 // the given edge name.
 func (m *OfficerMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case officer.EdgeOfficers:
-		ids := make([]ent.Value, 0, len(m.removedofficers))
-		for id := range m.removedofficers {
+	case officer.EdgeOfficerProduct:
+		ids := make([]ent.Value, 0, len(m.removedofficer_product))
+		for id := range m.removedofficer_product {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4876,8 +4876,8 @@ func (m *OfficerMutation) ClearEdge(name string) error {
 // defined in the schema.
 func (m *OfficerMutation) ResetEdge(name string) error {
 	switch name {
-	case officer.EdgeOfficers:
-		m.ResetOfficers()
+	case officer.EdgeOfficerProduct:
+		m.ResetOfficerProduct()
 		return nil
 	case officer.EdgeOfficerInsurance:
 		m.ResetOfficerInsurance()
@@ -5553,12 +5553,12 @@ type ProductMutation struct {
 	product_payment_of_year    *float64
 	addproduct_payment_of_year *float64
 	clearedFields              map[string]struct{}
-	_Gender                    *int
-	cleared_Gender             bool
-	_Group_Of_Age              *int
-	cleared_Group_Of_Age       bool
-	_Officer                   *int
-	cleared_Officer            bool
+	product_gender             *int
+	clearedproduct_gender      bool
+	product_groupage           *int
+	clearedproduct_groupage    bool
+	product_officer            *int
+	clearedproduct_officer     bool
 	product_insurance          map[int]struct{}
 	removedproduct_insurance   map[int]struct{}
 	product_inquiry            map[int]struct{}
@@ -5854,121 +5854,121 @@ func (m *ProductMutation) ResetProductPaymentOfYear() {
 	m.addproduct_payment_of_year = nil
 }
 
-// SetGenderID sets the Gender edge to Gender by id.
-func (m *ProductMutation) SetGenderID(id int) {
-	m._Gender = &id
+// SetProductGenderID sets the product_gender edge to Gender by id.
+func (m *ProductMutation) SetProductGenderID(id int) {
+	m.product_gender = &id
 }
 
-// ClearGender clears the Gender edge to Gender.
-func (m *ProductMutation) ClearGender() {
-	m.cleared_Gender = true
+// ClearProductGender clears the product_gender edge to Gender.
+func (m *ProductMutation) ClearProductGender() {
+	m.clearedproduct_gender = true
 }
 
-// GenderCleared returns if the edge Gender was cleared.
-func (m *ProductMutation) GenderCleared() bool {
-	return m.cleared_Gender
+// ProductGenderCleared returns if the edge product_gender was cleared.
+func (m *ProductMutation) ProductGenderCleared() bool {
+	return m.clearedproduct_gender
 }
 
-// GenderID returns the Gender id in the mutation.
-func (m *ProductMutation) GenderID() (id int, exists bool) {
-	if m._Gender != nil {
-		return *m._Gender, true
+// ProductGenderID returns the product_gender id in the mutation.
+func (m *ProductMutation) ProductGenderID() (id int, exists bool) {
+	if m.product_gender != nil {
+		return *m.product_gender, true
 	}
 	return
 }
 
-// GenderIDs returns the Gender ids in the mutation.
+// ProductGenderIDs returns the product_gender ids in the mutation.
 // Note that ids always returns len(ids) <= 1 for unique edges, and you should use
-// GenderID instead. It exists only for internal usage by the builders.
-func (m *ProductMutation) GenderIDs() (ids []int) {
-	if id := m._Gender; id != nil {
+// ProductGenderID instead. It exists only for internal usage by the builders.
+func (m *ProductMutation) ProductGenderIDs() (ids []int) {
+	if id := m.product_gender; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetGender reset all changes of the "Gender" edge.
-func (m *ProductMutation) ResetGender() {
-	m._Gender = nil
-	m.cleared_Gender = false
+// ResetProductGender reset all changes of the "product_gender" edge.
+func (m *ProductMutation) ResetProductGender() {
+	m.product_gender = nil
+	m.clearedproduct_gender = false
 }
 
-// SetGroupOfAgeID sets the Group_Of_Age edge to GroupOfAge by id.
-func (m *ProductMutation) SetGroupOfAgeID(id int) {
-	m._Group_Of_Age = &id
+// SetProductGroupageID sets the product_groupage edge to GroupOfAge by id.
+func (m *ProductMutation) SetProductGroupageID(id int) {
+	m.product_groupage = &id
 }
 
-// ClearGroupOfAge clears the Group_Of_Age edge to GroupOfAge.
-func (m *ProductMutation) ClearGroupOfAge() {
-	m.cleared_Group_Of_Age = true
+// ClearProductGroupage clears the product_groupage edge to GroupOfAge.
+func (m *ProductMutation) ClearProductGroupage() {
+	m.clearedproduct_groupage = true
 }
 
-// GroupOfAgeCleared returns if the edge Group_Of_Age was cleared.
-func (m *ProductMutation) GroupOfAgeCleared() bool {
-	return m.cleared_Group_Of_Age
+// ProductGroupageCleared returns if the edge product_groupage was cleared.
+func (m *ProductMutation) ProductGroupageCleared() bool {
+	return m.clearedproduct_groupage
 }
 
-// GroupOfAgeID returns the Group_Of_Age id in the mutation.
-func (m *ProductMutation) GroupOfAgeID() (id int, exists bool) {
-	if m._Group_Of_Age != nil {
-		return *m._Group_Of_Age, true
+// ProductGroupageID returns the product_groupage id in the mutation.
+func (m *ProductMutation) ProductGroupageID() (id int, exists bool) {
+	if m.product_groupage != nil {
+		return *m.product_groupage, true
 	}
 	return
 }
 
-// GroupOfAgeIDs returns the Group_Of_Age ids in the mutation.
+// ProductGroupageIDs returns the product_groupage ids in the mutation.
 // Note that ids always returns len(ids) <= 1 for unique edges, and you should use
-// GroupOfAgeID instead. It exists only for internal usage by the builders.
-func (m *ProductMutation) GroupOfAgeIDs() (ids []int) {
-	if id := m._Group_Of_Age; id != nil {
+// ProductGroupageID instead. It exists only for internal usage by the builders.
+func (m *ProductMutation) ProductGroupageIDs() (ids []int) {
+	if id := m.product_groupage; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetGroupOfAge reset all changes of the "Group_Of_Age" edge.
-func (m *ProductMutation) ResetGroupOfAge() {
-	m._Group_Of_Age = nil
-	m.cleared_Group_Of_Age = false
+// ResetProductGroupage reset all changes of the "product_groupage" edge.
+func (m *ProductMutation) ResetProductGroupage() {
+	m.product_groupage = nil
+	m.clearedproduct_groupage = false
 }
 
-// SetOfficerID sets the Officer edge to Officer by id.
-func (m *ProductMutation) SetOfficerID(id int) {
-	m._Officer = &id
+// SetProductOfficerID sets the product_officer edge to Officer by id.
+func (m *ProductMutation) SetProductOfficerID(id int) {
+	m.product_officer = &id
 }
 
-// ClearOfficer clears the Officer edge to Officer.
-func (m *ProductMutation) ClearOfficer() {
-	m.cleared_Officer = true
+// ClearProductOfficer clears the product_officer edge to Officer.
+func (m *ProductMutation) ClearProductOfficer() {
+	m.clearedproduct_officer = true
 }
 
-// OfficerCleared returns if the edge Officer was cleared.
-func (m *ProductMutation) OfficerCleared() bool {
-	return m.cleared_Officer
+// ProductOfficerCleared returns if the edge product_officer was cleared.
+func (m *ProductMutation) ProductOfficerCleared() bool {
+	return m.clearedproduct_officer
 }
 
-// OfficerID returns the Officer id in the mutation.
-func (m *ProductMutation) OfficerID() (id int, exists bool) {
-	if m._Officer != nil {
-		return *m._Officer, true
+// ProductOfficerID returns the product_officer id in the mutation.
+func (m *ProductMutation) ProductOfficerID() (id int, exists bool) {
+	if m.product_officer != nil {
+		return *m.product_officer, true
 	}
 	return
 }
 
-// OfficerIDs returns the Officer ids in the mutation.
+// ProductOfficerIDs returns the product_officer ids in the mutation.
 // Note that ids always returns len(ids) <= 1 for unique edges, and you should use
-// OfficerID instead. It exists only for internal usage by the builders.
-func (m *ProductMutation) OfficerIDs() (ids []int) {
-	if id := m._Officer; id != nil {
+// ProductOfficerID instead. It exists only for internal usage by the builders.
+func (m *ProductMutation) ProductOfficerIDs() (ids []int) {
+	if id := m.product_officer; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetOfficer reset all changes of the "Officer" edge.
-func (m *ProductMutation) ResetOfficer() {
-	m._Officer = nil
-	m.cleared_Officer = false
+// ResetProductOfficer reset all changes of the "product_officer" edge.
+func (m *ProductMutation) ResetProductOfficer() {
+	m.product_officer = nil
+	m.clearedproduct_officer = false
 }
 
 // AddProductInsuranceIDs adds the product_insurance edge to Insurance by ids.
@@ -6261,14 +6261,14 @@ func (m *ProductMutation) ResetField(name string) error {
 // mutation.
 func (m *ProductMutation) AddedEdges() []string {
 	edges := make([]string, 0, 5)
-	if m._Gender != nil {
-		edges = append(edges, product.EdgeGender)
+	if m.product_gender != nil {
+		edges = append(edges, product.EdgeProductGender)
 	}
-	if m._Group_Of_Age != nil {
-		edges = append(edges, product.EdgeGroupOfAge)
+	if m.product_groupage != nil {
+		edges = append(edges, product.EdgeProductGroupage)
 	}
-	if m._Officer != nil {
-		edges = append(edges, product.EdgeOfficer)
+	if m.product_officer != nil {
+		edges = append(edges, product.EdgeProductOfficer)
 	}
 	if m.product_insurance != nil {
 		edges = append(edges, product.EdgeProductInsurance)
@@ -6283,16 +6283,16 @@ func (m *ProductMutation) AddedEdges() []string {
 // the given edge name.
 func (m *ProductMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case product.EdgeGender:
-		if id := m._Gender; id != nil {
+	case product.EdgeProductGender:
+		if id := m.product_gender; id != nil {
 			return []ent.Value{*id}
 		}
-	case product.EdgeGroupOfAge:
-		if id := m._Group_Of_Age; id != nil {
+	case product.EdgeProductGroupage:
+		if id := m.product_groupage; id != nil {
 			return []ent.Value{*id}
 		}
-	case product.EdgeOfficer:
-		if id := m._Officer; id != nil {
+	case product.EdgeProductOfficer:
+		if id := m.product_officer; id != nil {
 			return []ent.Value{*id}
 		}
 	case product.EdgeProductInsurance:
@@ -6348,14 +6348,14 @@ func (m *ProductMutation) RemovedIDs(name string) []ent.Value {
 // mutation.
 func (m *ProductMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 5)
-	if m.cleared_Gender {
-		edges = append(edges, product.EdgeGender)
+	if m.clearedproduct_gender {
+		edges = append(edges, product.EdgeProductGender)
 	}
-	if m.cleared_Group_Of_Age {
-		edges = append(edges, product.EdgeGroupOfAge)
+	if m.clearedproduct_groupage {
+		edges = append(edges, product.EdgeProductGroupage)
 	}
-	if m.cleared_Officer {
-		edges = append(edges, product.EdgeOfficer)
+	if m.clearedproduct_officer {
+		edges = append(edges, product.EdgeProductOfficer)
 	}
 	return edges
 }
@@ -6364,12 +6364,12 @@ func (m *ProductMutation) ClearedEdges() []string {
 // cleared in this mutation.
 func (m *ProductMutation) EdgeCleared(name string) bool {
 	switch name {
-	case product.EdgeGender:
-		return m.cleared_Gender
-	case product.EdgeGroupOfAge:
-		return m.cleared_Group_Of_Age
-	case product.EdgeOfficer:
-		return m.cleared_Officer
+	case product.EdgeProductGender:
+		return m.clearedproduct_gender
+	case product.EdgeProductGroupage:
+		return m.clearedproduct_groupage
+	case product.EdgeProductOfficer:
+		return m.clearedproduct_officer
 	}
 	return false
 }
@@ -6378,14 +6378,14 @@ func (m *ProductMutation) EdgeCleared(name string) bool {
 // error if the edge name is not defined in the schema.
 func (m *ProductMutation) ClearEdge(name string) error {
 	switch name {
-	case product.EdgeGender:
-		m.ClearGender()
+	case product.EdgeProductGender:
+		m.ClearProductGender()
 		return nil
-	case product.EdgeGroupOfAge:
-		m.ClearGroupOfAge()
+	case product.EdgeProductGroupage:
+		m.ClearProductGroupage()
 		return nil
-	case product.EdgeOfficer:
-		m.ClearOfficer()
+	case product.EdgeProductOfficer:
+		m.ClearProductOfficer()
 		return nil
 	}
 	return fmt.Errorf("unknown Product unique edge %s", name)
@@ -6396,14 +6396,14 @@ func (m *ProductMutation) ClearEdge(name string) error {
 // defined in the schema.
 func (m *ProductMutation) ResetEdge(name string) error {
 	switch name {
-	case product.EdgeGender:
-		m.ResetGender()
+	case product.EdgeProductGender:
+		m.ResetProductGender()
 		return nil
-	case product.EdgeGroupOfAge:
-		m.ResetGroupOfAge()
+	case product.EdgeProductGroupage:
+		m.ResetProductGroupage()
 		return nil
-	case product.EdgeOfficer:
-		m.ResetOfficer()
+	case product.EdgeProductOfficer:
+		m.ResetProductOfficer()
 		return nil
 	case product.EdgeProductInsurance:
 		m.ResetProductInsurance()

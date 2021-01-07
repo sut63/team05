@@ -28,8 +28,8 @@ type Officer struct {
 
 // OfficerEdges holds the relations/edges for other nodes in the graph.
 type OfficerEdges struct {
-	// Officers holds the value of the officers edge.
-	Officers []*Product
+	// OfficerProduct holds the value of the officer_product edge.
+	OfficerProduct []*Product
 	// OfficerInsurance holds the value of the officer_insurance edge.
 	OfficerInsurance []*Insurance
 	// OfficerInquiry holds the value of the officer_inquiry edge.
@@ -39,13 +39,13 @@ type OfficerEdges struct {
 	loadedTypes [3]bool
 }
 
-// OfficersOrErr returns the Officers value or an error if the edge
+// OfficerProductOrErr returns the OfficerProduct value or an error if the edge
 // was not loaded in eager-loading.
-func (e OfficerEdges) OfficersOrErr() ([]*Product, error) {
+func (e OfficerEdges) OfficerProductOrErr() ([]*Product, error) {
 	if e.loadedTypes[0] {
-		return e.Officers, nil
+		return e.OfficerProduct, nil
 	}
-	return nil, &NotLoadedError{edge: "officers"}
+	return nil, &NotLoadedError{edge: "officer_product"}
 }
 
 // OfficerInsuranceOrErr returns the OfficerInsurance value or an error if the edge
@@ -106,9 +106,9 @@ func (o *Officer) assignValues(values ...interface{}) error {
 	return nil
 }
 
-// QueryOfficers queries the officers edge of the Officer.
-func (o *Officer) QueryOfficers() *ProductQuery {
-	return (&OfficerClient{config: o.config}).QueryOfficers(o)
+// QueryOfficerProduct queries the officer_product edge of the Officer.
+func (o *Officer) QueryOfficerProduct() *ProductQuery {
+	return (&OfficerClient{config: o.config}).QueryOfficerProduct(o)
 }
 
 // QueryOfficerInsurance queries the officer_insurance edge of the Officer.

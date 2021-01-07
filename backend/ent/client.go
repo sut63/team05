@@ -569,15 +569,15 @@ func (c *GroupOfAgeClient) GetX(ctx context.Context, id int) *GroupOfAge {
 	return goa
 }
 
-// QueryGropages queries the gropages edge of a GroupOfAge.
-func (c *GroupOfAgeClient) QueryGropages(goa *GroupOfAge) *ProductQuery {
+// QueryGroupageProduct queries the groupage_product edge of a GroupOfAge.
+func (c *GroupOfAgeClient) QueryGroupageProduct(goa *GroupOfAge) *ProductQuery {
 	query := &ProductQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := goa.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(groupofage.Table, groupofage.FieldID, id),
 			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, groupofage.GropagesTable, groupofage.GropagesColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, groupofage.GroupageProductTable, groupofage.GroupageProductColumn),
 		)
 		fromV = sqlgraph.Neighbors(goa.driver.Dialect(), step)
 		return fromV, nil
@@ -1307,15 +1307,15 @@ func (c *OfficerClient) GetX(ctx context.Context, id int) *Officer {
 	return o
 }
 
-// QueryOfficers queries the officers edge of a Officer.
-func (c *OfficerClient) QueryOfficers(o *Officer) *ProductQuery {
+// QueryOfficerProduct queries the officer_product edge of a Officer.
+func (c *OfficerClient) QueryOfficerProduct(o *Officer) *ProductQuery {
 	query := &ProductQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := o.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(officer.Table, officer.FieldID, id),
 			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficersTable, officer.OfficersColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerProductTable, officer.OfficerProductColumn),
 		)
 		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
 		return fromV, nil
@@ -1585,15 +1585,15 @@ func (c *ProductClient) GetX(ctx context.Context, id int) *Product {
 	return pr
 }
 
-// QueryGender queries the Gender edge of a Product.
-func (c *ProductClient) QueryGender(pr *Product) *GenderQuery {
+// QueryProductGender queries the product_gender edge of a Product.
+func (c *ProductClient) QueryProductGender(pr *Product) *GenderQuery {
 	query := &GenderQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pr.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(gender.Table, gender.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.GenderTable, product.GenderColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductGenderTable, product.ProductGenderColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -1601,15 +1601,15 @@ func (c *ProductClient) QueryGender(pr *Product) *GenderQuery {
 	return query
 }
 
-// QueryGroupOfAge queries the Group_Of_Age edge of a Product.
-func (c *ProductClient) QueryGroupOfAge(pr *Product) *GroupOfAgeQuery {
+// QueryProductGroupage queries the product_groupage edge of a Product.
+func (c *ProductClient) QueryProductGroupage(pr *Product) *GroupOfAgeQuery {
 	query := &GroupOfAgeQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pr.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(groupofage.Table, groupofage.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.GroupOfAgeTable, product.GroupOfAgeColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductGroupageTable, product.ProductGroupageColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
@@ -1617,15 +1617,15 @@ func (c *ProductClient) QueryGroupOfAge(pr *Product) *GroupOfAgeQuery {
 	return query
 }
 
-// QueryOfficer queries the Officer edge of a Product.
-func (c *ProductClient) QueryOfficer(pr *Product) *OfficerQuery {
+// QueryProductOfficer queries the product_officer edge of a Product.
+func (c *ProductClient) QueryProductOfficer(pr *Product) *OfficerQuery {
 	query := &OfficerQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pr.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(officer.Table, officer.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.OfficerTable, product.OfficerColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductOfficerTable, product.ProductOfficerColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil
