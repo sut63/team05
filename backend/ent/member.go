@@ -34,16 +34,13 @@ type MemberEdges struct {
 	MemberPayment []*Payment
 	// MemberInquiry holds the value of the member_inquiry edge.
 	MemberInquiry []*Inquiry
-<<<<<<< HEAD
 	// MemberPayback holds the value of the member_payback edge.
 	MemberPayback []*Payback
-=======
 	// MemberRecordinsurance holds the value of the member_recordinsurance edge.
 	MemberRecordinsurance []*Recordinsurance
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 }
 
 // MemberInsuranceOrErr returns the MemberInsurance value or an error if the edge
@@ -73,7 +70,6 @@ func (e MemberEdges) MemberInquiryOrErr() ([]*Inquiry, error) {
 	return nil, &NotLoadedError{edge: "member_inquiry"}
 }
 
-<<<<<<< HEAD
 // MemberPaybackOrErr returns the MemberPayback value or an error if the edge
 // was not loaded in eager-loading.
 func (e MemberEdges) MemberPaybackOrErr() ([]*Payback, error) {
@@ -81,15 +77,15 @@ func (e MemberEdges) MemberPaybackOrErr() ([]*Payback, error) {
 		return e.MemberPayback, nil
 	}
 	return nil, &NotLoadedError{edge: "member_payback"}
-=======
+}
+
 // MemberRecordinsuranceOrErr returns the MemberRecordinsurance value or an error if the edge
 // was not loaded in eager-loading.
 func (e MemberEdges) MemberRecordinsuranceOrErr() ([]*Recordinsurance, error) {
-	if e.loadedTypes[3] {
+	if e.loadedTypes[4] {
 		return e.MemberRecordinsurance, nil
 	}
 	return nil, &NotLoadedError{edge: "member_recordinsurance"}
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -147,15 +143,14 @@ func (m *Member) QueryMemberInquiry() *InquiryQuery {
 	return (&MemberClient{config: m.config}).QueryMemberInquiry(m)
 }
 
-<<<<<<< HEAD
 // QueryMemberPayback queries the member_payback edge of the Member.
 func (m *Member) QueryMemberPayback() *PaybackQuery {
 	return (&MemberClient{config: m.config}).QueryMemberPayback(m)
-=======
+}
+
 // QueryMemberRecordinsurance queries the member_recordinsurance edge of the Member.
 func (m *Member) QueryMemberRecordinsurance() *RecordinsuranceQuery {
 	return (&MemberClient{config: m.config}).QueryMemberRecordinsurance(m)
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Update returns a builder for updating this Member.

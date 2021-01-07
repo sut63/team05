@@ -119,23 +119,6 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	}
 	cfg := config{driver: tx, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
-<<<<<<< HEAD
-		ctx:           ctx,
-		config:        cfg,
-		Bank:          NewBankClient(cfg),
-		Category:      NewCategoryClient(cfg),
-		Gender:        NewGenderClient(cfg),
-		GroupOfAge:    NewGroupOfAgeClient(cfg),
-		Hospital:      NewHospitalClient(cfg),
-		Inquiry:       NewInquiryClient(cfg),
-		Insurance:     NewInsuranceClient(cfg),
-		Member:        NewMemberClient(cfg),
-		MoneyTransfer: NewMoneyTransferClient(cfg),
-		Officer:       NewOfficerClient(cfg),
-		Payback:       NewPaybackClient(cfg),
-		Payment:       NewPaymentClient(cfg),
-		Product:       NewProductClient(cfg),
-=======
 		ctx:             ctx,
 		config:          cfg,
 		Bank:            NewBankClient(cfg),
@@ -148,10 +131,10 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Member:          NewMemberClient(cfg),
 		MoneyTransfer:   NewMoneyTransferClient(cfg),
 		Officer:         NewOfficerClient(cfg),
+		Payback:         NewPaybackClient(cfg),
 		Payment:         NewPaymentClient(cfg),
 		Product:         NewProductClient(cfg),
 		Recordinsurance: NewRecordinsuranceClient(cfg),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}, nil
 }
 
@@ -166,22 +149,6 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	}
 	cfg := config{driver: &txDriver{tx: tx, drv: c.driver}, log: c.log, debug: c.debug, hooks: c.hooks}
 	return &Tx{
-<<<<<<< HEAD
-		config:        cfg,
-		Bank:          NewBankClient(cfg),
-		Category:      NewCategoryClient(cfg),
-		Gender:        NewGenderClient(cfg),
-		GroupOfAge:    NewGroupOfAgeClient(cfg),
-		Hospital:      NewHospitalClient(cfg),
-		Inquiry:       NewInquiryClient(cfg),
-		Insurance:     NewInsuranceClient(cfg),
-		Member:        NewMemberClient(cfg),
-		MoneyTransfer: NewMoneyTransferClient(cfg),
-		Officer:       NewOfficerClient(cfg),
-		Payback:       NewPaybackClient(cfg),
-		Payment:       NewPaymentClient(cfg),
-		Product:       NewProductClient(cfg),
-=======
 		config:          cfg,
 		Bank:            NewBankClient(cfg),
 		Category:        NewCategoryClient(cfg),
@@ -193,10 +160,10 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Member:          NewMemberClient(cfg),
 		MoneyTransfer:   NewMoneyTransferClient(cfg),
 		Officer:         NewOfficerClient(cfg),
+		Payback:         NewPaybackClient(cfg),
 		Payment:         NewPaymentClient(cfg),
 		Product:         NewProductClient(cfg),
 		Recordinsurance: NewRecordinsuranceClient(cfg),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	}, nil
 }
 
@@ -1204,26 +1171,31 @@ func (c *MemberClient) QueryMemberInquiry(m *Member) *InquiryQuery {
 	return query
 }
 
-<<<<<<< HEAD
 // QueryMemberPayback queries the member_payback edge of a Member.
 func (c *MemberClient) QueryMemberPayback(m *Member) *PaybackQuery {
 	query := &PaybackQuery{config: c.config}
-=======
-// QueryMemberRecordinsurance queries the member_recordinsurance edge of a Member.
-func (c *MemberClient) QueryMemberRecordinsurance(m *Member) *RecordinsuranceQuery {
-	query := &RecordinsuranceQuery{config: c.config}
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(member.Table, member.FieldID, id),
-<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberPaybackTable, member.MemberPaybackColumn),
-=======
+		)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryMemberRecordinsurance queries the member_recordinsurance edge of a Member.
+func (c *MemberClient) QueryMemberRecordinsurance(m *Member) *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(member.Table, member.FieldID, id),
 			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberRecordinsuranceTable, member.MemberRecordinsuranceColumn),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
 		return fromV, nil
@@ -1461,26 +1433,31 @@ func (c *OfficerClient) QueryOfficerInquiry(o *Officer) *InquiryQuery {
 	return query
 }
 
-<<<<<<< HEAD
 // QueryOfficerPayback queries the officer_payback edge of a Officer.
 func (c *OfficerClient) QueryOfficerPayback(o *Officer) *PaybackQuery {
 	query := &PaybackQuery{config: c.config}
-=======
-// QueryOfficerRecordinsurance queries the officer_recordinsurance edge of a Officer.
-func (c *OfficerClient) QueryOfficerRecordinsurance(o *Officer) *RecordinsuranceQuery {
-	query := &RecordinsuranceQuery{config: c.config}
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := o.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(officer.Table, officer.FieldID, id),
-<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerPaybackTable, officer.OfficerPaybackColumn),
-=======
+		)
+		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOfficerRecordinsurance queries the officer_recordinsurance edge of a Officer.
+func (c *OfficerClient) QueryOfficerRecordinsurance(o *Officer) *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := o.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(officer.Table, officer.FieldID, id),
 			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerRecordinsuranceTable, officer.OfficerRecordinsuranceColumn),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
 		return fromV, nil
@@ -1945,26 +1922,31 @@ func (c *ProductClient) QueryProductInquiry(pr *Product) *InquiryQuery {
 	return query
 }
 
-<<<<<<< HEAD
 // QueryProductPayback queries the product_payback edge of a Product.
 func (c *ProductClient) QueryProductPayback(pr *Product) *PaybackQuery {
 	query := &PaybackQuery{config: c.config}
-=======
-// QueryProductRecordinsurance queries the product_recordinsurance edge of a Product.
-func (c *ProductClient) QueryProductRecordinsurance(pr *Product) *RecordinsuranceQuery {
-	query := &RecordinsuranceQuery{config: c.config}
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pr.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, id),
-<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductPaybackTable, product.ProductPaybackColumn),
-=======
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProductRecordinsurance queries the product_recordinsurance edge of a Product.
+func (c *ProductClient) QueryProductRecordinsurance(pr *Product) *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductRecordinsuranceTable, product.ProductRecordinsuranceColumn),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil

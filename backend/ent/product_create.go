@@ -137,7 +137,6 @@ func (pc *ProductCreate) AddProductInquiry(i ...*Inquiry) *ProductCreate {
 	return pc.AddProductInquiryIDs(ids...)
 }
 
-<<<<<<< HEAD
 // AddProductPaybackIDs adds the product_payback edge to Payback by ids.
 func (pc *ProductCreate) AddProductPaybackIDs(ids ...int) *ProductCreate {
 	pc.mutation.AddProductPaybackIDs(ids...)
@@ -151,7 +150,8 @@ func (pc *ProductCreate) AddProductPayback(p ...*Payback) *ProductCreate {
 		ids[i] = p[i].ID
 	}
 	return pc.AddProductPaybackIDs(ids...)
-=======
+}
+
 // AddProductRecordinsuranceIDs adds the product_recordinsurance edge to Recordinsurance by ids.
 func (pc *ProductCreate) AddProductRecordinsuranceIDs(ids ...int) *ProductCreate {
 	pc.mutation.AddProductRecordinsuranceIDs(ids...)
@@ -165,7 +165,6 @@ func (pc *ProductCreate) AddProductRecordinsurance(r ...*Recordinsurance) *Produ
 		ids[i] = r[i].ID
 	}
 	return pc.AddProductRecordinsuranceIDs(ids...)
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 }
 
 // Mutation returns the ProductMutation object of the builder.
@@ -374,30 +373,36 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-<<<<<<< HEAD
 	if nodes := pc.mutation.ProductPaybackIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   product.ProductPaybackTable,
 			Columns: []string{product.ProductPaybackColumn},
-=======
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payback.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	if nodes := pc.mutation.ProductRecordinsuranceIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
 			Table:   product.ProductRecordinsuranceTable,
 			Columns: []string{product.ProductRecordinsuranceColumn},
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
-<<<<<<< HEAD
-					Column: payback.FieldID,
-=======
 					Column: recordinsurance.FieldID,
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 				},
 			},
 		}

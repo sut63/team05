@@ -32,23 +32,14 @@ type ProductQuery struct {
 	unique     []string
 	predicates []predicate.Product
 	// eager-loading edges.
-<<<<<<< HEAD
-	withProductGender    *GenderQuery
-	withProductGroupage  *GroupOfAgeQuery
-	withProductOfficer   *OfficerQuery
-	withProductInsurance *InsuranceQuery
-	withProductInquiry   *InquiryQuery
-	withProductPayback   *PaybackQuery
-	withFKs              bool
-=======
 	withProductGender          *GenderQuery
 	withProductGroupage        *GroupOfAgeQuery
 	withProductOfficer         *OfficerQuery
 	withProductInsurance       *InsuranceQuery
 	withProductInquiry         *InquiryQuery
+	withProductPayback         *PaybackQuery
 	withProductRecordinsurance *RecordinsuranceQuery
 	withFKs                    bool
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -168,28 +159,35 @@ func (pq *ProductQuery) QueryProductInquiry() *InquiryQuery {
 	return query
 }
 
-<<<<<<< HEAD
 // QueryProductPayback chains the current query on the product_payback edge.
 func (pq *ProductQuery) QueryProductPayback() *PaybackQuery {
 	query := &PaybackQuery{config: pq.config}
-=======
-// QueryProductRecordinsurance chains the current query on the product_recordinsurance edge.
-func (pq *ProductQuery) QueryProductRecordinsurance() *RecordinsuranceQuery {
-	query := &RecordinsuranceQuery{config: pq.config}
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
-<<<<<<< HEAD
 			sqlgraph.To(payback.Table, payback.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductPaybackTable, product.ProductPaybackColumn),
-=======
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProductRecordinsurance chains the current query on the product_recordinsurance edge.
+func (pq *ProductQuery) QueryProductRecordinsurance() *RecordinsuranceQuery {
+	query := &RecordinsuranceQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductRecordinsuranceTable, product.ProductRecordinsuranceColumn),
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -431,7 +429,6 @@ func (pq *ProductQuery) WithProductInquiry(opts ...func(*InquiryQuery)) *Product
 	return pq
 }
 
-<<<<<<< HEAD
 //  WithProductPayback tells the query-builder to eager-loads the nodes that are connected to
 // the "product_payback" edge. The optional arguments used to configure the query builder of the edge.
 func (pq *ProductQuery) WithProductPayback(opts ...func(*PaybackQuery)) *ProductQuery {
@@ -440,7 +437,9 @@ func (pq *ProductQuery) WithProductPayback(opts ...func(*PaybackQuery)) *Product
 		opt(query)
 	}
 	pq.withProductPayback = query
-=======
+	return pq
+}
+
 //  WithProductRecordinsurance tells the query-builder to eager-loads the nodes that are connected to
 // the "product_recordinsurance" edge. The optional arguments used to configure the query builder of the edge.
 func (pq *ProductQuery) WithProductRecordinsurance(opts ...func(*RecordinsuranceQuery)) *ProductQuery {
@@ -449,7 +448,6 @@ func (pq *ProductQuery) WithProductRecordinsurance(opts ...func(*Recordinsurance
 		opt(query)
 	}
 	pq.withProductRecordinsurance = query
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 	return pq
 }
 
@@ -520,17 +518,14 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		nodes       = []*Product{}
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
-		loadedTypes = [6]bool{
+		loadedTypes = [7]bool{
 			pq.withProductGender != nil,
 			pq.withProductGroupage != nil,
 			pq.withProductOfficer != nil,
 			pq.withProductInsurance != nil,
 			pq.withProductInquiry != nil,
-<<<<<<< HEAD
 			pq.withProductPayback != nil,
-=======
 			pq.withProductRecordinsurance != nil,
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}
 	)
 	if pq.withProductGender != nil || pq.withProductGroupage != nil || pq.withProductOfficer != nil {
@@ -694,11 +689,7 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		}
 	}
 
-<<<<<<< HEAD
 	if query := pq.withProductPayback; query != nil {
-=======
-	if query := pq.withProductRecordinsurance; query != nil {
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*Product)
 		for i := range nodes {
@@ -706,13 +697,8 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 			nodeids[nodes[i].ID] = nodes[i]
 		}
 		query.withFKs = true
-<<<<<<< HEAD
 		query.Where(predicate.Payback(func(s *sql.Selector) {
 			s.Where(sql.InValues(product.ProductPaybackColumn, fks...))
-=======
-		query.Where(predicate.Recordinsurance(func(s *sql.Selector) {
-			s.Where(sql.InValues(product.ProductRecordinsuranceColumn, fks...))
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
@@ -727,11 +713,35 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 			if !ok {
 				return nil, fmt.Errorf(`unexpected foreign-key "product_id" returned %v for node %v`, *fk, n.ID)
 			}
-<<<<<<< HEAD
 			node.Edges.ProductPayback = append(node.Edges.ProductPayback, n)
-=======
+		}
+	}
+
+	if query := pq.withProductRecordinsurance; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Product)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.Recordinsurance(func(s *sql.Selector) {
+			s.Where(sql.InValues(product.ProductRecordinsuranceColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.product_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "product_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "product_id" returned %v for node %v`, *fk, n.ID)
+			}
 			node.Edges.ProductRecordinsurance = append(node.Edges.ProductRecordinsurance, n)
->>>>>>> 4637a9d (ทำ Entity สำหรับเก็บข้อมูลสิทธิประกันสุขภาพ - fix #53)
 		}
 	}
 
