@@ -14,18 +14,22 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// Hospital struct input data
 type Hospitals struct {
 	Hospital []Hospital
 }
 
+// Hospital struct
 type Hospital struct {
 	HospitalName string
 }
 
+// Member struct input data
 type Members struct {
 	Member []Member
 }
 
+// Member struct
 type Member struct {
 	MemberEmail    string
 	MemberName     string
@@ -47,58 +51,62 @@ type GroupOfAges struct {
 	GroupOfAge []GroupOfAge
 }
 
-// GroupOfAge struct input data
+// GroupOfAge struct
 type GroupOfAge struct {
 	GroupOfAgeName string
 	GroupOfAgeAge  string
 }
 
-// Officers struct
+// Officers struct input data
 type Officers struct {
 	Officer []Officer
 }
 
+// Officer struct
 type Officer struct {
 	OfficerEmail    string
 	OfficerName     string
 	OfficerPassword string
 }
 
-// MoneyTransfers struct
+// MoneyTransfers struct input data
 type MoneyTransfers struct {
 	MoneyTransfer []MoneyTransfer
 }
 
+// MoneyTransfer struct
 type MoneyTransfer struct {
 	MoneytransferType string
 }
 
-// Banks struct
+// Banks struct input data
 type Banks struct {
 	Bank []Bank
 }
 
+// Bank struct
 type Bank struct {
 	BankType string
 }
 
-<<<<<<< HEAD
-// Amountpaids struct
+// Amountpaids struct input data
 type Amountpaids struct {
 	Amountpaid []Amountpaid
 }
 
+// Amountpaid struct
 type Amountpaid struct {
 	AmountpaidMoney float64
-=======
-// Category struct
+}
+
+// Category struct input data
 type Categorys struct {
 	Category []Category
 }
 
+// Gender struct
 type Category struct {
 	CategoryName string
->>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
 }
 
 // @title SUT SA Example API Playlist Vidoe
@@ -164,11 +172,8 @@ func main() {
 	controllers.NewOfficerController(v1, client)
 	controllers.NewProductController(v1, client)
 	controllers.NewMoneyTransferController(v1, client)
-<<<<<<< HEAD
 	controllers.NewAmountpaidController(v1, client)
-=======
 	controllers.NewcategoryController(v1, client)
->>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
 
 	// Set Members Data
 	members := Members{
@@ -293,7 +298,6 @@ func main() {
 			Save(context.Background())
 	}
 
-<<<<<<< HEAD
 	// Set Amountpaid Data
 	amountpaids := Amountpaids{
 		Amountpaid: []Amountpaid{
@@ -310,7 +314,9 @@ func main() {
 		client.Amountpaid.
 			Create().
 			SetAmountpaidMoney(ap.AmountpaidMoney).
-=======
+			Save(context.Background())
+	}
+
 	// Set Categorys Data
 	categorys := Categorys{
 		Category: []Category{
@@ -324,7 +330,6 @@ func main() {
 		client.Category.
 			Create().
 			SetCategoryName(cg.CategoryName).
->>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
 			Save(context.Background())
 	}
 
