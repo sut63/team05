@@ -18,6 +18,232 @@
     "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
+        "/amountpaids": {
+            "get": {
+                "description": "list Amountpaid entities",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List Amountpaid entities",
+                "operationId": "list-Amountpaid",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Amountpaid"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Amountpaid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create Amountpaid",
+                "operationId": "create-Amountpaid",
+                "parameters": [
+                    {
+                        "description": "Amountpaid entity",
+                        "name": "Amountpaid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ent.Amountpaid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Amountpaid"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/amountpaids/{id}": {
+            "get": {
+                "description": "get Amountpaid by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a Amountpaid entity by ID",
+                "operationId": "get-Amountpaid",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Amountpaid ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Amountpaid"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update Amountpaid by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update a Amountpaid entity by ID",
+                "operationId": "update-Amountpaid",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Amountpaid ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Amountpaid entity",
+                        "name": "Amountpaid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ent.Amountpaid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Amountpaid"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "get Amountpaid by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a Amountpaid entity by ID",
+                "operationId": "delete-Amountpaid",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Amountpaid ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/banks": {
             "get": {
                 "description": "list Bank entities",
@@ -2587,6 +2813,140 @@
                     }
                 }
             }
+        },
+        "/recordinsurances": {
+            "get": {
+                "description": "list Recordinsurance entities",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "List Recordinsurance entities",
+                "operationId": "list-Recordinsurance",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Recordinsurance"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Recordinsurance",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create Recordinsurance",
+                "operationId": "create-Recordinsurance",
+                "parameters": [
+                    {
+                        "description": "Recordinsurance entity",
+                        "name": "Recordinsurance",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.Recordinsurance"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Recordinsurance"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/recordinsurances/{id}": {
+            "delete": {
+                "description": "get Recordinsurance by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a Recordinsurance entity by ID",
+                "operationId": "delete-Recordinsurance",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recordinsurance ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -2714,6 +3074,59 @@
                 },
                 "productTime": {
                     "type": "integer"
+                }
+            }
+        },
+        "controllers.Recordinsurance": {
+            "type": "object",
+            "properties": {
+                "amountpaidID": {
+                    "type": "number"
+                },
+                "hospitalID": {
+                    "type": "integer"
+                },
+                "memberID": {
+                    "type": "integer"
+                },
+                "officerID": {
+                    "type": "integer"
+                },
+                "productID": {
+                    "type": "integer"
+                },
+                "recordinsuranceTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "ent.Amountpaid": {
+            "type": "object",
+            "properties": {
+                "amountpaid_money": {
+                    "description": "AmountpaidMoney holds the value of the \"amountpaid_money\" field.",
+                    "type": "number"
+                },
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the AmountpaidQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.AmountpaidEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                }
+            }
+        },
+        "ent.AmountpaidEdges": {
+            "type": "object",
+            "properties": {
+                "amountpaidRecordinsurance": {
+                    "description": "AmountpaidRecordinsurance holds the value of the amountpaid_recordinsurance edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Recordinsurance"
+                    }
                 }
             }
         },
@@ -2874,6 +3287,13 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/ent.Insurance"
+                    }
+                },
+                "hospitalRecordinsurance": {
+                    "description": "HospitalRecordinsurance holds the value of the hospital_recordinsurance edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Recordinsurance"
                     }
                 }
             }
@@ -3043,6 +3463,13 @@
                     "items": {
                         "$ref": "#/definitions/ent.Payment"
                     }
+                },
+                "memberRecordinsurance": {
+                    "description": "MemberRecordinsurance holds the value of the member_recordinsurance edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Recordinsurance"
+                    }
                 }
             }
         },
@@ -3131,6 +3558,13 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/ent.Product"
+                    }
+                },
+                "officerRecordinsurance": {
+                    "description": "OfficerRecordinsurance holds the value of the officer_recordinsurance edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Recordinsurance"
                     }
                 }
             }
@@ -3301,6 +3735,61 @@
                     "items": {
                         "$ref": "#/definitions/ent.Payback"
                     }
+                },
+                "productRecordinsurance": {
+                    "description": "ProductRecordinsurance holds the value of the product_recordinsurance edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Recordinsurance"
+                    }
+                }
+            }
+        },
+        "ent.Recordinsurance": {
+            "type": "object",
+            "properties": {
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the RecordinsuranceQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.RecordinsuranceEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                },
+                "recordinsurance_time": {
+                    "description": "RecordinsuranceTime holds the value of the \"recordinsurance_time\" field.",
+                    "type": "string"
+                }
+            }
+        },
+        "ent.RecordinsuranceEdges": {
+            "type": "object",
+            "properties": {
+                "amountpaid": {
+                    "description": "Amountpaid holds the value of the Amountpaid edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Amountpaid"
+                },
+                "hospital": {
+                    "description": "Hospital holds the value of the Hospital edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Hospital"
+                },
+                "member": {
+                    "description": "Member holds the value of the Member edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Member"
+                },
+                "officer": {
+                    "description": "Officer holds the value of the Officer edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Officer"
+                },
+                "product": {
+                    "description": "Product holds the value of the Product edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Product"
                 }
             }
         },

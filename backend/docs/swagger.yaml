@@ -83,6 +83,45 @@ definitions:
       productTime:
         type: integer
     type: object
+  controllers.Recordinsurance:
+    properties:
+      amountpaidID:
+        type: number
+      hospitalID:
+        type: integer
+      memberID:
+        type: integer
+      officerID:
+        type: integer
+      productID:
+        type: integer
+      recordinsuranceTime:
+        type: string
+    type: object
+  ent.Amountpaid:
+    properties:
+      amountpaid_money:
+        description: AmountpaidMoney holds the value of the "amountpaid_money" field.
+        type: number
+      edges:
+        $ref: '#/definitions/ent.AmountpaidEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the AmountpaidQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+    type: object
+  ent.AmountpaidEdges:
+    properties:
+      amountpaidRecordinsurance:
+        description: AmountpaidRecordinsurance holds the value of the amountpaid_recordinsurance
+          edge.
+        items:
+          $ref: '#/definitions/ent.Recordinsurance'
+        type: array
+    type: object
   ent.Bank:
     properties:
       bank_type:
@@ -204,6 +243,12 @@ definitions:
         description: HospitalInsurance holds the value of the hospital_insurance edge.
         items:
           $ref: '#/definitions/ent.Insurance'
+        type: array
+      hospitalRecordinsurance:
+        description: HospitalRecordinsurance holds the value of the hospital_recordinsurance
+          edge.
+        items:
+          $ref: '#/definitions/ent.Recordinsurance'
         type: array
     type: object
   ent.Inquiry:
@@ -337,6 +382,12 @@ definitions:
         items:
           $ref: '#/definitions/ent.Payment'
         type: array
+      memberRecordinsurance:
+        description: MemberRecordinsurance holds the value of the member_recordinsurance
+          edge.
+        items:
+          $ref: '#/definitions/ent.Recordinsurance'
+        type: array
     type: object
   ent.MoneyTransfer:
     properties:
@@ -405,6 +456,12 @@ definitions:
         description: OfficerProduct holds the value of the officer_product edge.
         items:
           $ref: '#/definitions/ent.Product'
+        type: array
+      officerRecordinsurance:
+        description: OfficerRecordinsurance holds the value of the officer_recordinsurance
+          edge.
+        items:
+          $ref: '#/definitions/ent.Recordinsurance'
         type: array
     type: object
   ent.Payback:
@@ -538,6 +595,51 @@ definitions:
         items:
           $ref: '#/definitions/ent.Payback'
         type: array
+      productRecordinsurance:
+        description: ProductRecordinsurance holds the value of the product_recordinsurance
+          edge.
+        items:
+          $ref: '#/definitions/ent.Recordinsurance'
+        type: array
+    type: object
+  ent.Recordinsurance:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.RecordinsuranceEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the RecordinsuranceQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      recordinsurance_time:
+        description: RecordinsuranceTime holds the value of the "recordinsurance_time"
+          field.
+        type: string
+    type: object
+  ent.RecordinsuranceEdges:
+    properties:
+      amountpaid:
+        $ref: '#/definitions/ent.Amountpaid'
+        description: Amountpaid holds the value of the Amountpaid edge.
+        type: object
+      hospital:
+        $ref: '#/definitions/ent.Hospital'
+        description: Hospital holds the value of the Hospital edge.
+        type: object
+      member:
+        $ref: '#/definitions/ent.Member'
+        description: Member holds the value of the Member edge.
+        type: object
+      officer:
+        $ref: '#/definitions/ent.Officer'
+        description: Officer holds the value of the Officer edge.
+        type: object
+      product:
+        $ref: '#/definitions/ent.Product'
+        description: Product holds the value of the Product edge.
+        type: object
     type: object
   gin.H:
     additionalProperties: true
@@ -556,6 +658,157 @@ info:
   title: SUT SA Example API Playlist Vidoe
   version: "1.0"
 paths:
+  /amountpaids:
+    get:
+      description: list Amountpaid entities
+      operationId: list-Amountpaid
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Amountpaid'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List Amountpaid entities
+    post:
+      consumes:
+      - application/json
+      description: Create Amountpaid
+      operationId: create-Amountpaid
+      parameters:
+      - description: Amountpaid entity
+        in: body
+        name: Amountpaid
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Amountpaid'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Amountpaid'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create Amountpaid
+  /amountpaids/{id}:
+    delete:
+      description: get Amountpaid by ID
+      operationId: delete-Amountpaid
+      parameters:
+      - description: Amountpaid ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a Amountpaid entity by ID
+    get:
+      description: get Amountpaid by ID
+      operationId: get-Amountpaid
+      parameters:
+      - description: Amountpaid ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Amountpaid'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a Amountpaid entity by ID
+    put:
+      consumes:
+      - application/json
+      description: update Amountpaid by ID
+      operationId: update-Amountpaid
+      parameters:
+      - description: Amountpaid ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Amountpaid entity
+        in: body
+        name: Amountpaid
+        required: true
+        schema:
+          $ref: '#/definitions/ent.Amountpaid'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Amountpaid'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Update a Amountpaid entity by ID
   /banks:
     get:
       description: list Bank entities
@@ -2271,6 +2524,95 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a product entity by ID
+  /recordinsurances:
+    get:
+      description: list Recordinsurance entities
+      operationId: list-Recordinsurance
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Recordinsurance'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: List Recordinsurance entities
+    post:
+      consumes:
+      - application/json
+      description: Create Recordinsurance
+      operationId: create-Recordinsurance
+      parameters:
+      - description: Recordinsurance entity
+        in: body
+        name: Recordinsurance
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Recordinsurance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Recordinsurance'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Create Recordinsurance
+  /recordinsurances/{id}:
+    delete:
+      description: get Recordinsurance by ID
+      operationId: delete-Recordinsurance
+      parameters:
+      - description: Recordinsurance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Delete a Recordinsurance entity by ID
 securityDefinitions:
   ApiKeyAuth:
     in: header
