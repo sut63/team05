@@ -604,6 +604,12 @@ definitions:
     type: object
   ent.Recordinsurance:
     properties:
+<<<<<<< HEAD
+=======
+      amountpaid:
+        description: Amountpaid holds the value of the "amountpaid" field.
+        type: string
+>>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
       edges:
         $ref: '#/definitions/ent.RecordinsuranceEdges'
         description: |-
@@ -620,10 +626,13 @@ definitions:
     type: object
   ent.RecordinsuranceEdges:
     properties:
+<<<<<<< HEAD
       amountpaid:
         $ref: '#/definitions/ent.Amountpaid'
         description: Amountpaid holds the value of the Amountpaid edge.
         type: object
+=======
+>>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
       hospital:
         $ref: '#/definitions/ent.Hospital'
         description: Hospital holds the value of the Hospital edge.
