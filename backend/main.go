@@ -70,7 +70,7 @@ type MoneyTransfers struct {
 }
 
 type MoneyTransfer struct {
-	MoneytransferType    string
+	MoneytransferType string
 }
 
 // Banks struct
@@ -79,7 +79,16 @@ type Banks struct {
 }
 
 type Bank struct {
-	BankType    string
+	BankType string
+}
+
+// Amountpaids struct
+type Amountpaids struct {
+	Amountpaid []Amountpaid
+}
+
+type Amountpaid struct {
+	AmountpaidMoney float64
 }
 
 // @title SUT SA Example API Playlist Vidoe
@@ -145,6 +154,7 @@ func main() {
 	controllers.NewOfficerController(v1, client)
 	controllers.NewProductController(v1, client)
 	controllers.NewMoneyTransferController(v1, client)
+	controllers.NewAmountpaidController(v1, client)
 
 	// Set Members Data
 	members := Members{
@@ -231,8 +241,8 @@ func main() {
 	}
 
 	// Set MoneyTransfers Data
-	moneytransfers  := MoneyTransfers {
-		MoneyTransfer : []MoneyTransfer {
+	moneytransfers := MoneyTransfers{
+		MoneyTransfer: []MoneyTransfer{
 			MoneyTransfer{"Internet banking"},
 			MoneyTransfer{"Moblie banking"},
 			MoneyTransfer{"ATM"},
@@ -248,16 +258,16 @@ func main() {
 	}
 
 	// Set Banks Data
-	banks  := Banks {
-		Bank : []Bank {
-			Bank {"ธนาคารกสิกรไทย"},
-			Bank {"ธนาคารกรุงเทพ"},
-			Bank {"ธนาคารกรุงศรีอยุธยา"},
-			Bank {"ธนาคารไทยพาณิชย์"},
-			Bank {"ธนาคารกรุงไทย"},
-			Bank {"ธนาคารทหารไทย"},
-			Bank {"ธนาคารธนาชาต"},
-			Bank {"ธนาคารออมสิน"},
+	banks := Banks{
+		Bank: []Bank{
+			Bank{"ธนาคารกสิกรไทย"},
+			Bank{"ธนาคารกรุงเทพ"},
+			Bank{"ธนาคารกรุงศรีอยุธยา"},
+			Bank{"ธนาคารไทยพาณิชย์"},
+			Bank{"ธนาคารกรุงไทย"},
+			Bank{"ธนาคารทหารไทย"},
+			Bank{"ธนาคารธนาชาต"},
+			Bank{"ธนาคารออมสิน"},
 		},
 	}
 
@@ -269,7 +279,24 @@ func main() {
 			Save(context.Background())
 	}
 
+	// Set Amountpaid Data
+	amountpaids := Amountpaids{
+		Amountpaid: []Amountpaid{
+			Amountpaid{25000.50},
+			Amountpaid{57000.75},
+			Amountpaid{82500.00},
+			Amountpaid{90000.25},
+			Amountpaid{110000.00},
+		},
+	}
 
+	for _, ap := range amountpaids.Amountpaid {
+
+		client.Amountpaid.
+			Create().
+			SetAmountpaidMoney(ap.AmountpaidMoney).
+			Save(context.Background())
+	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run()
