@@ -82,6 +82,7 @@ type Bank struct {
 	BankType string
 }
 
+<<<<<<< HEAD
 // Amountpaids struct
 type Amountpaids struct {
 	Amountpaid []Amountpaid
@@ -89,6 +90,15 @@ type Amountpaids struct {
 
 type Amountpaid struct {
 	AmountpaidMoney float64
+=======
+// Category struct
+type Categorys struct {
+	Category []Category
+}
+
+type Category struct {
+	CategoryName string
+>>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
 }
 
 // @title SUT SA Example API Playlist Vidoe
@@ -154,7 +164,11 @@ func main() {
 	controllers.NewOfficerController(v1, client)
 	controllers.NewProductController(v1, client)
 	controllers.NewMoneyTransferController(v1, client)
+<<<<<<< HEAD
 	controllers.NewAmountpaidController(v1, client)
+=======
+	controllers.NewcategoryController(v1, client)
+>>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
 
 	// Set Members Data
 	members := Members{
@@ -279,6 +293,7 @@ func main() {
 			Save(context.Background())
 	}
 
+<<<<<<< HEAD
 	// Set Amountpaid Data
 	amountpaids := Amountpaids{
 		Amountpaid: []Amountpaid{
@@ -295,6 +310,21 @@ func main() {
 		client.Amountpaid.
 			Create().
 			SetAmountpaidMoney(ap.AmountpaidMoney).
+=======
+	// Set Categorys Data
+	categorys := Categorys{
+		Category: []Category{
+			Category{"สนใจผลิตภัณฑ์ประกันสุขภาพ"},
+			Category{"สอบถามข้อมูลผลตอบแทน"},
+			Category{"สอบถามการชำระเบี้ยประกัน"},
+		},
+	}
+
+	for _, cg := range categorys.Category {
+		client.Category.
+			Create().
+			SetCategoryName(cg.CategoryName).
+>>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
 			Save(context.Background())
 	}
 

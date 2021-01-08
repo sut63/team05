@@ -3763,6 +3763,13 @@ var doc = `{
         "ent.Recordinsurance": {
             "type": "object",
             "properties": {
+<<<<<<< HEAD
+=======
+                "amountpaid": {
+                    "description": "Amountpaid holds the value of the \"amountpaid\" field.",
+                    "type": "string"
+                },
+>>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the RecordinsuranceQuery when eager-loading is set.",
                     "type": "object",
@@ -3781,11 +3788,14 @@ var doc = `{
         "ent.RecordinsuranceEdges": {
             "type": "object",
             "properties": {
+<<<<<<< HEAD
                 "amountpaid": {
                     "description": "Amountpaid holds the value of the Amountpaid edge.",
                     "type": "object",
                     "$ref": "#/definitions/ent.Amountpaid"
                 },
+=======
+>>>>>>> 632afb4 (แก้ไขไฟล์ main.go เพื่อเขียนโปรแกรม - fix #79)
                 "hospital": {
                     "description": "Hospital holds the value of the Hospital edge.",
                     "type": "object",
