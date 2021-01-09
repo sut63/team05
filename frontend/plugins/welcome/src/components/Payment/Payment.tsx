@@ -158,21 +158,21 @@ const WatchVideo: FC<{}> = () => {
   }
 
   return (
-    <Page theme={pageTheme.home}>
-      <Header style={HeaderCustom} title={`Watch Video`}>
-        <Avatar alt="Remy Sharp" src="../../image/account.jpg" />
-        <div style={{ marginLeft: 10 }}>Tanapon Kongjaroensuk</div>
+    <Page theme={pageTheme.website}>
+      <Header style={HeaderCustom} title={`ระบบชำระเบี้ยประกัน`}>
+        <Avatar alt="Remy Sharp" src="../components/image/account.jpg" />
+        <div style={{ marginLeft: 10 }}>Teerasak Supawaha</div>
       </Header>
       <Content>
         <Container maxWidth="sm">
           <Grid container spacing={3}>
             <Grid item xs={12}></Grid>
             <Grid item xs={3}>
-              <div className={classes.paper}>วีดีโอ</div>
+              <div className={classes.paper}>กรมธรรม์</div>
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกวีดีโอ</InputLabel>
+                <InputLabel>เลือกกรมธรรม์</InputLabel>
                 <Select
                   name="video"
                   value={playlist_video.video || ''} // (undefined || '') = ''
@@ -190,11 +190,11 @@ const WatchVideo: FC<{}> = () => {
             </Grid>
 
             <Grid item xs={3}>
-              <div className={classes.paper}>เพลย์ลิสต์</div>
+              <div className={classes.paper}>ช่องทางการชำระเงิน</div>
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกเพลย์ลิสต์</InputLabel>
+                <InputLabel>เลือกช่องทางการชำระเงิน</InputLabel>
                 <Select
                   name="playlist"
                   value={playlist_video.playlist || ''} // (undefined || '') = ''
@@ -212,11 +212,11 @@ const WatchVideo: FC<{}> = () => {
             </Grid>
 
             <Grid item xs={3}>
-              <div className={classes.paper}>ความละเอียด</div>
+              <div className={classes.paper}>ธนาคาร</div>
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกความละเอียด</InputLabel>
+                <InputLabel>เลือกธนาคาร</InputLabel>
                 <Select
                   name="resolution"
                   value={playlist_video.resolution || ''} // (undefined || '') = ''
@@ -234,11 +234,11 @@ const WatchVideo: FC<{}> = () => {
             </Grid>
 
             <Grid item xs={3}>
-              <div className={classes.paper}>สมาชิกระบบ</div>
+              <div className={classes.paper}>สมาชิกระบบประกันสุขภาพ</div>
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกสมาชิกระบบ</InputLabel>
+                <InputLabel>เลือกสมาชิกระบบประกันสุขภาพ</InputLabel>
                 <Select
                   // value={playlist_video.create_by || ''} // (undefined || '') = ''
                   // onChange={handleChange}
@@ -292,5 +292,4 @@ const WatchVideo: FC<{}> = () => {
     </Page>
   );
 };
-
 export default WatchVideo;

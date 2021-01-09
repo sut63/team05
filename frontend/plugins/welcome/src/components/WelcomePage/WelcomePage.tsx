@@ -39,7 +39,7 @@ export function CardTeam({ name, id, system }: ProfileProps) {
             component="img"
             alt="นาย สมชาย ใจดี"
             height="140"
-            image="../../image/account.jpg"
+            image="url(https://source.unsplash.com/random)"
             title="นาย สมชาย ใจดี"
           />
           <CardContent>
