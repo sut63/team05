@@ -21,8 +21,8 @@ type AmountpaidCreate struct {
 }
 
 // SetAmountpaidMoney sets the amountpaid_money field.
-func (ac *AmountpaidCreate) SetAmountpaidMoney(f float64) *AmountpaidCreate {
-	ac.mutation.SetAmountpaidMoney(f)
+func (ac *AmountpaidCreate) SetAmountpaidMoney(i int) *AmountpaidCreate {
+	ac.mutation.SetAmountpaidMoney(i)
 	return ac
 }
 
@@ -113,7 +113,7 @@ func (ac *AmountpaidCreate) createSpec() (*Amountpaid, *sqlgraph.CreateSpec) {
 	)
 	if value, ok := ac.mutation.AmountpaidMoney(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeFloat64,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: amountpaid.FieldAmountpaidMoney,
 		})
