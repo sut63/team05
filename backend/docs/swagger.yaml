@@ -36,18 +36,18 @@ definitions:
     type: object
   controllers.Payback:
     properties:
-      accountnumber:
-        type: string
       bankID:
         type: integer
       memberID:
         type: integer
       officerID:
         type: integer
+      paybackAccountnumber:
+        type: string
+      paybackTransfertime:
+        type: string
       productID:
         type: integer
-      transfertime:
-        type: string
     type: object
   controllers.Payment:
     properties:
@@ -466,12 +466,6 @@ definitions:
     type: object
   ent.Payback:
     properties:
-      Accountnumber:
-        description: Accountnumber holds the value of the "Accountnumber" field.
-        type: string
-      Transfertime:
-        description: Transfertime holds the value of the "Transfertime" field.
-        type: string
       edges:
         $ref: '#/definitions/ent.PaybackEdges'
         description: |-
@@ -481,6 +475,14 @@ definitions:
       id:
         description: ID of the ent.
         type: integer
+      payback_accountnumber:
+        description: PaybackAccountnumber holds the value of the "payback_accountnumber"
+          field.
+        type: string
+      payback_transfertime:
+        description: PaybackTransfertime holds the value of the "payback_transfertime"
+          field.
+        type: string
     type: object
   ent.PaybackEdges:
     properties:

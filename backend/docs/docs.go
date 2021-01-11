@@ -3020,9 +3020,6 @@ var doc = `{
         "controllers.Payback": {
             "type": "object",
             "properties": {
-                "accountnumber": {
-                    "type": "string"
-                },
                 "bankID": {
                     "type": "integer"
                 },
@@ -3032,11 +3029,14 @@ var doc = `{
                 "officerID": {
                     "type": "integer"
                 },
+                "paybackAccountnumber": {
+                    "type": "string"
+                },
+                "paybackTransfertime": {
+                    "type": "string"
+                },
                 "productID": {
                     "type": "integer"
-                },
-                "transfertime": {
-                    "type": "string"
                 }
             }
         },
@@ -3587,14 +3587,6 @@ var doc = `{
         "ent.Payback": {
             "type": "object",
             "properties": {
-                "Accountnumber": {
-                    "description": "Accountnumber holds the value of the \"Accountnumber\" field.",
-                    "type": "string"
-                },
-                "Transfertime": {
-                    "description": "Transfertime holds the value of the \"Transfertime\" field.",
-                    "type": "string"
-                },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the PaybackQuery when eager-loading is set.",
                     "type": "object",
@@ -3603,6 +3595,14 @@ var doc = `{
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
+                },
+                "payback_accountnumber": {
+                    "description": "PaybackAccountnumber holds the value of the \"payback_accountnumber\" field.",
+                    "type": "string"
+                },
+                "payback_transfertime": {
+                    "description": "PaybackTransfertime holds the value of the \"payback_transfertime\" field.",
+                    "type": "string"
                 }
             }
         },
