@@ -18,8 +18,6 @@ func (Product) Fields() []ent.Field {
 		field.Int("product_price"),
 		field.Int("product_time"),
 		field.Float("product_payment_of_year"),
-		/*field.Time("created_at").
-		  Default(time.Now),*/
 	}
 }
 
