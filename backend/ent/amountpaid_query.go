@@ -270,7 +270,7 @@ func (aq *AmountpaidQuery) WithAmountpaidRecordinsurance(opts ...func(*Recordins
 // Example:
 //
 //	var v []struct {
-//		AmountpaidMoney float64 `json:"amountpaid_money,omitempty"`
+//		AmountpaidMoney int `json:"amountpaid_money,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -296,7 +296,7 @@ func (aq *AmountpaidQuery) GroupBy(field string, fields ...string) *AmountpaidGr
 // Example:
 //
 //	var v []struct {
-//		AmountpaidMoney float64 `json:"amountpaid_money,omitempty"`
+//		AmountpaidMoney int `json:"amountpaid_money,omitempty"`
 //	}
 //
 //	client.Amountpaid.Query().

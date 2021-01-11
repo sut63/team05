@@ -14,7 +14,7 @@ type Amountpaid struct {
 // Fields of the Amountpaid.
 func (Amountpaid) Fields() []ent.Field {
 	return []ent.Field{
-		field.Float("amountpaid_money").Unique(),
+		field.Int("amountpaid_money").Unique(),
 	}
 }
 

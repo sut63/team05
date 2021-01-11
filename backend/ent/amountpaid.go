@@ -16,7 +16,7 @@ type Amountpaid struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// AmountpaidMoney holds the value of the "amountpaid_money" field.
-	AmountpaidMoney float64 `json:"amountpaid_money,omitempty"`
+	AmountpaidMoney int `json:"amountpaid_money,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AmountpaidQuery when eager-loading is set.
 	Edges AmountpaidEdges `json:"edges"`
@@ -43,8 +43,8 @@ func (e AmountpaidEdges) AmountpaidRecordinsuranceOrErr() ([]*Recordinsurance, e
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Amountpaid) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{},   // id
-		&sql.NullFloat64{}, // amountpaid_money
+		&sql.NullInt64{}, // id
+		&sql.NullInt64{}, // amountpaid_money
 	}
 }
 
@@ -60,10 +60,10 @@ func (a *Amountpaid) assignValues(values ...interface{}) error {
 	}
 	a.ID = int(value.Int64)
 	values = values[1:]
-	if value, ok := values[0].(*sql.NullFloat64); !ok {
+	if value, ok := values[0].(*sql.NullInt64); !ok {
 		return fmt.Errorf("unexpected type %T for field amountpaid_money", values[0])
 	} else if value.Valid {
-		a.AmountpaidMoney = value.Float64
+		a.AmountpaidMoney = int(value.Int64)
 	}
 	return nil
 }

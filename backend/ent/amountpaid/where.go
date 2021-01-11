@@ -92,28 +92,28 @@ func IDLTE(id int) predicate.Amountpaid {
 }
 
 // AmountpaidMoney applies equality check predicate on the "amountpaid_money" field. It's identical to AmountpaidMoneyEQ.
-func AmountpaidMoney(v float64) predicate.Amountpaid {
+func AmountpaidMoney(v int) predicate.Amountpaid {
 	return predicate.Amountpaid(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAmountpaidMoney), v))
 	})
 }
 
 // AmountpaidMoneyEQ applies the EQ predicate on the "amountpaid_money" field.
-func AmountpaidMoneyEQ(v float64) predicate.Amountpaid {
+func AmountpaidMoneyEQ(v int) predicate.Amountpaid {
 	return predicate.Amountpaid(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAmountpaidMoney), v))
 	})
 }
 
 // AmountpaidMoneyNEQ applies the NEQ predicate on the "amountpaid_money" field.
-func AmountpaidMoneyNEQ(v float64) predicate.Amountpaid {
+func AmountpaidMoneyNEQ(v int) predicate.Amountpaid {
 	return predicate.Amountpaid(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldAmountpaidMoney), v))
 	})
 }
 
 // AmountpaidMoneyIn applies the In predicate on the "amountpaid_money" field.
-func AmountpaidMoneyIn(vs ...float64) predicate.Amountpaid {
+func AmountpaidMoneyIn(vs ...int) predicate.Amountpaid {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -130,7 +130,7 @@ func AmountpaidMoneyIn(vs ...float64) predicate.Amountpaid {
 }
 
 // AmountpaidMoneyNotIn applies the NotIn predicate on the "amountpaid_money" field.
-func AmountpaidMoneyNotIn(vs ...float64) predicate.Amountpaid {
+func AmountpaidMoneyNotIn(vs ...int) predicate.Amountpaid {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -147,28 +147,28 @@ func AmountpaidMoneyNotIn(vs ...float64) predicate.Amountpaid {
 }
 
 // AmountpaidMoneyGT applies the GT predicate on the "amountpaid_money" field.
-func AmountpaidMoneyGT(v float64) predicate.Amountpaid {
+func AmountpaidMoneyGT(v int) predicate.Amountpaid {
 	return predicate.Amountpaid(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldAmountpaidMoney), v))
 	})
 }
 
 // AmountpaidMoneyGTE applies the GTE predicate on the "amountpaid_money" field.
-func AmountpaidMoneyGTE(v float64) predicate.Amountpaid {
+func AmountpaidMoneyGTE(v int) predicate.Amountpaid {
 	return predicate.Amountpaid(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldAmountpaidMoney), v))
 	})
 }
 
 // AmountpaidMoneyLT applies the LT predicate on the "amountpaid_money" field.
-func AmountpaidMoneyLT(v float64) predicate.Amountpaid {
+func AmountpaidMoneyLT(v int) predicate.Amountpaid {
 	return predicate.Amountpaid(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldAmountpaidMoney), v))
 	})
 }
 
 // AmountpaidMoneyLTE applies the LTE predicate on the "amountpaid_money" field.
-func AmountpaidMoneyLTE(v float64) predicate.Amountpaid {
+func AmountpaidMoneyLTE(v int) predicate.Amountpaid {
 	return predicate.Amountpaid(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldAmountpaidMoney), v))
 	})

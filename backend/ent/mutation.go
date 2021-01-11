@@ -60,8 +60,8 @@ type AmountpaidMutation struct {
 	op                                Op
 	typ                               string
 	id                                *int
-	amountpaid_money                  *float64
-	addamountpaid_money               *float64
+	amountpaid_money                  *int
+	addamountpaid_money               *int
 	clearedFields                     map[string]struct{}
 	amountpaid_recordinsurance        map[int]struct{}
 	removedamountpaid_recordinsurance map[int]struct{}
@@ -149,13 +149,13 @@ func (m *AmountpaidMutation) ID() (id int, exists bool) {
 }
 
 // SetAmountpaidMoney sets the amountpaid_money field.
-func (m *AmountpaidMutation) SetAmountpaidMoney(f float64) {
-	m.amountpaid_money = &f
+func (m *AmountpaidMutation) SetAmountpaidMoney(i int) {
+	m.amountpaid_money = &i
 	m.addamountpaid_money = nil
 }
 
 // AmountpaidMoney returns the amountpaid_money value in the mutation.
-func (m *AmountpaidMutation) AmountpaidMoney() (r float64, exists bool) {
+func (m *AmountpaidMutation) AmountpaidMoney() (r int, exists bool) {
 	v := m.amountpaid_money
 	if v == nil {
 		return
@@ -167,7 +167,7 @@ func (m *AmountpaidMutation) AmountpaidMoney() (r float64, exists bool) {
 // If the Amountpaid object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *AmountpaidMutation) OldAmountpaidMoney(ctx context.Context) (v float64, err error) {
+func (m *AmountpaidMutation) OldAmountpaidMoney(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldAmountpaidMoney is allowed only on UpdateOne operations")
 	}
@@ -181,17 +181,17 @@ func (m *AmountpaidMutation) OldAmountpaidMoney(ctx context.Context) (v float64,
 	return oldValue.AmountpaidMoney, nil
 }
 
-// AddAmountpaidMoney adds f to amountpaid_money.
-func (m *AmountpaidMutation) AddAmountpaidMoney(f float64) {
+// AddAmountpaidMoney adds i to amountpaid_money.
+func (m *AmountpaidMutation) AddAmountpaidMoney(i int) {
 	if m.addamountpaid_money != nil {
-		*m.addamountpaid_money += f
+		*m.addamountpaid_money += i
 	} else {
-		m.addamountpaid_money = &f
+		m.addamountpaid_money = &i
 	}
 }
 
 // AddedAmountpaidMoney returns the value that was added to the amountpaid_money field in this mutation.
-func (m *AmountpaidMutation) AddedAmountpaidMoney() (r float64, exists bool) {
+func (m *AmountpaidMutation) AddedAmountpaidMoney() (r int, exists bool) {
 	v := m.addamountpaid_money
 	if v == nil {
 		return
@@ -296,7 +296,7 @@ func (m *AmountpaidMutation) OldField(ctx context.Context, name string) (ent.Val
 func (m *AmountpaidMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case amountpaid.FieldAmountpaidMoney:
-		v, ok := value.(float64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -333,7 +333,7 @@ func (m *AmountpaidMutation) AddedField(name string) (ent.Value, bool) {
 func (m *AmountpaidMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case amountpaid.FieldAmountpaidMoney:
-		v, ok := value.(float64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

@@ -11,7 +11,7 @@ var (
 	// AmountpaidsColumns holds the columns for the "amountpaids" table.
 	AmountpaidsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "amountpaid_money", Type: field.TypeFloat64, Unique: true},
+		{Name: "amountpaid_money", Type: field.TypeInt, Unique: true},
 	}
 	// AmountpaidsTable holds the schema information for the "amountpaids" table.
 	AmountpaidsTable = &schema.Table{

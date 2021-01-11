@@ -29,15 +29,15 @@ func (au *AmountpaidUpdate) Where(ps ...predicate.Amountpaid) *AmountpaidUpdate 
 }
 
 // SetAmountpaidMoney sets the amountpaid_money field.
-func (au *AmountpaidUpdate) SetAmountpaidMoney(f float64) *AmountpaidUpdate {
+func (au *AmountpaidUpdate) SetAmountpaidMoney(i int) *AmountpaidUpdate {
 	au.mutation.ResetAmountpaidMoney()
-	au.mutation.SetAmountpaidMoney(f)
+	au.mutation.SetAmountpaidMoney(i)
 	return au
 }
 
-// AddAmountpaidMoney adds f to amountpaid_money.
-func (au *AmountpaidUpdate) AddAmountpaidMoney(f float64) *AmountpaidUpdate {
-	au.mutation.AddAmountpaidMoney(f)
+// AddAmountpaidMoney adds i to amountpaid_money.
+func (au *AmountpaidUpdate) AddAmountpaidMoney(i int) *AmountpaidUpdate {
+	au.mutation.AddAmountpaidMoney(i)
 	return au
 }
 
@@ -148,14 +148,14 @@ func (au *AmountpaidUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := au.mutation.AmountpaidMoney(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeFloat64,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: amountpaid.FieldAmountpaidMoney,
 		})
 	}
 	if value, ok := au.mutation.AddedAmountpaidMoney(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeFloat64,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: amountpaid.FieldAmountpaidMoney,
 		})
@@ -217,15 +217,15 @@ type AmountpaidUpdateOne struct {
 }
 
 // SetAmountpaidMoney sets the amountpaid_money field.
-func (auo *AmountpaidUpdateOne) SetAmountpaidMoney(f float64) *AmountpaidUpdateOne {
+func (auo *AmountpaidUpdateOne) SetAmountpaidMoney(i int) *AmountpaidUpdateOne {
 	auo.mutation.ResetAmountpaidMoney()
-	auo.mutation.SetAmountpaidMoney(f)
+	auo.mutation.SetAmountpaidMoney(i)
 	return auo
 }
 
-// AddAmountpaidMoney adds f to amountpaid_money.
-func (auo *AmountpaidUpdateOne) AddAmountpaidMoney(f float64) *AmountpaidUpdateOne {
-	auo.mutation.AddAmountpaidMoney(f)
+// AddAmountpaidMoney adds i to amountpaid_money.
+func (auo *AmountpaidUpdateOne) AddAmountpaidMoney(i int) *AmountpaidUpdateOne {
+	auo.mutation.AddAmountpaidMoney(i)
 	return auo
 }
 
@@ -334,14 +334,14 @@ func (auo *AmountpaidUpdateOne) sqlSave(ctx context.Context) (a *Amountpaid, err
 	_spec.Node.ID.Value = id
 	if value, ok := auo.mutation.AmountpaidMoney(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeFloat64,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: amountpaid.FieldAmountpaidMoney,
 		})
 	}
 	if value, ok := auo.mutation.AddedAmountpaidMoney(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeFloat64,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: amountpaid.FieldAmountpaidMoney,
 		})
