@@ -3069,7 +3069,7 @@ var doc = `{
         "controllers.Product": {
             "type": "object",
             "properties": {
-                "genderID": {
+                "gender": {
                     "type": "integer"
                 },
                 "groupOfAge": {
@@ -3082,7 +3082,7 @@ var doc = `{
                     "type": "string"
                 },
                 "productPaymentOfYear": {
-                    "type": "number"
+                    "type": "integer"
                 },
                 "productPrice": {
                     "type": "integer"
@@ -3233,8 +3233,8 @@ var doc = `{
         "ent.GenderEdges": {
             "type": "object",
             "properties": {
-                "genders": {
-                    "description": "Genders holds the value of the genders edge.",
+                "genderProduct": {
+                    "description": "GenderProduct holds the value of the gender_product edge.",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/ent.Product"
@@ -3267,8 +3267,8 @@ var doc = `{
         "ent.GroupOfAgeEdges": {
             "type": "object",
             "properties": {
-                "groupageProduct": {
-                    "description": "GroupageProduct holds the value of the groupage_product edge.",
+                "groupofageProduct": {
+                    "description": "GroupofageProduct holds the value of the groupofage_product edge.",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/ent.Product"
@@ -3700,7 +3700,7 @@ var doc = `{
                 },
                 "product_payment_of_year": {
                     "description": "ProductPaymentOfYear holds the value of the \"product_payment_of_year\" field.",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "product_price": {
                     "description": "ProductPrice holds the value of the \"product_price\" field.",
@@ -3715,15 +3715,20 @@ var doc = `{
         "ent.ProductEdges": {
             "type": "object",
             "properties": {
-                "productGender": {
-                    "description": "ProductGender holds the value of the product_gender edge.",
+                "gender": {
+                    "description": "Gender holds the value of the gender edge.",
                     "type": "object",
                     "$ref": "#/definitions/ent.Gender"
                 },
-                "productGroupage": {
-                    "description": "ProductGroupage holds the value of the product_groupage edge.",
+                "groupofage": {
+                    "description": "Groupofage holds the value of the groupofage edge.",
                     "type": "object",
                     "$ref": "#/definitions/ent.GroupOfAge"
+                },
+                "officer": {
+                    "description": "Officer holds the value of the officer edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Officer"
                 },
                 "productInquiry": {
                     "description": "ProductInquiry holds the value of the product_inquiry edge.",
@@ -3738,11 +3743,6 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/ent.Insurance"
                     }
-                },
-                "productOfficer": {
-                    "description": "ProductOfficer holds the value of the product_officer edge.",
-                    "type": "object",
-                    "$ref": "#/definitions/ent.Officer"
                 },
                 "productPayback": {
                     "description": "ProductPayback holds the value of the product_payback edge.",

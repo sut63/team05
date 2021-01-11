@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import {
-  Content,
-  Header,
-  Page,
-  pageTheme /*ContentHeader,*/,
-} from '@backstage/core';
+import {Content, Header, Page, pageTheme /*ContentHeader,*/,} from '@backstage/core';
 import { Link as RouterLink } from 'react-router-dom';
 import SaveIcon from '@material-ui/icons/Save';
 import { Grid, Container } from '@material-ui/core';
@@ -43,11 +38,12 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
     },
     textField: {
-      width: '25ch',
+      width: 300,
     },
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
+    
     container: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -58,6 +54,8 @@ const useStyles = makeStyles((theme: Theme) =>
     
   }),
 );
+
+
 
 export default function Create() {
   const classes = useStyles();
@@ -176,7 +174,7 @@ export default function Create() {
     <Page theme={pageTheme.service}>
       <Header
         title={`${profile.givenName || 'to Backstage'}`}
-        subtitle="ระบบสั่งซื้ออุปกรณ์."
+        subtitle="ระบบันทึกข้อมูลผลิตภัณฑ์"
       >
        
       </Header>
@@ -202,13 +200,15 @@ export default function Create() {
               ) : null}
             </Grid>
 
+            
+
             <Grid item xs={4}>
-              <div className={classes.paper}>ชื่อผลิตภัณฑ์</div>
+              <div className={classes.paper}>ผลิตภัณฑ์</div>
             </Grid>
             <Grid item xs={8}>
-              <form className={classes.container} noValidate>
+              <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
-                 // label="ป้อนชื่อผลิตภัณฑ์"
+                  // label="ป้อนชื่อผลิตภัณฑ์"
                   name="productpament"
                   type=" "
                   value={productName}
@@ -217,17 +217,19 @@ export default function Create() {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  variant="outlined"
                 />
-              </form>
+              </FormControl>
             </Grid>
 
+
             <Grid item xs={4}>
-              <div className={classes.paper}>จำนวนเงินเอาประกัน</div>
+              <div className={classes.paper}>ประกันสูงสุด : ฿</div>
             </Grid>
             <Grid item xs={8}>
-              <form className={classes.container} noValidate>
+              <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
-                //  label="ป้อนจำนวนเงินเอาประกัน"
+                  //  label="ป้อนจำนวนเงินเอาประกัน"
                   name="productprie"
                   type=" "
                   value={productPrice}
@@ -236,45 +238,50 @@ export default function Create() {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  variant="outlined"
                 />
-              </form>
+              </FormControl>
             </Grid>
 
-            <Grid item xs={4}>
-              <div className={classes.paper}>ระยะเวลาในการชำระ</div>
-            </Grid>
-            <Grid item xs={8}>
-              <form className={classes.container} noValidate>
-                <TextField
-                //  label="ป้อนระยะเวลาในารชำระ"
-                  name="producttime"
-                  type=" "
-                  value={productTime}
-                  onChange={ProductTimehandleChange}
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </form>
-            </Grid>
 
             <Grid item xs={4}>
-              <div className={classes.paper}>ชำระเบี้ยประกัน:ปี</div>
+              <div className={classes.paper}>ระยะเวลา : Y</div>
             </Grid>
             <Grid item xs={8}>
-              <form className={classes.container} noValidate>
+              <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
-                  name="producttime"
-                  type=" "
-                  value={productPaymentOfYear}
-                  onChange={ProductPaymentOfYearhandleChange}
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                 //  label="ป้อนระยะเวลาในารชำระ"
+                 name="producttime"
+                 type=" "
+                 value={productTime}
+                 onChange={ProductTimehandleChange}
+                 className={classes.textField}
+                 InputLabelProps={{
+                   shrink: true,
+                 }}
+                  variant="outlined"
                 />
-              </form>
+              </FormControl>
+            </Grid>
+
+
+            <Grid item xs={4}>
+              <div className={classes.paper}>ผ่อนชำระ / Y</div>
+            </Grid>
+            <Grid item xs={8}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                 name="producttime"
+                 type=" "
+                 value={productPaymentOfYear}
+                 onChange={ProductPaymentOfYearhandleChange}
+                 className={classes.textField}
+                 InputLabelProps={{
+                   shrink: true,
+                 }}
+                  variant="outlined"
+                />
+              </FormControl>
             </Grid>
 
 
@@ -301,7 +308,7 @@ export default function Create() {
             </Grid>
 
             <Grid item xs={4}>
-              <div className={classes.paper}>ช่วงอายุ</div>
+              <div className={classes.paper}>กลุ่มอายุ</div>
             </Grid>
             <Grid item xs={8}>
               <FormControl variant="outlined" className={classes.formControl}>
@@ -344,6 +351,7 @@ export default function Create() {
               </FormControl>
             </Grid>
 
+
             <Grid item xs={3}></Grid>
             <Grid item xs={9}>
               <Button
@@ -358,15 +366,7 @@ export default function Create() {
               >
                 Save
               </Button>
-              <Button
-                size="small"
-                style={{ marginLeft: 150 }}
-                component={RouterLink}
-                to="/result"
-                variant="contained"
-              >
-                Back
-              </Button>
+             
             </Grid>
           </Grid>
         </Container>

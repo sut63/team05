@@ -26,7 +26,7 @@ type GroupOfAgeQuery struct {
 	unique     []string
 	predicates []predicate.GroupOfAge
 	// eager-loading edges.
-	withGroupageProduct *ProductQuery
+	withGroupofageProduct *ProductQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -56,8 +56,8 @@ func (goaq *GroupOfAgeQuery) Order(o ...OrderFunc) *GroupOfAgeQuery {
 	return goaq
 }
 
-// QueryGroupageProduct chains the current query on the groupage_product edge.
-func (goaq *GroupOfAgeQuery) QueryGroupageProduct() *ProductQuery {
+// QueryGroupofageProduct chains the current query on the groupofage_product edge.
+func (goaq *GroupOfAgeQuery) QueryGroupofageProduct() *ProductQuery {
 	query := &ProductQuery{config: goaq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := goaq.prepareQuery(ctx); err != nil {
@@ -66,7 +66,7 @@ func (goaq *GroupOfAgeQuery) QueryGroupageProduct() *ProductQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(groupofage.Table, groupofage.FieldID, goaq.sqlQuery()),
 			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, groupofage.GroupageProductTable, groupofage.GroupageProductColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, groupofage.GroupofageProductTable, groupofage.GroupofageProductColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(goaq.driver.Dialect(), step)
 		return fromU, nil
@@ -253,14 +253,14 @@ func (goaq *GroupOfAgeQuery) Clone() *GroupOfAgeQuery {
 	}
 }
 
-//  WithGroupageProduct tells the query-builder to eager-loads the nodes that are connected to
-// the "groupage_product" edge. The optional arguments used to configure the query builder of the edge.
-func (goaq *GroupOfAgeQuery) WithGroupageProduct(opts ...func(*ProductQuery)) *GroupOfAgeQuery {
+//  WithGroupofageProduct tells the query-builder to eager-loads the nodes that are connected to
+// the "groupofage_product" edge. The optional arguments used to configure the query builder of the edge.
+func (goaq *GroupOfAgeQuery) WithGroupofageProduct(opts ...func(*ProductQuery)) *GroupOfAgeQuery {
 	query := &ProductQuery{config: goaq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	goaq.withGroupageProduct = query
+	goaq.withGroupofageProduct = query
 	return goaq
 }
 
@@ -331,7 +331,7 @@ func (goaq *GroupOfAgeQuery) sqlAll(ctx context.Context) ([]*GroupOfAge, error) 
 		nodes       = []*GroupOfAge{}
 		_spec       = goaq.querySpec()
 		loadedTypes = [1]bool{
-			goaq.withGroupageProduct != nil,
+			goaq.withGroupofageProduct != nil,
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
@@ -355,7 +355,7 @@ func (goaq *GroupOfAgeQuery) sqlAll(ctx context.Context) ([]*GroupOfAge, error) 
 		return nodes, nil
 	}
 
-	if query := goaq.withGroupageProduct; query != nil {
+	if query := goaq.withGroupofageProduct; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*GroupOfAge)
 		for i := range nodes {
@@ -364,7 +364,7 @@ func (goaq *GroupOfAgeQuery) sqlAll(ctx context.Context) ([]*GroupOfAge, error) 
 		}
 		query.withFKs = true
 		query.Where(predicate.Product(func(s *sql.Selector) {
-			s.Where(sql.InValues(groupofage.GroupageProductColumn, fks...))
+			s.Where(sql.InValues(groupofage.GroupofageProductColumn, fks...))
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
@@ -379,7 +379,7 @@ func (goaq *GroupOfAgeQuery) sqlAll(ctx context.Context) ([]*GroupOfAge, error) 
 			if !ok {
 				return nil, fmt.Errorf(`unexpected foreign-key "group_of_age_id" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.GroupageProduct = append(node.Edges.GroupageProduct, n)
+			node.Edges.GroupofageProduct = append(node.Edges.GroupofageProduct, n)
 		}
 	}
 

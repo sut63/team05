@@ -327,25 +327,25 @@ func GroupOfAgeAgeContainsFold(v string) predicate.GroupOfAge {
 	})
 }
 
-// HasGroupageProduct applies the HasEdge predicate on the "groupage_product" edge.
-func HasGroupageProduct() predicate.GroupOfAge {
+// HasGroupofageProduct applies the HasEdge predicate on the "groupofage_product" edge.
+func HasGroupofageProduct() predicate.GroupOfAge {
 	return predicate.GroupOfAge(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(GroupageProductTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, GroupageProductTable, GroupageProductColumn),
+			sqlgraph.To(GroupofageProductTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, GroupofageProductTable, GroupofageProductColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasGroupageProductWith applies the HasEdge predicate on the "groupage_product" edge with a given conditions (other predicates).
-func HasGroupageProductWith(preds ...predicate.Product) predicate.GroupOfAge {
+// HasGroupofageProductWith applies the HasEdge predicate on the "groupofage_product" edge with a given conditions (other predicates).
+func HasGroupofageProductWith(preds ...predicate.Product) predicate.GroupOfAge {
 	return predicate.GroupOfAge(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(GroupageProductInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, GroupageProductTable, GroupageProductColumn),
+			sqlgraph.To(GroupofageProductInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, GroupofageProductTable, GroupofageProductColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

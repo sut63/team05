@@ -113,7 +113,7 @@ func ProductTime(v int) predicate.Product {
 }
 
 // ProductPaymentOfYear applies equality check predicate on the "product_payment_of_year" field. It's identical to ProductPaymentOfYearEQ.
-func ProductPaymentOfYear(v float64) predicate.Product {
+func ProductPaymentOfYear(v int) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldProductPaymentOfYear), v))
 	})
@@ -383,21 +383,21 @@ func ProductTimeLTE(v int) predicate.Product {
 }
 
 // ProductPaymentOfYearEQ applies the EQ predicate on the "product_payment_of_year" field.
-func ProductPaymentOfYearEQ(v float64) predicate.Product {
+func ProductPaymentOfYearEQ(v int) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldProductPaymentOfYear), v))
 	})
 }
 
 // ProductPaymentOfYearNEQ applies the NEQ predicate on the "product_payment_of_year" field.
-func ProductPaymentOfYearNEQ(v float64) predicate.Product {
+func ProductPaymentOfYearNEQ(v int) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldProductPaymentOfYear), v))
 	})
 }
 
 // ProductPaymentOfYearIn applies the In predicate on the "product_payment_of_year" field.
-func ProductPaymentOfYearIn(vs ...float64) predicate.Product {
+func ProductPaymentOfYearIn(vs ...int) predicate.Product {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -414,7 +414,7 @@ func ProductPaymentOfYearIn(vs ...float64) predicate.Product {
 }
 
 // ProductPaymentOfYearNotIn applies the NotIn predicate on the "product_payment_of_year" field.
-func ProductPaymentOfYearNotIn(vs ...float64) predicate.Product {
+func ProductPaymentOfYearNotIn(vs ...int) predicate.Product {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -431,52 +431,52 @@ func ProductPaymentOfYearNotIn(vs ...float64) predicate.Product {
 }
 
 // ProductPaymentOfYearGT applies the GT predicate on the "product_payment_of_year" field.
-func ProductPaymentOfYearGT(v float64) predicate.Product {
+func ProductPaymentOfYearGT(v int) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldProductPaymentOfYear), v))
 	})
 }
 
 // ProductPaymentOfYearGTE applies the GTE predicate on the "product_payment_of_year" field.
-func ProductPaymentOfYearGTE(v float64) predicate.Product {
+func ProductPaymentOfYearGTE(v int) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldProductPaymentOfYear), v))
 	})
 }
 
 // ProductPaymentOfYearLT applies the LT predicate on the "product_payment_of_year" field.
-func ProductPaymentOfYearLT(v float64) predicate.Product {
+func ProductPaymentOfYearLT(v int) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldProductPaymentOfYear), v))
 	})
 }
 
 // ProductPaymentOfYearLTE applies the LTE predicate on the "product_payment_of_year" field.
-func ProductPaymentOfYearLTE(v float64) predicate.Product {
+func ProductPaymentOfYearLTE(v int) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldProductPaymentOfYear), v))
 	})
 }
 
-// HasProductGender applies the HasEdge predicate on the "product_gender" edge.
-func HasProductGender() predicate.Product {
+// HasGender applies the HasEdge predicate on the "gender" edge.
+func HasGender() predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ProductGenderTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductGenderTable, ProductGenderColumn),
+			sqlgraph.To(GenderTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, GenderTable, GenderColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasProductGenderWith applies the HasEdge predicate on the "product_gender" edge with a given conditions (other predicates).
-func HasProductGenderWith(preds ...predicate.Gender) predicate.Product {
+// HasGenderWith applies the HasEdge predicate on the "gender" edge with a given conditions (other predicates).
+func HasGenderWith(preds ...predicate.Gender) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ProductGenderInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductGenderTable, ProductGenderColumn),
+			sqlgraph.To(GenderInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, GenderTable, GenderColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
@@ -486,25 +486,25 @@ func HasProductGenderWith(preds ...predicate.Gender) predicate.Product {
 	})
 }
 
-// HasProductGroupage applies the HasEdge predicate on the "product_groupage" edge.
-func HasProductGroupage() predicate.Product {
+// HasGroupofage applies the HasEdge predicate on the "groupofage" edge.
+func HasGroupofage() predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ProductGroupageTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductGroupageTable, ProductGroupageColumn),
+			sqlgraph.To(GroupofageTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, GroupofageTable, GroupofageColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasProductGroupageWith applies the HasEdge predicate on the "product_groupage" edge with a given conditions (other predicates).
-func HasProductGroupageWith(preds ...predicate.GroupOfAge) predicate.Product {
+// HasGroupofageWith applies the HasEdge predicate on the "groupofage" edge with a given conditions (other predicates).
+func HasGroupofageWith(preds ...predicate.GroupOfAge) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ProductGroupageInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductGroupageTable, ProductGroupageColumn),
+			sqlgraph.To(GroupofageInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, GroupofageTable, GroupofageColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
@@ -514,25 +514,25 @@ func HasProductGroupageWith(preds ...predicate.GroupOfAge) predicate.Product {
 	})
 }
 
-// HasProductOfficer applies the HasEdge predicate on the "product_officer" edge.
-func HasProductOfficer() predicate.Product {
+// HasOfficer applies the HasEdge predicate on the "officer" edge.
+func HasOfficer() predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ProductOfficerTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductOfficerTable, ProductOfficerColumn),
+			sqlgraph.To(OfficerTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, OfficerTable, OfficerColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasProductOfficerWith applies the HasEdge predicate on the "product_officer" edge with a given conditions (other predicates).
-func HasProductOfficerWith(preds ...predicate.Officer) predicate.Product {
+// HasOfficerWith applies the HasEdge predicate on the "officer" edge with a given conditions (other predicates).
+func HasOfficerWith(preds ...predicate.Officer) predicate.Product {
 	return predicate.Product(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ProductOfficerInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProductOfficerTable, ProductOfficerColumn),
+			sqlgraph.To(OfficerInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, OfficerTable, OfficerColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

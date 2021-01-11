@@ -55,13 +55,19 @@ export interface EntProductEdges {
      * @type {EntGender}
      * @memberof EntProductEdges
      */
-    productGender?: EntGender;
+    gender?: EntGender;
     /**
      * 
      * @type {EntGroupOfAge}
      * @memberof EntProductEdges
      */
-    productGroupage?: EntGroupOfAge;
+    groupofage?: EntGroupOfAge;
+    /**
+     * 
+     * @type {EntOfficer}
+     * @memberof EntProductEdges
+     */
+    officer?: EntOfficer;
     /**
      * ProductInquiry holds the value of the product_inquiry edge.
      * @type {Array<EntInquiry>}
@@ -74,12 +80,6 @@ export interface EntProductEdges {
      * @memberof EntProductEdges
      */
     productInsurance?: Array<EntInsurance>;
-    /**
-     * 
-     * @type {EntOfficer}
-     * @memberof EntProductEdges
-     */
-    productOfficer?: EntOfficer;
     /**
      * ProductPayback holds the value of the product_payback edge.
      * @type {Array<EntPayback>}
@@ -104,11 +104,11 @@ export function EntProductEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'productGender': !exists(json, 'productGender') ? undefined : EntGenderFromJSON(json['productGender']),
-        'productGroupage': !exists(json, 'productGroupage') ? undefined : EntGroupOfAgeFromJSON(json['productGroupage']),
+        'gender': !exists(json, 'gender') ? undefined : EntGenderFromJSON(json['gender']),
+        'groupofage': !exists(json, 'groupofage') ? undefined : EntGroupOfAgeFromJSON(json['groupofage']),
+        'officer': !exists(json, 'officer') ? undefined : EntOfficerFromJSON(json['officer']),
         'productInquiry': !exists(json, 'productInquiry') ? undefined : ((json['productInquiry'] as Array<any>).map(EntInquiryFromJSON)),
         'productInsurance': !exists(json, 'productInsurance') ? undefined : ((json['productInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
-        'productOfficer': !exists(json, 'productOfficer') ? undefined : EntOfficerFromJSON(json['productOfficer']),
         'productPayback': !exists(json, 'productPayback') ? undefined : ((json['productPayback'] as Array<any>).map(EntPaybackFromJSON)),
         'productRecordinsurance': !exists(json, 'productRecordinsurance') ? undefined : ((json['productRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
     };
@@ -123,11 +123,11 @@ export function EntProductEdgesToJSON(value?: EntProductEdges | null): any {
     }
     return {
         
-        'productGender': EntGenderToJSON(value.productGender),
-        'productGroupage': EntGroupOfAgeToJSON(value.productGroupage),
+        'gender': EntGenderToJSON(value.gender),
+        'groupofage': EntGroupOfAgeToJSON(value.groupofage),
+        'officer': EntOfficerToJSON(value.officer),
         'productInquiry': value.productInquiry === undefined ? undefined : ((value.productInquiry as Array<any>).map(EntInquiryToJSON)),
         'productInsurance': value.productInsurance === undefined ? undefined : ((value.productInsurance as Array<any>).map(EntInsuranceToJSON)),
-        'productOfficer': EntOfficerToJSON(value.productOfficer),
         'productPayback': value.productPayback === undefined ? undefined : ((value.productPayback as Array<any>).map(EntPaybackToJSON)),
         'productRecordinsurance': value.productRecordinsurance === undefined ? undefined : ((value.productRecordinsurance as Array<any>).map(EntRecordinsuranceToJSON)),
     };

@@ -26,7 +26,7 @@ type GenderQuery struct {
 	unique     []string
 	predicates []predicate.Gender
 	// eager-loading edges.
-	withGenders *ProductQuery
+	withGenderProduct *ProductQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -56,8 +56,8 @@ func (gq *GenderQuery) Order(o ...OrderFunc) *GenderQuery {
 	return gq
 }
 
-// QueryGenders chains the current query on the genders edge.
-func (gq *GenderQuery) QueryGenders() *ProductQuery {
+// QueryGenderProduct chains the current query on the gender_product edge.
+func (gq *GenderQuery) QueryGenderProduct() *ProductQuery {
 	query := &ProductQuery{config: gq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := gq.prepareQuery(ctx); err != nil {
@@ -66,7 +66,7 @@ func (gq *GenderQuery) QueryGenders() *ProductQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(gender.Table, gender.FieldID, gq.sqlQuery()),
 			sqlgraph.To(product.Table, product.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, gender.GendersTable, gender.GendersColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, gender.GenderProductTable, gender.GenderProductColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(gq.driver.Dialect(), step)
 		return fromU, nil
@@ -253,14 +253,14 @@ func (gq *GenderQuery) Clone() *GenderQuery {
 	}
 }
 
-//  WithGenders tells the query-builder to eager-loads the nodes that are connected to
-// the "genders" edge. The optional arguments used to configure the query builder of the edge.
-func (gq *GenderQuery) WithGenders(opts ...func(*ProductQuery)) *GenderQuery {
+//  WithGenderProduct tells the query-builder to eager-loads the nodes that are connected to
+// the "gender_product" edge. The optional arguments used to configure the query builder of the edge.
+func (gq *GenderQuery) WithGenderProduct(opts ...func(*ProductQuery)) *GenderQuery {
 	query := &ProductQuery{config: gq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	gq.withGenders = query
+	gq.withGenderProduct = query
 	return gq
 }
 
@@ -331,7 +331,7 @@ func (gq *GenderQuery) sqlAll(ctx context.Context) ([]*Gender, error) {
 		nodes       = []*Gender{}
 		_spec       = gq.querySpec()
 		loadedTypes = [1]bool{
-			gq.withGenders != nil,
+			gq.withGenderProduct != nil,
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
@@ -355,7 +355,7 @@ func (gq *GenderQuery) sqlAll(ctx context.Context) ([]*Gender, error) {
 		return nodes, nil
 	}
 
-	if query := gq.withGenders; query != nil {
+	if query := gq.withGenderProduct; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
 		nodeids := make(map[int]*Gender)
 		for i := range nodes {
@@ -364,7 +364,7 @@ func (gq *GenderQuery) sqlAll(ctx context.Context) ([]*Gender, error) {
 		}
 		query.withFKs = true
 		query.Where(predicate.Product(func(s *sql.Selector) {
-			s.Where(sql.InValues(gender.GendersColumn, fks...))
+			s.Where(sql.InValues(gender.GenderProductColumn, fks...))
 		}))
 		neighbors, err := query.All(ctx)
 		if err != nil {
@@ -379,7 +379,7 @@ func (gq *GenderQuery) sqlAll(ctx context.Context) ([]*Gender, error) {
 			if !ok {
 				return nil, fmt.Errorf(`unexpected foreign-key "gender_id" returned %v for node %v`, *fk, n.ID)
 			}
-			node.Edges.Genders = append(node.Edges.Genders, n)
+			node.Edges.GenderProduct = append(node.Edges.GenderProduct, n)
 		}
 	}
 

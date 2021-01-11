@@ -45,66 +45,66 @@ func (pc *ProductCreate) SetProductTime(i int) *ProductCreate {
 }
 
 // SetProductPaymentOfYear sets the product_payment_of_year field.
-func (pc *ProductCreate) SetProductPaymentOfYear(f float64) *ProductCreate {
-	pc.mutation.SetProductPaymentOfYear(f)
+func (pc *ProductCreate) SetProductPaymentOfYear(i int) *ProductCreate {
+	pc.mutation.SetProductPaymentOfYear(i)
 	return pc
 }
 
-// SetProductGenderID sets the product_gender edge to Gender by id.
-func (pc *ProductCreate) SetProductGenderID(id int) *ProductCreate {
-	pc.mutation.SetProductGenderID(id)
+// SetGenderID sets the gender edge to Gender by id.
+func (pc *ProductCreate) SetGenderID(id int) *ProductCreate {
+	pc.mutation.SetGenderID(id)
 	return pc
 }
 
-// SetNillableProductGenderID sets the product_gender edge to Gender by id if the given value is not nil.
-func (pc *ProductCreate) SetNillableProductGenderID(id *int) *ProductCreate {
+// SetNillableGenderID sets the gender edge to Gender by id if the given value is not nil.
+func (pc *ProductCreate) SetNillableGenderID(id *int) *ProductCreate {
 	if id != nil {
-		pc = pc.SetProductGenderID(*id)
+		pc = pc.SetGenderID(*id)
 	}
 	return pc
 }
 
-// SetProductGender sets the product_gender edge to Gender.
-func (pc *ProductCreate) SetProductGender(g *Gender) *ProductCreate {
-	return pc.SetProductGenderID(g.ID)
+// SetGender sets the gender edge to Gender.
+func (pc *ProductCreate) SetGender(g *Gender) *ProductCreate {
+	return pc.SetGenderID(g.ID)
 }
 
-// SetProductGroupageID sets the product_groupage edge to GroupOfAge by id.
-func (pc *ProductCreate) SetProductGroupageID(id int) *ProductCreate {
-	pc.mutation.SetProductGroupageID(id)
+// SetGroupofageID sets the groupofage edge to GroupOfAge by id.
+func (pc *ProductCreate) SetGroupofageID(id int) *ProductCreate {
+	pc.mutation.SetGroupofageID(id)
 	return pc
 }
 
-// SetNillableProductGroupageID sets the product_groupage edge to GroupOfAge by id if the given value is not nil.
-func (pc *ProductCreate) SetNillableProductGroupageID(id *int) *ProductCreate {
+// SetNillableGroupofageID sets the groupofage edge to GroupOfAge by id if the given value is not nil.
+func (pc *ProductCreate) SetNillableGroupofageID(id *int) *ProductCreate {
 	if id != nil {
-		pc = pc.SetProductGroupageID(*id)
+		pc = pc.SetGroupofageID(*id)
 	}
 	return pc
 }
 
-// SetProductGroupage sets the product_groupage edge to GroupOfAge.
-func (pc *ProductCreate) SetProductGroupage(g *GroupOfAge) *ProductCreate {
-	return pc.SetProductGroupageID(g.ID)
+// SetGroupofage sets the groupofage edge to GroupOfAge.
+func (pc *ProductCreate) SetGroupofage(g *GroupOfAge) *ProductCreate {
+	return pc.SetGroupofageID(g.ID)
 }
 
-// SetProductOfficerID sets the product_officer edge to Officer by id.
-func (pc *ProductCreate) SetProductOfficerID(id int) *ProductCreate {
-	pc.mutation.SetProductOfficerID(id)
+// SetOfficerID sets the officer edge to Officer by id.
+func (pc *ProductCreate) SetOfficerID(id int) *ProductCreate {
+	pc.mutation.SetOfficerID(id)
 	return pc
 }
 
-// SetNillableProductOfficerID sets the product_officer edge to Officer by id if the given value is not nil.
-func (pc *ProductCreate) SetNillableProductOfficerID(id *int) *ProductCreate {
+// SetNillableOfficerID sets the officer edge to Officer by id if the given value is not nil.
+func (pc *ProductCreate) SetNillableOfficerID(id *int) *ProductCreate {
 	if id != nil {
-		pc = pc.SetProductOfficerID(*id)
+		pc = pc.SetOfficerID(*id)
 	}
 	return pc
 }
 
-// SetProductOfficer sets the product_officer edge to Officer.
-func (pc *ProductCreate) SetProductOfficer(o *Officer) *ProductCreate {
-	return pc.SetProductOfficerID(o.ID)
+// SetOfficer sets the officer edge to Officer.
+func (pc *ProductCreate) SetOfficer(o *Officer) *ProductCreate {
+	return pc.SetOfficerID(o.ID)
 }
 
 // AddProductInsuranceIDs adds the product_insurance edge to Insurance by ids.
@@ -272,18 +272,18 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := pc.mutation.ProductPaymentOfYear(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeFloat64,
+			Type:   field.TypeInt,
 			Value:  value,
 			Column: product.FieldProductPaymentOfYear,
 		})
 		pr.ProductPaymentOfYear = value
 	}
-	if nodes := pc.mutation.ProductGenderIDs(); len(nodes) > 0 {
+	if nodes := pc.mutation.GenderIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   product.ProductGenderTable,
-			Columns: []string{product.ProductGenderColumn},
+			Table:   product.GenderTable,
+			Columns: []string{product.GenderColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -297,12 +297,12 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := pc.mutation.ProductGroupageIDs(); len(nodes) > 0 {
+	if nodes := pc.mutation.GroupofageIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   product.ProductGroupageTable,
-			Columns: []string{product.ProductGroupageColumn},
+			Table:   product.GroupofageTable,
+			Columns: []string{product.GroupofageColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -316,12 +316,12 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := pc.mutation.ProductOfficerIDs(); len(nodes) > 0 {
+	if nodes := pc.mutation.OfficerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   product.ProductOfficerTable,
-			Columns: []string{product.ProductOfficerColumn},
+			Table:   product.OfficerTable,
+			Columns: []string{product.OfficerColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

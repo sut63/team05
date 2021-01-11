@@ -32,19 +32,19 @@ func (goac *GroupOfAgeCreate) SetGroupOfAgeAge(s string) *GroupOfAgeCreate {
 	return goac
 }
 
-// AddGroupageProductIDs adds the groupage_product edge to Product by ids.
-func (goac *GroupOfAgeCreate) AddGroupageProductIDs(ids ...int) *GroupOfAgeCreate {
-	goac.mutation.AddGroupageProductIDs(ids...)
+// AddGroupofageProductIDs adds the groupofage_product edge to Product by ids.
+func (goac *GroupOfAgeCreate) AddGroupofageProductIDs(ids ...int) *GroupOfAgeCreate {
+	goac.mutation.AddGroupofageProductIDs(ids...)
 	return goac
 }
 
-// AddGroupageProduct adds the groupage_product edges to Product.
-func (goac *GroupOfAgeCreate) AddGroupageProduct(p ...*Product) *GroupOfAgeCreate {
+// AddGroupofageProduct adds the groupofage_product edges to Product.
+func (goac *GroupOfAgeCreate) AddGroupofageProduct(p ...*Product) *GroupOfAgeCreate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return goac.AddGroupageProductIDs(ids...)
+	return goac.AddGroupofageProductIDs(ids...)
 }
 
 // Mutation returns the GroupOfAgeMutation object of the builder.
@@ -136,12 +136,12 @@ func (goac *GroupOfAgeCreate) createSpec() (*GroupOfAge, *sqlgraph.CreateSpec) {
 		})
 		goa.GroupOfAgeAge = value
 	}
-	if nodes := goac.mutation.GroupageProductIDs(); len(nodes) > 0 {
+	if nodes := goac.mutation.GroupofageProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   groupofage.GroupageProductTable,
-			Columns: []string{groupofage.GroupageProductColumn},
+			Table:   groupofage.GroupofageProductTable,
+			Columns: []string{groupofage.GroupofageProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

@@ -27,11 +27,11 @@ import {
  */
 export interface EntGroupOfAgeEdges {
     /**
-     * GroupageProduct holds the value of the groupage_product edge.
+     * GroupofageProduct holds the value of the groupofage_product edge.
      * @type {Array<EntProduct>}
      * @memberof EntGroupOfAgeEdges
      */
-    groupageProduct?: Array<EntProduct>;
+    groupofageProduct?: Array<EntProduct>;
 }
 
 export function EntGroupOfAgeEdgesFromJSON(json: any): EntGroupOfAgeEdges {
@@ -44,7 +44,7 @@ export function EntGroupOfAgeEdgesFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'groupageProduct': !exists(json, 'groupageProduct') ? undefined : ((json['groupageProduct'] as Array<any>).map(EntProductFromJSON)),
+        'groupofageProduct': !exists(json, 'groupofageProduct') ? undefined : ((json['groupofageProduct'] as Array<any>).map(EntProductFromJSON)),
     };
 }
 
@@ -57,7 +57,7 @@ export function EntGroupOfAgeEdgesToJSON(value?: EntGroupOfAgeEdges | null): any
     }
     return {
         
-        'groupageProduct': value.groupageProduct === undefined ? undefined : ((value.groupageProduct as Array<any>).map(EntProductToJSON)),
+        'groupofageProduct': value.groupofageProduct === undefined ? undefined : ((value.groupofageProduct as Array<any>).map(EntProductToJSON)),
     };
 }
 

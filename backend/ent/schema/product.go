@@ -17,16 +17,17 @@ func (Product) Fields() []ent.Field {
 		field.String("product_name").Unique(),
 		field.Int("product_price"),
 		field.Int("product_time"),
-		field.Float("product_payment_of_year"),
+		field.Int("product_payment_of_year"),
 	}
 }
 
 // Edges of the Product.
 func (Product) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("product_gender", Gender.Type).Ref("genders").Unique(),
-		edge.From("product_groupage", GroupOfAge.Type).Ref("groupage_product").Unique(),
-		edge.From("product_officer", Officer.Type).Ref("officer_product").Unique(),
+		edge.From("gender", Gender.Type).Ref("gender_product").Unique(),
+		edge.From("groupofage", GroupOfAge.Type).Ref("groupofage_product").Unique(),
+		edge.From("officer", Officer.Type).Ref("officer_product").Unique(),
+
 		edge.To("product_insurance", Insurance.Type).StorageKey(edge.Column("product_id")),
 		edge.To("product_inquiry", Inquiry.Type).StorageKey(edge.Column("product_id")),
 		edge.To("product_payback", Payback.Type).StorageKey(edge.Column("product_id")),

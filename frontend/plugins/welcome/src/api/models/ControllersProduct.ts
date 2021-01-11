@@ -24,7 +24,7 @@ export interface ControllersProduct {
      * @type {number}
      * @memberof ControllersProduct
      */
-    genderID?: number;
+    gender?: number;
     /**
      * 
      * @type {number}
@@ -73,7 +73,7 @@ export function ControllersProductFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'genderID': !exists(json, 'genderID') ? undefined : json['genderID'],
+        'gender': !exists(json, 'gender') ? undefined : json['gender'],
         'groupOfAge': !exists(json, 'groupOfAge') ? undefined : json['groupOfAge'],
         'officer': !exists(json, 'officer') ? undefined : json['officer'],
         'productName': !exists(json, 'productName') ? undefined : json['productName'],
@@ -92,7 +92,7 @@ export function ControllersProductToJSON(value?: ControllersProduct | null): any
     }
     return {
         
-        'genderID': value.genderID,
+        'gender': value.gender,
         'groupOfAge': value.groupOfAge,
         'officer': value.officer,
         'productName': value.productName,

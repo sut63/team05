@@ -24,20 +24,20 @@ type Gender struct {
 
 // GenderEdges holds the relations/edges for other nodes in the graph.
 type GenderEdges struct {
-	// Genders holds the value of the genders edge.
-	Genders []*Product
+	// GenderProduct holds the value of the gender_product edge.
+	GenderProduct []*Product
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// GendersOrErr returns the Genders value or an error if the edge
+// GenderProductOrErr returns the GenderProduct value or an error if the edge
 // was not loaded in eager-loading.
-func (e GenderEdges) GendersOrErr() ([]*Product, error) {
+func (e GenderEdges) GenderProductOrErr() ([]*Product, error) {
 	if e.loadedTypes[0] {
-		return e.Genders, nil
+		return e.GenderProduct, nil
 	}
-	return nil, &NotLoadedError{edge: "genders"}
+	return nil, &NotLoadedError{edge: "gender_product"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -68,9 +68,9 @@ func (ge *Gender) assignValues(values ...interface{}) error {
 	return nil
 }
 
-// QueryGenders queries the genders edge of the Gender.
-func (ge *Gender) QueryGenders() *ProductQuery {
-	return (&GenderClient{config: ge.config}).QueryGenders(ge)
+// QueryGenderProduct queries the gender_product edge of the Gender.
+func (ge *Gender) QueryGenderProduct() *ProductQuery {
+	return (&GenderClient{config: ge.config}).QueryGenderProduct(ge)
 }
 
 // Update returns a builder for updating this Gender.

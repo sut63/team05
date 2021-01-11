@@ -22,6 +22,6 @@ func (GroupOfAge) Fields() []ent.Field {
 // Edges of the GroupOfAge.
 func (GroupOfAge) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("groupage_product", Product.Type).StorageKey(edge.Column("group_of_age_id")),
+		edge.To("groupofage_product", Product.Type).StorageKey(edge.Column("group_of_age_id")),
 	}
 }
