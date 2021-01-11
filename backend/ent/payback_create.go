@@ -24,22 +24,22 @@ type PaybackCreate struct {
 	hooks    []Hook
 }
 
-// SetAccountnumber sets the Accountnumber field.
-func (pc *PaybackCreate) SetAccountnumber(s string) *PaybackCreate {
-	pc.mutation.SetAccountnumber(s)
+// SetPaybackAccountnumber sets the payback_accountnumber field.
+func (pc *PaybackCreate) SetPaybackAccountnumber(s string) *PaybackCreate {
+	pc.mutation.SetPaybackAccountnumber(s)
 	return pc
 }
 
-// SetTransfertime sets the Transfertime field.
-func (pc *PaybackCreate) SetTransfertime(t time.Time) *PaybackCreate {
-	pc.mutation.SetTransfertime(t)
+// SetPaybackTransfertime sets the payback_transfertime field.
+func (pc *PaybackCreate) SetPaybackTransfertime(t time.Time) *PaybackCreate {
+	pc.mutation.SetPaybackTransfertime(t)
 	return pc
 }
 
-// SetNillableTransfertime sets the Transfertime field if the given value is not nil.
-func (pc *PaybackCreate) SetNillableTransfertime(t *time.Time) *PaybackCreate {
+// SetNillablePaybackTransfertime sets the payback_transfertime field if the given value is not nil.
+func (pc *PaybackCreate) SetNillablePaybackTransfertime(t *time.Time) *PaybackCreate {
 	if t != nil {
-		pc.SetTransfertime(*t)
+		pc.SetPaybackTransfertime(*t)
 	}
 	return pc
 }
@@ -127,17 +127,17 @@ func (pc *PaybackCreate) Mutation() *PaybackMutation {
 
 // Save creates the Payback in the database.
 func (pc *PaybackCreate) Save(ctx context.Context) (*Payback, error) {
-	if _, ok := pc.mutation.Accountnumber(); !ok {
-		return nil, &ValidationError{Name: "Accountnumber", err: errors.New("ent: missing required field \"Accountnumber\"")}
+	if _, ok := pc.mutation.PaybackAccountnumber(); !ok {
+		return nil, &ValidationError{Name: "payback_accountnumber", err: errors.New("ent: missing required field \"payback_accountnumber\"")}
 	}
-	if v, ok := pc.mutation.Accountnumber(); ok {
-		if err := payback.AccountnumberValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Accountnumber", err: fmt.Errorf("ent: validator failed for field \"Accountnumber\": %w", err)}
+	if v, ok := pc.mutation.PaybackAccountnumber(); ok {
+		if err := payback.PaybackAccountnumberValidator(v); err != nil {
+			return nil, &ValidationError{Name: "payback_accountnumber", err: fmt.Errorf("ent: validator failed for field \"payback_accountnumber\": %w", err)}
 		}
 	}
-	if _, ok := pc.mutation.Transfertime(); !ok {
-		v := payback.DefaultTransfertime()
-		pc.mutation.SetTransfertime(v)
+	if _, ok := pc.mutation.PaybackTransfertime(); !ok {
+		v := payback.DefaultPaybackTransfertime()
+		pc.mutation.SetPaybackTransfertime(v)
 	}
 	var (
 		err  error
@@ -199,21 +199,21 @@ func (pc *PaybackCreate) createSpec() (*Payback, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := pc.mutation.Accountnumber(); ok {
+	if value, ok := pc.mutation.PaybackAccountnumber(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: payback.FieldAccountnumber,
+			Column: payback.FieldPaybackAccountnumber,
 		})
-		pa.Accountnumber = value
+		pa.PaybackAccountnumber = value
 	}
-	if value, ok := pc.mutation.Transfertime(); ok {
+	if value, ok := pc.mutation.PaybackTransfertime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: payback.FieldTransfertime,
+			Column: payback.FieldPaybackTransfertime,
 		})
-		pa.Transfertime = value
+		pa.PaybackTransfertime = value
 	}
 	if nodes := pc.mutation.OfficerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

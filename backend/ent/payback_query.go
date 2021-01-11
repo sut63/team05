@@ -363,12 +363,12 @@ func (pq *PaybackQuery) WithBank(opts ...func(*BankQuery)) *PaybackQuery {
 // Example:
 //
 //	var v []struct {
-//		Accountnumber string `json:"Accountnumber,omitempty"`
+//		PaybackAccountnumber string `json:"payback_accountnumber,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Payback.Query().
-//		GroupBy(payback.FieldAccountnumber).
+//		GroupBy(payback.FieldPaybackAccountnumber).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -389,11 +389,11 @@ func (pq *PaybackQuery) GroupBy(field string, fields ...string) *PaybackGroupBy 
 // Example:
 //
 //	var v []struct {
-//		Accountnumber string `json:"Accountnumber,omitempty"`
+//		PaybackAccountnumber string `json:"payback_accountnumber,omitempty"`
 //	}
 //
 //	client.Payback.Query().
-//		Select(payback.FieldAccountnumber).
+//		Select(payback.FieldPaybackAccountnumber).
 //		Scan(ctx, &v)
 //
 func (pq *PaybackQuery) Select(field string, fields ...string) *PaybackSelect {

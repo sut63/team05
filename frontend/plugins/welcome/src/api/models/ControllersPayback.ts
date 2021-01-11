@@ -21,12 +21,6 @@ import { exists, mapValues } from '../runtime';
 export interface ControllersPayback {
     /**
      * 
-     * @type {string}
-     * @memberof ControllersPayback
-     */
-    accountnumber?: string;
-    /**
-     * 
      * @type {number}
      * @memberof ControllersPayback
      */
@@ -45,16 +39,22 @@ export interface ControllersPayback {
     officerID?: number;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof ControllersPayback
      */
-    productID?: number;
+    paybackAccountnumber?: string;
     /**
      * 
      * @type {string}
      * @memberof ControllersPayback
      */
-    transfertime?: string;
+    paybackTransfertime?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ControllersPayback
+     */
+    productID?: number;
 }
 
 export function ControllersPaybackFromJSON(json: any): ControllersPayback {
@@ -67,12 +67,12 @@ export function ControllersPaybackFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'accountnumber': !exists(json, 'accountnumber') ? undefined : json['accountnumber'],
         'bankID': !exists(json, 'bankID') ? undefined : json['bankID'],
         'memberID': !exists(json, 'memberID') ? undefined : json['memberID'],
         'officerID': !exists(json, 'officerID') ? undefined : json['officerID'],
+        'paybackAccountnumber': !exists(json, 'paybackAccountnumber') ? undefined : json['paybackAccountnumber'],
+        'paybackTransfertime': !exists(json, 'paybackTransfertime') ? undefined : json['paybackTransfertime'],
         'productID': !exists(json, 'productID') ? undefined : json['productID'],
-        'transfertime': !exists(json, 'transfertime') ? undefined : json['transfertime'],
     };
 }
 
@@ -85,12 +85,12 @@ export function ControllersPaybackToJSON(value?: ControllersPayback | null): any
     }
     return {
         
-        'accountnumber': value.accountnumber,
         'bankID': value.bankID,
         'memberID': value.memberID,
         'officerID': value.officerID,
+        'paybackAccountnumber': value.paybackAccountnumber,
+        'paybackTransfertime': value.paybackTransfertime,
         'productID': value.productID,
-        'transfertime': value.transfertime,
     };
 }
 

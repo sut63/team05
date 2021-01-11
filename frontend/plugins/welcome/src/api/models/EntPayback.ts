@@ -27,18 +27,6 @@ import {
  */
 export interface EntPayback {
     /**
-     * Accountnumber holds the value of the "Accountnumber" field.
-     * @type {string}
-     * @memberof EntPayback
-     */
-    accountnumber?: string;
-    /**
-     * Transfertime holds the value of the "Transfertime" field.
-     * @type {string}
-     * @memberof EntPayback
-     */
-    transfertime?: string;
-    /**
      * 
      * @type {EntPaybackEdges}
      * @memberof EntPayback
@@ -50,6 +38,18 @@ export interface EntPayback {
      * @memberof EntPayback
      */
     id?: number;
+    /**
+     * PaybackAccountnumber holds the value of the "payback_accountnumber" field.
+     * @type {string}
+     * @memberof EntPayback
+     */
+    paybackAccountnumber?: string;
+    /**
+     * PaybackTransfertime holds the value of the "payback_transfertime" field.
+     * @type {string}
+     * @memberof EntPayback
+     */
+    paybackTransfertime?: string;
 }
 
 export function EntPaybackFromJSON(json: any): EntPayback {
@@ -62,10 +62,10 @@ export function EntPaybackFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'accountnumber': !exists(json, 'Accountnumber') ? undefined : json['Accountnumber'],
-        'transfertime': !exists(json, 'Transfertime') ? undefined : json['Transfertime'],
         'edges': !exists(json, 'edges') ? undefined : EntPaybackEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'paybackAccountnumber': !exists(json, 'payback_accountnumber') ? undefined : json['payback_accountnumber'],
+        'paybackTransfertime': !exists(json, 'payback_transfertime') ? undefined : json['payback_transfertime'],
     };
 }
 
@@ -78,10 +78,10 @@ export function EntPaybackToJSON(value?: EntPayback | null): any {
     }
     return {
         
-        'Accountnumber': value.accountnumber,
-        'Transfertime': value.transfertime,
         'edges': EntPaybackEdgesToJSON(value.edges),
         'id': value.id,
+        'payback_accountnumber': value.paybackAccountnumber,
+        'payback_transfertime': value.paybackTransfertime,
     };
 }
 

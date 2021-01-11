@@ -371,8 +371,8 @@ export interface UpdateProductRequest {
 export class DefaultApi extends runtime.BaseAPI {
 
     /**
-     * Create Amountpaid
-     * Create Amountpaid
+     * Create amountpaid
+     * Create amountpaid
      */
     async createAmountpaidRaw(requestParameters: CreateAmountpaidRequest): Promise<runtime.ApiResponse<EntAmountpaid>> {
         if (requestParameters.amountpaid === null || requestParameters.amountpaid === undefined) {
@@ -397,8 +397,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Amountpaid
-     * Create Amountpaid
+     * Create amountpaid
+     * Create amountpaid
      */
     async createAmountpaid(requestParameters: CreateAmountpaidRequest): Promise<EntAmountpaid> {
         const response = await this.createAmountpaidRaw(requestParameters);
@@ -861,8 +861,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Recordinsurance
-     * Create Recordinsurance
+     * Create recordinsurance
+     * Create recordinsurance
      */
     async createRecordinsuranceRaw(requestParameters: CreateRecordinsuranceRequest): Promise<runtime.ApiResponse<EntRecordinsurance>> {
         if (requestParameters.recordinsurance === null || requestParameters.recordinsurance === undefined) {
@@ -887,8 +887,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Recordinsurance
-     * Create Recordinsurance
+     * Create recordinsurance
+     * Create recordinsurance
      */
     async createRecordinsurance(requestParameters: CreateRecordinsuranceRequest): Promise<EntRecordinsurance> {
         const response = await this.createRecordinsuranceRaw(requestParameters);
@@ -896,8 +896,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Amountpaid by ID
-     * Delete a Amountpaid entity by ID
+     * get amountpaid by ID
+     * Delete a amountpaid entity by ID
      */
     async deleteAmountpaidRaw(requestParameters: DeleteAmountpaidRequest): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -919,8 +919,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Amountpaid by ID
-     * Delete a Amountpaid entity by ID
+     * get amountpaid by ID
+     * Delete a amountpaid entity by ID
      */
     async deleteAmountpaid(requestParameters: DeleteAmountpaidRequest): Promise<object> {
         const response = await this.deleteAmountpaidRaw(requestParameters);
@@ -1344,8 +1344,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Recordinsurance by ID
-     * Delete a Recordinsurance entity by ID
+     * get recordinsurance by ID
+     * Delete a recordinsurance entity by ID
      */
     async deleteRecordinsuranceRaw(requestParameters: DeleteRecordinsuranceRequest): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -1367,8 +1367,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Recordinsurance by ID
-     * Delete a Recordinsurance entity by ID
+     * get recordinsurance by ID
+     * Delete a recordinsurance entity by ID
      */
     async deleteRecordinsurance(requestParameters: DeleteRecordinsuranceRequest): Promise<object> {
         const response = await this.deleteRecordinsuranceRaw(requestParameters);
@@ -1376,8 +1376,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Amountpaid by ID
-     * Get a Amountpaid entity by ID
+     * get amountpaid by ID
+     * Get a amountpaid entity by ID
      */
     async getAmountpaidRaw(requestParameters: GetAmountpaidRequest): Promise<runtime.ApiResponse<EntAmountpaid>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -1399,8 +1399,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Amountpaid by ID
-     * Get a Amountpaid entity by ID
+     * get amountpaid by ID
+     * Get a amountpaid entity by ID
      */
     async getAmountpaid(requestParameters: GetAmountpaidRequest): Promise<EntAmountpaid> {
         const response = await this.getAmountpaidRaw(requestParameters);
@@ -1696,8 +1696,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Amountpaid entities
-     * List Amountpaid entities
+     * list amountpaid entities
+     * List amountpaid entities
      */
     async listAmountpaidRaw(requestParameters: ListAmountpaidRequest): Promise<runtime.ApiResponse<Array<EntAmountpaid>>> {
         const queryParameters: runtime.HTTPQuery = {};
@@ -1723,8 +1723,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Amountpaid entities
-     * List Amountpaid entities
+     * list amountpaid entities
+     * List amountpaid entities
      */
     async listAmountpaid(requestParameters: ListAmountpaidRequest): Promise<Array<EntAmountpaid>> {
         const response = await this.listAmountpaidRaw(requestParameters);
@@ -2200,8 +2200,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Recordinsurance entities
-     * List Recordinsurance entities
+     * list recordinsurance entities
+     * List recordinsurance entities
      */
     async listRecordinsuranceRaw(requestParameters: ListRecordinsuranceRequest): Promise<runtime.ApiResponse<Array<EntRecordinsurance>>> {
         const queryParameters: runtime.HTTPQuery = {};
@@ -2227,8 +2227,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Recordinsurance entities
-     * List Recordinsurance entities
+     * list recordinsurance entities
+     * List recordinsurance entities
      */
     async listRecordinsurance(requestParameters: ListRecordinsuranceRequest): Promise<Array<EntRecordinsurance>> {
         const response = await this.listRecordinsuranceRaw(requestParameters);
@@ -2236,8 +2236,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update Amountpaid by ID
-     * Update a Amountpaid entity by ID
+     * update amountpaid by ID
+     * Update a amountpaid entity by ID
      */
     async updateAmountpaidRaw(requestParameters: UpdateAmountpaidRequest): Promise<runtime.ApiResponse<EntAmountpaid>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -2266,8 +2266,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update Amountpaid by ID
-     * Update a Amountpaid entity by ID
+     * update amountpaid by ID
+     * Update a amountpaid entity by ID
      */
     async updateAmountpaid(requestParameters: UpdateAmountpaidRequest): Promise<EntAmountpaid> {
         const response = await this.updateAmountpaidRaw(requestParameters);

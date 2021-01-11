@@ -11,10 +11,10 @@ const (
 	Label = "payback"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldAccountnumber holds the string denoting the accountnumber field in the database.
-	FieldAccountnumber = "accountnumber"
-	// FieldTransfertime holds the string denoting the transfertime field in the database.
-	FieldTransfertime = "transfertime"
+	// FieldPaybackAccountnumber holds the string denoting the payback_accountnumber field in the database.
+	FieldPaybackAccountnumber = "payback_accountnumber"
+	// FieldPaybackTransfertime holds the string denoting the payback_transfertime field in the database.
+	FieldPaybackTransfertime = "payback_transfertime"
 
 	// EdgeOfficer holds the string denoting the officer edge name in mutations.
 	EdgeOfficer = "Officer"
@@ -60,8 +60,8 @@ const (
 // Columns holds all SQL columns for payback fields.
 var Columns = []string{
 	FieldID,
-	FieldAccountnumber,
-	FieldTransfertime,
+	FieldPaybackAccountnumber,
+	FieldPaybackTransfertime,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Payback type.
@@ -73,8 +73,8 @@ var ForeignKeys = []string{
 }
 
 var (
-	// AccountnumberValidator is a validator for the "Accountnumber" field. It is called by the builders before save.
-	AccountnumberValidator func(string) error
-	// DefaultTransfertime holds the default value on creation for the Transfertime field.
-	DefaultTransfertime func() time.Time
+	// PaybackAccountnumberValidator is a validator for the "payback_accountnumber" field. It is called by the builders before save.
+	PaybackAccountnumberValidator func(string) error
+	// DefaultPaybackTransfertime holds the default value on creation for the payback_transfertime field.
+	DefaultPaybackTransfertime func() time.Time
 )
