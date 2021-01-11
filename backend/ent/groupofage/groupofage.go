@@ -12,18 +12,18 @@ const (
 	// FieldGroupOfAgeAge holds the string denoting the group_of_age_age field in the database.
 	FieldGroupOfAgeAge = "group_of_age_age"
 
-	// EdgeGroupageProduct holds the string denoting the groupage_product edge name in mutations.
-	EdgeGroupageProduct = "groupage_product"
+	// EdgeGroupofageProduct holds the string denoting the groupofage_product edge name in mutations.
+	EdgeGroupofageProduct = "groupofage_product"
 
 	// Table holds the table name of the groupofage in the database.
 	Table = "group_of_ages"
-	// GroupageProductTable is the table the holds the groupage_product relation/edge.
-	GroupageProductTable = "products"
-	// GroupageProductInverseTable is the table name for the Product entity.
+	// GroupofageProductTable is the table the holds the groupofage_product relation/edge.
+	GroupofageProductTable = "products"
+	// GroupofageProductInverseTable is the table name for the Product entity.
 	// It exists in this package in order to avoid circular dependency with the "product" package.
-	GroupageProductInverseTable = "products"
-	// GroupageProductColumn is the table column denoting the groupage_product relation/edge.
-	GroupageProductColumn = "group_of_age_id"
+	GroupofageProductInverseTable = "products"
+	// GroupofageProductColumn is the table column denoting the groupofage_product relation/edge.
+	GroupofageProductColumn = "group_of_age_id"
 )
 
 // Columns holds all SQL columns for groupofage fields.

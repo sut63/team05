@@ -17,9 +17,6 @@ func (Officer) Fields() []ent.Field {
 		field.String("officer_email").Unique().NotEmpty(),
 		field.String("officer_name").Unique().NotEmpty(),
 		field.String("officer_password").NotEmpty(),
-		/*field.Float("product_payment_of_year"),
-		  field.Time("created_at").
-		      Default(time.Now),*/
 	}
 }
 

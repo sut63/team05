@@ -26,19 +26,19 @@ func (gc *GenderCreate) SetGenderName(s string) *GenderCreate {
 	return gc
 }
 
-// AddGenderIDs adds the genders edge to Product by ids.
-func (gc *GenderCreate) AddGenderIDs(ids ...int) *GenderCreate {
-	gc.mutation.AddGenderIDs(ids...)
+// AddGenderProductIDs adds the gender_product edge to Product by ids.
+func (gc *GenderCreate) AddGenderProductIDs(ids ...int) *GenderCreate {
+	gc.mutation.AddGenderProductIDs(ids...)
 	return gc
 }
 
-// AddGenders adds the genders edges to Product.
-func (gc *GenderCreate) AddGenders(p ...*Product) *GenderCreate {
+// AddGenderProduct adds the gender_product edges to Product.
+func (gc *GenderCreate) AddGenderProduct(p ...*Product) *GenderCreate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return gc.AddGenderIDs(ids...)
+	return gc.AddGenderProductIDs(ids...)
 }
 
 // Mutation returns the GenderMutation object of the builder.
@@ -119,12 +119,12 @@ func (gc *GenderCreate) createSpec() (*Gender, *sqlgraph.CreateSpec) {
 		})
 		ge.GenderName = value
 	}
-	if nodes := gc.mutation.GendersIDs(); len(nodes) > 0 {
+	if nodes := gc.mutation.GenderProductIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   gender.GendersTable,
-			Columns: []string{gender.GendersColumn},
+			Table:   gender.GenderProductTable,
+			Columns: []string{gender.GenderProductColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

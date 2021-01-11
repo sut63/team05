@@ -32,9 +32,9 @@ type ProductQuery struct {
 	unique     []string
 	predicates []predicate.Product
 	// eager-loading edges.
-	withProductGender          *GenderQuery
-	withProductGroupage        *GroupOfAgeQuery
-	withProductOfficer         *OfficerQuery
+	withGender                 *GenderQuery
+	withGroupofage             *GroupOfAgeQuery
+	withOfficer                *OfficerQuery
 	withProductInsurance       *InsuranceQuery
 	withProductInquiry         *InquiryQuery
 	withProductPayback         *PaybackQuery
@@ -69,8 +69,8 @@ func (pq *ProductQuery) Order(o ...OrderFunc) *ProductQuery {
 	return pq
 }
 
-// QueryProductGender chains the current query on the product_gender edge.
-func (pq *ProductQuery) QueryProductGender() *GenderQuery {
+// QueryGender chains the current query on the gender edge.
+func (pq *ProductQuery) QueryGender() *GenderQuery {
 	query := &GenderQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -79,7 +79,7 @@ func (pq *ProductQuery) QueryProductGender() *GenderQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(gender.Table, gender.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductGenderTable, product.ProductGenderColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.GenderTable, product.GenderColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -87,8 +87,8 @@ func (pq *ProductQuery) QueryProductGender() *GenderQuery {
 	return query
 }
 
-// QueryProductGroupage chains the current query on the product_groupage edge.
-func (pq *ProductQuery) QueryProductGroupage() *GroupOfAgeQuery {
+// QueryGroupofage chains the current query on the groupofage edge.
+func (pq *ProductQuery) QueryGroupofage() *GroupOfAgeQuery {
 	query := &GroupOfAgeQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -97,7 +97,7 @@ func (pq *ProductQuery) QueryProductGroupage() *GroupOfAgeQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(groupofage.Table, groupofage.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductGroupageTable, product.ProductGroupageColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.GroupofageTable, product.GroupofageColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -105,8 +105,8 @@ func (pq *ProductQuery) QueryProductGroupage() *GroupOfAgeQuery {
 	return query
 }
 
-// QueryProductOfficer chains the current query on the product_officer edge.
-func (pq *ProductQuery) QueryProductOfficer() *OfficerQuery {
+// QueryOfficer chains the current query on the officer edge.
+func (pq *ProductQuery) QueryOfficer() *OfficerQuery {
 	query := &OfficerQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -115,7 +115,7 @@ func (pq *ProductQuery) QueryProductOfficer() *OfficerQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(product.Table, product.FieldID, pq.sqlQuery()),
 			sqlgraph.To(officer.Table, officer.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, product.ProductOfficerTable, product.ProductOfficerColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, product.OfficerTable, product.OfficerColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -374,36 +374,36 @@ func (pq *ProductQuery) Clone() *ProductQuery {
 	}
 }
 
-//  WithProductGender tells the query-builder to eager-loads the nodes that are connected to
-// the "product_gender" edge. The optional arguments used to configure the query builder of the edge.
-func (pq *ProductQuery) WithProductGender(opts ...func(*GenderQuery)) *ProductQuery {
+//  WithGender tells the query-builder to eager-loads the nodes that are connected to
+// the "gender" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithGender(opts ...func(*GenderQuery)) *ProductQuery {
 	query := &GenderQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withProductGender = query
+	pq.withGender = query
 	return pq
 }
 
-//  WithProductGroupage tells the query-builder to eager-loads the nodes that are connected to
-// the "product_groupage" edge. The optional arguments used to configure the query builder of the edge.
-func (pq *ProductQuery) WithProductGroupage(opts ...func(*GroupOfAgeQuery)) *ProductQuery {
+//  WithGroupofage tells the query-builder to eager-loads the nodes that are connected to
+// the "groupofage" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithGroupofage(opts ...func(*GroupOfAgeQuery)) *ProductQuery {
 	query := &GroupOfAgeQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withProductGroupage = query
+	pq.withGroupofage = query
 	return pq
 }
 
-//  WithProductOfficer tells the query-builder to eager-loads the nodes that are connected to
-// the "product_officer" edge. The optional arguments used to configure the query builder of the edge.
-func (pq *ProductQuery) WithProductOfficer(opts ...func(*OfficerQuery)) *ProductQuery {
+//  WithOfficer tells the query-builder to eager-loads the nodes that are connected to
+// the "officer" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *ProductQuery) WithOfficer(opts ...func(*OfficerQuery)) *ProductQuery {
 	query := &OfficerQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withProductOfficer = query
+	pq.withOfficer = query
 	return pq
 }
 
@@ -519,16 +519,16 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
 		loadedTypes = [7]bool{
-			pq.withProductGender != nil,
-			pq.withProductGroupage != nil,
-			pq.withProductOfficer != nil,
+			pq.withGender != nil,
+			pq.withGroupofage != nil,
+			pq.withOfficer != nil,
 			pq.withProductInsurance != nil,
 			pq.withProductInquiry != nil,
 			pq.withProductPayback != nil,
 			pq.withProductRecordinsurance != nil,
 		}
 	)
-	if pq.withProductGender != nil || pq.withProductGroupage != nil || pq.withProductOfficer != nil {
+	if pq.withGender != nil || pq.withGroupofage != nil || pq.withOfficer != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -558,7 +558,7 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 		return nodes, nil
 	}
 
-	if query := pq.withProductGender; query != nil {
+	if query := pq.withGender; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Product)
 		for i := range nodes {
@@ -578,12 +578,12 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "gender_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.ProductGender = n
+				nodes[i].Edges.Gender = n
 			}
 		}
 	}
 
-	if query := pq.withProductGroupage; query != nil {
+	if query := pq.withGroupofage; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Product)
 		for i := range nodes {
@@ -603,12 +603,12 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "group_of_age_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.ProductGroupage = n
+				nodes[i].Edges.Groupofage = n
 			}
 		}
 	}
 
-	if query := pq.withProductOfficer; query != nil {
+	if query := pq.withOfficer; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Product)
 		for i := range nodes {
@@ -628,7 +628,7 @@ func (pq *ProductQuery) sqlAll(ctx context.Context) ([]*Product, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "officer_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.ProductOfficer = n
+				nodes[i].Edges.Officer = n
 			}
 		}
 	}

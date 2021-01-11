@@ -209,25 +209,25 @@ func GenderNameContainsFold(v string) predicate.Gender {
 	})
 }
 
-// HasGenders applies the HasEdge predicate on the "genders" edge.
-func HasGenders() predicate.Gender {
+// HasGenderProduct applies the HasEdge predicate on the "gender_product" edge.
+func HasGenderProduct() predicate.Gender {
 	return predicate.Gender(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(GendersTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, GendersTable, GendersColumn),
+			sqlgraph.To(GenderProductTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, GenderProductTable, GenderProductColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasGendersWith applies the HasEdge predicate on the "genders" edge with a given conditions (other predicates).
-func HasGendersWith(preds ...predicate.Product) predicate.Gender {
+// HasGenderProductWith applies the HasEdge predicate on the "gender_product" edge with a given conditions (other predicates).
+func HasGenderProductWith(preds ...predicate.Product) predicate.Gender {
 	return predicate.Gender(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(GendersInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, GendersTable, GendersColumn),
+			sqlgraph.To(GenderProductInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, GenderProductTable, GenderProductColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

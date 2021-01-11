@@ -25,7 +25,7 @@ type Product struct {
 	// ProductTime holds the value of the "product_time" field.
 	ProductTime int `json:"product_time,omitempty"`
 	// ProductPaymentOfYear holds the value of the "product_payment_of_year" field.
-	ProductPaymentOfYear float64 `json:"product_payment_of_year,omitempty"`
+	ProductPaymentOfYear int `json:"product_payment_of_year,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProductQuery when eager-loading is set.
 	Edges           ProductEdges `json:"edges"`
@@ -36,12 +36,12 @@ type Product struct {
 
 // ProductEdges holds the relations/edges for other nodes in the graph.
 type ProductEdges struct {
-	// ProductGender holds the value of the product_gender edge.
-	ProductGender *Gender
-	// ProductGroupage holds the value of the product_groupage edge.
-	ProductGroupage *GroupOfAge
-	// ProductOfficer holds the value of the product_officer edge.
-	ProductOfficer *Officer
+	// Gender holds the value of the gender edge.
+	Gender *Gender
+	// Groupofage holds the value of the groupofage edge.
+	Groupofage *GroupOfAge
+	// Officer holds the value of the officer edge.
+	Officer *Officer
 	// ProductInsurance holds the value of the product_insurance edge.
 	ProductInsurance []*Insurance
 	// ProductInquiry holds the value of the product_inquiry edge.
@@ -55,46 +55,46 @@ type ProductEdges struct {
 	loadedTypes [7]bool
 }
 
-// ProductGenderOrErr returns the ProductGender value or an error if the edge
+// GenderOrErr returns the Gender value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e ProductEdges) ProductGenderOrErr() (*Gender, error) {
+func (e ProductEdges) GenderOrErr() (*Gender, error) {
 	if e.loadedTypes[0] {
-		if e.ProductGender == nil {
-			// The edge product_gender was loaded in eager-loading,
+		if e.Gender == nil {
+			// The edge gender was loaded in eager-loading,
 			// but was not found.
 			return nil, &NotFoundError{label: gender.Label}
 		}
-		return e.ProductGender, nil
+		return e.Gender, nil
 	}
-	return nil, &NotLoadedError{edge: "product_gender"}
+	return nil, &NotLoadedError{edge: "gender"}
 }
 
-// ProductGroupageOrErr returns the ProductGroupage value or an error if the edge
+// GroupofageOrErr returns the Groupofage value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e ProductEdges) ProductGroupageOrErr() (*GroupOfAge, error) {
+func (e ProductEdges) GroupofageOrErr() (*GroupOfAge, error) {
 	if e.loadedTypes[1] {
-		if e.ProductGroupage == nil {
-			// The edge product_groupage was loaded in eager-loading,
+		if e.Groupofage == nil {
+			// The edge groupofage was loaded in eager-loading,
 			// but was not found.
 			return nil, &NotFoundError{label: groupofage.Label}
 		}
-		return e.ProductGroupage, nil
+		return e.Groupofage, nil
 	}
-	return nil, &NotLoadedError{edge: "product_groupage"}
+	return nil, &NotLoadedError{edge: "groupofage"}
 }
 
-// ProductOfficerOrErr returns the ProductOfficer value or an error if the edge
+// OfficerOrErr returns the Officer value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e ProductEdges) ProductOfficerOrErr() (*Officer, error) {
+func (e ProductEdges) OfficerOrErr() (*Officer, error) {
 	if e.loadedTypes[2] {
-		if e.ProductOfficer == nil {
-			// The edge product_officer was loaded in eager-loading,
+		if e.Officer == nil {
+			// The edge officer was loaded in eager-loading,
 			// but was not found.
 			return nil, &NotFoundError{label: officer.Label}
 		}
-		return e.ProductOfficer, nil
+		return e.Officer, nil
 	}
-	return nil, &NotLoadedError{edge: "product_officer"}
+	return nil, &NotLoadedError{edge: "officer"}
 }
 
 // ProductInsuranceOrErr returns the ProductInsurance value or an error if the edge
@@ -136,11 +136,11 @@ func (e ProductEdges) ProductRecordinsuranceOrErr() ([]*Recordinsurance, error) 
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Product) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{},   // id
-		&sql.NullString{},  // product_name
-		&sql.NullInt64{},   // product_price
-		&sql.NullInt64{},   // product_time
-		&sql.NullFloat64{}, // product_payment_of_year
+		&sql.NullInt64{},  // id
+		&sql.NullString{}, // product_name
+		&sql.NullInt64{},  // product_price
+		&sql.NullInt64{},  // product_time
+		&sql.NullInt64{},  // product_payment_of_year
 	}
 }
 
@@ -180,10 +180,10 @@ func (pr *Product) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		pr.ProductTime = int(value.Int64)
 	}
-	if value, ok := values[3].(*sql.NullFloat64); !ok {
+	if value, ok := values[3].(*sql.NullInt64); !ok {
 		return fmt.Errorf("unexpected type %T for field product_payment_of_year", values[3])
 	} else if value.Valid {
-		pr.ProductPaymentOfYear = value.Float64
+		pr.ProductPaymentOfYear = int(value.Int64)
 	}
 	values = values[4:]
 	if len(values) == len(product.ForeignKeys) {
@@ -209,19 +209,19 @@ func (pr *Product) assignValues(values ...interface{}) error {
 	return nil
 }
 
-// QueryProductGender queries the product_gender edge of the Product.
-func (pr *Product) QueryProductGender() *GenderQuery {
-	return (&ProductClient{config: pr.config}).QueryProductGender(pr)
+// QueryGender queries the gender edge of the Product.
+func (pr *Product) QueryGender() *GenderQuery {
+	return (&ProductClient{config: pr.config}).QueryGender(pr)
 }
 
-// QueryProductGroupage queries the product_groupage edge of the Product.
-func (pr *Product) QueryProductGroupage() *GroupOfAgeQuery {
-	return (&ProductClient{config: pr.config}).QueryProductGroupage(pr)
+// QueryGroupofage queries the groupofage edge of the Product.
+func (pr *Product) QueryGroupofage() *GroupOfAgeQuery {
+	return (&ProductClient{config: pr.config}).QueryGroupofage(pr)
 }
 
-// QueryProductOfficer queries the product_officer edge of the Product.
-func (pr *Product) QueryProductOfficer() *OfficerQuery {
-	return (&ProductClient{config: pr.config}).QueryProductOfficer(pr)
+// QueryOfficer queries the officer edge of the Product.
+func (pr *Product) QueryOfficer() *OfficerQuery {
+	return (&ProductClient{config: pr.config}).QueryOfficer(pr)
 }
 
 // QueryProductInsurance queries the product_insurance edge of the Product.

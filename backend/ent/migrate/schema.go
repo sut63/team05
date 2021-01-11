@@ -314,7 +314,7 @@ var (
 		{Name: "product_name", Type: field.TypeString, Unique: true},
 		{Name: "product_price", Type: field.TypeInt},
 		{Name: "product_time", Type: field.TypeInt},
-		{Name: "product_payment_of_year", Type: field.TypeFloat64},
+		{Name: "product_payment_of_year", Type: field.TypeInt},
 		{Name: "gender_id", Type: field.TypeInt, Nullable: true},
 		{Name: "group_of_age_id", Type: field.TypeInt, Nullable: true},
 		{Name: "officer_id", Type: field.TypeInt, Nullable: true},
@@ -326,14 +326,14 @@ var (
 		PrimaryKey: []*schema.Column{ProductsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:  "products_genders_genders",
+				Symbol:  "products_genders_gender_product",
 				Columns: []*schema.Column{ProductsColumns[5]},
 
 				RefColumns: []*schema.Column{GendersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "products_group_of_ages_groupage_product",
+				Symbol:  "products_group_of_ages_groupofage_product",
 				Columns: []*schema.Column{ProductsColumns[6]},
 
 				RefColumns: []*schema.Column{GroupOfAgesColumns[0]},

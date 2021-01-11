@@ -10,18 +10,18 @@ const (
 	// FieldGenderName holds the string denoting the gender_name field in the database.
 	FieldGenderName = "gender_name"
 
-	// EdgeGenders holds the string denoting the genders edge name in mutations.
-	EdgeGenders = "genders"
+	// EdgeGenderProduct holds the string denoting the gender_product edge name in mutations.
+	EdgeGenderProduct = "gender_product"
 
 	// Table holds the table name of the gender in the database.
 	Table = "genders"
-	// GendersTable is the table the holds the genders relation/edge.
-	GendersTable = "products"
-	// GendersInverseTable is the table name for the Product entity.
+	// GenderProductTable is the table the holds the gender_product relation/edge.
+	GenderProductTable = "products"
+	// GenderProductInverseTable is the table name for the Product entity.
 	// It exists in this package in order to avoid circular dependency with the "product" package.
-	GendersInverseTable = "products"
-	// GendersColumn is the table column denoting the genders relation/edge.
-	GendersColumn = "gender_id"
+	GenderProductInverseTable = "products"
+	// GenderProductColumn is the table column denoting the gender_product relation/edge.
+	GenderProductColumn = "gender_id"
 )
 
 // Columns holds all SQL columns for gender fields.
