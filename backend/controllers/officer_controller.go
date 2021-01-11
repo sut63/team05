@@ -213,7 +213,7 @@ func (ctl *OfficerController) UpdateOfficer(c *gin.Context) {
 	c.JSON(200, ofc)
 }
 
-// NewOfficerController creates and registers handles for the oder controller
+// NewOfficerController creates and registers handles for the officer controller
 func NewOfficerController(router gin.IRouter, client *ent.Client) *OfficerController {
 	ofcc := &OfficerController{
 		client: client,
