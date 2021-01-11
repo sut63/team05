@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect,useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Content, Header, Page, pageTheme } from '@backstage/core';
 import SaveIcon from '@material-ui/icons/Save'; // icon save
@@ -14,12 +14,20 @@ import {
   TextField,
   Avatar,
   Button,
-} from '@material-ui/core';
-import { DefaultApi } from '../../services/apis'; // Api Gennerate From Command
-import { EntUser } from '../../services/models/EntUser'; // import interface User
-import { EntVideo } from '../../services/models/EntVideo'; // import interface Video
-import { EntResolution } from '../../services/models/EntResolution'; // import interface Resolution
-import { EntPlaylist } from '../../services/models/EntPlaylist'; // import interface Playlist
+} from '@material-ui/core'
+import { DefaultApi } from '../../api/apis';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { EntProduct } from '../../api/models/EntProduct';
+import { EntMember } from '../../api/models/EntMember';
+import { EntHospital } from '../../api/models/EntHospital';
+import { EntOfficer } from '../../api/models/EntOfficer';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { Link as RouterLink } from 'react-router-dom';
+import { Alert } from '@material-ui/lab';
+import { ContentHeader } from '@backstage/core';
+import { Link } from '@material-ui/core';
+import { Theme, createStyles } from '@material-ui/core/styles';
 
 // header css
 const HeaderCustom = {
@@ -50,28 +58,67 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface watchVideo {
-  playlist: number;
-  video: number;
-  resolution: number;
-  added: Date;
-  // create_by: number;
-}
-
-const WatchVideo: FC<{}> = () => {
+export default function Create() {
   const classes = useStyles();
-  const http = new DefaultApi();
+  const api = new DefaultApi();
 
-  const [playlist_video, setPlaylistVideo] = React.useState<
-    Partial<watchVideo>
-  >({});
+  const [products, setProducts] = useState<EntProduct[]>([]);
+  const [members, setMembers] = useState<EntMember[]>([]);
+  const [hospitals, setHospitals] = useState<EntHospital[]>([]);
+  const [officers, setOfficers] = useState<EntOfficer[]>([]);
+  const [status, setStatus] = useState(false);
+  const [alert, setAlert] = useState(true);
+  const [loading, setLoading] = useState(true);
+ 
+ 
+  const [productid, setProductid] = useState(Number);
+  const [memberid, setMemberid] = useState(Number);
+  const [hospitalid, setHospitalid] = useState(Number);
+  const [officerid, setOfficerid] = useState(Number);
+  const [insurance_addresss, setInsuranceAddress] = useState(String);
+  const [insurance_insurers, setInsuranceInsurer] = useState(String);
+  const [insuranceTimeBuys, setInsuranceTimeBuy] = useState(String);
+  const [insuranceTimeFirstpays, setInsuranceTimeFirstpay] = useState(String);
+  const [productPrice, setProductPrice] = useState(String);
+  const [productPaymentOfYear, setProductPaymentOfYear] = useState(String);
+  
+ 
+  useEffect(() => {
+ 
+    const getProducts = async () => {
+ 
+      const cn = await api.listProduct({ limit: 10, offset: 0 });
+      setLoading(false);
+      setProducts(cn);
+    };
+    getProducts();
+ 
+    const getMembers = async () => {
+ 
+    const u = await api.listMember({ limit: 10, offset: 0 });
+      setLoading(false);
+      setMembers(u);
+    };
+    getMembers();
+ 
+    const getHospitals = async () => {
+ 
+     const s = await api.listHospital({ limit: 10, offset: 0 });
+       setLoading(false);
+       setHospitals(s);
+     };
+     getHospitals();
 
-  const [users, setUsers] = React.useState<EntUser[]>([]);
-  const [videos, setVideos] = React.useState<EntVideo[]>([]);
-  const [resolutions, setResolutions] = React.useState<EntResolution[]>([]);
-  const [playlists, setPlaylists] = React.useState<EntPlaylist[]>([]);
-
-  // alert setting
+     const getOfficers = async () => {
+ 
+      const st = await api.listOfficer({ limit: 10, offset: 0 });
+        setLoading(false);
+        setOfficers(st);
+      };
+      getOfficers();
+ 
+  }, [loading]);
+ 
   const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -84,213 +131,298 @@ const WatchVideo: FC<{}> = () => {
     },
   });
 
-  const getUsers = async () => {
-    const res = await http.listUser({ limit: 10, offset: 0 });
-    setUsers(res);
+  const CreateInsurance = async () => {
+      const insurance = {
+
+         insuranceAddress      : insurance_addresss,
+         insuranceInsurer     : insurance_insurers,
+         insuranceTimeBuy     : insuranceTimeBuys + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+         insuranceTimeFirstpay  : insuranceTimeFirstpays  + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+         productID          : productid,
+         memberID        : memberid,
+         hospitalID    : hospitalid,
+         officerID         : officerid,
+      }
+      console.log(insurance);
+
+    const res:any = await api.createInsurance({ insurance : insurance});
+    setStatus(true);
+    if (res !== undefined) {
+      Toast.fire({
+        icon: 'success',
+        title: 'บันทึกข้อมูลสำเร็จ',
+      });
+    } else {
+      Toast.fire({
+        icon: 'error',
+        title: 'บันทึกข้อมูลไม่สำเร็จ',
+      });
+    }
+ 
+    const timer = setTimeout(() => {
+      setStatus(false);
+    }, 1000);
   };
-
-  const getPlaylist = async () => {
-    const res = await http.listPlaylist({ limit: 10, offset: 0 });
-    setPlaylists(res);
-  };
-
-  const getVideo = async () => {
-    const res = await http.listVideo({ limit: 10, offset: 0 });
-    setVideos(res);
-  };
-
-  const getResolution = async () => {
-    const res = await http.listResolution({ limit: 10, offset: 0 });
-    setResolutions(res);
-  };
-
-  // Lifecycle Hooks
-  useEffect(() => {
-    getUsers();
-    getVideo();
-    getResolution();
-    getPlaylist();
-  }, []);
-
-  // set data to object playlist_video
-  const handleChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
-  ) => {
-    const name = event.target.name as keyof typeof WatchVideo;
-    const { value } = event.target;
-    setPlaylistVideo({ ...playlist_video, [name]: value });
-    console.log(playlist_video);
-  };
-
-  // clear input form
-  function clear() {
-    setPlaylistVideo({});
-  }
-
-  // function save data
-  function save() {
-    const apiUrl = 'http://localhost:8080/api/v1/playlist-videos';
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(playlist_video),
+ 
+   const product_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+   setProductid(event.target.value as number);
     };
 
-    console.log(playlist_video); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
+   const member_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     setMemberid(event.target.value as number);
+    };
 
-    fetch(apiUrl, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (data.status === true) {
-          clear();
-          Toast.fire({
-            icon: 'success',
-            title: 'บันทึกข้อมูลสำเร็จ',
-          });
-        } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
-        }
-      });
-  }
+    const hospital_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setHospitalid(event.target.value as number);
+     };
 
-  return (
-    <Page theme={pageTheme.home}>
-      <Header style={HeaderCustom} title={`Watch Video`}>
-        <Avatar alt="Remy Sharp" src="../../image/account.jpg" />
-        <div style={{ marginLeft: 10 }}>Tanapon Kongjaroensuk</div>
-      </Header>
-      <Content>
-        <Container maxWidth="sm">
-          <Grid container spacing={3}>
-            <Grid item xs={12}></Grid>
-            <Grid item xs={3}>
-              <div className={classes.paper}>วีดีโอ</div>
+     const officer_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setOfficerid(event.target.value as number);
+     };
+
+     const insuranceAddress_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setInsuranceAddress(event.target.value as string);
+     };
+
+     const insuranceInsurer_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setInsuranceInsurer(event.target.value as string);
+     };
+
+     const insuranceTimeBuy_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setInsuranceTimeBuy(event.target.value as string);
+    };
+
+    const insuranceTimeFirstpay_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setInsuranceTimeFirstpay(event.target.value as string);
+    };
+    
+    const productPrice_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setProductPrice(event.target.value as string);
+    };
+    
+    const productPaymentOfYear_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setProductPaymentOfYear(event.target.value as string);
+    };
+
+    return (
+      <Page theme={pageTheme.tool}>
+        <Header style={HeaderCustom} title={`ระบบการซื้อประกันสุขภาพ`}>
+          <Avatar alt="Remy Sharp" src="../../image/account.jpg" />
+          <div style={{ marginLeft: 10 }}>Teerapat Saiprom</div>
+        </Header>
+        <Content>
+          <Container maxWidth="sm">
+            <Grid container spacing={3}>
+              <Grid item xs={12}></Grid>
+              <Grid item xs={3}>
+                <div className={classes.paper}>ผลิตภัณฑ์</div>
+              </Grid>
+              <Grid item xs={9}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>เลือกผลิตภัณฑ์</InputLabel>
+                  <Select
+                    name="product"
+                    value={productid || ''} // (undefined || '') = ''
+                    onChange={product_id_handleChange}
+                  >
+                    {products.map(item => {
+                      return (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.productName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+  
+              <Grid item xs={3}>
+                <div className={classes.paper}>สมาชิกระบบประกันสุขภาพ</div>
+              </Grid>
+              <Grid item xs={9}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>สมาชิกระบบประกันสุขภาพ</InputLabel>
+                  <Select
+                    name="member"
+                    value={memberid || ''} // (undefined || '') = ''
+                    onChange={member_id_handleChange}
+                  >
+                    {members.map(item => {
+                      return (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.memberName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={3}>
+              <div className={classes.paper}> ราคา </div>
+            </Grid>
+            <Grid item xs={9}>
+            <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel> </InputLabel>
+                <Select
+                    name="product"
+                    value={productid || ''} // (undefined || '') = ''
+                    onChange={product_id_handleChange}
+                    startAdornment={<InputAdornment position="start">฿</InputAdornment>}
+                  >
+                  {products.map((item: EntProduct) => (
+                    <MenuItem value={item.id}>{item.productPrice}</MenuItem>
+                  ))
+                  }
+                </Select>
+
+              </FormControl>
+            </Grid>
+  
+              <Grid item xs={3}>
+                <div className={classes.paper}>โรงพยาบาล</div>
+              </Grid>
+              <Grid item xs={9}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>เลือกโรงพยาบาล</InputLabel>
+                  <Select
+                    name="hospital"
+                    value={hospitalid || ''} // (undefined || '') = ''
+                    onChange={hospital_id_handleChange}
+                  >
+                    {hospitals.map(item => {
+                      return (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.hospitalName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+  
+              <Grid item xs={3}>
+                <div className={classes.paper}>พนักงานบริษัทประกันสุขภาพที่แนะนำ</div>
+              </Grid>
+              <Grid item xs={9}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>เลือกพนักงานบริษัทประกันสุขภาพ</InputLabel>
+                  <Select
+                    name="officer"
+                    value={officerid || ''} // (undefined || '') = ''
+                    onChange={officer_id_handleChange}
+                  >
+                    {officers.map(item => {
+                      return (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.officerName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={3}>
+              <div className={classes.paper}>ที่อยู่ของผู้ซื้อ</div>
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกวีดีโอ</InputLabel>
-                <Select
-                  name="video"
-                  value={playlist_video.video || ''} // (undefined || '') = ''
-                  onChange={handleChange}
-                >
-                  {videos.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={3}>
-              <div className={classes.paper}>เพลย์ลิสต์</div>
-            </Grid>
-            <Grid item xs={9}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกเพลย์ลิสต์</InputLabel>
-                <Select
-                  name="playlist"
-                  value={playlist_video.playlist || ''} // (undefined || '') = ''
-                  onChange={handleChange}
-                >
-                  {playlists.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.title}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={3}>
-              <div className={classes.paper}>ความละเอียด</div>
-            </Grid>
-            <Grid item xs={9}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกความละเอียด</InputLabel>
-                <Select
-                  name="resolution"
-                  value={playlist_video.resolution || ''} // (undefined || '') = ''
-                  onChange={handleChange}
-                >
-                  {resolutions.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.value}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={3}>
-              <div className={classes.paper}>สมาชิกระบบ</div>
-            </Grid>
-            <Grid item xs={9}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกสมาชิกระบบ</InputLabel>
-                <Select
-                  // value={playlist_video.create_by || ''} // (undefined || '') = ''
-                  // onChange={handleChange}
-                  name="create_by"
-                >
-                  {users.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.email}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={3}>
-              <div className={classes.paper}>เวลา</div>
-            </Grid>
-            <Grid item xs={9}>
-              <form className={classes.container} noValidate>
                 <TextField
-                  label="เลือกเวลา"
-                  name="added"
-                  type="date"
-                  value={playlist_video.added || ''} // (undefined || '') = ''
-                  className={classes.textField}
+                  //style={{ width: 300 }}
+                  id="outlined-number"
+                  name="insurance_addresss"
+                  multiline
+                  rows={4}
+                  value={insurance_addresss}
+                  type="string"
+                  onChange={insuranceAddress_handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onChange={handleChange}
+                  variant="outlined"
                 />
-              </form>
+              </FormControl>
             </Grid>
 
-            <Grid item xs={3}></Grid>
+            <Grid item xs={3}>
+              <div className={classes.paper}>ข้อมูลของผู้รับผลประโยชน์</div>
+            </Grid>
             <Grid item xs={9}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  //style={{ width: 300 }}
+                  id="outlined-number"
+                  name="insurance_insurer"
+                  multiline
+                  rows={4}
+                  value={insurance_insurers}
+                  type="string"
+                  onChange={insuranceInsurer_handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+              </FormControl>
+            </Grid>
+
+              <Grid item xs={3}>
+                <div className={classes.paper}>เวลาที่ซื้อประกันสุขภาพ</div>
+              </Grid>
+              <Grid item xs={9}>
+                <form className={classes.container} noValidate>
+                  <TextField
+                    label="เลือกเวลาที่ซื้อ"
+                    name="insurance_timebuy"
+                    type="datetime-local"
+                    value={insuranceTimeBuys || ''} // (undefined || '') = ''
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={insuranceTimeBuy_handleChange}
+                  />
+                </form>
+              </Grid>
+  
+              <Grid item xs={3}>
+                <div className={classes.paper}>วันที่ต้องการจ่ายงวดแรก</div>
+              </Grid>
+              <Grid item xs={9}>
+                <form className={classes.container} noValidate>
+                  <TextField
+                    label="เลือกเวลา"
+                    name="insurance_timefirstpay"
+                    type="datetime-local"
+                    value={insuranceTimeFirstpays || ''} // (undefined || '') = ''
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={insuranceTimeFirstpay_handleChange}
+                  />
+                </form>
+              </Grid>
+  
+              <Grid item xs={4}></Grid>
+              <Grid item xs={8}>
               <Button
                 variant="contained"
                 color="primary"
                 size="large"
                 startIcon={<SaveIcon />}
-                onClick={save}
+                onClick={() => {
+                  CreateInsurance();
+                }}
               >
-                บันทึกการดู
+                บันทึกการซื้อประกันสุขภาพ
               </Button>
             </Grid>
           </Grid>
-        </Container>
-      </Content>
-    </Page>
-  );
-};
-
-export default WatchVideo;
+          </Container>
+        </Content>
+      </Page>
+    );
+  };
+  

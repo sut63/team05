@@ -166,6 +166,7 @@ func main() {
 
 	v1 := router.Group("/api/v1")
 	controllers.NewMemberController(v1, client)
+	controllers.NewInsuranceController(v1, client)
 	controllers.NewHospitalController(v1, client)
 	controllers.NewGenderController(v1, client)
 	controllers.NewGroupOfAgeController(v1, client)

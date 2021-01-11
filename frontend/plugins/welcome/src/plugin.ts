@@ -2,7 +2,7 @@ import { createPlugin } from '@backstage/core';
 import WelcomePage from './components/WelcomePage';
 import SignIn from './components/SignIn'
 import Insurance from './components/Insurance';
-import Payment from './components/Payment'
+import TableInsurance from './components/TableInsurance';
 
 
 export const plugin = createPlugin({
@@ -11,6 +11,7 @@ export const plugin = createPlugin({
     router.registerRoute('/', WelcomePage);
     router.registerRoute('/signin', SignIn);
     router.registerRoute('/insurance', Insurance);
-    router.registerRoute('/payment', Payment);
+    router.registerRoute('/tableinsurance', TableInsurance);
+
   },
 });
