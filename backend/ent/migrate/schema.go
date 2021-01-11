@@ -218,8 +218,8 @@ var (
 	// PaybacksColumns holds the columns for the "paybacks" table.
 	PaybacksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "accountnumber", Type: field.TypeString},
-		{Name: "transfertime", Type: field.TypeTime},
+		{Name: "payback_accountnumber", Type: field.TypeString},
+		{Name: "payback_transfertime", Type: field.TypeTime},
 		{Name: "bank_id", Type: field.TypeInt, Nullable: true},
 		{Name: "member_id", Type: field.TypeInt, Nullable: true},
 		{Name: "officer_id", Type: field.TypeInt, Nullable: true},
