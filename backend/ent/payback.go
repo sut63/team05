@@ -20,10 +20,10 @@ type Payback struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// Accountnumber holds the value of the "Accountnumber" field.
-	Accountnumber string `json:"Accountnumber,omitempty"`
-	// Transfertime holds the value of the "Transfertime" field.
-	Transfertime time.Time `json:"Transfertime,omitempty"`
+	// PaybackAccountnumber holds the value of the "payback_accountnumber" field.
+	PaybackAccountnumber string `json:"payback_accountnumber,omitempty"`
+	// PaybackTransfertime holds the value of the "payback_transfertime" field.
+	PaybackTransfertime time.Time `json:"payback_transfertime,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the PaybackQuery when eager-loading is set.
 	Edges      PaybackEdges `json:"edges"`
@@ -108,8 +108,8 @@ func (e PaybackEdges) BankOrErr() (*Bank, error) {
 func (*Payback) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
-		&sql.NullString{}, // Accountnumber
-		&sql.NullTime{},   // Transfertime
+		&sql.NullString{}, // payback_accountnumber
+		&sql.NullTime{},   // payback_transfertime
 	}
 }
 
@@ -136,14 +136,14 @@ func (pa *Payback) assignValues(values ...interface{}) error {
 	pa.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field Accountnumber", values[0])
+		return fmt.Errorf("unexpected type %T for field payback_accountnumber", values[0])
 	} else if value.Valid {
-		pa.Accountnumber = value.String
+		pa.PaybackAccountnumber = value.String
 	}
 	if value, ok := values[1].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field Transfertime", values[1])
+		return fmt.Errorf("unexpected type %T for field payback_transfertime", values[1])
 	} else if value.Valid {
-		pa.Transfertime = value.Time
+		pa.PaybackTransfertime = value.Time
 	}
 	values = values[2:]
 	if len(values) == len(payback.ForeignKeys) {
@@ -218,10 +218,10 @@ func (pa *Payback) String() string {
 	var builder strings.Builder
 	builder.WriteString("Payback(")
 	builder.WriteString(fmt.Sprintf("id=%v", pa.ID))
-	builder.WriteString(", Accountnumber=")
-	builder.WriteString(pa.Accountnumber)
-	builder.WriteString(", Transfertime=")
-	builder.WriteString(pa.Transfertime.Format(time.ANSIC))
+	builder.WriteString(", payback_accountnumber=")
+	builder.WriteString(pa.PaybackAccountnumber)
+	builder.WriteString(", payback_transfertime=")
+	builder.WriteString(pa.PaybackTransfertime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

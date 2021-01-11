@@ -98,14 +98,14 @@ func init() {
 	officer.OfficerPasswordValidator = officerDescOfficerPassword.Validators[0].(func(string) error)
 	paybackFields := schema.Payback{}.Fields()
 	_ = paybackFields
-	// paybackDescAccountnumber is the schema descriptor for Accountnumber field.
-	paybackDescAccountnumber := paybackFields[0].Descriptor()
-	// payback.AccountnumberValidator is a validator for the "Accountnumber" field. It is called by the builders before save.
-	payback.AccountnumberValidator = paybackDescAccountnumber.Validators[0].(func(string) error)
-	// paybackDescTransfertime is the schema descriptor for Transfertime field.
-	paybackDescTransfertime := paybackFields[1].Descriptor()
-	// payback.DefaultTransfertime holds the default value on creation for the Transfertime field.
-	payback.DefaultTransfertime = paybackDescTransfertime.Default.(func() time.Time)
+	// paybackDescPaybackAccountnumber is the schema descriptor for payback_accountnumber field.
+	paybackDescPaybackAccountnumber := paybackFields[0].Descriptor()
+	// payback.PaybackAccountnumberValidator is a validator for the "payback_accountnumber" field. It is called by the builders before save.
+	payback.PaybackAccountnumberValidator = paybackDescPaybackAccountnumber.Validators[0].(func(string) error)
+	// paybackDescPaybackTransfertime is the schema descriptor for payback_transfertime field.
+	paybackDescPaybackTransfertime := paybackFields[1].Descriptor()
+	// payback.DefaultPaybackTransfertime holds the default value on creation for the payback_transfertime field.
+	payback.DefaultPaybackTransfertime = paybackDescPaybackTransfertime.Default.(func() time.Time)
 	paymentFields := schema.Payment{}.Fields()
 	_ = paymentFields
 	// paymentDescAccountName is the schema descriptor for account_name field.
