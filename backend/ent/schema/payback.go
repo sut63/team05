@@ -16,8 +16,8 @@ type Payback struct {
 // Fields of the Payback.
 func (Payback) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("Accountnumber").NotEmpty(),
-		field.Time("Transfertime").Default(time.Now),
+		field.String("payback_accountnumber").NotEmpty(),
+		field.Time("payback_transfertime").Default(time.Now),
 	}
 }
 
@@ -30,3 +30,4 @@ func (Payback) Edges() []ent.Edge {
 		edge.From("Bank", Bank.Type).Ref("bank_payback").Unique(),
 	}
 }
+
