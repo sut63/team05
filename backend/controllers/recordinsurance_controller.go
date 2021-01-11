@@ -82,7 +82,7 @@ func (ctl *RecordinsuranceController) CreateRecordinsurance(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "statuscar diagnostic  not found",
+			"error": "hospital diagnostic  not found",
 		})
 		return
 	}

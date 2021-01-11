@@ -22,12 +22,12 @@ type PaybackController struct {
 
 // Payback defines the struct for the payback
 type Payback struct {
-	ProductID     int
-	MemberID      int
-	BankID        int
-	OfficerID     int
-	Accountnumber string
-	Transfertime  string
+	ProductID            int
+	MemberID             int
+	BankID               int
+	OfficerID            int
+	PaybackAccountnumber string
+	PaybackTransfertime  string
 }
 
 // CreatePayback handles POST requests for adding payback entities
@@ -81,7 +81,7 @@ func (ctl *PaybackController) CreatePayback(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "statuscar diagnostic  not found",
+			"error": "bank diagnostic  not found",
 		})
 		return
 	}
@@ -97,7 +97,7 @@ func (ctl *PaybackController) CreatePayback(c *gin.Context) {
 		})
 		return
 	}
-	time, err := time.Parse(time.RFC3339, obj.Transfertime)
+	time, err := time.Parse(time.RFC3339, obj.PaybackTransfertime)
 
 	in, err := ctl.client.Payback.
 		Create().
@@ -105,8 +105,8 @@ func (ctl *PaybackController) CreatePayback(c *gin.Context) {
 		SetMember(m).
 		SetBank(b).
 		SetOfficer(of).
-		SetAccountnumber(obj.Accountnumber).
-		SetTransfertime(time).
+		SetPaybackAccountnumber(obj.PaybackAccountnumber).
+		SetPaybackTransfertime(time).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
