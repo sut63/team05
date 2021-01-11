@@ -15,26 +15,26 @@ import (
 	"github.com/sut63/team05/ent/product"
 )
 
-// RecordinsuranceController defines the struct for the Recordinsurance controller
+// RecordinsuranceController defines the struct for the recordinsurance controller
 type RecordinsuranceController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-// Recordinsurance defines the struct for the Recordinsurance
+// Recordinsurance defines the struct for the recordinsurance
 type Recordinsurance struct {
 	ProductID           int
 	MemberID            int
 	HospitalID          int
 	OfficerID           int
-	AmountpaidID        float64
+	AmountpaidID        int
 	RecordinsuranceTime string
 }
 
-// CreateRecordinsurance handles POST requests for adding Recordinsurance entities
-// @Summary Create Recordinsurance
-// @Description Create Recordinsurance
-// @ID create-Recordinsurance
+// CreateRecordinsurance handles POST requests for adding recordinsurance entities
+// @Summary Create recordinsurance
+// @Description Create recordinsurance
+// @ID create-recordinsurance
 // @Accept   json
 // @Produce  json
 // @Param Recordinsurance body Recordinsurance true "Recordinsurance entity"
@@ -131,10 +131,10 @@ func (ctl *RecordinsuranceController) CreateRecordinsurance(c *gin.Context) {
 	c.JSON(200, rin)
 }
 
-// ListRecordinsurance handles request to get a list of Recordinsurance entities
-// @Summary List Recordinsurance entities
-// @Description list Recordinsurance entities
-// @ID list-Recordinsurance
+// ListRecordinsurance handles request to get a list of recordinsurance entities
+// @Summary List recordinsurance entities
+// @Description list recordinsurance entities
+// @ID list-recordinsurance
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
@@ -179,10 +179,10 @@ func (ctl *RecordinsuranceController) ListRecordinsurance(c *gin.Context) {
 	c.JSON(200, recordinsurances)
 }
 
-// DeleteRecordinsurance handles DELETE requests to delete a Recordinsurance entity
-// @Summary Delete a Recordinsurance entity by ID
-// @Description get Recordinsurance by ID
-// @ID delete-Recordinsurance
+// DeleteRecordinsurance handles DELETE requests to delete a recordinsurance entity
+// @Summary Delete a recordinsurance entity by ID
+// @Description get recordinsurance by ID
+// @ID delete-recordinsurance
 // @Produce  json
 // @Param id path int true "Recordinsurance ID"
 // @Success 200 {object} gin.H
