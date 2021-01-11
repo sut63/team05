@@ -10,16 +10,16 @@ import (
 	"github.com/sut63/team05/ent/amountpaid"
 )
 
-// AmountpaidController defines the struct for the Amountpaid controller
+// AmountpaidController defines the struct for the amountpaid controller
 type AmountpaidController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-// CreateAmountpaid handles POST requests for adding Amountpaid entities
-// @Summary Create Amountpaid
-// @Description Create Amountpaid
-// @ID create-Amountpaid
+// CreateAmountpaid handles POST requests for adding amountpaid entities
+// @Summary Create amountpaid
+// @Description Create amountpaid
+// @ID create-amountpaid
 // @Accept   json
 // @Produce  json
 // @Param Amountpaid body ent.Amountpaid true "Amountpaid entity"
@@ -31,7 +31,7 @@ func (ctl *AmountpaidController) CreateAmountpaid(c *gin.Context) {
 	obj := ent.Amountpaid{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "amountpaid failed",
+			"error": "amountpaid binding failed",
 		})
 		return
 	}
@@ -50,10 +50,10 @@ func (ctl *AmountpaidController) CreateAmountpaid(c *gin.Context) {
 	c.JSON(200, m)
 }
 
-// GetAmountpaid handles GET requests to retrieve a Amountpaid entity
-// @Summary Get a Amountpaid entity by ID
-// @Description get Amountpaid by ID
-// @ID get-Amountpaid
+// GetAmountpaid handles GET requests to retrieve a amountpaid entity
+// @Summary Get a amountpaid entity by ID
+// @Description get amountpaid by ID
+// @ID get-amountpaid
 // @Produce  json
 // @Param id path int true "Amountpaid ID"
 // @Success 200 {object} ent.Amountpaid
@@ -84,10 +84,10 @@ func (ctl *AmountpaidController) GetAmountpaid(c *gin.Context) {
 	c.JSON(200, ap)
 }
 
-// ListAmountpaid handles request to get a list of Amountpaid entities
-// @Summary List Amountpaid entities
-// @Description list Amountpaid entities
-// @ID list-Amountpaid
+// ListAmountpaid handles request to get a list of amountpaid entities
+// @Summary List amountpaid entities
+// @Description list amountpaid entities
+// @ID list-amountpaid
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
@@ -127,10 +127,10 @@ func (ctl *AmountpaidController) ListAmountpaid(c *gin.Context) {
 	c.JSON(200, amountpaids)
 }
 
-// DeleteAmountpaid handles DELETE requests to delete a Amountpaid entity
-// @Summary Delete a Amountpaid entity by ID
-// @Description get Amountpaid by ID
-// @ID delete-Amountpaid
+// DeleteAmountpaid handles DELETE requests to delete a amountpaid entity
+// @Summary Delete a amountpaid entity by ID
+// @Description get amountpaid by ID
+// @ID delete-amountpaid
 // @Produce  json
 // @Param id path int true "Amountpaid ID"
 // @Success 200 {object} gin.H
@@ -160,10 +160,10 @@ func (ctl *AmountpaidController) DeleteAmountpaid(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdateAmountpaid handles PUT requests to update a Amountpaid entity
-// @Summary Update a Amountpaid entity by ID
-// @Description update Amountpaid by ID
-// @ID update-Amountpaid
+// UpdateAmountpaid handles PUT requests to update a amountpaid entity
+// @Summary Update a amountpaid entity by ID
+// @Description update amountpaid by ID
+// @ID update-amountpaid
 // @Accept   json
 // @Produce  json
 // @Param id path int true "Amountpaid ID"
@@ -184,7 +184,7 @@ func (ctl *AmountpaidController) UpdateAmountpaid(c *gin.Context) {
 	obj := ent.Amountpaid{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "amountpaid failed",
+			"error": "amountpaid binding failed",
 		})
 		return
 	}

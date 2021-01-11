@@ -96,7 +96,7 @@ type Amountpaids struct {
 
 // Amountpaid struct
 type Amountpaid struct {
-	AmountpaidMoney float64
+	AmountpaidMoney int
 }
 
 // Category struct input data
@@ -302,11 +302,11 @@ func main() {
 	// Set Amountpaid Data
 	amountpaids := Amountpaids{
 		Amountpaid: []Amountpaid{
-			Amountpaid{25000.50},
-			Amountpaid{57000.75},
-			Amountpaid{82500.00},
-			Amountpaid{90000.25},
-			Amountpaid{110000.00},
+			Amountpaid{35000.},
+			Amountpaid{57000},
+			Amountpaid{82500},
+			Amountpaid{90000},
+			Amountpaid{110000},
 		},
 	}
 

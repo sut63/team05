@@ -35,12 +35,12 @@ var doc = `{
     "paths": {
         "/amountpaids": {
             "get": {
-                "description": "list Amountpaid entities",
+                "description": "list amountpaid entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List Amountpaid entities",
-                "operationId": "list-Amountpaid",
+                "summary": "List amountpaid entities",
+                "operationId": "list-amountpaid",
                 "parameters": [
                     {
                         "type": "integer",
@@ -80,15 +80,15 @@ var doc = `{
                 }
             },
             "post": {
-                "description": "Create Amountpaid",
+                "description": "Create amountpaid",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create Amountpaid",
-                "operationId": "create-Amountpaid",
+                "summary": "Create amountpaid",
+                "operationId": "create-amountpaid",
                 "parameters": [
                     {
                         "description": "Amountpaid entity",
@@ -124,12 +124,12 @@ var doc = `{
         },
         "/amountpaids/{id}": {
             "get": {
-                "description": "get Amountpaid by ID",
+                "description": "get amountpaid by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get a Amountpaid entity by ID",
-                "operationId": "get-Amountpaid",
+                "summary": "Get a amountpaid entity by ID",
+                "operationId": "get-amountpaid",
                 "parameters": [
                     {
                         "type": "integer",
@@ -167,15 +167,15 @@ var doc = `{
                 }
             },
             "put": {
-                "description": "update Amountpaid by ID",
+                "description": "update amountpaid by ID",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Update a Amountpaid entity by ID",
-                "operationId": "update-Amountpaid",
+                "summary": "Update a amountpaid entity by ID",
+                "operationId": "update-amountpaid",
                 "parameters": [
                     {
                         "type": "integer",
@@ -216,12 +216,12 @@ var doc = `{
                 }
             },
             "delete": {
-                "description": "get Amountpaid by ID",
+                "description": "get amountpaid by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete a Amountpaid entity by ID",
-                "operationId": "delete-Amountpaid",
+                "summary": "Delete a amountpaid entity by ID",
+                "operationId": "delete-amountpaid",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2831,12 +2831,12 @@ var doc = `{
         },
         "/recordinsurances": {
             "get": {
-                "description": "list Recordinsurance entities",
+                "description": "list recordinsurance entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List Recordinsurance entities",
-                "operationId": "list-Recordinsurance",
+                "summary": "List recordinsurance entities",
+                "operationId": "list-recordinsurance",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2876,15 +2876,15 @@ var doc = `{
                 }
             },
             "post": {
-                "description": "Create Recordinsurance",
+                "description": "Create recordinsurance",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create Recordinsurance",
-                "operationId": "create-Recordinsurance",
+                "summary": "Create recordinsurance",
+                "operationId": "create-recordinsurance",
                 "parameters": [
                     {
                         "description": "Recordinsurance entity",
@@ -2920,12 +2920,12 @@ var doc = `{
         },
         "/recordinsurances/{id}": {
             "delete": {
-                "description": "get Recordinsurance by ID",
+                "description": "get recordinsurance by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete a Recordinsurance entity by ID",
-                "operationId": "delete-Recordinsurance",
+                "summary": "Delete a recordinsurance entity by ID",
+                "operationId": "delete-recordinsurance",
                 "parameters": [
                     {
                         "type": "integer",
@@ -3096,7 +3096,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "amountpaidID": {
-                    "type": "number"
+                    "type": "integer"
                 },
                 "hospitalID": {
                     "type": "integer"
@@ -3120,7 +3120,7 @@ var doc = `{
             "properties": {
                 "amountpaid_money": {
                     "description": "AmountpaidMoney holds the value of the \"amountpaid_money\" field.",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the AmountpaidQuery when eager-loading is set.",
