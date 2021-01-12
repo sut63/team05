@@ -81,7 +81,7 @@ func (ctl *InquiryController) CreateInquiry(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "statuscar diagnostic  not found",
+			"error": "category diagnostic  not found",
 		})
 		return
 	}

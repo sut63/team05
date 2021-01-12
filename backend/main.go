@@ -174,7 +174,8 @@ func main() {
 	controllers.NewProductController(v1, client)
 	controllers.NewMoneyTransferController(v1, client)
 	controllers.NewAmountpaidController(v1, client)
-	controllers.NewcategoryController(v1, client)
+	controllers.NewCategoryController(v1, client)
+	controllers.NewInquiryController(v1, client)
 
 	// Set Members Data
 	members := Members{
