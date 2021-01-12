@@ -224,6 +224,10 @@ export interface GetHospitalRequest {
     id: number;
 }
 
+export interface GetInsuranceRequest {
+    id: number;
+}
+
 export interface GetMemberRequest {
     id: number;
 }
@@ -1564,6 +1568,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getHospital(requestParameters: GetHospitalRequest): Promise<EntHospital> {
         const response = await this.getHospitalRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get insurance by ID
+     * Get a insurance entity by ID
+     */
+    async getInsuranceRaw(requestParameters: GetInsuranceRequest): Promise<runtime.ApiResponse<EntInsurance>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getInsurance.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/insurances/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntInsuranceFromJSON(jsonValue));
+    }
+
+    /**
+     * get insurance by ID
+     * Get a insurance entity by ID
+     */
+    async getInsurance(requestParameters: GetInsuranceRequest): Promise<EntInsurance> {
+        const response = await this.getInsuranceRaw(requestParameters);
         return await response.value();
     }
 

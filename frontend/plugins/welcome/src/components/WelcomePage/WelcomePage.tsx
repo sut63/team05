@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid,Container} from '@material-ui/core';
 import {
   Content,
   Header,
@@ -43,10 +43,10 @@ export function CardTeam({ name, id, system }: ProfileProps) {
             title="นาย สมชาย ใจดี"
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography gutterBottom variant="h6" component="h6">
               {system}
             </Typography>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography gutterBottom variant="h6" component="h6">
               {id} {name}
             </Typography>
           </CardContent>
@@ -59,17 +59,28 @@ export function CardTeam({ name, id, system }: ProfileProps) {
 const WelcomePage: FC<{}> = () => {
   return (
     <Page theme={pageTheme.home}>
-      <Header style={HeaderCustom} title={`ระบบ...`}></Header>
+      <Header style={HeaderCustom} title={`ระบบประกันสุขภาพ`}></Header>
       <Content>
         <ContentHeader title="สมาชิกในกลุ่ม"></ContentHeader>
-        <Grid container>
-          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-          <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-        </Grid>
+        <Container>
+          <Grid container spacing={1}>
+            <Grid item xs={12}></Grid>
+              <Grid item xs={4}>
+                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+                
+              </Grid>
+              <Grid item xs={4}>
+                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+              </Grid>
+
+              <Grid item xs={4}>
+                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
+              </Grid>
+          </Grid>
+        </Container>
       </Content>
     </Page>
   );
