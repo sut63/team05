@@ -209,8 +209,8 @@ func (ctl *CategoryController) Updatecategory(c *gin.Context) {
 	c.JSON(200, cg)
 }
 
-// NewcategoryController creates and registers handles for the oder controller
-func NewcategoryController(router gin.IRouter, client *ent.Client) *CategoryController {
+// NewCategoryController creates and registers handles for the oder controller
+func NewCategoryController(router gin.IRouter, client *ent.Client) *CategoryController {
 	cgc := &CategoryController{
 		client: client,
 		router: router,
