@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sut63/team05/ent"
 	"github.com/sut63/team05/ent/hospital"
+	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/product"
@@ -83,7 +84,7 @@ func (ctl *InsuranceController) CreateInsurance(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "statuscar diagnostic  not found",
+			"error": "hospital diagnostic  not found",
 		})
 		return
 	}
@@ -170,6 +171,41 @@ func (ctl *InsuranceController) ListInsurance(c *gin.Context) {
 	c.JSON(200, insurances)
 }
 
+// GetInsurance handles GET requests to retrieve a insurance entity
+// @Summary Get a insurance entity by ID
+// @Description get insurance by ID
+// @ID get-insurance
+// @Produce  json
+// @Param id path int true "Insurance ID"
+// @Success 200 {object} ent.Insurance
+// @Failure 400 {object} gin.H
+// @Failure 404 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /insurances/{id} [get]
+func (ctl *InsuranceController) GetInsurance(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	p, err := ctl.client.Insurance.
+		Query().
+		WithProduct().
+		Where(insurance.IDEQ(int(id))).
+		Only(context.Background())
+
+	if err != nil {
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, p)
+}
+
 // DeleteInsurance handles DELETE requests to delete a insurance entity
 // @Summary Delete a insurance entity by ID
 // @Description get insurance by ID
@@ -218,6 +254,7 @@ func (ctl *InsuranceController) register() {
 	insurances := ctl.router.Group("/insurances")
 
 	insurances.GET("", ctl.ListInsurance)
+	insurances.GET(":id", ctl.GetInsurance)
 	insurances.POST("", ctl.CreateInsurance)
 	insurances.DELETE(":id", ctl.DeleteInsurance)
 }
