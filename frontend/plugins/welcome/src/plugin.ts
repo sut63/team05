@@ -3,7 +3,9 @@ import WelcomePage from './components/WelcomePage';
 import SignIn from './components/SignIn'
 import Insurance from './components/Insurance';
 import TableInsurance from './components/TableInsurance';
-import Product from './components/Product'
+import Product from './components/Product';
+import Officerlongin from './components/Officerlongin';
+
 
 
 export const plugin = createPlugin({
@@ -14,5 +16,6 @@ export const plugin = createPlugin({
     router.registerRoute('/insurance', Insurance);
     router.registerRoute('/tableinsurance', TableInsurance);
     router.registerRoute('/product', Product);
+    router.registerRoute('/officerlongin', Officerlongin);
   },
 });
