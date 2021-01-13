@@ -28,7 +28,7 @@ import { DefaultApi } from '../../api/apis';
 import { EntInsurance } from '../../api/models/EntInsurance';
 import { EntBank } from '../../api/models/EntBank';
 import { EntMember } from '../../api/models/EntMember';
-import { EntMoneyTransfer } from '../../api/models/EntMoneyTransfer';
+import { EntMoneytransfer } from '../../api/models/EntMoneytransfer';
 
 
 
@@ -79,7 +79,7 @@ export default function Create() {
   const [insurances, setInsurances] = useState<EntInsurance[]>([]);
   const [banks, setBanks] = useState<EntBank[]>([]);
   const [members, setMembers] = useState<EntMember[]>([]);
-  const [moneytransfers, setMoneytransfers] = useState<EntMoneyTransfer[]>([]);
+  const [moneytransfers, setMoneytransfers] = useState<EntMoneytransfer[]>([]);
   const [status, setStatus] = useState(false);
   const [alert, setAlert] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -149,12 +149,12 @@ export default function Create() {
  
   const createPayment = async () => {
       const payment = {
-        acoountName    : accountname,
+        accountName    : accountname,
         accountNumber  : accountnumber,
         bankID         : bankid,
         insuranceID    : insuranceid,
         memberID       : memberid,
-        moneytarnferID : moneytransferid,
+        moneytransferID : moneytransferid,
         transferTime   : transfertime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
       }
       console.log(payment);
@@ -212,9 +212,6 @@ export default function Create() {
   return (
     <Page theme={pageTheme.library}>
       <Header style={HeaderCustom} title={`ระบบชำระเบี้ยประกัน`}>
-        <Avatar alt="Teerasak Supavaha" src="../../image/account.jpg" className={classes.orange}/>
-        <div style={{ marginLeft: 10 }}>Teerasak Supawaha</div>
-        <td></td>
       </Header>
       <Content>
       <ContentHeader title="กรุณากรอกข้อมูลการชำระเงิน">

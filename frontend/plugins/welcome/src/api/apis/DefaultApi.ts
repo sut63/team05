@@ -60,9 +60,9 @@ import {
     EntMember,
     EntMemberFromJSON,
     EntMemberToJSON,
-    EntMoneyTransfer,
-    EntMoneyTransferFromJSON,
-    EntMoneyTransferToJSON,
+    EntMoneytransfer,
+    EntMoneytransferFromJSON,
+    EntMoneytransferToJSON,
     EntOfficer,
     EntOfficerFromJSON,
     EntOfficerToJSON,
@@ -117,7 +117,7 @@ export interface CreateMemberRequest {
 }
 
 export interface CreateMoneyTransferRequest {
-    moneytransfer: EntMoneyTransfer;
+    moneytransfer: EntMoneytransfer;
 }
 
 export interface CreateOfficerRequest {
@@ -356,7 +356,7 @@ export interface UpdateMemberRequest {
 
 export interface UpdateMoneytransferRequest {
     id: number;
-    moneytransfer: EntMoneyTransfer;
+    moneytransfer: EntMoneytransfer;
 }
 
 export interface UpdateOfficerRequest {
@@ -693,7 +693,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * Create moneytransfer
      * Create moneytransfer
      */
-    async createMoneyTransferRaw(requestParameters: CreateMoneyTransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
+    async createMoneyTransferRaw(requestParameters: CreateMoneyTransferRequest): Promise<runtime.ApiResponse<EntMoneytransfer>> {
         if (requestParameters.moneytransfer === null || requestParameters.moneytransfer === undefined) {
             throw new runtime.RequiredError('moneytransfer','Required parameter requestParameters.moneytransfer was null or undefined when calling createMoneyTransfer.');
         }
@@ -705,21 +705,21 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/moneyTransfers`,
+            path: `/moneytransfers`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: EntMoneyTransferToJSON(requestParameters.moneytransfer),
+            body: EntMoneytransferToJSON(requestParameters.moneytransfer),
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntMoneyTransferFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntMoneytransferFromJSON(jsonValue));
     }
 
     /**
      * Create moneytransfer
      * Create moneytransfer
      */
-    async createMoneyTransfer(requestParameters: CreateMoneyTransferRequest): Promise<EntMoneyTransfer> {
+    async createMoneyTransfer(requestParameters: CreateMoneyTransferRequest): Promise<EntMoneytransfer> {
         const response = await this.createMoneyTransferRaw(requestParameters);
         return await response.value();
     }
@@ -1201,7 +1201,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/moneyTransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/moneytransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -1639,7 +1639,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * get moneytransfer by ID
      * Get a moneytransfer entity by ID
      */
-    async getMoneytransferRaw(requestParameters: GetMoneytransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
+    async getMoneytransferRaw(requestParameters: GetMoneytransferRequest): Promise<runtime.ApiResponse<EntMoneytransfer>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getMoneytransfer.');
         }
@@ -1649,20 +1649,20 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/moneyTransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/moneytransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntMoneyTransferFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntMoneytransferFromJSON(jsonValue));
     }
 
     /**
      * get moneytransfer by ID
      * Get a moneytransfer entity by ID
      */
-    async getMoneytransfer(requestParameters: GetMoneytransferRequest): Promise<EntMoneyTransfer> {
+    async getMoneytransfer(requestParameters: GetMoneytransferRequest): Promise<EntMoneytransfer> {
         const response = await this.getMoneytransferRaw(requestParameters);
         return await response.value();
     }
@@ -2059,7 +2059,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * list moneytransfer entities
      * List moneytransfer entities
      */
-    async listMoneytransferRaw(requestParameters: ListMoneytransferRequest): Promise<runtime.ApiResponse<Array<EntMoneyTransfer>>> {
+    async listMoneytransferRaw(requestParameters: ListMoneytransferRequest): Promise<runtime.ApiResponse<Array<EntMoneytransfer>>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.limit !== undefined) {
@@ -2073,20 +2073,20 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/moneyTransfers`,
+            path: `/moneytransfers`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntMoneyTransferFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntMoneytransferFromJSON));
     }
 
     /**
      * list moneytransfer entities
      * List moneytransfer entities
      */
-    async listMoneytransfer(requestParameters: ListMoneytransferRequest): Promise<Array<EntMoneyTransfer>> {
+    async listMoneytransfer(requestParameters: ListMoneytransferRequest): Promise<Array<EntMoneytransfer>> {
         const response = await this.listMoneytransferRaw(requestParameters);
         return await response.value();
     }
@@ -2548,7 +2548,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * update moneytransfer by ID
      * Update a moneytransfer entity by ID
      */
-    async updateMoneytransferRaw(requestParameters: UpdateMoneytransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
+    async updateMoneytransferRaw(requestParameters: UpdateMoneytransferRequest): Promise<runtime.ApiResponse<EntMoneytransfer>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateMoneytransfer.');
         }
@@ -2564,21 +2564,21 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/moneyTransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/moneytransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: EntMoneyTransferToJSON(requestParameters.moneytransfer),
+            body: EntMoneytransferToJSON(requestParameters.moneytransfer),
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntMoneyTransferFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntMoneytransferFromJSON(jsonValue));
     }
 
     /**
      * update moneytransfer by ID
      * Update a moneytransfer entity by ID
      */
-    async updateMoneytransfer(requestParameters: UpdateMoneytransferRequest): Promise<EntMoneyTransfer> {
+    async updateMoneytransfer(requestParameters: UpdateMoneytransferRequest): Promise<EntMoneytransfer> {
         const response = await this.updateMoneytransferRaw(requestParameters);
         return await response.value();
     }

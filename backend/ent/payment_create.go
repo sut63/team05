@@ -69,23 +69,23 @@ func (pc *PaymentCreate) SetInsurance(i *Insurance) *PaymentCreate {
 	return pc.SetInsuranceID(i.ID)
 }
 
-// SetMoneyTransferID sets the MoneyTransfer edge to MoneyTransfer by id.
-func (pc *PaymentCreate) SetMoneyTransferID(id int) *PaymentCreate {
-	pc.mutation.SetMoneyTransferID(id)
+// SetMoneytransferID sets the Moneytransfer edge to Moneytransfer by id.
+func (pc *PaymentCreate) SetMoneytransferID(id int) *PaymentCreate {
+	pc.mutation.SetMoneytransferID(id)
 	return pc
 }
 
-// SetNillableMoneyTransferID sets the MoneyTransfer edge to MoneyTransfer by id if the given value is not nil.
-func (pc *PaymentCreate) SetNillableMoneyTransferID(id *int) *PaymentCreate {
+// SetNillableMoneytransferID sets the Moneytransfer edge to Moneytransfer by id if the given value is not nil.
+func (pc *PaymentCreate) SetNillableMoneytransferID(id *int) *PaymentCreate {
 	if id != nil {
-		pc = pc.SetMoneyTransferID(*id)
+		pc = pc.SetMoneytransferID(*id)
 	}
 	return pc
 }
 
-// SetMoneyTransfer sets the MoneyTransfer edge to MoneyTransfer.
-func (pc *PaymentCreate) SetMoneyTransfer(m *MoneyTransfer) *PaymentCreate {
-	return pc.SetMoneyTransferID(m.ID)
+// SetMoneytransfer sets the Moneytransfer edge to Moneytransfer.
+func (pc *PaymentCreate) SetMoneytransfer(m *Moneytransfer) *PaymentCreate {
+	return pc.SetMoneytransferID(m.ID)
 }
 
 // SetBankID sets the Bank edge to Bank by id.
@@ -256,12 +256,12 @@ func (pc *PaymentCreate) createSpec() (*Payment, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := pc.mutation.MoneyTransferIDs(); len(nodes) > 0 {
+	if nodes := pc.mutation.MoneytransferIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payment.MoneyTransferTable,
-			Columns: []string{payment.MoneyTransferColumn},
+			Table:   payment.MoneytransferTable,
+			Columns: []string{payment.MoneytransferColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

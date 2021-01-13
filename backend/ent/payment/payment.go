@@ -20,8 +20,8 @@ const (
 
 	// EdgeInsurance holds the string denoting the insurance edge name in mutations.
 	EdgeInsurance = "Insurance"
-	// EdgeMoneyTransfer holds the string denoting the moneytransfer edge name in mutations.
-	EdgeMoneyTransfer = "MoneyTransfer"
+	// EdgeMoneytransfer holds the string denoting the moneytransfer edge name in mutations.
+	EdgeMoneytransfer = "Moneytransfer"
 	// EdgeBank holds the string denoting the bank edge name in mutations.
 	EdgeBank = "Bank"
 	// EdgeMember holds the string denoting the member edge name in mutations.
@@ -36,13 +36,13 @@ const (
 	InsuranceInverseTable = "insurances"
 	// InsuranceColumn is the table column denoting the Insurance relation/edge.
 	InsuranceColumn = "insurance_id"
-	// MoneyTransferTable is the table the holds the MoneyTransfer relation/edge.
-	MoneyTransferTable = "payments"
-	// MoneyTransferInverseTable is the table name for the MoneyTransfer entity.
+	// MoneytransferTable is the table the holds the Moneytransfer relation/edge.
+	MoneytransferTable = "payments"
+	// MoneytransferInverseTable is the table name for the Moneytransfer entity.
 	// It exists in this package in order to avoid circular dependency with the "moneytransfer" package.
-	MoneyTransferInverseTable = "money_transfers"
-	// MoneyTransferColumn is the table column denoting the MoneyTransfer relation/edge.
-	MoneyTransferColumn = "moneytransfer_id"
+	MoneytransferInverseTable = "moneytransfers"
+	// MoneytransferColumn is the table column denoting the Moneytransfer relation/edge.
+	MoneytransferColumn = "moneytransfer_id"
 	// BankTable is the table the holds the Bank relation/edge.
 	BankTable = "payments"
 	// BankInverseTable is the table name for the Bank entity.

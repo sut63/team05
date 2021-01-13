@@ -1911,7 +1911,7 @@
                 }
             }
         },
-        "/moneyTransfers": {
+        "/moneytransfers": {
             "get": {
                 "description": "list moneytransfer entities",
                 "produces": [
@@ -1939,7 +1939,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/ent.MoneyTransfer"
+                                "$ref": "#/definitions/ent.Moneytransfer"
                             }
                         }
                     },
@@ -1969,12 +1969,12 @@
                 "operationId": "create-moneyTransfer",
                 "parameters": [
                     {
-                        "description": "MoneyTransfer entity",
+                        "description": "Moneytransfer entity",
                         "name": "moneytransfer",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     }
                 ],
@@ -1982,7 +1982,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     },
                     "400": {
@@ -2000,7 +2000,7 @@
                 }
             }
         },
-        "/moneyTransfers/{id}": {
+        "/moneytransfers/{id}": {
             "get": {
                 "description": "get moneytransfer by ID",
                 "produces": [
@@ -2011,7 +2011,7 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "MoneyTransfer ID",
+                        "description": "Moneytransfer ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2021,7 +2021,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     },
                     "400": {
@@ -2063,12 +2063,12 @@
                         "required": true
                     },
                     {
-                        "description": "MoneyTransfer entity",
+                        "description": "Moneytransfer entity",
                         "name": "moneytransfer",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     }
                 ],
@@ -2076,7 +2076,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     },
                     "400": {
@@ -2103,7 +2103,7 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "MoneyTransfer ID",
+                        "description": "Moneytransfer ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2556,7 +2556,7 @@
                 "parameters": [
                     {
                         "description": "Payment entity",
-                        "name": "payment",
+                        "name": "Payment",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -3516,13 +3516,13 @@
                 }
             }
         },
-        "ent.MoneyTransfer": {
+        "ent.Moneytransfer": {
             "type": "object",
             "properties": {
                 "edges": {
-                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the MoneyTransferQuery when eager-loading is set.",
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the MoneytransferQuery when eager-loading is set.",
                     "type": "object",
-                    "$ref": "#/definitions/ent.MoneyTransferEdges"
+                    "$ref": "#/definitions/ent.MoneytransferEdges"
                 },
                 "id": {
                     "description": "ID of the ent.",
@@ -3534,7 +3534,7 @@
                 }
             }
         },
-        "ent.MoneyTransferEdges": {
+        "ent.MoneytransferEdges": {
             "type": "object",
             "properties": {
                 "moneytransferPayment": {
@@ -3703,10 +3703,10 @@
                     "type": "object",
                     "$ref": "#/definitions/ent.Member"
                 },
-                "moneyTransfer": {
-                    "description": "MoneyTransfer holds the value of the MoneyTransfer edge.",
+                "moneytransfer": {
+                    "description": "Moneytransfer holds the value of the Moneytransfer edge.",
                     "type": "object",
-                    "$ref": "#/definitions/ent.MoneyTransfer"
+                    "$ref": "#/definitions/ent.Moneytransfer"
                 }
             }
         },

@@ -1926,7 +1926,7 @@ var doc = `{
                 }
             }
         },
-        "/moneyTransfers": {
+        "/moneytransfers": {
             "get": {
                 "description": "list moneytransfer entities",
                 "produces": [
@@ -1954,7 +1954,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/ent.MoneyTransfer"
+                                "$ref": "#/definitions/ent.Moneytransfer"
                             }
                         }
                     },
@@ -1984,12 +1984,12 @@ var doc = `{
                 "operationId": "create-moneyTransfer",
                 "parameters": [
                     {
-                        "description": "MoneyTransfer entity",
+                        "description": "Moneytransfer entity",
                         "name": "moneytransfer",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     }
                 ],
@@ -1997,7 +1997,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     },
                     "400": {
@@ -2015,7 +2015,7 @@ var doc = `{
                 }
             }
         },
-        "/moneyTransfers/{id}": {
+        "/moneytransfers/{id}": {
             "get": {
                 "description": "get moneytransfer by ID",
                 "produces": [
@@ -2026,7 +2026,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "MoneyTransfer ID",
+                        "description": "Moneytransfer ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2036,7 +2036,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     },
                     "400": {
@@ -2078,12 +2078,12 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "description": "MoneyTransfer entity",
+                        "description": "Moneytransfer entity",
                         "name": "moneytransfer",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     }
                 ],
@@ -2091,7 +2091,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ent.MoneyTransfer"
+                            "$ref": "#/definitions/ent.Moneytransfer"
                         }
                     },
                     "400": {
@@ -2118,7 +2118,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "MoneyTransfer ID",
+                        "description": "Moneytransfer ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -2571,7 +2571,7 @@ var doc = `{
                 "parameters": [
                     {
                         "description": "Payment entity",
-                        "name": "payment",
+                        "name": "Payment",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -3531,13 +3531,13 @@ var doc = `{
                 }
             }
         },
-        "ent.MoneyTransfer": {
+        "ent.Moneytransfer": {
             "type": "object",
             "properties": {
                 "edges": {
-                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the MoneyTransferQuery when eager-loading is set.",
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the MoneytransferQuery when eager-loading is set.",
                     "type": "object",
-                    "$ref": "#/definitions/ent.MoneyTransferEdges"
+                    "$ref": "#/definitions/ent.MoneytransferEdges"
                 },
                 "id": {
                     "description": "ID of the ent.",
@@ -3549,7 +3549,7 @@ var doc = `{
                 }
             }
         },
-        "ent.MoneyTransferEdges": {
+        "ent.MoneytransferEdges": {
             "type": "object",
             "properties": {
                 "moneytransferPayment": {
@@ -3718,10 +3718,10 @@ var doc = `{
                     "type": "object",
                     "$ref": "#/definitions/ent.Member"
                 },
-                "moneyTransfer": {
-                    "description": "MoneyTransfer holds the value of the MoneyTransfer edge.",
+                "moneytransfer": {
+                    "description": "Moneytransfer holds the value of the Moneytransfer edge.",
                     "type": "object",
-                    "$ref": "#/definitions/ent.MoneyTransfer"
+                    "$ref": "#/definitions/ent.Moneytransfer"
                 }
             }
         },

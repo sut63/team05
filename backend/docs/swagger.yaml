@@ -389,13 +389,13 @@ definitions:
           $ref: '#/definitions/ent.Recordinsurance'
         type: array
     type: object
-  ent.MoneyTransfer:
+  ent.Moneytransfer:
     properties:
       edges:
-        $ref: '#/definitions/ent.MoneyTransferEdges'
+        $ref: '#/definitions/ent.MoneytransferEdges'
         description: |-
           Edges holds the relations/edges for other nodes in the graph.
-          The values are being populated by the MoneyTransferQuery when eager-loading is set.
+          The values are being populated by the MoneytransferQuery when eager-loading is set.
         type: object
       id:
         description: ID of the ent.
@@ -405,7 +405,7 @@ definitions:
           field.
         type: string
     type: object
-  ent.MoneyTransferEdges:
+  ent.MoneytransferEdges:
     properties:
       moneytransferPayment:
         description: MoneytransferPayment holds the value of the moneytransfer_payment
@@ -538,9 +538,9 @@ definitions:
         $ref: '#/definitions/ent.Member'
         description: Member holds the value of the Member edge.
         type: object
-      moneyTransfer:
-        $ref: '#/definitions/ent.MoneyTransfer'
-        description: MoneyTransfer holds the value of the MoneyTransfer edge.
+      moneytransfer:
+        $ref: '#/definitions/ent.Moneytransfer'
+        description: Moneytransfer holds the value of the Moneytransfer edge.
         type: object
     type: object
   ent.Product:
@@ -1924,7 +1924,7 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a member entity by ID
-  /moneyTransfers:
+  /moneytransfers:
     get:
       description: list moneytransfer entities
       operationId: list-moneytransfer
@@ -1944,7 +1944,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/ent.MoneyTransfer'
+              $ref: '#/definitions/ent.Moneytransfer'
             type: array
         "400":
           description: Bad Request
@@ -1961,19 +1961,19 @@ paths:
       description: Create moneytransfer
       operationId: create-moneyTransfer
       parameters:
-      - description: MoneyTransfer entity
+      - description: Moneytransfer entity
         in: body
         name: moneytransfer
         required: true
         schema:
-          $ref: '#/definitions/ent.MoneyTransfer'
+          $ref: '#/definitions/ent.Moneytransfer'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.MoneyTransfer'
+            $ref: '#/definitions/ent.Moneytransfer'
         "400":
           description: Bad Request
           schema:
@@ -1983,12 +1983,12 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Create moneytransfer
-  /moneyTransfers/{id}:
+  /moneytransfers/{id}:
     delete:
       description: get moneytransfer by ID
       operationId: delete-moneytransfer
       parameters:
-      - description: MoneyTransfer ID
+      - description: Moneytransfer ID
         in: path
         name: id
         required: true
@@ -2017,7 +2017,7 @@ paths:
       description: get moneytransfer by ID
       operationId: get-moneytransfer
       parameters:
-      - description: MoneyTransfer ID
+      - description: Moneytransfer ID
         in: path
         name: id
         required: true
@@ -2028,7 +2028,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.MoneyTransfer'
+            $ref: '#/definitions/ent.Moneytransfer'
         "400":
           description: Bad Request
           schema:
@@ -2053,19 +2053,19 @@ paths:
         name: id
         required: true
         type: integer
-      - description: MoneyTransfer entity
+      - description: Moneytransfer entity
         in: body
         name: moneytransfer
         required: true
         schema:
-          $ref: '#/definitions/ent.MoneyTransfer'
+          $ref: '#/definitions/ent.Moneytransfer'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.MoneyTransfer'
+            $ref: '#/definitions/ent.Moneytransfer'
         "400":
           description: Bad Request
           schema:
@@ -2354,7 +2354,7 @@ paths:
       parameters:
       - description: Payment entity
         in: body
-        name: payment
+        name: Payment
         required: true
         schema:
           $ref: '#/definitions/controllers.Payment'

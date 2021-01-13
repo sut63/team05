@@ -189,16 +189,16 @@ var (
 		PrimaryKey:  []*schema.Column{MembersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
-	// MoneyTransfersColumns holds the columns for the "money_transfers" table.
-	MoneyTransfersColumns = []*schema.Column{
+	// MoneytransfersColumns holds the columns for the "moneytransfers" table.
+	MoneytransfersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "moneytransfer_type", Type: field.TypeString},
 	}
-	// MoneyTransfersTable holds the schema information for the "money_transfers" table.
-	MoneyTransfersTable = &schema.Table{
-		Name:        "money_transfers",
-		Columns:     MoneyTransfersColumns,
-		PrimaryKey:  []*schema.Column{MoneyTransfersColumns[0]},
+	// MoneytransfersTable holds the schema information for the "moneytransfers" table.
+	MoneytransfersTable = &schema.Table{
+		Name:        "moneytransfers",
+		Columns:     MoneytransfersColumns,
+		PrimaryKey:  []*schema.Column{MoneytransfersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
 	// OfficersColumns holds the columns for the "officers" table.
@@ -300,10 +300,10 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "payments_money_transfers_moneytransfer_payment",
+				Symbol:  "payments_moneytransfers_moneytransfer_payment",
 				Columns: []*schema.Column{PaymentsColumns[7]},
 
-				RefColumns: []*schema.Column{MoneyTransfersColumns[0]},
+				RefColumns: []*schema.Column{MoneytransfersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -412,7 +412,7 @@ var (
 		InquiriesTable,
 		InsurancesTable,
 		MembersTable,
-		MoneyTransfersTable,
+		MoneytransfersTable,
 		OfficersTable,
 		PaybacksTable,
 		PaymentsTable,
@@ -437,7 +437,7 @@ func init() {
 	PaymentsTable.ForeignKeys[0].RefTable = BanksTable
 	PaymentsTable.ForeignKeys[1].RefTable = InsurancesTable
 	PaymentsTable.ForeignKeys[2].RefTable = MembersTable
-	PaymentsTable.ForeignKeys[3].RefTable = MoneyTransfersTable
+	PaymentsTable.ForeignKeys[3].RefTable = MoneytransfersTable
 	ProductsTable.ForeignKeys[0].RefTable = GendersTable
 	ProductsTable.ForeignKeys[1].RefTable = GroupOfAgesTable
 	ProductsTable.ForeignKeys[2].RefTable = OfficersTable

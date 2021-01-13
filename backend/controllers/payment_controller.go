@@ -24,7 +24,7 @@ type PaymentController struct {
 type Payment struct {
 	BankID                int
 	MemberID              int
-	MoneyTransferID       int
+	MoneytransferID       int
 	InsuranceID           int
 	AccountName           string
 	AccountNumber         string
@@ -37,7 +37,7 @@ type Payment struct {
 // @ID create-payment
 // @Accept   json
 // @Produce  json
-// @Param payment body Payment true "Payment entity"
+// @Param Payment body Payment true "Payment entity"
 // @Success 200 {object} ent.Payment
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -75,9 +75,9 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 		return
 	}
 
-	mn, err := ctl.client.MoneyTransfer.
+	mn, err := ctl.client.Moneytransfer.
 		Query().
-		Where(moneytransfer.IDEQ(int(obj.MoneyTransferID))).
+		Where(moneytransfer.IDEQ(int(obj.MoneytransferID))).
 		Only(context.Background())
 
 	if err != nil {
@@ -105,7 +105,7 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 		Create().
 		SetBank(b).
 		SetMember(m).
-		SetMoneyTransfer(mn).
+		SetMoneytransfer(mn).
 		SetInsurance(in).
 		SetAccountName(obj.AccountName).
 		SetAccountNumber (obj.AccountNumber ).
@@ -155,7 +155,7 @@ func (ctl *PaymentController) ListPayment(c *gin.Context) {
 		Query().
 		WithBank().
 		WithMember().
-		WithMoneyTransfer().
+		WithMoneytransfer().
 		WithInsurance().
 		Limit(limit).
 		Offset(offset).

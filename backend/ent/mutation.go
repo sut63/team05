@@ -45,7 +45,7 @@ const (
 	TypeInquiry         = "Inquiry"
 	TypeInsurance       = "Insurance"
 	TypeMember          = "Member"
-	TypeMoneyTransfer   = "MoneyTransfer"
+	TypeMoneytransfer   = "Moneytransfer"
 	TypeOfficer         = "Officer"
 	TypePayback         = "Payback"
 	TypePayment         = "Payment"
@@ -4583,9 +4583,9 @@ func (m *MemberMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Member edge %s", name)
 }
 
-// MoneyTransferMutation represents an operation that mutate the MoneyTransfers
+// MoneytransferMutation represents an operation that mutate the Moneytransfers
 // nodes in the graph.
-type MoneyTransferMutation struct {
+type MoneytransferMutation struct {
 	config
 	op                           Op
 	typ                          string
@@ -4595,20 +4595,20 @@ type MoneyTransferMutation struct {
 	moneytransfer_payment        map[int]struct{}
 	removedmoneytransfer_payment map[int]struct{}
 	done                         bool
-	oldValue                     func(context.Context) (*MoneyTransfer, error)
+	oldValue                     func(context.Context) (*Moneytransfer, error)
 }
 
-var _ ent.Mutation = (*MoneyTransferMutation)(nil)
+var _ ent.Mutation = (*MoneytransferMutation)(nil)
 
 // moneytransferOption allows to manage the mutation configuration using functional options.
-type moneytransferOption func(*MoneyTransferMutation)
+type moneytransferOption func(*MoneytransferMutation)
 
-// newMoneyTransferMutation creates new mutation for $n.Name.
-func newMoneyTransferMutation(c config, op Op, opts ...moneytransferOption) *MoneyTransferMutation {
-	m := &MoneyTransferMutation{
+// newMoneytransferMutation creates new mutation for $n.Name.
+func newMoneytransferMutation(c config, op Op, opts ...moneytransferOption) *MoneytransferMutation {
+	m := &MoneytransferMutation{
 		config:        c,
 		op:            op,
-		typ:           TypeMoneyTransfer,
+		typ:           TypeMoneytransfer,
 		clearedFields: make(map[string]struct{}),
 	}
 	for _, opt := range opts {
@@ -4617,20 +4617,20 @@ func newMoneyTransferMutation(c config, op Op, opts ...moneytransferOption) *Mon
 	return m
 }
 
-// withMoneyTransferID sets the id field of the mutation.
-func withMoneyTransferID(id int) moneytransferOption {
-	return func(m *MoneyTransferMutation) {
+// withMoneytransferID sets the id field of the mutation.
+func withMoneytransferID(id int) moneytransferOption {
+	return func(m *MoneytransferMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *MoneyTransfer
+			value *Moneytransfer
 		)
-		m.oldValue = func(ctx context.Context) (*MoneyTransfer, error) {
+		m.oldValue = func(ctx context.Context) (*Moneytransfer, error) {
 			once.Do(func() {
 				if m.done {
 					err = fmt.Errorf("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().MoneyTransfer.Get(ctx, id)
+					value, err = m.Client().Moneytransfer.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -4639,10 +4639,10 @@ func withMoneyTransferID(id int) moneytransferOption {
 	}
 }
 
-// withMoneyTransfer sets the old MoneyTransfer of the mutation.
-func withMoneyTransfer(node *MoneyTransfer) moneytransferOption {
-	return func(m *MoneyTransferMutation) {
-		m.oldValue = func(context.Context) (*MoneyTransfer, error) {
+// withMoneytransfer sets the old Moneytransfer of the mutation.
+func withMoneytransfer(node *Moneytransfer) moneytransferOption {
+	return func(m *MoneytransferMutation) {
+		m.oldValue = func(context.Context) (*Moneytransfer, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -4651,7 +4651,7 @@ func withMoneyTransfer(node *MoneyTransfer) moneytransferOption {
 
 // Client returns a new `ent.Client` from the mutation. If the mutation was
 // executed in a transaction (ent.Tx), a transactional client is returned.
-func (m MoneyTransferMutation) Client() *Client {
+func (m MoneytransferMutation) Client() *Client {
 	client := &Client{config: m.config}
 	client.init()
 	return client
@@ -4659,7 +4659,7 @@ func (m MoneyTransferMutation) Client() *Client {
 
 // Tx returns an `ent.Tx` for mutations that were executed in transactions;
 // it returns an error otherwise.
-func (m MoneyTransferMutation) Tx() (*Tx, error) {
+func (m MoneytransferMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
 		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
 	}
@@ -4670,7 +4670,7 @@ func (m MoneyTransferMutation) Tx() (*Tx, error) {
 
 // ID returns the id value in the mutation. Note that, the id
 // is available only if it was provided to the builder.
-func (m *MoneyTransferMutation) ID() (id int, exists bool) {
+func (m *MoneytransferMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -4678,12 +4678,12 @@ func (m *MoneyTransferMutation) ID() (id int, exists bool) {
 }
 
 // SetMoneytransferType sets the moneytransfer_type field.
-func (m *MoneyTransferMutation) SetMoneytransferType(s string) {
+func (m *MoneytransferMutation) SetMoneytransferType(s string) {
 	m.moneytransfer_type = &s
 }
 
 // MoneytransferType returns the moneytransfer_type value in the mutation.
-func (m *MoneyTransferMutation) MoneytransferType() (r string, exists bool) {
+func (m *MoneytransferMutation) MoneytransferType() (r string, exists bool) {
 	v := m.moneytransfer_type
 	if v == nil {
 		return
@@ -4691,11 +4691,11 @@ func (m *MoneyTransferMutation) MoneytransferType() (r string, exists bool) {
 	return *v, true
 }
 
-// OldMoneytransferType returns the old moneytransfer_type value of the MoneyTransfer.
-// If the MoneyTransfer object wasn't provided to the builder, the object is fetched
+// OldMoneytransferType returns the old moneytransfer_type value of the Moneytransfer.
+// If the Moneytransfer object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *MoneyTransferMutation) OldMoneytransferType(ctx context.Context) (v string, err error) {
+func (m *MoneytransferMutation) OldMoneytransferType(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldMoneytransferType is allowed only on UpdateOne operations")
 	}
@@ -4710,12 +4710,12 @@ func (m *MoneyTransferMutation) OldMoneytransferType(ctx context.Context) (v str
 }
 
 // ResetMoneytransferType reset all changes of the "moneytransfer_type" field.
-func (m *MoneyTransferMutation) ResetMoneytransferType() {
+func (m *MoneytransferMutation) ResetMoneytransferType() {
 	m.moneytransfer_type = nil
 }
 
 // AddMoneytransferPaymentIDs adds the moneytransfer_payment edge to Payment by ids.
-func (m *MoneyTransferMutation) AddMoneytransferPaymentIDs(ids ...int) {
+func (m *MoneytransferMutation) AddMoneytransferPaymentIDs(ids ...int) {
 	if m.moneytransfer_payment == nil {
 		m.moneytransfer_payment = make(map[int]struct{})
 	}
@@ -4725,7 +4725,7 @@ func (m *MoneyTransferMutation) AddMoneytransferPaymentIDs(ids ...int) {
 }
 
 // RemoveMoneytransferPaymentIDs removes the moneytransfer_payment edge to Payment by ids.
-func (m *MoneyTransferMutation) RemoveMoneytransferPaymentIDs(ids ...int) {
+func (m *MoneytransferMutation) RemoveMoneytransferPaymentIDs(ids ...int) {
 	if m.removedmoneytransfer_payment == nil {
 		m.removedmoneytransfer_payment = make(map[int]struct{})
 	}
@@ -4735,7 +4735,7 @@ func (m *MoneyTransferMutation) RemoveMoneytransferPaymentIDs(ids ...int) {
 }
 
 // RemovedMoneytransferPayment returns the removed ids of moneytransfer_payment.
-func (m *MoneyTransferMutation) RemovedMoneytransferPaymentIDs() (ids []int) {
+func (m *MoneytransferMutation) RemovedMoneytransferPaymentIDs() (ids []int) {
 	for id := range m.removedmoneytransfer_payment {
 		ids = append(ids, id)
 	}
@@ -4743,7 +4743,7 @@ func (m *MoneyTransferMutation) RemovedMoneytransferPaymentIDs() (ids []int) {
 }
 
 // MoneytransferPaymentIDs returns the moneytransfer_payment ids in the mutation.
-func (m *MoneyTransferMutation) MoneytransferPaymentIDs() (ids []int) {
+func (m *MoneytransferMutation) MoneytransferPaymentIDs() (ids []int) {
 	for id := range m.moneytransfer_payment {
 		ids = append(ids, id)
 	}
@@ -4751,25 +4751,25 @@ func (m *MoneyTransferMutation) MoneytransferPaymentIDs() (ids []int) {
 }
 
 // ResetMoneytransferPayment reset all changes of the "moneytransfer_payment" edge.
-func (m *MoneyTransferMutation) ResetMoneytransferPayment() {
+func (m *MoneytransferMutation) ResetMoneytransferPayment() {
 	m.moneytransfer_payment = nil
 	m.removedmoneytransfer_payment = nil
 }
 
 // Op returns the operation name.
-func (m *MoneyTransferMutation) Op() Op {
+func (m *MoneytransferMutation) Op() Op {
 	return m.op
 }
 
-// Type returns the node type of this mutation (MoneyTransfer).
-func (m *MoneyTransferMutation) Type() string {
+// Type returns the node type of this mutation (Moneytransfer).
+func (m *MoneytransferMutation) Type() string {
 	return m.typ
 }
 
 // Fields returns all fields that were changed during
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
-func (m *MoneyTransferMutation) Fields() []string {
+func (m *MoneytransferMutation) Fields() []string {
 	fields := make([]string, 0, 1)
 	if m.moneytransfer_type != nil {
 		fields = append(fields, moneytransfer.FieldMoneytransferType)
@@ -4780,7 +4780,7 @@ func (m *MoneyTransferMutation) Fields() []string {
 // Field returns the value of a field with the given name.
 // The second boolean value indicates that this field was
 // not set, or was not define in the schema.
-func (m *MoneyTransferMutation) Field(name string) (ent.Value, bool) {
+func (m *MoneytransferMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case moneytransfer.FieldMoneytransferType:
 		return m.MoneytransferType()
@@ -4791,18 +4791,18 @@ func (m *MoneyTransferMutation) Field(name string) (ent.Value, bool) {
 // OldField returns the old value of the field from the database.
 // An error is returned if the mutation operation is not UpdateOne,
 // or the query to the database was failed.
-func (m *MoneyTransferMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+func (m *MoneytransferMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
 	case moneytransfer.FieldMoneytransferType:
 		return m.OldMoneytransferType(ctx)
 	}
-	return nil, fmt.Errorf("unknown MoneyTransfer field %s", name)
+	return nil, fmt.Errorf("unknown Moneytransfer field %s", name)
 }
 
 // SetField sets the value for the given name. It returns an
 // error if the field is not defined in the schema, or if the
 // type mismatch the field type.
-func (m *MoneyTransferMutation) SetField(name string, value ent.Value) error {
+func (m *MoneytransferMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case moneytransfer.FieldMoneytransferType:
 		v, ok := value.(string)
@@ -4812,65 +4812,65 @@ func (m *MoneyTransferMutation) SetField(name string, value ent.Value) error {
 		m.SetMoneytransferType(v)
 		return nil
 	}
-	return fmt.Errorf("unknown MoneyTransfer field %s", name)
+	return fmt.Errorf("unknown Moneytransfer field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented
 // or decremented during this mutation.
-func (m *MoneyTransferMutation) AddedFields() []string {
+func (m *MoneytransferMutation) AddedFields() []string {
 	return nil
 }
 
 // AddedField returns the numeric value that was in/decremented
 // from a field with the given name. The second value indicates
 // that this field was not set, or was not define in the schema.
-func (m *MoneyTransferMutation) AddedField(name string) (ent.Value, bool) {
+func (m *MoneytransferMutation) AddedField(name string) (ent.Value, bool) {
 	return nil, false
 }
 
 // AddField adds the value for the given name. It returns an
 // error if the field is not defined in the schema, or if the
 // type mismatch the field type.
-func (m *MoneyTransferMutation) AddField(name string, value ent.Value) error {
+func (m *MoneytransferMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	}
-	return fmt.Errorf("unknown MoneyTransfer numeric field %s", name)
+	return fmt.Errorf("unknown Moneytransfer numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared
 // during this mutation.
-func (m *MoneyTransferMutation) ClearedFields() []string {
+func (m *MoneytransferMutation) ClearedFields() []string {
 	return nil
 }
 
 // FieldCleared returns a boolean indicates if this field was
 // cleared in this mutation.
-func (m *MoneyTransferMutation) FieldCleared(name string) bool {
+func (m *MoneytransferMutation) FieldCleared(name string) bool {
 	_, ok := m.clearedFields[name]
 	return ok
 }
 
 // ClearField clears the value for the given name. It returns an
 // error if the field is not defined in the schema.
-func (m *MoneyTransferMutation) ClearField(name string) error {
-	return fmt.Errorf("unknown MoneyTransfer nullable field %s", name)
+func (m *MoneytransferMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Moneytransfer nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation regarding the
 // given field name. It returns an error if the field is not
 // defined in the schema.
-func (m *MoneyTransferMutation) ResetField(name string) error {
+func (m *MoneytransferMutation) ResetField(name string) error {
 	switch name {
 	case moneytransfer.FieldMoneytransferType:
 		m.ResetMoneytransferType()
 		return nil
 	}
-	return fmt.Errorf("unknown MoneyTransfer field %s", name)
+	return fmt.Errorf("unknown Moneytransfer field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
-func (m *MoneyTransferMutation) AddedEdges() []string {
+func (m *MoneytransferMutation) AddedEdges() []string {
 	edges := make([]string, 0, 1)
 	if m.moneytransfer_payment != nil {
 		edges = append(edges, moneytransfer.EdgeMoneytransferPayment)
@@ -4880,7 +4880,7 @@ func (m *MoneyTransferMutation) AddedEdges() []string {
 
 // AddedIDs returns all ids (to other nodes) that were added for
 // the given edge name.
-func (m *MoneyTransferMutation) AddedIDs(name string) []ent.Value {
+func (m *MoneytransferMutation) AddedIDs(name string) []ent.Value {
 	switch name {
 	case moneytransfer.EdgeMoneytransferPayment:
 		ids := make([]ent.Value, 0, len(m.moneytransfer_payment))
@@ -4894,7 +4894,7 @@ func (m *MoneyTransferMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
-func (m *MoneyTransferMutation) RemovedEdges() []string {
+func (m *MoneytransferMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 1)
 	if m.removedmoneytransfer_payment != nil {
 		edges = append(edges, moneytransfer.EdgeMoneytransferPayment)
@@ -4904,7 +4904,7 @@ func (m *MoneyTransferMutation) RemovedEdges() []string {
 
 // RemovedIDs returns all ids (to other nodes) that were removed for
 // the given edge name.
-func (m *MoneyTransferMutation) RemovedIDs(name string) []ent.Value {
+func (m *MoneytransferMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
 	case moneytransfer.EdgeMoneytransferPayment:
 		ids := make([]ent.Value, 0, len(m.removedmoneytransfer_payment))
@@ -4918,14 +4918,14 @@ func (m *MoneyTransferMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
-func (m *MoneyTransferMutation) ClearedEdges() []string {
+func (m *MoneytransferMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 1)
 	return edges
 }
 
 // EdgeCleared returns a boolean indicates if this edge was
 // cleared in this mutation.
-func (m *MoneyTransferMutation) EdgeCleared(name string) bool {
+func (m *MoneytransferMutation) EdgeCleared(name string) bool {
 	switch name {
 	}
 	return false
@@ -4933,22 +4933,22 @@ func (m *MoneyTransferMutation) EdgeCleared(name string) bool {
 
 // ClearEdge clears the value for the given name. It returns an
 // error if the edge name is not defined in the schema.
-func (m *MoneyTransferMutation) ClearEdge(name string) error {
+func (m *MoneytransferMutation) ClearEdge(name string) error {
 	switch name {
 	}
-	return fmt.Errorf("unknown MoneyTransfer unique edge %s", name)
+	return fmt.Errorf("unknown Moneytransfer unique edge %s", name)
 }
 
 // ResetEdge resets all changes in the mutation regarding the
 // given edge name. It returns an error if the edge is not
 // defined in the schema.
-func (m *MoneyTransferMutation) ResetEdge(name string) error {
+func (m *MoneytransferMutation) ResetEdge(name string) error {
 	switch name {
 	case moneytransfer.EdgeMoneytransferPayment:
 		m.ResetMoneytransferPayment()
 		return nil
 	}
-	return fmt.Errorf("unknown MoneyTransfer edge %s", name)
+	return fmt.Errorf("unknown Moneytransfer edge %s", name)
 }
 
 // OfficerMutation represents an operation that mutate the Officers
@@ -6296,8 +6296,8 @@ type PaymentMutation struct {
 	clearedFields         map[string]struct{}
 	_Insurance            *int
 	cleared_Insurance     bool
-	_MoneyTransfer        *int
-	cleared_MoneyTransfer bool
+	_Moneytransfer        *int
+	cleared_Moneytransfer bool
 	_Bank                 *int
 	cleared_Bank          bool
 	_Member               *int
@@ -6535,43 +6535,43 @@ func (m *PaymentMutation) ResetInsurance() {
 	m.cleared_Insurance = false
 }
 
-// SetMoneyTransferID sets the MoneyTransfer edge to MoneyTransfer by id.
-func (m *PaymentMutation) SetMoneyTransferID(id int) {
-	m._MoneyTransfer = &id
+// SetMoneytransferID sets the Moneytransfer edge to Moneytransfer by id.
+func (m *PaymentMutation) SetMoneytransferID(id int) {
+	m._Moneytransfer = &id
 }
 
-// ClearMoneyTransfer clears the MoneyTransfer edge to MoneyTransfer.
-func (m *PaymentMutation) ClearMoneyTransfer() {
-	m.cleared_MoneyTransfer = true
+// ClearMoneytransfer clears the Moneytransfer edge to Moneytransfer.
+func (m *PaymentMutation) ClearMoneytransfer() {
+	m.cleared_Moneytransfer = true
 }
 
-// MoneyTransferCleared returns if the edge MoneyTransfer was cleared.
-func (m *PaymentMutation) MoneyTransferCleared() bool {
-	return m.cleared_MoneyTransfer
+// MoneytransferCleared returns if the edge Moneytransfer was cleared.
+func (m *PaymentMutation) MoneytransferCleared() bool {
+	return m.cleared_Moneytransfer
 }
 
-// MoneyTransferID returns the MoneyTransfer id in the mutation.
-func (m *PaymentMutation) MoneyTransferID() (id int, exists bool) {
-	if m._MoneyTransfer != nil {
-		return *m._MoneyTransfer, true
+// MoneytransferID returns the Moneytransfer id in the mutation.
+func (m *PaymentMutation) MoneytransferID() (id int, exists bool) {
+	if m._Moneytransfer != nil {
+		return *m._Moneytransfer, true
 	}
 	return
 }
 
-// MoneyTransferIDs returns the MoneyTransfer ids in the mutation.
+// MoneytransferIDs returns the Moneytransfer ids in the mutation.
 // Note that ids always returns len(ids) <= 1 for unique edges, and you should use
-// MoneyTransferID instead. It exists only for internal usage by the builders.
-func (m *PaymentMutation) MoneyTransferIDs() (ids []int) {
-	if id := m._MoneyTransfer; id != nil {
+// MoneytransferID instead. It exists only for internal usage by the builders.
+func (m *PaymentMutation) MoneytransferIDs() (ids []int) {
+	if id := m._Moneytransfer; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetMoneyTransfer reset all changes of the "MoneyTransfer" edge.
-func (m *PaymentMutation) ResetMoneyTransfer() {
-	m._MoneyTransfer = nil
-	m.cleared_MoneyTransfer = false
+// ResetMoneytransfer reset all changes of the "Moneytransfer" edge.
+func (m *PaymentMutation) ResetMoneytransfer() {
+	m._Moneytransfer = nil
+	m.cleared_Moneytransfer = false
 }
 
 // SetBankID sets the Bank edge to Bank by id.
@@ -6805,8 +6805,8 @@ func (m *PaymentMutation) AddedEdges() []string {
 	if m._Insurance != nil {
 		edges = append(edges, payment.EdgeInsurance)
 	}
-	if m._MoneyTransfer != nil {
-		edges = append(edges, payment.EdgeMoneyTransfer)
+	if m._Moneytransfer != nil {
+		edges = append(edges, payment.EdgeMoneytransfer)
 	}
 	if m._Bank != nil {
 		edges = append(edges, payment.EdgeBank)
@@ -6825,8 +6825,8 @@ func (m *PaymentMutation) AddedIDs(name string) []ent.Value {
 		if id := m._Insurance; id != nil {
 			return []ent.Value{*id}
 		}
-	case payment.EdgeMoneyTransfer:
-		if id := m._MoneyTransfer; id != nil {
+	case payment.EdgeMoneytransfer:
+		if id := m._Moneytransfer; id != nil {
 			return []ent.Value{*id}
 		}
 	case payment.EdgeBank:
@@ -6863,8 +6863,8 @@ func (m *PaymentMutation) ClearedEdges() []string {
 	if m.cleared_Insurance {
 		edges = append(edges, payment.EdgeInsurance)
 	}
-	if m.cleared_MoneyTransfer {
-		edges = append(edges, payment.EdgeMoneyTransfer)
+	if m.cleared_Moneytransfer {
+		edges = append(edges, payment.EdgeMoneytransfer)
 	}
 	if m.cleared_Bank {
 		edges = append(edges, payment.EdgeBank)
@@ -6881,8 +6881,8 @@ func (m *PaymentMutation) EdgeCleared(name string) bool {
 	switch name {
 	case payment.EdgeInsurance:
 		return m.cleared_Insurance
-	case payment.EdgeMoneyTransfer:
-		return m.cleared_MoneyTransfer
+	case payment.EdgeMoneytransfer:
+		return m.cleared_Moneytransfer
 	case payment.EdgeBank:
 		return m.cleared_Bank
 	case payment.EdgeMember:
@@ -6898,8 +6898,8 @@ func (m *PaymentMutation) ClearEdge(name string) error {
 	case payment.EdgeInsurance:
 		m.ClearInsurance()
 		return nil
-	case payment.EdgeMoneyTransfer:
-		m.ClearMoneyTransfer()
+	case payment.EdgeMoneytransfer:
+		m.ClearMoneytransfer()
 		return nil
 	case payment.EdgeBank:
 		m.ClearBank()
@@ -6919,8 +6919,8 @@ func (m *PaymentMutation) ResetEdge(name string) error {
 	case payment.EdgeInsurance:
 		m.ResetInsurance()
 		return nil
-	case payment.EdgeMoneyTransfer:
-		m.ResetMoneyTransfer()
+	case payment.EdgeMoneytransfer:
+		m.ResetMoneytransfer()
 		return nil
 	case payment.EdgeBank:
 		m.ResetBank()

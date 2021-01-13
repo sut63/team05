@@ -33,8 +33,8 @@ type Insurance func(*sql.Selector)
 // Member is the predicate function for member builders.
 type Member func(*sql.Selector)
 
-// MoneyTransfer is the predicate function for moneytransfer builders.
-type MoneyTransfer func(*sql.Selector)
+// Moneytransfer is the predicate function for moneytransfer builders.
+type Moneytransfer func(*sql.Selector)
 
 // Officer is the predicate function for officer builders.
 type Officer func(*sql.Selector)

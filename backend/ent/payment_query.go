@@ -29,7 +29,7 @@ type PaymentQuery struct {
 	predicates []predicate.Payment
 	// eager-loading edges.
 	withInsurance     *InsuranceQuery
-	withMoneyTransfer *MoneyTransferQuery
+	withMoneytransfer *MoneytransferQuery
 	withBank          *BankQuery
 	withMember        *MemberQuery
 	withFKs           bool
@@ -80,9 +80,9 @@ func (pq *PaymentQuery) QueryInsurance() *InsuranceQuery {
 	return query
 }
 
-// QueryMoneyTransfer chains the current query on the MoneyTransfer edge.
-func (pq *PaymentQuery) QueryMoneyTransfer() *MoneyTransferQuery {
-	query := &MoneyTransferQuery{config: pq.config}
+// QueryMoneytransfer chains the current query on the Moneytransfer edge.
+func (pq *PaymentQuery) QueryMoneytransfer() *MoneytransferQuery {
+	query := &MoneytransferQuery{config: pq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -90,7 +90,7 @@ func (pq *PaymentQuery) QueryMoneyTransfer() *MoneyTransferQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(payment.Table, payment.FieldID, pq.sqlQuery()),
 			sqlgraph.To(moneytransfer.Table, moneytransfer.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, payment.MoneyTransferTable, payment.MoneyTransferColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, payment.MoneytransferTable, payment.MoneytransferColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -324,14 +324,14 @@ func (pq *PaymentQuery) WithInsurance(opts ...func(*InsuranceQuery)) *PaymentQue
 	return pq
 }
 
-//  WithMoneyTransfer tells the query-builder to eager-loads the nodes that are connected to
-// the "MoneyTransfer" edge. The optional arguments used to configure the query builder of the edge.
-func (pq *PaymentQuery) WithMoneyTransfer(opts ...func(*MoneyTransferQuery)) *PaymentQuery {
-	query := &MoneyTransferQuery{config: pq.config}
+//  WithMoneytransfer tells the query-builder to eager-loads the nodes that are connected to
+// the "Moneytransfer" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *PaymentQuery) WithMoneytransfer(opts ...func(*MoneytransferQuery)) *PaymentQuery {
+	query := &MoneytransferQuery{config: pq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withMoneyTransfer = query
+	pq.withMoneytransfer = query
 	return pq
 }
 
@@ -426,12 +426,12 @@ func (pq *PaymentQuery) sqlAll(ctx context.Context) ([]*Payment, error) {
 		_spec       = pq.querySpec()
 		loadedTypes = [4]bool{
 			pq.withInsurance != nil,
-			pq.withMoneyTransfer != nil,
+			pq.withMoneytransfer != nil,
 			pq.withBank != nil,
 			pq.withMember != nil,
 		}
 	)
-	if pq.withInsurance != nil || pq.withMoneyTransfer != nil || pq.withBank != nil || pq.withMember != nil {
+	if pq.withInsurance != nil || pq.withMoneytransfer != nil || pq.withBank != nil || pq.withMember != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -486,7 +486,7 @@ func (pq *PaymentQuery) sqlAll(ctx context.Context) ([]*Payment, error) {
 		}
 	}
 
-	if query := pq.withMoneyTransfer; query != nil {
+	if query := pq.withMoneytransfer; query != nil {
 		ids := make([]int, 0, len(nodes))
 		nodeids := make(map[int][]*Payment)
 		for i := range nodes {
@@ -506,7 +506,7 @@ func (pq *PaymentQuery) sqlAll(ctx context.Context) ([]*Payment, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "moneytransfer_id" returned %v`, n.ID)
 			}
 			for i := range nodes {
-				nodes[i].Edges.MoneyTransfer = n
+				nodes[i].Edges.Moneytransfer = n
 			}
 		}
 	}
