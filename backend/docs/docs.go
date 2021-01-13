@@ -261,12 +261,12 @@ var doc = `{
         },
         "/banks": {
             "get": {
-                "description": "list Bank entities",
+                "description": "list bank entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List Bank entities",
-                "operationId": "list-Bank",
+                "summary": "List bank entities",
+                "operationId": "list-bank",
                 "parameters": [
                     {
                         "type": "integer",
@@ -306,19 +306,19 @@ var doc = `{
                 }
             },
             "post": {
-                "description": "Create Bank",
+                "description": "Create bank",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create Bank",
-                "operationId": "create-Bank",
+                "summary": "Create bank",
+                "operationId": "create-bank",
                 "parameters": [
                     {
                         "description": "Bank entity",
-                        "name": "Bank",
+                        "name": "bank",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -350,12 +350,12 @@ var doc = `{
         },
         "/banks/{id}": {
             "get": {
-                "description": "get Bank by ID",
+                "description": "get bank by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get a Bank entity by ID",
-                "operationId": "get-Bank",
+                "summary": "Get a bank entity by ID",
+                "operationId": "get-bank",
                 "parameters": [
                     {
                         "type": "integer",
@@ -393,15 +393,15 @@ var doc = `{
                 }
             },
             "put": {
-                "description": "update Bank by ID",
+                "description": "update bank by ID",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Update a Bank entity by ID",
-                "operationId": "update-Bank",
+                "summary": "Update a bank entity by ID",
+                "operationId": "update-bank",
                 "parameters": [
                     {
                         "type": "integer",
@@ -412,7 +412,7 @@ var doc = `{
                     },
                     {
                         "description": "Bank entity",
-                        "name": "Bank",
+                        "name": "bank",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -442,12 +442,12 @@ var doc = `{
                 }
             },
             "delete": {
-                "description": "get Bank by ID",
+                "description": "get bank by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete a Bank entity by ID",
-                "operationId": "delete-Bank",
+                "summary": "Delete a bank entity by ID",
+                "operationId": "delete-bank",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1928,12 +1928,12 @@ var doc = `{
         },
         "/moneyTransfers": {
             "get": {
-                "description": "list MoneyTransfer entities",
+                "description": "list moneytransfer entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List MoneyTransfer entities",
-                "operationId": "list-MoneyTransfer",
+                "summary": "List moneytransfer entities",
+                "operationId": "list-moneytransfer",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1973,19 +1973,19 @@ var doc = `{
                 }
             },
             "post": {
-                "description": "Create MoneyTransfer",
+                "description": "Create moneytransfer",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create MoneyTransfer",
-                "operationId": "create-MoneyTransfer",
+                "summary": "Create moneytransfer",
+                "operationId": "create-moneyTransfer",
                 "parameters": [
                     {
                         "description": "MoneyTransfer entity",
-                        "name": "MoneyTransfer",
+                        "name": "moneytransfer",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -2017,12 +2017,12 @@ var doc = `{
         },
         "/moneyTransfers/{id}": {
             "get": {
-                "description": "get MoneyTransfer by ID",
+                "description": "get moneytransfer by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get a MoneyTransfer entity by ID",
-                "operationId": "get-MoneyTransfer",
+                "summary": "Get a moneytransfer entity by ID",
+                "operationId": "get-moneytransfer",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2060,26 +2060,26 @@ var doc = `{
                 }
             },
             "put": {
-                "description": "update MoneyTransfer by ID",
+                "description": "update moneytransfer by ID",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Update a MoneyTransfer entity by ID",
-                "operationId": "update-MoneyTransfer",
+                "summary": "Update a moneytransfer entity by ID",
+                "operationId": "update-moneytransfer",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "MoneyTransfer ID",
+                        "description": "moneytransfer ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "description": "MoneyTransfer entity",
-                        "name": "MoneyTransfer",
+                        "name": "moneytransfer",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -2109,12 +2109,12 @@ var doc = `{
                 }
             },
             "delete": {
-                "description": "get MoneyTransfer by ID",
+                "description": "get moneytransfer by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete a MoneyTransfer entity by ID",
-                "operationId": "delete-MoneyTransfer",
+                "summary": "Delete a moneytransfer entity by ID",
+                "operationId": "delete-moneytransfer",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2514,12 +2514,12 @@ var doc = `{
         },
         "/payments": {
             "get": {
-                "description": "list Payment entities",
+                "description": "list payment entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List Payment entities",
-                "operationId": "list-Payment",
+                "summary": "List payment entities",
+                "operationId": "list-payment",
                 "parameters": [
                     {
                         "type": "integer",
@@ -2559,19 +2559,19 @@ var doc = `{
                 }
             },
             "post": {
-                "description": "Create Payment",
+                "description": "Create payment",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create Payment",
-                "operationId": "create-Payment",
+                "summary": "Create payment",
+                "operationId": "create-payment",
                 "parameters": [
                     {
                         "description": "Payment entity",
-                        "name": "Payment",
+                        "name": "payment",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -2603,12 +2603,12 @@ var doc = `{
         },
         "/payments/{id}": {
             "delete": {
-                "description": "get Payment by ID",
+                "description": "get payment by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete a Payment entity by ID",
-                "operationId": "delete-Payment",
+                "summary": "Delete a payment entity by ID",
+                "operationId": "delete-payment",
                 "parameters": [
                     {
                         "type": "integer",
