@@ -177,6 +177,11 @@ func (pc *ProductCreate) Save(ctx context.Context) (*Product, error) {
 	if _, ok := pc.mutation.ProductName(); !ok {
 		return nil, &ValidationError{Name: "product_name", err: errors.New("ent: missing required field \"product_name\"")}
 	}
+	if v, ok := pc.mutation.ProductName(); ok {
+		if err := product.ProductNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "product_name", err: fmt.Errorf("ent: validator failed for field \"product_name\": %w", err)}
+		}
+	}
 	if _, ok := pc.mutation.ProductPrice(); !ok {
 		return nil, &ValidationError{Name: "product_price", err: errors.New("ent: missing required field \"product_price\"")}
 	}

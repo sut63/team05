@@ -47,7 +47,7 @@ var (
 	// GendersColumns holds the columns for the "genders" table.
 	GendersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "gender_name", Type: field.TypeString, Unique: true},
+		{Name: "gender_name", Type: field.TypeString},
 	}
 	// GendersTable holds the schema information for the "genders" table.
 	GendersTable = &schema.Table{
@@ -59,7 +59,7 @@ var (
 	// GroupOfAgesColumns holds the columns for the "group_of_ages" table.
 	GroupOfAgesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "group_of_age_name", Type: field.TypeString, Unique: true},
+		{Name: "group_of_age_name", Type: field.TypeString},
 		{Name: "group_of_age_age", Type: field.TypeString},
 	}
 	// GroupOfAgesTable holds the schema information for the "group_of_ages" table.
@@ -311,7 +311,7 @@ var (
 	// ProductsColumns holds the columns for the "products" table.
 	ProductsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "product_name", Type: field.TypeString, Unique: true},
+		{Name: "product_name", Type: field.TypeString},
 		{Name: "product_price", Type: field.TypeInt},
 		{Name: "product_time", Type: field.TypeInt},
 		{Name: "product_payment_of_year", Type: field.TypeInt},

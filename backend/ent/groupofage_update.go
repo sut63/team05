@@ -77,6 +77,16 @@ func (goau *GroupOfAgeUpdate) RemoveGroupofageProduct(p ...*Product) *GroupOfAge
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (goau *GroupOfAgeUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := goau.mutation.GroupOfAgeName(); ok {
+		if err := groupofage.GroupOfAgeNameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "group_of_age_name", err: fmt.Errorf("ent: validator failed for field \"group_of_age_name\": %w", err)}
+		}
+	}
+	if v, ok := goau.mutation.GroupOfAgeAge(); ok {
+		if err := groupofage.GroupOfAgeAgeValidator(v); err != nil {
+			return 0, &ValidationError{Name: "group_of_age_age", err: fmt.Errorf("ent: validator failed for field \"group_of_age_age\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -264,6 +274,16 @@ func (goauo *GroupOfAgeUpdateOne) RemoveGroupofageProduct(p ...*Product) *GroupO
 
 // Save executes the query and returns the updated entity.
 func (goauo *GroupOfAgeUpdateOne) Save(ctx context.Context) (*GroupOfAge, error) {
+	if v, ok := goauo.mutation.GroupOfAgeName(); ok {
+		if err := groupofage.GroupOfAgeNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "group_of_age_name", err: fmt.Errorf("ent: validator failed for field \"group_of_age_name\": %w", err)}
+		}
+	}
+	if v, ok := goauo.mutation.GroupOfAgeAge(); ok {
+		if err := groupofage.GroupOfAgeAgeValidator(v); err != nil {
+			return nil, &ValidationError{Name: "group_of_age_age", err: fmt.Errorf("ent: validator failed for field \"group_of_age_age\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
