@@ -10,33 +10,33 @@ import (
 	"github.com/sut63/team05/ent/moneytransfer"
 )
 
-// MoneyTransferController defines the struct for the MoneyTransfer controller
-type MoneyTransferController struct {
+// MoneytransferController defines the struct for the Moneytransfer controller
+type MoneytransferController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-// CreateMoneyTransfer handles POST requests for adding moneytransfer entities
+// CreateMoneytransfer handles POST requests for adding moneytransfer entities
 // @Summary Create moneytransfer
 // @Description Create moneytransfer
 // @ID create-moneyTransfer
 // @Accept   json
 // @Produce  json
-// @Param moneytransfer body ent.MoneyTransfer true "MoneyTransfer entity"
-// @Success 200 {object} ent.MoneyTransfer
+// @Param moneytransfer body ent.Moneytransfer true "Moneytransfer entity"
+// @Success 200 {object} ent.Moneytransfer
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /moneyTransfers [post]
-func (ctl *MoneyTransferController) CreateMoneyTransfer(c *gin.Context) {
-	obj := ent.MoneyTransfer{}
+// @Router /moneytransfers [post]
+func (ctl *MoneytransferController) CreateMoneytransfer(c *gin.Context) {
+	obj := ent.Moneytransfer{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "moneyTransfer binding failed",
+			"error": "moneytransfer binding failed",
 		})
 		return
 	}
 
-	m, err := ctl.client.MoneyTransfer.
+	m, err := ctl.client.Moneytransfer.
 		Create().
 		SetMoneytransferType(obj.MoneytransferType).
 		Save(context.Background())
@@ -50,18 +50,18 @@ func (ctl *MoneyTransferController) CreateMoneyTransfer(c *gin.Context) {
 	c.JSON(200, m)
 }
 
-// GetMoneyTransfer handles GET requests to retrieve a moneytransfer entity
+// GetMoneytransfer handles GET requests to retrieve a moneytransfer entity
 // @Summary Get a moneytransfer entity by ID
 // @Description get moneytransfer by ID
 // @ID get-moneytransfer
 // @Produce  json
-// @Param id path int true "MoneyTransfer ID"
-// @Success 200 {object} ent.MoneyTransfer
+// @Param id path int true "Moneytransfer ID"
+// @Success 200 {object} ent.Moneytransfer
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /moneyTransfers/{id} [get]
-func (ctl *MoneyTransferController) GetMoneyTransfer(c *gin.Context) {
+// @Router /moneytransfers/{id} [get]
+func (ctl *MoneytransferController) GetMoneytransfer(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -70,7 +70,7 @@ func (ctl *MoneyTransferController) GetMoneyTransfer(c *gin.Context) {
 		return
 	}
 
-	m, err := ctl.client.MoneyTransfer.
+	m, err := ctl.client.Moneytransfer.
 		Query().
 		Where(moneytransfer.IDEQ(int(id))).
 		Only(context.Background())
@@ -84,18 +84,18 @@ func (ctl *MoneyTransferController) GetMoneyTransfer(c *gin.Context) {
 	c.JSON(200, m)
 }
 
-// ListMoneyTransfer handles request to get a list of moneytransfer entities
+// ListMoneytransfer handles request to get a list of moneytransfer entities
 // @Summary List moneytransfer entities
 // @Description list moneytransfer entities
 // @ID list-moneytransfer
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
-// @Success 200 {array} ent.MoneyTransfer
+// @Success 200 {array} ent.Moneytransfer
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /moneyTransfers [get]
-func (ctl *MoneyTransferController) ListMoneyTransfer(c *gin.Context) {
+// @Router /moneytransfers [get]
+func (ctl *MoneytransferController) ListMoneytransfer(c *gin.Context) {
 	limitQuery := c.Query("limit")
 	limit := 10
 	if limitQuery != "" {
@@ -114,7 +114,7 @@ func (ctl *MoneyTransferController) ListMoneyTransfer(c *gin.Context) {
 		}
 	}
 
-	moneyTransfers, err := ctl.client.MoneyTransfer.
+	moneytransfers, err := ctl.client.Moneytransfer.
 		Query().
 		Limit(limit).
 		Offset(offset).
@@ -124,21 +124,21 @@ func (ctl *MoneyTransferController) ListMoneyTransfer(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, moneyTransfers)
+	c.JSON(200, moneytransfers)
 }
 
-// DeleteMoneyTransfer handles DELETE requests to delete a moneytransfer entity
+// DeleteMoneytransfer handles DELETE requests to delete a moneytransfer entity
 // @Summary Delete a moneytransfer entity by ID
 // @Description get moneytransfer by ID
 // @ID delete-moneytransfer
 // @Produce  json
-// @Param id path int true "MoneyTransfer ID"
+// @Param id path int true "Moneytransfer ID"
 // @Success 200 {object} gin.H
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /moneyTransfers/{id} [delete]
-func (ctl *MoneyTransferController) DeleteMoneyTransfer(c *gin.Context) {
+// @Router /moneytransfers/{id} [delete]
+func (ctl *MoneytransferController) DeleteMoneytransfer(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -147,7 +147,7 @@ func (ctl *MoneyTransferController) DeleteMoneyTransfer(c *gin.Context) {
 		return
 	}
 
-	err = ctl.client.MoneyTransfer.
+	err = ctl.client.Moneytransfer.
 		DeleteOneID(int(id)).
 		Exec(context.Background())
 	if err != nil {
@@ -160,19 +160,19 @@ func (ctl *MoneyTransferController) DeleteMoneyTransfer(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdateMoneyTransfer handles PUT requests to update a moneytransfer entity
+// UpdateMoneytransfer handles PUT requests to update a moneytransfer entity
 // @Summary Update a moneytransfer entity by ID
 // @Description update moneytransfer by ID
 // @ID update-moneytransfer
 // @Accept   json
 // @Produce  json
 // @Param id path int true "moneytransfer ID"
-// @Param moneytransfer body ent.MoneyTransfer true "MoneyTransfer entity"
-// @Success 200 {object} ent.MoneyTransfer
+// @Param moneytransfer body ent.Moneytransfer true "Moneytransfer entity"
+// @Success 200 {object} ent.Moneytransfer
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /moneyTransfers/{id} [put]
-func (ctl *MoneyTransferController) UpdateMoneyTransfer(c *gin.Context) {
+// @Router /moneytransfers/{id} [put]
+func (ctl *MoneytransferController) UpdateMoneytransfer(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -181,15 +181,15 @@ func (ctl *MoneyTransferController) UpdateMoneyTransfer(c *gin.Context) {
 		return
 	}
 
-	obj := ent.MoneyTransfer{}
+	obj := ent.Moneytransfer{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "MoneyTransfer binding failed",
+			"error": "Moneytransfer binding failed",
 		})
 		return
 	}
 	obj.ID = int(id)
-	s, err := ctl.client.MoneyTransfer.
+	s, err := ctl.client.Moneytransfer.
 		UpdateOneID(int(id)).
 		SetMoneytransferType(obj.MoneytransferType).
 		Save(context.Background())
@@ -201,9 +201,9 @@ func (ctl *MoneyTransferController) UpdateMoneyTransfer(c *gin.Context) {
 	c.JSON(200, s)
 }
 
-// NewMoneyTransferController creates and registers handles for the MoneyTransferController
-func NewMoneyTransferController(router gin.IRouter, client *ent.Client) *MoneyTransferController {
-	mc := &MoneyTransferController{
+// NewMoneytransferController creates and registers handles for the MoneytransferController
+func NewMoneytransferController(router gin.IRouter, client *ent.Client) *MoneytransferController {
+	mc := &MoneytransferController{
 		client: client,
 		router: router,
 	}
@@ -211,13 +211,13 @@ func NewMoneyTransferController(router gin.IRouter, client *ent.Client) *MoneyTr
 	return mc
 }
 
-// InitMoneyTransferController registers routes to the main engine
-func (ctl *MoneyTransferController) register() {
-	moneyTransfers := ctl.router.Group("/moneyTransfers")
-	moneyTransfers.GET("", ctl.ListMoneyTransfer)
+// InitMoneytransferController registers routes to the main engine
+func (ctl *MoneytransferController) register() {
+	moneytransfers := ctl.router.Group("/moneytransfers")
+	moneytransfers.GET("", ctl.ListMoneytransfer)
 	// CRUD
-	moneyTransfers.POST("", ctl.CreateMoneyTransfer)
-	moneyTransfers.GET(":id", ctl.GetMoneyTransfer)
-	moneyTransfers.PUT(":id", ctl.UpdateMoneyTransfer)
-	moneyTransfers.DELETE(":id", ctl.DeleteMoneyTransfer)
+	moneytransfers.POST("", ctl.CreateMoneytransfer)
+	moneytransfers.GET(":id", ctl.GetMoneytransfer)
+	moneytransfers.PUT(":id", ctl.UpdateMoneytransfer)
+	moneytransfers.DELETE(":id", ctl.DeleteMoneytransfer)
 }

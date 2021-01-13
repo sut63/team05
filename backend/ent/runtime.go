@@ -95,7 +95,7 @@ func init() {
 	memberDescMemberPassword := memberFields[2].Descriptor()
 	// member.MemberPasswordValidator is a validator for the "member_password" field. It is called by the builders before save.
 	member.MemberPasswordValidator = memberDescMemberPassword.Validators[0].(func(string) error)
-	moneytransferFields := schema.MoneyTransfer{}.Fields()
+	moneytransferFields := schema.Moneytransfer{}.Fields()
 	_ = moneytransferFields
 	// moneytransferDescMoneytransferType is the schema descriptor for moneytransfer_type field.
 	moneytransferDescMoneytransferType := moneytransferFields[0].Descriptor()

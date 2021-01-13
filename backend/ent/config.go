@@ -33,7 +33,7 @@ type hooks struct {
 	Inquiry         []ent.Hook
 	Insurance       []ent.Hook
 	Member          []ent.Hook
-	MoneyTransfer   []ent.Hook
+	Moneytransfer   []ent.Hook
 	Officer         []ent.Hook
 	Payback         []ent.Hook
 	Payment         []ent.Hook

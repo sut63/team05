@@ -23,22 +23,22 @@ import {
 /**
  * 
  * @export
- * @interface EntMoneyTransferEdges
+ * @interface EntMoneytransferEdges
  */
-export interface EntMoneyTransferEdges {
+export interface EntMoneytransferEdges {
     /**
      * MoneytransferPayment holds the value of the moneytransfer_payment edge.
      * @type {Array<EntPayment>}
-     * @memberof EntMoneyTransferEdges
+     * @memberof EntMoneytransferEdges
      */
     moneytransferPayment?: Array<EntPayment>;
 }
 
-export function EntMoneyTransferEdgesFromJSON(json: any): EntMoneyTransferEdges {
-    return EntMoneyTransferEdgesFromJSONTyped(json, false);
+export function EntMoneytransferEdgesFromJSON(json: any): EntMoneytransferEdges {
+    return EntMoneytransferEdgesFromJSONTyped(json, false);
 }
 
-export function EntMoneyTransferEdgesFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntMoneyTransferEdges {
+export function EntMoneytransferEdgesFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntMoneytransferEdges {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -48,7 +48,7 @@ export function EntMoneyTransferEdgesFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function EntMoneyTransferEdgesToJSON(value?: EntMoneyTransferEdges | null): any {
+export function EntMoneytransferEdgesToJSON(value?: EntMoneytransferEdges | null): any {
     if (value === undefined) {
         return undefined;
     }

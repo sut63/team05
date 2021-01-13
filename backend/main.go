@@ -69,13 +69,13 @@ type Officer struct {
 	OfficerPassword string
 }
 
-// MoneyTransfers struct input data
-type MoneyTransfers struct {
-	MoneyTransfer []MoneyTransfer
+// Moneytransfers struct input data
+type Moneytransfers struct {
+	Moneytransfer []Moneytransfer
 }
 
-// MoneyTransfer struct
-type MoneyTransfer struct {
+// Moneytransfer struct
+type Moneytransfer struct {
 	MoneytransferType string
 }
 
@@ -172,7 +172,7 @@ func main() {
 	controllers.NewGroupOfAgeController(v1, client)
 	controllers.NewOfficerController(v1, client)
 	controllers.NewProductController(v1, client)
-	controllers.NewMoneyTransferController(v1, client)
+	controllers.NewMoneytransferController(v1, client)
 	controllers.NewAmountpaidController(v1, client)
 	controllers.NewCategoryController(v1, client)
 	controllers.NewInquiryController(v1, client)
@@ -265,18 +265,18 @@ func main() {
 			Save(context.Background())
 	}
 
-	// Set MoneyTransfers Data
-	moneytransfers := MoneyTransfers{
-		MoneyTransfer: []MoneyTransfer{
-			MoneyTransfer{"Internet banking"},
-			MoneyTransfer{"Moblie banking"},
-			MoneyTransfer{"ATM"},
+	// Set Moneytransfers Data
+	moneytransfers := Moneytransfers{
+		Moneytransfer: []Moneytransfer{
+			Moneytransfer{"Internet banking"},
+			Moneytransfer{"Moblie banking"},
+			Moneytransfer{"ATM"},
 		},
 	}
 
-	for _, mn := range moneytransfers.MoneyTransfer {
+	for _, mn := range moneytransfers.Moneytransfer {
 
-		client.MoneyTransfer.
+		client.Moneytransfer.
 			Create().
 			SetMoneytransferType(mn.MoneytransferType).
 			Save(context.Background())

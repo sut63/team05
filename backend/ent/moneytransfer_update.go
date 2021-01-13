@@ -14,64 +14,64 @@ import (
 	"github.com/sut63/team05/ent/predicate"
 )
 
-// MoneyTransferUpdate is the builder for updating MoneyTransfer entities.
-type MoneyTransferUpdate struct {
+// MoneytransferUpdate is the builder for updating Moneytransfer entities.
+type MoneytransferUpdate struct {
 	config
 	hooks      []Hook
-	mutation   *MoneyTransferMutation
-	predicates []predicate.MoneyTransfer
+	mutation   *MoneytransferMutation
+	predicates []predicate.Moneytransfer
 }
 
 // Where adds a new predicate for the builder.
-func (mtu *MoneyTransferUpdate) Where(ps ...predicate.MoneyTransfer) *MoneyTransferUpdate {
-	mtu.predicates = append(mtu.predicates, ps...)
-	return mtu
+func (mu *MoneytransferUpdate) Where(ps ...predicate.Moneytransfer) *MoneytransferUpdate {
+	mu.predicates = append(mu.predicates, ps...)
+	return mu
 }
 
 // SetMoneytransferType sets the moneytransfer_type field.
-func (mtu *MoneyTransferUpdate) SetMoneytransferType(s string) *MoneyTransferUpdate {
-	mtu.mutation.SetMoneytransferType(s)
-	return mtu
+func (mu *MoneytransferUpdate) SetMoneytransferType(s string) *MoneytransferUpdate {
+	mu.mutation.SetMoneytransferType(s)
+	return mu
 }
 
 // AddMoneytransferPaymentIDs adds the moneytransfer_payment edge to Payment by ids.
-func (mtu *MoneyTransferUpdate) AddMoneytransferPaymentIDs(ids ...int) *MoneyTransferUpdate {
-	mtu.mutation.AddMoneytransferPaymentIDs(ids...)
-	return mtu
+func (mu *MoneytransferUpdate) AddMoneytransferPaymentIDs(ids ...int) *MoneytransferUpdate {
+	mu.mutation.AddMoneytransferPaymentIDs(ids...)
+	return mu
 }
 
 // AddMoneytransferPayment adds the moneytransfer_payment edges to Payment.
-func (mtu *MoneyTransferUpdate) AddMoneytransferPayment(p ...*Payment) *MoneyTransferUpdate {
+func (mu *MoneytransferUpdate) AddMoneytransferPayment(p ...*Payment) *MoneytransferUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return mtu.AddMoneytransferPaymentIDs(ids...)
+	return mu.AddMoneytransferPaymentIDs(ids...)
 }
 
-// Mutation returns the MoneyTransferMutation object of the builder.
-func (mtu *MoneyTransferUpdate) Mutation() *MoneyTransferMutation {
-	return mtu.mutation
+// Mutation returns the MoneytransferMutation object of the builder.
+func (mu *MoneytransferUpdate) Mutation() *MoneytransferMutation {
+	return mu.mutation
 }
 
 // RemoveMoneytransferPaymentIDs removes the moneytransfer_payment edge to Payment by ids.
-func (mtu *MoneyTransferUpdate) RemoveMoneytransferPaymentIDs(ids ...int) *MoneyTransferUpdate {
-	mtu.mutation.RemoveMoneytransferPaymentIDs(ids...)
-	return mtu
+func (mu *MoneytransferUpdate) RemoveMoneytransferPaymentIDs(ids ...int) *MoneytransferUpdate {
+	mu.mutation.RemoveMoneytransferPaymentIDs(ids...)
+	return mu
 }
 
 // RemoveMoneytransferPayment removes moneytransfer_payment edges to Payment.
-func (mtu *MoneyTransferUpdate) RemoveMoneytransferPayment(p ...*Payment) *MoneyTransferUpdate {
+func (mu *MoneytransferUpdate) RemoveMoneytransferPayment(p ...*Payment) *MoneytransferUpdate {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return mtu.RemoveMoneytransferPaymentIDs(ids...)
+	return mu.RemoveMoneytransferPaymentIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
-func (mtu *MoneyTransferUpdate) Save(ctx context.Context) (int, error) {
-	if v, ok := mtu.mutation.MoneytransferType(); ok {
+func (mu *MoneytransferUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := mu.mutation.MoneytransferType(); ok {
 		if err := moneytransfer.MoneytransferTypeValidator(v); err != nil {
 			return 0, &ValidationError{Name: "moneytransfer_type", err: fmt.Errorf("ent: validator failed for field \"moneytransfer_type\": %w", err)}
 		}
@@ -81,23 +81,23 @@ func (mtu *MoneyTransferUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
-	if len(mtu.hooks) == 0 {
-		affected, err = mtu.sqlSave(ctx)
+	if len(mu.hooks) == 0 {
+		affected, err = mu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*MoneyTransferMutation)
+			mutation, ok := m.(*MoneytransferMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
-			mtu.mutation = mutation
-			affected, err = mtu.sqlSave(ctx)
+			mu.mutation = mutation
+			affected, err = mu.sqlSave(ctx)
 			mutation.done = true
 			return affected, err
 		})
-		for i := len(mtu.hooks) - 1; i >= 0; i-- {
-			mut = mtu.hooks[i](mut)
+		for i := len(mu.hooks) - 1; i >= 0; i-- {
+			mut = mu.hooks[i](mut)
 		}
-		if _, err := mut.Mutate(ctx, mtu.mutation); err != nil {
+		if _, err := mut.Mutate(ctx, mu.mutation); err != nil {
 			return 0, err
 		}
 	}
@@ -105,8 +105,8 @@ func (mtu *MoneyTransferUpdate) Save(ctx context.Context) (int, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (mtu *MoneyTransferUpdate) SaveX(ctx context.Context) int {
-	affected, err := mtu.Save(ctx)
+func (mu *MoneytransferUpdate) SaveX(ctx context.Context) int {
+	affected, err := mu.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -114,19 +114,19 @@ func (mtu *MoneyTransferUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (mtu *MoneyTransferUpdate) Exec(ctx context.Context) error {
-	_, err := mtu.Save(ctx)
+func (mu *MoneytransferUpdate) Exec(ctx context.Context) error {
+	_, err := mu.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mtu *MoneyTransferUpdate) ExecX(ctx context.Context) {
-	if err := mtu.Exec(ctx); err != nil {
+func (mu *MoneytransferUpdate) ExecX(ctx context.Context) {
+	if err := mu.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-func (mtu *MoneyTransferUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (mu *MoneytransferUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   moneytransfer.Table,
@@ -137,21 +137,21 @@ func (mtu *MoneyTransferUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			},
 		},
 	}
-	if ps := mtu.predicates; len(ps) > 0 {
+	if ps := mu.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if value, ok := mtu.mutation.MoneytransferType(); ok {
+	if value, ok := mu.mutation.MoneytransferType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
 			Column: moneytransfer.FieldMoneytransferType,
 		})
 	}
-	if nodes := mtu.mutation.RemovedMoneytransferPaymentIDs(); len(nodes) > 0 {
+	if nodes := mu.mutation.RemovedMoneytransferPaymentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -170,7 +170,7 @@ func (mtu *MoneyTransferUpdate) sqlSave(ctx context.Context) (n int, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := mtu.mutation.MoneytransferPaymentIDs(); len(nodes) > 0 {
+	if nodes := mu.mutation.MoneytransferPaymentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -189,7 +189,7 @@ func (mtu *MoneyTransferUpdate) sqlSave(ctx context.Context) (n int, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if n, err = sqlgraph.UpdateNodes(ctx, mtu.driver, _spec); err != nil {
+	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{moneytransfer.Label}
 		} else if cerr, ok := isSQLConstraintError(err); ok {
@@ -200,57 +200,57 @@ func (mtu *MoneyTransferUpdate) sqlSave(ctx context.Context) (n int, err error) 
 	return n, nil
 }
 
-// MoneyTransferUpdateOne is the builder for updating a single MoneyTransfer entity.
-type MoneyTransferUpdateOne struct {
+// MoneytransferUpdateOne is the builder for updating a single Moneytransfer entity.
+type MoneytransferUpdateOne struct {
 	config
 	hooks    []Hook
-	mutation *MoneyTransferMutation
+	mutation *MoneytransferMutation
 }
 
 // SetMoneytransferType sets the moneytransfer_type field.
-func (mtuo *MoneyTransferUpdateOne) SetMoneytransferType(s string) *MoneyTransferUpdateOne {
-	mtuo.mutation.SetMoneytransferType(s)
-	return mtuo
+func (muo *MoneytransferUpdateOne) SetMoneytransferType(s string) *MoneytransferUpdateOne {
+	muo.mutation.SetMoneytransferType(s)
+	return muo
 }
 
 // AddMoneytransferPaymentIDs adds the moneytransfer_payment edge to Payment by ids.
-func (mtuo *MoneyTransferUpdateOne) AddMoneytransferPaymentIDs(ids ...int) *MoneyTransferUpdateOne {
-	mtuo.mutation.AddMoneytransferPaymentIDs(ids...)
-	return mtuo
+func (muo *MoneytransferUpdateOne) AddMoneytransferPaymentIDs(ids ...int) *MoneytransferUpdateOne {
+	muo.mutation.AddMoneytransferPaymentIDs(ids...)
+	return muo
 }
 
 // AddMoneytransferPayment adds the moneytransfer_payment edges to Payment.
-func (mtuo *MoneyTransferUpdateOne) AddMoneytransferPayment(p ...*Payment) *MoneyTransferUpdateOne {
+func (muo *MoneytransferUpdateOne) AddMoneytransferPayment(p ...*Payment) *MoneytransferUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return mtuo.AddMoneytransferPaymentIDs(ids...)
+	return muo.AddMoneytransferPaymentIDs(ids...)
 }
 
-// Mutation returns the MoneyTransferMutation object of the builder.
-func (mtuo *MoneyTransferUpdateOne) Mutation() *MoneyTransferMutation {
-	return mtuo.mutation
+// Mutation returns the MoneytransferMutation object of the builder.
+func (muo *MoneytransferUpdateOne) Mutation() *MoneytransferMutation {
+	return muo.mutation
 }
 
 // RemoveMoneytransferPaymentIDs removes the moneytransfer_payment edge to Payment by ids.
-func (mtuo *MoneyTransferUpdateOne) RemoveMoneytransferPaymentIDs(ids ...int) *MoneyTransferUpdateOne {
-	mtuo.mutation.RemoveMoneytransferPaymentIDs(ids...)
-	return mtuo
+func (muo *MoneytransferUpdateOne) RemoveMoneytransferPaymentIDs(ids ...int) *MoneytransferUpdateOne {
+	muo.mutation.RemoveMoneytransferPaymentIDs(ids...)
+	return muo
 }
 
 // RemoveMoneytransferPayment removes moneytransfer_payment edges to Payment.
-func (mtuo *MoneyTransferUpdateOne) RemoveMoneytransferPayment(p ...*Payment) *MoneyTransferUpdateOne {
+func (muo *MoneytransferUpdateOne) RemoveMoneytransferPayment(p ...*Payment) *MoneytransferUpdateOne {
 	ids := make([]int, len(p))
 	for i := range p {
 		ids[i] = p[i].ID
 	}
-	return mtuo.RemoveMoneytransferPaymentIDs(ids...)
+	return muo.RemoveMoneytransferPaymentIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
-func (mtuo *MoneyTransferUpdateOne) Save(ctx context.Context) (*MoneyTransfer, error) {
-	if v, ok := mtuo.mutation.MoneytransferType(); ok {
+func (muo *MoneytransferUpdateOne) Save(ctx context.Context) (*Moneytransfer, error) {
+	if v, ok := muo.mutation.MoneytransferType(); ok {
 		if err := moneytransfer.MoneytransferTypeValidator(v); err != nil {
 			return nil, &ValidationError{Name: "moneytransfer_type", err: fmt.Errorf("ent: validator failed for field \"moneytransfer_type\": %w", err)}
 		}
@@ -258,25 +258,25 @@ func (mtuo *MoneyTransferUpdateOne) Save(ctx context.Context) (*MoneyTransfer, e
 
 	var (
 		err  error
-		node *MoneyTransfer
+		node *Moneytransfer
 	)
-	if len(mtuo.hooks) == 0 {
-		node, err = mtuo.sqlSave(ctx)
+	if len(muo.hooks) == 0 {
+		node, err = muo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*MoneyTransferMutation)
+			mutation, ok := m.(*MoneytransferMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
-			mtuo.mutation = mutation
-			node, err = mtuo.sqlSave(ctx)
+			muo.mutation = mutation
+			node, err = muo.sqlSave(ctx)
 			mutation.done = true
 			return node, err
 		})
-		for i := len(mtuo.hooks) - 1; i >= 0; i-- {
-			mut = mtuo.hooks[i](mut)
+		for i := len(muo.hooks) - 1; i >= 0; i-- {
+			mut = muo.hooks[i](mut)
 		}
-		if _, err := mut.Mutate(ctx, mtuo.mutation); err != nil {
+		if _, err := mut.Mutate(ctx, muo.mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -284,28 +284,28 @@ func (mtuo *MoneyTransferUpdateOne) Save(ctx context.Context) (*MoneyTransfer, e
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (mtuo *MoneyTransferUpdateOne) SaveX(ctx context.Context) *MoneyTransfer {
-	mt, err := mtuo.Save(ctx)
+func (muo *MoneytransferUpdateOne) SaveX(ctx context.Context) *Moneytransfer {
+	m, err := muo.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return mt
+	return m
 }
 
 // Exec executes the query on the entity.
-func (mtuo *MoneyTransferUpdateOne) Exec(ctx context.Context) error {
-	_, err := mtuo.Save(ctx)
+func (muo *MoneytransferUpdateOne) Exec(ctx context.Context) error {
+	_, err := muo.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mtuo *MoneyTransferUpdateOne) ExecX(ctx context.Context) {
-	if err := mtuo.Exec(ctx); err != nil {
+func (muo *MoneytransferUpdateOne) ExecX(ctx context.Context) {
+	if err := muo.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-func (mtuo *MoneyTransferUpdateOne) sqlSave(ctx context.Context) (mt *MoneyTransfer, err error) {
+func (muo *MoneytransferUpdateOne) sqlSave(ctx context.Context) (m *Moneytransfer, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   moneytransfer.Table,
@@ -316,19 +316,19 @@ func (mtuo *MoneyTransferUpdateOne) sqlSave(ctx context.Context) (mt *MoneyTrans
 			},
 		},
 	}
-	id, ok := mtuo.mutation.ID()
+	id, ok := muo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing MoneyTransfer.ID for update")}
+		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Moneytransfer.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := mtuo.mutation.MoneytransferType(); ok {
+	if value, ok := muo.mutation.MoneytransferType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
 			Column: moneytransfer.FieldMoneytransferType,
 		})
 	}
-	if nodes := mtuo.mutation.RemovedMoneytransferPaymentIDs(); len(nodes) > 0 {
+	if nodes := muo.mutation.RemovedMoneytransferPaymentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -347,7 +347,7 @@ func (mtuo *MoneyTransferUpdateOne) sqlSave(ctx context.Context) (mt *MoneyTrans
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := mtuo.mutation.MoneytransferPaymentIDs(); len(nodes) > 0 {
+	if nodes := muo.mutation.MoneytransferPaymentIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
@@ -366,10 +366,10 @@ func (mtuo *MoneyTransferUpdateOne) sqlSave(ctx context.Context) (mt *MoneyTrans
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	mt = &MoneyTransfer{config: mtuo.config}
-	_spec.Assign = mt.assignValues
-	_spec.ScanValues = mt.scanValues()
-	if err = sqlgraph.UpdateNode(ctx, mtuo.driver, _spec); err != nil {
+	m = &Moneytransfer{config: muo.config}
+	_spec.Assign = m.assignValues
+	_spec.ScanValues = m.scanValues()
+	if err = sqlgraph.UpdateNode(ctx, muo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{moneytransfer.Label}
 		} else if cerr, ok := isSQLConstraintError(err); ok {
@@ -377,5 +377,5 @@ func (mtuo *MoneyTransferUpdateOne) sqlSave(ctx context.Context) (mt *MoneyTrans
 		}
 		return nil, err
 	}
-	return mt, nil
+	return m, nil
 }

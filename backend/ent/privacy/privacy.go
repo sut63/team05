@@ -426,28 +426,28 @@ func (f MemberMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.MemberMutation", m)
 }
 
-// The MoneyTransferQueryRuleFunc type is an adapter to allow the use of ordinary
+// The MoneytransferQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
-type MoneyTransferQueryRuleFunc func(context.Context, *ent.MoneyTransferQuery) error
+type MoneytransferQueryRuleFunc func(context.Context, *ent.MoneytransferQuery) error
 
 // EvalQuery return f(ctx, q).
-func (f MoneyTransferQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.MoneyTransferQuery); ok {
+func (f MoneytransferQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.MoneytransferQuery); ok {
 		return f(ctx, q)
 	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.MoneyTransferQuery", q)
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.MoneytransferQuery", q)
 }
 
-// The MoneyTransferMutationRuleFunc type is an adapter to allow the use of ordinary
+// The MoneytransferMutationRuleFunc type is an adapter to allow the use of ordinary
 // functions as a mutation rule.
-type MoneyTransferMutationRuleFunc func(context.Context, *ent.MoneyTransferMutation) error
+type MoneytransferMutationRuleFunc func(context.Context, *ent.MoneytransferMutation) error
 
 // EvalMutation calls f(ctx, m).
-func (f MoneyTransferMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.MoneyTransferMutation); ok {
+func (f MoneytransferMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.MoneytransferMutation); ok {
 		return f(ctx, m)
 	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.MoneyTransferMutation", m)
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.MoneytransferMutation", m)
 }
 
 // The OfficerQueryRuleFunc type is an adapter to allow the use of ordinary

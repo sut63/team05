@@ -26,10 +26,10 @@ import {
     EntMemberFromJSON,
     EntMemberFromJSONTyped,
     EntMemberToJSON,
-    EntMoneyTransfer,
-    EntMoneyTransferFromJSON,
-    EntMoneyTransferFromJSONTyped,
-    EntMoneyTransferToJSON,
+    EntMoneytransfer,
+    EntMoneytransferFromJSON,
+    EntMoneytransferFromJSONTyped,
+    EntMoneytransferToJSON,
 } from './';
 
 /**
@@ -58,10 +58,10 @@ export interface EntPaymentEdges {
     member?: EntMember;
     /**
      * 
-     * @type {EntMoneyTransfer}
+     * @type {EntMoneytransfer}
      * @memberof EntPaymentEdges
      */
-    moneyTransfer?: EntMoneyTransfer;
+    moneytransfer?: EntMoneytransfer;
 }
 
 export function EntPaymentEdgesFromJSON(json: any): EntPaymentEdges {
@@ -77,7 +77,7 @@ export function EntPaymentEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
         'bank': !exists(json, 'Bank') ? undefined : EntBankFromJSON(json['Bank']),
         'insurance': !exists(json, 'Insurance') ? undefined : EntInsuranceFromJSON(json['Insurance']),
         'member': !exists(json, 'Member') ? undefined : EntMemberFromJSON(json['Member']),
-        'moneyTransfer': !exists(json, 'MoneyTransfer') ? undefined : EntMoneyTransferFromJSON(json['MoneyTransfer']),
+        'moneytransfer': !exists(json, 'Moneytransfer') ? undefined : EntMoneytransferFromJSON(json['Moneytransfer']),
     };
 }
 
@@ -93,7 +93,7 @@ export function EntPaymentEdgesToJSON(value?: EntPaymentEdges | null): any {
         'bank': EntBankToJSON(value.bank),
         'insurance': EntInsuranceToJSON(value.insurance),
         'member': EntMemberToJSON(value.member),
-        'moneyTransfer': EntMoneyTransferToJSON(value.moneyTransfer),
+        'moneytransfer': EntMoneytransferToJSON(value.moneytransfer),
     };
 }
 

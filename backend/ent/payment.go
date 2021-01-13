@@ -39,8 +39,8 @@ type Payment struct {
 type PaymentEdges struct {
 	// Insurance holds the value of the Insurance edge.
 	Insurance *Insurance
-	// MoneyTransfer holds the value of the MoneyTransfer edge.
-	MoneyTransfer *MoneyTransfer
+	// Moneytransfer holds the value of the Moneytransfer edge.
+	Moneytransfer *Moneytransfer
 	// Bank holds the value of the Bank edge.
 	Bank *Bank
 	// Member holds the value of the Member edge.
@@ -64,18 +64,18 @@ func (e PaymentEdges) InsuranceOrErr() (*Insurance, error) {
 	return nil, &NotLoadedError{edge: "Insurance"}
 }
 
-// MoneyTransferOrErr returns the MoneyTransfer value or an error if the edge
+// MoneytransferOrErr returns the Moneytransfer value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e PaymentEdges) MoneyTransferOrErr() (*MoneyTransfer, error) {
+func (e PaymentEdges) MoneytransferOrErr() (*Moneytransfer, error) {
 	if e.loadedTypes[1] {
-		if e.MoneyTransfer == nil {
-			// The edge MoneyTransfer was loaded in eager-loading,
+		if e.Moneytransfer == nil {
+			// The edge Moneytransfer was loaded in eager-loading,
 			// but was not found.
 			return nil, &NotFoundError{label: moneytransfer.Label}
 		}
-		return e.MoneyTransfer, nil
+		return e.Moneytransfer, nil
 	}
-	return nil, &NotLoadedError{edge: "MoneyTransfer"}
+	return nil, &NotLoadedError{edge: "Moneytransfer"}
 }
 
 // BankOrErr returns the Bank value or an error if the edge
@@ -188,9 +188,9 @@ func (pa *Payment) QueryInsurance() *InsuranceQuery {
 	return (&PaymentClient{config: pa.config}).QueryInsurance(pa)
 }
 
-// QueryMoneyTransfer queries the MoneyTransfer edge of the Payment.
-func (pa *Payment) QueryMoneyTransfer() *MoneyTransferQuery {
-	return (&PaymentClient{config: pa.config}).QueryMoneyTransfer(pa)
+// QueryMoneytransfer queries the Moneytransfer edge of the Payment.
+func (pa *Payment) QueryMoneytransfer() *MoneytransferQuery {
+	return (&PaymentClient{config: pa.config}).QueryMoneytransfer(pa)
 }
 
 // QueryBank queries the Bank edge of the Payment.

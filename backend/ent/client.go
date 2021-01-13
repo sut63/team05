@@ -53,8 +53,8 @@ type Client struct {
 	Insurance *InsuranceClient
 	// Member is the client for interacting with the Member builders.
 	Member *MemberClient
-	// MoneyTransfer is the client for interacting with the MoneyTransfer builders.
-	MoneyTransfer *MoneyTransferClient
+	// Moneytransfer is the client for interacting with the Moneytransfer builders.
+	Moneytransfer *MoneytransferClient
 	// Officer is the client for interacting with the Officer builders.
 	Officer *OfficerClient
 	// Payback is the client for interacting with the Payback builders.
@@ -87,7 +87,7 @@ func (c *Client) init() {
 	c.Inquiry = NewInquiryClient(c.config)
 	c.Insurance = NewInsuranceClient(c.config)
 	c.Member = NewMemberClient(c.config)
-	c.MoneyTransfer = NewMoneyTransferClient(c.config)
+	c.Moneytransfer = NewMoneytransferClient(c.config)
 	c.Officer = NewOfficerClient(c.config)
 	c.Payback = NewPaybackClient(c.config)
 	c.Payment = NewPaymentClient(c.config)
@@ -134,7 +134,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Inquiry:         NewInquiryClient(cfg),
 		Insurance:       NewInsuranceClient(cfg),
 		Member:          NewMemberClient(cfg),
-		MoneyTransfer:   NewMoneyTransferClient(cfg),
+		Moneytransfer:   NewMoneytransferClient(cfg),
 		Officer:         NewOfficerClient(cfg),
 		Payback:         NewPaybackClient(cfg),
 		Payment:         NewPaymentClient(cfg),
@@ -164,7 +164,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Inquiry:         NewInquiryClient(cfg),
 		Insurance:       NewInsuranceClient(cfg),
 		Member:          NewMemberClient(cfg),
-		MoneyTransfer:   NewMoneyTransferClient(cfg),
+		Moneytransfer:   NewMoneytransferClient(cfg),
 		Officer:         NewOfficerClient(cfg),
 		Payback:         NewPaybackClient(cfg),
 		Payment:         NewPaymentClient(cfg),
@@ -207,7 +207,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Inquiry.Use(hooks...)
 	c.Insurance.Use(hooks...)
 	c.Member.Use(hooks...)
-	c.MoneyTransfer.Use(hooks...)
+	c.Moneytransfer.Use(hooks...)
 	c.Officer.Use(hooks...)
 	c.Payback.Use(hooks...)
 	c.Payment.Use(hooks...)
@@ -1314,103 +1314,103 @@ func (c *MemberClient) Hooks() []Hook {
 	return c.hooks.Member
 }
 
-// MoneyTransferClient is a client for the MoneyTransfer schema.
-type MoneyTransferClient struct {
+// MoneytransferClient is a client for the Moneytransfer schema.
+type MoneytransferClient struct {
 	config
 }
 
-// NewMoneyTransferClient returns a client for the MoneyTransfer from the given config.
-func NewMoneyTransferClient(c config) *MoneyTransferClient {
-	return &MoneyTransferClient{config: c}
+// NewMoneytransferClient returns a client for the Moneytransfer from the given config.
+func NewMoneytransferClient(c config) *MoneytransferClient {
+	return &MoneytransferClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
 // A call to `Use(f, g, h)` equals to `moneytransfer.Hooks(f(g(h())))`.
-func (c *MoneyTransferClient) Use(hooks ...Hook) {
-	c.hooks.MoneyTransfer = append(c.hooks.MoneyTransfer, hooks...)
+func (c *MoneytransferClient) Use(hooks ...Hook) {
+	c.hooks.Moneytransfer = append(c.hooks.Moneytransfer, hooks...)
 }
 
-// Create returns a create builder for MoneyTransfer.
-func (c *MoneyTransferClient) Create() *MoneyTransferCreate {
-	mutation := newMoneyTransferMutation(c.config, OpCreate)
-	return &MoneyTransferCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a create builder for Moneytransfer.
+func (c *MoneytransferClient) Create() *MoneytransferCreate {
+	mutation := newMoneytransferMutation(c.config, OpCreate)
+	return &MoneytransferCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Update returns an update builder for MoneyTransfer.
-func (c *MoneyTransferClient) Update() *MoneyTransferUpdate {
-	mutation := newMoneyTransferMutation(c.config, OpUpdate)
-	return &MoneyTransferUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Moneytransfer.
+func (c *MoneytransferClient) Update() *MoneytransferUpdate {
+	mutation := newMoneytransferMutation(c.config, OpUpdate)
+	return &MoneytransferUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *MoneyTransferClient) UpdateOne(mt *MoneyTransfer) *MoneyTransferUpdateOne {
-	mutation := newMoneyTransferMutation(c.config, OpUpdateOne, withMoneyTransfer(mt))
-	return &MoneyTransferUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *MoneytransferClient) UpdateOne(m *Moneytransfer) *MoneytransferUpdateOne {
+	mutation := newMoneytransferMutation(c.config, OpUpdateOne, withMoneytransfer(m))
+	return &MoneytransferUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *MoneyTransferClient) UpdateOneID(id int) *MoneyTransferUpdateOne {
-	mutation := newMoneyTransferMutation(c.config, OpUpdateOne, withMoneyTransferID(id))
-	return &MoneyTransferUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *MoneytransferClient) UpdateOneID(id int) *MoneytransferUpdateOne {
+	mutation := newMoneytransferMutation(c.config, OpUpdateOne, withMoneytransferID(id))
+	return &MoneytransferUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for MoneyTransfer.
-func (c *MoneyTransferClient) Delete() *MoneyTransferDelete {
-	mutation := newMoneyTransferMutation(c.config, OpDelete)
-	return &MoneyTransferDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Moneytransfer.
+func (c *MoneytransferClient) Delete() *MoneytransferDelete {
+	mutation := newMoneytransferMutation(c.config, OpDelete)
+	return &MoneytransferDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a delete builder for the given entity.
-func (c *MoneyTransferClient) DeleteOne(mt *MoneyTransfer) *MoneyTransferDeleteOne {
-	return c.DeleteOneID(mt.ID)
+func (c *MoneytransferClient) DeleteOne(m *Moneytransfer) *MoneytransferDeleteOne {
+	return c.DeleteOneID(m.ID)
 }
 
 // DeleteOneID returns a delete builder for the given id.
-func (c *MoneyTransferClient) DeleteOneID(id int) *MoneyTransferDeleteOne {
+func (c *MoneytransferClient) DeleteOneID(id int) *MoneytransferDeleteOne {
 	builder := c.Delete().Where(moneytransfer.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &MoneyTransferDeleteOne{builder}
+	return &MoneytransferDeleteOne{builder}
 }
 
-// Create returns a query builder for MoneyTransfer.
-func (c *MoneyTransferClient) Query() *MoneyTransferQuery {
-	return &MoneyTransferQuery{config: c.config}
+// Create returns a query builder for Moneytransfer.
+func (c *MoneytransferClient) Query() *MoneytransferQuery {
+	return &MoneytransferQuery{config: c.config}
 }
 
-// Get returns a MoneyTransfer entity by its id.
-func (c *MoneyTransferClient) Get(ctx context.Context, id int) (*MoneyTransfer, error) {
+// Get returns a Moneytransfer entity by its id.
+func (c *MoneytransferClient) Get(ctx context.Context, id int) (*Moneytransfer, error) {
 	return c.Query().Where(moneytransfer.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *MoneyTransferClient) GetX(ctx context.Context, id int) *MoneyTransfer {
-	mt, err := c.Get(ctx, id)
+func (c *MoneytransferClient) GetX(ctx context.Context, id int) *Moneytransfer {
+	m, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
-	return mt
+	return m
 }
 
-// QueryMoneytransferPayment queries the moneytransfer_payment edge of a MoneyTransfer.
-func (c *MoneyTransferClient) QueryMoneytransferPayment(mt *MoneyTransfer) *PaymentQuery {
+// QueryMoneytransferPayment queries the moneytransfer_payment edge of a Moneytransfer.
+func (c *MoneytransferClient) QueryMoneytransferPayment(m *Moneytransfer) *PaymentQuery {
 	query := &PaymentQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := mt.ID
+		id := m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(moneytransfer.Table, moneytransfer.FieldID, id),
 			sqlgraph.To(payment.Table, payment.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, moneytransfer.MoneytransferPaymentTable, moneytransfer.MoneytransferPaymentColumn),
 		)
-		fromV = sqlgraph.Neighbors(mt.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // Hooks returns the client hooks.
-func (c *MoneyTransferClient) Hooks() []Hook {
-	return c.hooks.MoneyTransfer
+func (c *MoneytransferClient) Hooks() []Hook {
+	return c.hooks.Moneytransfer
 }
 
 // OfficerClient is a client for the Officer schema.
@@ -1817,15 +1817,15 @@ func (c *PaymentClient) QueryInsurance(pa *Payment) *InsuranceQuery {
 	return query
 }
 
-// QueryMoneyTransfer queries the MoneyTransfer edge of a Payment.
-func (c *PaymentClient) QueryMoneyTransfer(pa *Payment) *MoneyTransferQuery {
-	query := &MoneyTransferQuery{config: c.config}
+// QueryMoneytransfer queries the Moneytransfer edge of a Payment.
+func (c *PaymentClient) QueryMoneytransfer(pa *Payment) *MoneytransferQuery {
+	query := &MoneytransferQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pa.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(payment.Table, payment.FieldID, id),
 			sqlgraph.To(moneytransfer.Table, moneytransfer.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, payment.MoneyTransferTable, payment.MoneyTransferColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, payment.MoneytransferTable, payment.MoneytransferColumn),
 		)
 		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
 		return fromV, nil
