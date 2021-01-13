@@ -4,7 +4,7 @@ package moneytransfer
 
 const (
 	// Label holds the string label denoting the moneytransfer type in the database.
-	Label = "money_transfer"
+	Label = "moneytransfer"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
 	// FieldMoneytransferType holds the string denoting the moneytransfer_type field in the database.
@@ -14,7 +14,7 @@ const (
 	EdgeMoneytransferPayment = "moneytransfer_payment"
 
 	// Table holds the table name of the moneytransfer in the database.
-	Table = "money_transfers"
+	Table = "moneytransfers"
 	// MoneytransferPaymentTable is the table the holds the moneytransfer_payment relation/edge.
 	MoneytransferPaymentTable = "payments"
 	// MoneytransferPaymentInverseTable is the table name for the Payment entity.

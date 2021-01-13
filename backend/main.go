@@ -69,13 +69,13 @@ type Officer struct {
 	OfficerPassword string
 }
 
-// MoneyTransfers struct input data
-type MoneyTransfers struct {
-	MoneyTransfer []MoneyTransfer
+// Moneytransfers struct input data
+type Moneytransfers struct {
+	Moneytransfer []Moneytransfer
 }
 
-// MoneyTransfer struct
-type MoneyTransfer struct {
+// Moneytransfer struct
+type Moneytransfer struct {
 	MoneytransferType string
 }
 
@@ -172,16 +172,20 @@ func main() {
 	controllers.NewGroupOfAgeController(v1, client)
 	controllers.NewOfficerController(v1, client)
 	controllers.NewProductController(v1, client)
-	controllers.NewMoneyTransferController(v1, client)
+	controllers.NewMoneytransferController(v1, client)
 	controllers.NewAmountpaidController(v1, client)
 	controllers.NewCategoryController(v1, client)
 	controllers.NewInquiryController(v1, client)
+	controllers.NewBankController(v1, client)
+	controllers.NewPaymentController(v1, client)
+	controllers.NewPaybackController(v1, client)
 
 	// Set Members Data
 	members := Members{
 		Member: []Member{
 			Member{"b6115296@g.sut.ac.th", "Teerapat Saiprom", "123456789"},
 			Member{"b6132552@g.sut.ac.th", "Teerasuk Supawaha", "123456789"},
+			Member{"b6111458@g.sut.ac.th", "Pongsathon Petsuwan", "123456789"},
 		},
 	}
 
@@ -261,18 +265,18 @@ func main() {
 			Save(context.Background())
 	}
 
-	// Set MoneyTransfers Data
-	moneytransfers := MoneyTransfers{
-		MoneyTransfer: []MoneyTransfer{
-			MoneyTransfer{"Internet banking"},
-			MoneyTransfer{"Moblie banking"},
-			MoneyTransfer{"ATM"},
+	// Set Moneytransfers Data
+	moneytransfers := Moneytransfers{
+		Moneytransfer: []Moneytransfer{
+			Moneytransfer{"Internet banking"},
+			Moneytransfer{"Moblie banking"},
+			Moneytransfer{"ATM"},
 		},
 	}
 
-	for _, mn := range moneytransfers.MoneyTransfer {
+	for _, mn := range moneytransfers.Moneytransfer {
 
-		client.MoneyTransfer.
+		client.Moneytransfer.
 			Create().
 			SetMoneytransferType(mn.MoneytransferType).
 			Save(context.Background())
@@ -324,7 +328,12 @@ func main() {
 		Category: []Category{
 			Category{"สนใจผลิตภัณฑ์ประกันสุขภาพ"},
 			Category{"สอบถามข้อมูลผลตอบแทน"},
+			Category{"สอบถามเช็คเงินปันผล"},
 			Category{"สอบถามการชำระเบี้ยประกัน"},
+			Category{"สอบถามการชดเชยสินไหม"},
+			Category{"สอบถามการเปลี่ยนแปลงข้อมูลกรมธรรม์"},
+			Category{"สอบถามการยกเลิกกรมธรรม์"},
+			Category{"สอบถามรายละเอียดอื่นๆ"},
 		},
 	}
 

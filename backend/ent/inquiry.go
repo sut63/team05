@@ -22,6 +22,8 @@ type Inquiry struct {
 	ID int `json:"id,omitempty"`
 	// InquiryMessages holds the value of the "Inquiry_messages" field.
 	InquiryMessages string `json:"Inquiry_messages,omitempty"`
+	// InquiryPhoneMessages holds the value of the "Inquiry_phone_messages" field.
+	InquiryPhoneMessages string `json:"Inquiry_phone_messages,omitempty"`
 	// InquiryTimeMessages holds the value of the "Inquiry_time_messages" field.
 	InquiryTimeMessages time.Time `json:"Inquiry_time_messages,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -109,6 +111,7 @@ func (*Inquiry) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
 		&sql.NullString{}, // Inquiry_messages
+		&sql.NullString{}, // Inquiry_phone_messages
 		&sql.NullTime{},   // Inquiry_time_messages
 	}
 }
@@ -140,12 +143,17 @@ func (i *Inquiry) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		i.InquiryMessages = value.String
 	}
-	if value, ok := values[1].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field Inquiry_time_messages", values[1])
+	if value, ok := values[1].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Inquiry_phone_messages", values[1])
+	} else if value.Valid {
+		i.InquiryPhoneMessages = value.String
+	}
+	if value, ok := values[2].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field Inquiry_time_messages", values[2])
 	} else if value.Valid {
 		i.InquiryTimeMessages = value.Time
 	}
-	values = values[2:]
+	values = values[3:]
 	if len(values) == len(inquiry.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field category_id", value)
@@ -220,6 +228,8 @@ func (i *Inquiry) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", i.ID))
 	builder.WriteString(", Inquiry_messages=")
 	builder.WriteString(i.InquiryMessages)
+	builder.WriteString(", Inquiry_phone_messages=")
+	builder.WriteString(i.InquiryPhoneMessages)
 	builder.WriteString(", Inquiry_time_messages=")
 	builder.WriteString(i.InquiryTimeMessages.Format(time.ANSIC))
 	builder.WriteByte(')')

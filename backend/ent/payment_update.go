@@ -77,23 +77,23 @@ func (pu *PaymentUpdate) SetInsurance(i *Insurance) *PaymentUpdate {
 	return pu.SetInsuranceID(i.ID)
 }
 
-// SetMoneyTransferID sets the MoneyTransfer edge to MoneyTransfer by id.
-func (pu *PaymentUpdate) SetMoneyTransferID(id int) *PaymentUpdate {
-	pu.mutation.SetMoneyTransferID(id)
+// SetMoneytransferID sets the Moneytransfer edge to Moneytransfer by id.
+func (pu *PaymentUpdate) SetMoneytransferID(id int) *PaymentUpdate {
+	pu.mutation.SetMoneytransferID(id)
 	return pu
 }
 
-// SetNillableMoneyTransferID sets the MoneyTransfer edge to MoneyTransfer by id if the given value is not nil.
-func (pu *PaymentUpdate) SetNillableMoneyTransferID(id *int) *PaymentUpdate {
+// SetNillableMoneytransferID sets the Moneytransfer edge to Moneytransfer by id if the given value is not nil.
+func (pu *PaymentUpdate) SetNillableMoneytransferID(id *int) *PaymentUpdate {
 	if id != nil {
-		pu = pu.SetMoneyTransferID(*id)
+		pu = pu.SetMoneytransferID(*id)
 	}
 	return pu
 }
 
-// SetMoneyTransfer sets the MoneyTransfer edge to MoneyTransfer.
-func (pu *PaymentUpdate) SetMoneyTransfer(m *MoneyTransfer) *PaymentUpdate {
-	return pu.SetMoneyTransferID(m.ID)
+// SetMoneytransfer sets the Moneytransfer edge to Moneytransfer.
+func (pu *PaymentUpdate) SetMoneytransfer(m *Moneytransfer) *PaymentUpdate {
+	return pu.SetMoneytransferID(m.ID)
 }
 
 // SetBankID sets the Bank edge to Bank by id.
@@ -145,9 +145,9 @@ func (pu *PaymentUpdate) ClearInsurance() *PaymentUpdate {
 	return pu
 }
 
-// ClearMoneyTransfer clears the MoneyTransfer edge to MoneyTransfer.
-func (pu *PaymentUpdate) ClearMoneyTransfer() *PaymentUpdate {
-	pu.mutation.ClearMoneyTransfer()
+// ClearMoneytransfer clears the Moneytransfer edge to Moneytransfer.
+func (pu *PaymentUpdate) ClearMoneytransfer() *PaymentUpdate {
+	pu.mutation.ClearMoneytransfer()
 	return pu
 }
 
@@ -299,12 +299,12 @@ func (pu *PaymentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if pu.mutation.MoneyTransferCleared() {
+	if pu.mutation.MoneytransferCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payment.MoneyTransferTable,
-			Columns: []string{payment.MoneyTransferColumn},
+			Table:   payment.MoneytransferTable,
+			Columns: []string{payment.MoneytransferColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -315,12 +315,12 @@ func (pu *PaymentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := pu.mutation.MoneyTransferIDs(); len(nodes) > 0 {
+	if nodes := pu.mutation.MoneytransferIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payment.MoneyTransferTable,
-			Columns: []string{payment.MoneyTransferColumn},
+			Table:   payment.MoneytransferTable,
+			Columns: []string{payment.MoneytransferColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -467,23 +467,23 @@ func (puo *PaymentUpdateOne) SetInsurance(i *Insurance) *PaymentUpdateOne {
 	return puo.SetInsuranceID(i.ID)
 }
 
-// SetMoneyTransferID sets the MoneyTransfer edge to MoneyTransfer by id.
-func (puo *PaymentUpdateOne) SetMoneyTransferID(id int) *PaymentUpdateOne {
-	puo.mutation.SetMoneyTransferID(id)
+// SetMoneytransferID sets the Moneytransfer edge to Moneytransfer by id.
+func (puo *PaymentUpdateOne) SetMoneytransferID(id int) *PaymentUpdateOne {
+	puo.mutation.SetMoneytransferID(id)
 	return puo
 }
 
-// SetNillableMoneyTransferID sets the MoneyTransfer edge to MoneyTransfer by id if the given value is not nil.
-func (puo *PaymentUpdateOne) SetNillableMoneyTransferID(id *int) *PaymentUpdateOne {
+// SetNillableMoneytransferID sets the Moneytransfer edge to Moneytransfer by id if the given value is not nil.
+func (puo *PaymentUpdateOne) SetNillableMoneytransferID(id *int) *PaymentUpdateOne {
 	if id != nil {
-		puo = puo.SetMoneyTransferID(*id)
+		puo = puo.SetMoneytransferID(*id)
 	}
 	return puo
 }
 
-// SetMoneyTransfer sets the MoneyTransfer edge to MoneyTransfer.
-func (puo *PaymentUpdateOne) SetMoneyTransfer(m *MoneyTransfer) *PaymentUpdateOne {
-	return puo.SetMoneyTransferID(m.ID)
+// SetMoneytransfer sets the Moneytransfer edge to Moneytransfer.
+func (puo *PaymentUpdateOne) SetMoneytransfer(m *Moneytransfer) *PaymentUpdateOne {
+	return puo.SetMoneytransferID(m.ID)
 }
 
 // SetBankID sets the Bank edge to Bank by id.
@@ -535,9 +535,9 @@ func (puo *PaymentUpdateOne) ClearInsurance() *PaymentUpdateOne {
 	return puo
 }
 
-// ClearMoneyTransfer clears the MoneyTransfer edge to MoneyTransfer.
-func (puo *PaymentUpdateOne) ClearMoneyTransfer() *PaymentUpdateOne {
-	puo.mutation.ClearMoneyTransfer()
+// ClearMoneytransfer clears the Moneytransfer edge to Moneytransfer.
+func (puo *PaymentUpdateOne) ClearMoneytransfer() *PaymentUpdateOne {
+	puo.mutation.ClearMoneytransfer()
 	return puo
 }
 
@@ -687,12 +687,12 @@ func (puo *PaymentUpdateOne) sqlSave(ctx context.Context) (pa *Payment, err erro
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if puo.mutation.MoneyTransferCleared() {
+	if puo.mutation.MoneytransferCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payment.MoneyTransferTable,
-			Columns: []string{payment.MoneyTransferColumn},
+			Table:   payment.MoneytransferTable,
+			Columns: []string{payment.MoneytransferColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -703,12 +703,12 @@ func (puo *PaymentUpdateOne) sqlSave(ctx context.Context) (pa *Payment, err erro
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := puo.mutation.MoneyTransferIDs(); len(nodes) > 0 {
+	if nodes := puo.mutation.MoneytransferIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   payment.MoneyTransferTable,
-			Columns: []string{payment.MoneyTransferColumn},
+			Table:   payment.MoneytransferTable,
+			Columns: []string{payment.MoneytransferColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

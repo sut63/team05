@@ -13,43 +13,43 @@ import (
 	"github.com/sut63/team05/ent/predicate"
 )
 
-// MoneyTransferDelete is the builder for deleting a MoneyTransfer entity.
-type MoneyTransferDelete struct {
+// MoneytransferDelete is the builder for deleting a Moneytransfer entity.
+type MoneytransferDelete struct {
 	config
 	hooks      []Hook
-	mutation   *MoneyTransferMutation
-	predicates []predicate.MoneyTransfer
+	mutation   *MoneytransferMutation
+	predicates []predicate.Moneytransfer
 }
 
 // Where adds a new predicate to the delete builder.
-func (mtd *MoneyTransferDelete) Where(ps ...predicate.MoneyTransfer) *MoneyTransferDelete {
-	mtd.predicates = append(mtd.predicates, ps...)
-	return mtd
+func (md *MoneytransferDelete) Where(ps ...predicate.Moneytransfer) *MoneytransferDelete {
+	md.predicates = append(md.predicates, ps...)
+	return md
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (mtd *MoneyTransferDelete) Exec(ctx context.Context) (int, error) {
+func (md *MoneytransferDelete) Exec(ctx context.Context) (int, error) {
 	var (
 		err      error
 		affected int
 	)
-	if len(mtd.hooks) == 0 {
-		affected, err = mtd.sqlExec(ctx)
+	if len(md.hooks) == 0 {
+		affected, err = md.sqlExec(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*MoneyTransferMutation)
+			mutation, ok := m.(*MoneytransferMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
-			mtd.mutation = mutation
-			affected, err = mtd.sqlExec(ctx)
+			md.mutation = mutation
+			affected, err = md.sqlExec(ctx)
 			mutation.done = true
 			return affected, err
 		})
-		for i := len(mtd.hooks) - 1; i >= 0; i-- {
-			mut = mtd.hooks[i](mut)
+		for i := len(md.hooks) - 1; i >= 0; i-- {
+			mut = md.hooks[i](mut)
 		}
-		if _, err := mut.Mutate(ctx, mtd.mutation); err != nil {
+		if _, err := mut.Mutate(ctx, md.mutation); err != nil {
 			return 0, err
 		}
 	}
@@ -57,15 +57,15 @@ func (mtd *MoneyTransferDelete) Exec(ctx context.Context) (int, error) {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mtd *MoneyTransferDelete) ExecX(ctx context.Context) int {
-	n, err := mtd.Exec(ctx)
+func (md *MoneytransferDelete) ExecX(ctx context.Context) int {
+	n, err := md.Exec(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return n
 }
 
-func (mtd *MoneyTransferDelete) sqlExec(ctx context.Context) (int, error) {
+func (md *MoneytransferDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := &sqlgraph.DeleteSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table: moneytransfer.Table,
@@ -75,24 +75,24 @@ func (mtd *MoneyTransferDelete) sqlExec(ctx context.Context) (int, error) {
 			},
 		},
 	}
-	if ps := mtd.predicates; len(ps) > 0 {
+	if ps := md.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	return sqlgraph.DeleteNodes(ctx, mtd.driver, _spec)
+	return sqlgraph.DeleteNodes(ctx, md.driver, _spec)
 }
 
-// MoneyTransferDeleteOne is the builder for deleting a single MoneyTransfer entity.
-type MoneyTransferDeleteOne struct {
-	mtd *MoneyTransferDelete
+// MoneytransferDeleteOne is the builder for deleting a single Moneytransfer entity.
+type MoneytransferDeleteOne struct {
+	md *MoneytransferDelete
 }
 
 // Exec executes the deletion query.
-func (mtdo *MoneyTransferDeleteOne) Exec(ctx context.Context) error {
-	n, err := mtdo.mtd.Exec(ctx)
+func (mdo *MoneytransferDeleteOne) Exec(ctx context.Context) error {
+	n, err := mdo.md.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
@@ -104,6 +104,6 @@ func (mtdo *MoneyTransferDeleteOne) Exec(ctx context.Context) error {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (mtdo *MoneyTransferDeleteOne) ExecX(ctx context.Context) {
-	mtdo.mtd.ExecX(ctx)
+func (mdo *MoneytransferDeleteOne) ExecX(ctx context.Context) {
+	mdo.md.ExecX(ctx)
 }

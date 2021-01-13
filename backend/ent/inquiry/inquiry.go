@@ -13,6 +13,8 @@ const (
 	FieldID = "id"
 	// FieldInquiryMessages holds the string denoting the inquiry_messages field in the database.
 	FieldInquiryMessages = "inquiry_messages"
+	// FieldInquiryPhoneMessages holds the string denoting the inquiry_phone_messages field in the database.
+	FieldInquiryPhoneMessages = "inquiry_phone_messages"
 	// FieldInquiryTimeMessages holds the string denoting the inquiry_time_messages field in the database.
 	FieldInquiryTimeMessages = "inquiry_time_messages"
 
@@ -61,6 +63,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldInquiryMessages,
+	FieldInquiryPhoneMessages,
 	FieldInquiryTimeMessages,
 }
 
@@ -75,6 +78,8 @@ var ForeignKeys = []string{
 var (
 	// InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
 	InquiryMessagesValidator func(string) error
+	// InquiryPhoneMessagesValidator is a validator for the "Inquiry_phone_messages" field. It is called by the builders before save.
+	InquiryPhoneMessagesValidator func(string) error
 	// DefaultInquiryTimeMessages holds the default value on creation for the Inquiry_time_messages field.
 	DefaultInquiryTimeMessages func() time.Time
 )

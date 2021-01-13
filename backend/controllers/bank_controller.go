@@ -16,13 +16,13 @@ type BankController struct {
 	router gin.IRouter
 }
 
-// CreateBank handles POST requests for adding Bank entities
-// @Summary Create Bank
-// @Description Create Bank
-// @ID create-Bank
+// CreateBank handles POST requests for adding bank entities
+// @Summary Create bank
+// @Description Create bank
+// @ID create-bank
 // @Accept   json
 // @Produce  json
-// @Param Bank body ent.Bank true "Bank entity"
+// @Param bank body ent.Bank true "Bank entity"
 // @Success 200 {object} ent.Bank
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -36,7 +36,7 @@ func (ctl *BankController) CreateBank(c *gin.Context) {
 		return
 	}
 
-	m, err := ctl.client.Bank.
+	b, err := ctl.client.Bank.
 		Create().
 		SetBankType(obj.BankType).
 		Save(context.Background())
@@ -47,13 +47,13 @@ func (ctl *BankController) CreateBank(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, m)
+	c.JSON(200, b)
 }
 
-// GetBank handles GET requests to retrieve a Bank entity
-// @Summary Get a Bank entity by ID
-// @Description get Bank by ID
-// @ID get-Bank
+// GetBank handles GET requests to retrieve a bank entity
+// @Summary Get a bank entity by ID
+// @Description get bank by ID
+// @ID get-bank
 // @Produce  json
 // @Param id path int true "Bank ID"
 // @Success 200 {object} ent.Bank
@@ -70,7 +70,7 @@ func (ctl *BankController) GetBank(c *gin.Context) {
 		return
 	}
 
-	m, err := ctl.client.Bank.
+	b, err := ctl.client.Bank.
 		Query().
 		Where(bank.IDEQ(int(id))).
 		Only(context.Background())
@@ -81,13 +81,13 @@ func (ctl *BankController) GetBank(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, m)
+	c.JSON(200, b)
 }
 
-// ListBank handles request to get a list of Bank entities
-// @Summary List Bank entities
-// @Description list Bank entities
-// @ID list-Bank
+// ListBank handles request to get a list of bank entities
+// @Summary List bank entities
+// @Description list bank entities
+// @ID list-bank
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
@@ -127,10 +127,10 @@ func (ctl *BankController) ListBank(c *gin.Context) {
 	c.JSON(200, banks)
 }
 
-// DeleteBank handles DELETE requests to delete a Bank entity
-// @Summary Delete a Bank entity by ID
-// @Description get Bank by ID
-// @ID delete-Bank
+// DeleteBank handles DELETE requests to delete a bank entity
+// @Summary Delete a bank entity by ID
+// @Description get bank by ID
+// @ID delete-bank
 // @Produce  json
 // @Param id path int true "Bank ID"
 // @Success 200 {object} gin.H
@@ -160,14 +160,14 @@ func (ctl *BankController) DeleteBank(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdateBank handles PUT requests to update a Bank entity
-// @Summary Update a Bank entity by ID
-// @Description update Bank by ID
-// @ID update-Bank
+// UpdateBank handles PUT requests to update a bank entity
+// @Summary Update a bank entity by ID
+// @Description update bank by ID
+// @ID update-bank
 // @Accept   json
 // @Produce  json
 // @Param id path int true "Bank ID"
-// @Param Bank body ent.Bank true "Bank entity"
+// @Param bank body ent.Bank true "Bank entity"
 // @Success 200 {object} ent.Bank
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -201,7 +201,7 @@ func (ctl *BankController) UpdateBank(c *gin.Context) {
 	c.JSON(200, s)
 }
 
-// NewBankController creates and registers handles for the BankController
+// NewBankController creates and registers handles for the Bank Controller
 func NewBankController(router gin.IRouter, client *ent.Client) *BankController {
 	mc := &BankController{
 		client: client,

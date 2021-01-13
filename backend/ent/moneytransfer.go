@@ -10,20 +10,20 @@ import (
 	"github.com/sut63/team05/ent/moneytransfer"
 )
 
-// MoneyTransfer is the model entity for the MoneyTransfer schema.
-type MoneyTransfer struct {
+// Moneytransfer is the model entity for the Moneytransfer schema.
+type Moneytransfer struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// MoneytransferType holds the value of the "moneytransfer_type" field.
 	MoneytransferType string `json:"moneytransfer_type,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the MoneyTransferQuery when eager-loading is set.
-	Edges MoneyTransferEdges `json:"edges"`
+	// The values are being populated by the MoneytransferQuery when eager-loading is set.
+	Edges MoneytransferEdges `json:"edges"`
 }
 
-// MoneyTransferEdges holds the relations/edges for other nodes in the graph.
-type MoneyTransferEdges struct {
+// MoneytransferEdges holds the relations/edges for other nodes in the graph.
+type MoneytransferEdges struct {
 	// MoneytransferPayment holds the value of the moneytransfer_payment edge.
 	MoneytransferPayment []*Payment
 	// loadedTypes holds the information for reporting if a
@@ -33,7 +33,7 @@ type MoneyTransferEdges struct {
 
 // MoneytransferPaymentOrErr returns the MoneytransferPayment value or an error if the edge
 // was not loaded in eager-loading.
-func (e MoneyTransferEdges) MoneytransferPaymentOrErr() ([]*Payment, error) {
+func (e MoneytransferEdges) MoneytransferPaymentOrErr() ([]*Payment, error) {
 	if e.loadedTypes[0] {
 		return e.MoneytransferPayment, nil
 	}
@@ -41,7 +41,7 @@ func (e MoneyTransferEdges) MoneytransferPaymentOrErr() ([]*Payment, error) {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*MoneyTransfer) scanValues() []interface{} {
+func (*Moneytransfer) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
 		&sql.NullString{}, // moneytransfer_type
@@ -49,8 +49,8 @@ func (*MoneyTransfer) scanValues() []interface{} {
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the MoneyTransfer fields.
-func (mt *MoneyTransfer) assignValues(values ...interface{}) error {
+// to the Moneytransfer fields.
+func (m *Moneytransfer) assignValues(values ...interface{}) error {
 	if m, n := len(values), len(moneytransfer.Columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -58,55 +58,55 @@ func (mt *MoneyTransfer) assignValues(values ...interface{}) error {
 	if !ok {
 		return fmt.Errorf("unexpected type %T for field id", value)
 	}
-	mt.ID = int(value.Int64)
+	m.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
 		return fmt.Errorf("unexpected type %T for field moneytransfer_type", values[0])
 	} else if value.Valid {
-		mt.MoneytransferType = value.String
+		m.MoneytransferType = value.String
 	}
 	return nil
 }
 
-// QueryMoneytransferPayment queries the moneytransfer_payment edge of the MoneyTransfer.
-func (mt *MoneyTransfer) QueryMoneytransferPayment() *PaymentQuery {
-	return (&MoneyTransferClient{config: mt.config}).QueryMoneytransferPayment(mt)
+// QueryMoneytransferPayment queries the moneytransfer_payment edge of the Moneytransfer.
+func (m *Moneytransfer) QueryMoneytransferPayment() *PaymentQuery {
+	return (&MoneytransferClient{config: m.config}).QueryMoneytransferPayment(m)
 }
 
-// Update returns a builder for updating this MoneyTransfer.
-// Note that, you need to call MoneyTransfer.Unwrap() before calling this method, if this MoneyTransfer
+// Update returns a builder for updating this Moneytransfer.
+// Note that, you need to call Moneytransfer.Unwrap() before calling this method, if this Moneytransfer
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (mt *MoneyTransfer) Update() *MoneyTransferUpdateOne {
-	return (&MoneyTransferClient{config: mt.config}).UpdateOne(mt)
+func (m *Moneytransfer) Update() *MoneytransferUpdateOne {
+	return (&MoneytransferClient{config: m.config}).UpdateOne(m)
 }
 
 // Unwrap unwraps the entity that was returned from a transaction after it was closed,
 // so that all next queries will be executed through the driver which created the transaction.
-func (mt *MoneyTransfer) Unwrap() *MoneyTransfer {
-	tx, ok := mt.config.driver.(*txDriver)
+func (m *Moneytransfer) Unwrap() *Moneytransfer {
+	tx, ok := m.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: MoneyTransfer is not a transactional entity")
+		panic("ent: Moneytransfer is not a transactional entity")
 	}
-	mt.config.driver = tx.drv
-	return mt
+	m.config.driver = tx.drv
+	return m
 }
 
 // String implements the fmt.Stringer.
-func (mt *MoneyTransfer) String() string {
+func (m *Moneytransfer) String() string {
 	var builder strings.Builder
-	builder.WriteString("MoneyTransfer(")
-	builder.WriteString(fmt.Sprintf("id=%v", mt.ID))
+	builder.WriteString("Moneytransfer(")
+	builder.WriteString(fmt.Sprintf("id=%v", m.ID))
 	builder.WriteString(", moneytransfer_type=")
-	builder.WriteString(mt.MoneytransferType)
+	builder.WriteString(m.MoneytransferType)
 	builder.WriteByte(')')
 	return builder.String()
 }
 
-// MoneyTransfers is a parsable slice of MoneyTransfer.
-type MoneyTransfers []*MoneyTransfer
+// Moneytransfers is a parsable slice of Moneytransfer.
+type Moneytransfers []*Moneytransfer
 
-func (mt MoneyTransfers) config(cfg config) {
-	for _i := range mt {
-		mt[_i].config = cfg
+func (m Moneytransfers) config(cfg config) {
+	for _i := range m {
+		m[_i].config = cfg
 	}
 }

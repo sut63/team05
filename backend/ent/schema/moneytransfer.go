@@ -6,20 +6,20 @@ import (
 	"github.com/facebookincubator/ent/schema/field"
 )
 
-// MoneyTransfer holds the schema definition for the MoneyTransfer entity.
-type MoneyTransfer struct {
+// Moneytransfer holds the schema definition for the Moneytransfer entity.
+type Moneytransfer struct {
 	ent.Schema
 }
 
-// Fields of the MoneyTransfer.
-func (MoneyTransfer) Fields() []ent.Field {
+// Fields of the Moneytransfer.
+func (Moneytransfer) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("moneytransfer_type").NotEmpty(),
 	}
 }
 
-// Edges of the MoneyTransfer.
-func (MoneyTransfer) Edges() []ent.Edge {
+// Edges of the Moneytransfer.
+func (Moneytransfer) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("moneytransfer_payment", Payment.Type).StorageKey(edge.Column("moneytransfer_id")),
 	}

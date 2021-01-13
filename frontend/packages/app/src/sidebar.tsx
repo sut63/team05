@@ -6,6 +6,8 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import DescriptionIcon from '@material-ui/icons/Description';
+
 
 import {
   Sidebar,
@@ -48,10 +50,6 @@ export const AppSidebar = () => {
       {(memberid) ?
         members.filter((filter:EntMember) => filter.id == memberid).map((item:EntMember) => 
           <><SidebarItem icon={PermIdentityIcon} text={item.memberName} />
-          <SidebarItem
-            icon={MonetizationOnIcon}
-            to="Inquiry"
-            text="Inquiry" />
             <SidebarItem
             icon={ShoppingCartIcon}
             to="Insurance"
@@ -60,6 +58,10 @@ export const AppSidebar = () => {
             icon={MonetizationOnIcon}
             to="payment"
             text="Payment" />
+            <SidebarItem
+            icon={DescriptionIcon}
+            to="Inquiry"
+            text="Inquiry" />
             </>
         )
         :

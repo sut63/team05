@@ -17,14 +17,14 @@ import (
 	"github.com/sut63/team05/ent/predicate"
 )
 
-// MoneyTransferQuery is the builder for querying MoneyTransfer entities.
-type MoneyTransferQuery struct {
+// MoneytransferQuery is the builder for querying Moneytransfer entities.
+type MoneytransferQuery struct {
 	config
 	limit      *int
 	offset     *int
 	order      []OrderFunc
 	unique     []string
-	predicates []predicate.MoneyTransfer
+	predicates []predicate.Moneytransfer
 	// eager-loading edges.
 	withMoneytransferPayment *PaymentQuery
 	// intermediate query (i.e. traversal path).
@@ -33,72 +33,72 @@ type MoneyTransferQuery struct {
 }
 
 // Where adds a new predicate for the builder.
-func (mtq *MoneyTransferQuery) Where(ps ...predicate.MoneyTransfer) *MoneyTransferQuery {
-	mtq.predicates = append(mtq.predicates, ps...)
-	return mtq
+func (mq *MoneytransferQuery) Where(ps ...predicate.Moneytransfer) *MoneytransferQuery {
+	mq.predicates = append(mq.predicates, ps...)
+	return mq
 }
 
 // Limit adds a limit step to the query.
-func (mtq *MoneyTransferQuery) Limit(limit int) *MoneyTransferQuery {
-	mtq.limit = &limit
-	return mtq
+func (mq *MoneytransferQuery) Limit(limit int) *MoneytransferQuery {
+	mq.limit = &limit
+	return mq
 }
 
 // Offset adds an offset step to the query.
-func (mtq *MoneyTransferQuery) Offset(offset int) *MoneyTransferQuery {
-	mtq.offset = &offset
-	return mtq
+func (mq *MoneytransferQuery) Offset(offset int) *MoneytransferQuery {
+	mq.offset = &offset
+	return mq
 }
 
 // Order adds an order step to the query.
-func (mtq *MoneyTransferQuery) Order(o ...OrderFunc) *MoneyTransferQuery {
-	mtq.order = append(mtq.order, o...)
-	return mtq
+func (mq *MoneytransferQuery) Order(o ...OrderFunc) *MoneytransferQuery {
+	mq.order = append(mq.order, o...)
+	return mq
 }
 
 // QueryMoneytransferPayment chains the current query on the moneytransfer_payment edge.
-func (mtq *MoneyTransferQuery) QueryMoneytransferPayment() *PaymentQuery {
-	query := &PaymentQuery{config: mtq.config}
+func (mq *MoneytransferQuery) QueryMoneytransferPayment() *PaymentQuery {
+	query := &PaymentQuery{config: mq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := mtq.prepareQuery(ctx); err != nil {
+		if err := mq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
-			sqlgraph.From(moneytransfer.Table, moneytransfer.FieldID, mtq.sqlQuery()),
+			sqlgraph.From(moneytransfer.Table, moneytransfer.FieldID, mq.sqlQuery()),
 			sqlgraph.To(payment.Table, payment.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, moneytransfer.MoneytransferPaymentTable, moneytransfer.MoneytransferPaymentColumn),
 		)
-		fromU = sqlgraph.SetNeighbors(mtq.driver.Dialect(), step)
+		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
 		return fromU, nil
 	}
 	return query
 }
 
-// First returns the first MoneyTransfer entity in the query. Returns *NotFoundError when no moneytransfer was found.
-func (mtq *MoneyTransferQuery) First(ctx context.Context) (*MoneyTransfer, error) {
-	mts, err := mtq.Limit(1).All(ctx)
+// First returns the first Moneytransfer entity in the query. Returns *NotFoundError when no moneytransfer was found.
+func (mq *MoneytransferQuery) First(ctx context.Context) (*Moneytransfer, error) {
+	ms, err := mq.Limit(1).All(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if len(mts) == 0 {
+	if len(ms) == 0 {
 		return nil, &NotFoundError{moneytransfer.Label}
 	}
-	return mts[0], nil
+	return ms[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (mtq *MoneyTransferQuery) FirstX(ctx context.Context) *MoneyTransfer {
-	mt, err := mtq.First(ctx)
+func (mq *MoneytransferQuery) FirstX(ctx context.Context) *Moneytransfer {
+	m, err := mq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
 	}
-	return mt
+	return m
 }
 
-// FirstID returns the first MoneyTransfer id in the query. Returns *NotFoundError when no id was found.
-func (mtq *MoneyTransferQuery) FirstID(ctx context.Context) (id int, err error) {
+// FirstID returns the first Moneytransfer id in the query. Returns *NotFoundError when no id was found.
+func (mq *MoneytransferQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
-	if ids, err = mtq.Limit(1).IDs(ctx); err != nil {
+	if ids, err = mq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
 	if len(ids) == 0 {
@@ -109,23 +109,23 @@ func (mtq *MoneyTransferQuery) FirstID(ctx context.Context) (id int, err error) 
 }
 
 // FirstXID is like FirstID, but panics if an error occurs.
-func (mtq *MoneyTransferQuery) FirstXID(ctx context.Context) int {
-	id, err := mtq.FirstID(ctx)
+func (mq *MoneytransferQuery) FirstXID(ctx context.Context) int {
+	id, err := mq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
 	}
 	return id
 }
 
-// Only returns the only MoneyTransfer entity in the query, returns an error if not exactly one entity was returned.
-func (mtq *MoneyTransferQuery) Only(ctx context.Context) (*MoneyTransfer, error) {
-	mts, err := mtq.Limit(2).All(ctx)
+// Only returns the only Moneytransfer entity in the query, returns an error if not exactly one entity was returned.
+func (mq *MoneytransferQuery) Only(ctx context.Context) (*Moneytransfer, error) {
+	ms, err := mq.Limit(2).All(ctx)
 	if err != nil {
 		return nil, err
 	}
-	switch len(mts) {
+	switch len(ms) {
 	case 1:
-		return mts[0], nil
+		return ms[0], nil
 	case 0:
 		return nil, &NotFoundError{moneytransfer.Label}
 	default:
@@ -134,18 +134,18 @@ func (mtq *MoneyTransferQuery) Only(ctx context.Context) (*MoneyTransfer, error)
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (mtq *MoneyTransferQuery) OnlyX(ctx context.Context) *MoneyTransfer {
-	mt, err := mtq.Only(ctx)
+func (mq *MoneytransferQuery) OnlyX(ctx context.Context) *Moneytransfer {
+	m, err := mq.Only(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return mt
+	return m
 }
 
-// OnlyID returns the only MoneyTransfer id in the query, returns an error if not exactly one id was returned.
-func (mtq *MoneyTransferQuery) OnlyID(ctx context.Context) (id int, err error) {
+// OnlyID returns the only Moneytransfer id in the query, returns an error if not exactly one id was returned.
+func (mq *MoneytransferQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
-	if ids, err = mtq.Limit(2).IDs(ctx); err != nil {
+	if ids, err = mq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
 	switch len(ids) {
@@ -160,43 +160,43 @@ func (mtq *MoneyTransferQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (mtq *MoneyTransferQuery) OnlyIDX(ctx context.Context) int {
-	id, err := mtq.OnlyID(ctx)
+func (mq *MoneytransferQuery) OnlyIDX(ctx context.Context) int {
+	id, err := mq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return id
 }
 
-// All executes the query and returns a list of MoneyTransfers.
-func (mtq *MoneyTransferQuery) All(ctx context.Context) ([]*MoneyTransfer, error) {
-	if err := mtq.prepareQuery(ctx); err != nil {
+// All executes the query and returns a list of Moneytransfers.
+func (mq *MoneytransferQuery) All(ctx context.Context) ([]*Moneytransfer, error) {
+	if err := mq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
-	return mtq.sqlAll(ctx)
+	return mq.sqlAll(ctx)
 }
 
 // AllX is like All, but panics if an error occurs.
-func (mtq *MoneyTransferQuery) AllX(ctx context.Context) []*MoneyTransfer {
-	mts, err := mtq.All(ctx)
+func (mq *MoneytransferQuery) AllX(ctx context.Context) []*Moneytransfer {
+	ms, err := mq.All(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return mts
+	return ms
 }
 
-// IDs executes the query and returns a list of MoneyTransfer ids.
-func (mtq *MoneyTransferQuery) IDs(ctx context.Context) ([]int, error) {
+// IDs executes the query and returns a list of Moneytransfer ids.
+func (mq *MoneytransferQuery) IDs(ctx context.Context) ([]int, error) {
 	var ids []int
-	if err := mtq.Select(moneytransfer.FieldID).Scan(ctx, &ids); err != nil {
+	if err := mq.Select(moneytransfer.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (mtq *MoneyTransferQuery) IDsX(ctx context.Context) []int {
-	ids, err := mtq.IDs(ctx)
+func (mq *MoneytransferQuery) IDsX(ctx context.Context) []int {
+	ids, err := mq.IDs(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -204,16 +204,16 @@ func (mtq *MoneyTransferQuery) IDsX(ctx context.Context) []int {
 }
 
 // Count returns the count of the given query.
-func (mtq *MoneyTransferQuery) Count(ctx context.Context) (int, error) {
-	if err := mtq.prepareQuery(ctx); err != nil {
+func (mq *MoneytransferQuery) Count(ctx context.Context) (int, error) {
+	if err := mq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
-	return mtq.sqlCount(ctx)
+	return mq.sqlCount(ctx)
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (mtq *MoneyTransferQuery) CountX(ctx context.Context) int {
-	count, err := mtq.Count(ctx)
+func (mq *MoneytransferQuery) CountX(ctx context.Context) int {
+	count, err := mq.Count(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -221,16 +221,16 @@ func (mtq *MoneyTransferQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (mtq *MoneyTransferQuery) Exist(ctx context.Context) (bool, error) {
-	if err := mtq.prepareQuery(ctx); err != nil {
+func (mq *MoneytransferQuery) Exist(ctx context.Context) (bool, error) {
+	if err := mq.prepareQuery(ctx); err != nil {
 		return false, err
 	}
-	return mtq.sqlExist(ctx)
+	return mq.sqlExist(ctx)
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (mtq *MoneyTransferQuery) ExistX(ctx context.Context) bool {
-	exist, err := mtq.Exist(ctx)
+func (mq *MoneytransferQuery) ExistX(ctx context.Context) bool {
+	exist, err := mq.Exist(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -239,29 +239,29 @@ func (mtq *MoneyTransferQuery) ExistX(ctx context.Context) bool {
 
 // Clone returns a duplicate of the query builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (mtq *MoneyTransferQuery) Clone() *MoneyTransferQuery {
-	return &MoneyTransferQuery{
-		config:     mtq.config,
-		limit:      mtq.limit,
-		offset:     mtq.offset,
-		order:      append([]OrderFunc{}, mtq.order...),
-		unique:     append([]string{}, mtq.unique...),
-		predicates: append([]predicate.MoneyTransfer{}, mtq.predicates...),
+func (mq *MoneytransferQuery) Clone() *MoneytransferQuery {
+	return &MoneytransferQuery{
+		config:     mq.config,
+		limit:      mq.limit,
+		offset:     mq.offset,
+		order:      append([]OrderFunc{}, mq.order...),
+		unique:     append([]string{}, mq.unique...),
+		predicates: append([]predicate.Moneytransfer{}, mq.predicates...),
 		// clone intermediate query.
-		sql:  mtq.sql.Clone(),
-		path: mtq.path,
+		sql:  mq.sql.Clone(),
+		path: mq.path,
 	}
 }
 
 //  WithMoneytransferPayment tells the query-builder to eager-loads the nodes that are connected to
 // the "moneytransfer_payment" edge. The optional arguments used to configure the query builder of the edge.
-func (mtq *MoneyTransferQuery) WithMoneytransferPayment(opts ...func(*PaymentQuery)) *MoneyTransferQuery {
-	query := &PaymentQuery{config: mtq.config}
+func (mq *MoneytransferQuery) WithMoneytransferPayment(opts ...func(*PaymentQuery)) *MoneytransferQuery {
+	query := &PaymentQuery{config: mq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	mtq.withMoneytransferPayment = query
-	return mtq
+	mq.withMoneytransferPayment = query
+	return mq
 }
 
 // GroupBy used to group vertices by one or more fields/columns.
@@ -274,19 +274,19 @@ func (mtq *MoneyTransferQuery) WithMoneytransferPayment(opts ...func(*PaymentQue
 //		Count int `json:"count,omitempty"`
 //	}
 //
-//	client.MoneyTransfer.Query().
+//	client.Moneytransfer.Query().
 //		GroupBy(moneytransfer.FieldMoneytransferType).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
-func (mtq *MoneyTransferQuery) GroupBy(field string, fields ...string) *MoneyTransferGroupBy {
-	group := &MoneyTransferGroupBy{config: mtq.config}
+func (mq *MoneytransferQuery) GroupBy(field string, fields ...string) *MoneytransferGroupBy {
+	group := &MoneytransferGroupBy{config: mq.config}
 	group.fields = append([]string{field}, fields...)
 	group.path = func(ctx context.Context) (prev *sql.Selector, err error) {
-		if err := mtq.prepareQuery(ctx); err != nil {
+		if err := mq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		return mtq.sqlQuery(), nil
+		return mq.sqlQuery(), nil
 	}
 	return group
 }
@@ -299,43 +299,43 @@ func (mtq *MoneyTransferQuery) GroupBy(field string, fields ...string) *MoneyTra
 //		MoneytransferType string `json:"moneytransfer_type,omitempty"`
 //	}
 //
-//	client.MoneyTransfer.Query().
+//	client.Moneytransfer.Query().
 //		Select(moneytransfer.FieldMoneytransferType).
 //		Scan(ctx, &v)
 //
-func (mtq *MoneyTransferQuery) Select(field string, fields ...string) *MoneyTransferSelect {
-	selector := &MoneyTransferSelect{config: mtq.config}
+func (mq *MoneytransferQuery) Select(field string, fields ...string) *MoneytransferSelect {
+	selector := &MoneytransferSelect{config: mq.config}
 	selector.fields = append([]string{field}, fields...)
 	selector.path = func(ctx context.Context) (prev *sql.Selector, err error) {
-		if err := mtq.prepareQuery(ctx); err != nil {
+		if err := mq.prepareQuery(ctx); err != nil {
 			return nil, err
 		}
-		return mtq.sqlQuery(), nil
+		return mq.sqlQuery(), nil
 	}
 	return selector
 }
 
-func (mtq *MoneyTransferQuery) prepareQuery(ctx context.Context) error {
-	if mtq.path != nil {
-		prev, err := mtq.path(ctx)
+func (mq *MoneytransferQuery) prepareQuery(ctx context.Context) error {
+	if mq.path != nil {
+		prev, err := mq.path(ctx)
 		if err != nil {
 			return err
 		}
-		mtq.sql = prev
+		mq.sql = prev
 	}
 	return nil
 }
 
-func (mtq *MoneyTransferQuery) sqlAll(ctx context.Context) ([]*MoneyTransfer, error) {
+func (mq *MoneytransferQuery) sqlAll(ctx context.Context) ([]*Moneytransfer, error) {
 	var (
-		nodes       = []*MoneyTransfer{}
-		_spec       = mtq.querySpec()
+		nodes       = []*Moneytransfer{}
+		_spec       = mq.querySpec()
 		loadedTypes = [1]bool{
-			mtq.withMoneytransferPayment != nil,
+			mq.withMoneytransferPayment != nil,
 		}
 	)
 	_spec.ScanValues = func() []interface{} {
-		node := &MoneyTransfer{config: mtq.config}
+		node := &Moneytransfer{config: mq.config}
 		nodes = append(nodes, node)
 		values := node.scanValues()
 		return values
@@ -348,16 +348,16 @@ func (mtq *MoneyTransferQuery) sqlAll(ctx context.Context) ([]*MoneyTransfer, er
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(values...)
 	}
-	if err := sqlgraph.QueryNodes(ctx, mtq.driver, _spec); err != nil {
+	if err := sqlgraph.QueryNodes(ctx, mq.driver, _spec); err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
 
-	if query := mtq.withMoneytransferPayment; query != nil {
+	if query := mq.withMoneytransferPayment; query != nil {
 		fks := make([]driver.Value, 0, len(nodes))
-		nodeids := make(map[int]*MoneyTransfer)
+		nodeids := make(map[int]*Moneytransfer)
 		for i := range nodes {
 			fks = append(fks, nodes[i].ID)
 			nodeids[nodes[i].ID] = nodes[i]
@@ -386,20 +386,20 @@ func (mtq *MoneyTransferQuery) sqlAll(ctx context.Context) ([]*MoneyTransfer, er
 	return nodes, nil
 }
 
-func (mtq *MoneyTransferQuery) sqlCount(ctx context.Context) (int, error) {
-	_spec := mtq.querySpec()
-	return sqlgraph.CountNodes(ctx, mtq.driver, _spec)
+func (mq *MoneytransferQuery) sqlCount(ctx context.Context) (int, error) {
+	_spec := mq.querySpec()
+	return sqlgraph.CountNodes(ctx, mq.driver, _spec)
 }
 
-func (mtq *MoneyTransferQuery) sqlExist(ctx context.Context) (bool, error) {
-	n, err := mtq.sqlCount(ctx)
+func (mq *MoneytransferQuery) sqlExist(ctx context.Context) (bool, error) {
+	n, err := mq.sqlCount(ctx)
 	if err != nil {
 		return false, fmt.Errorf("ent: check existence: %v", err)
 	}
 	return n > 0, nil
 }
 
-func (mtq *MoneyTransferQuery) querySpec() *sqlgraph.QuerySpec {
+func (mq *MoneytransferQuery) querySpec() *sqlgraph.QuerySpec {
 	_spec := &sqlgraph.QuerySpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   moneytransfer.Table,
@@ -409,23 +409,23 @@ func (mtq *MoneyTransferQuery) querySpec() *sqlgraph.QuerySpec {
 				Column: moneytransfer.FieldID,
 			},
 		},
-		From:   mtq.sql,
+		From:   mq.sql,
 		Unique: true,
 	}
-	if ps := mtq.predicates; len(ps) > 0 {
+	if ps := mq.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if limit := mtq.limit; limit != nil {
+	if limit := mq.limit; limit != nil {
 		_spec.Limit = *limit
 	}
-	if offset := mtq.offset; offset != nil {
+	if offset := mq.offset; offset != nil {
 		_spec.Offset = *offset
 	}
-	if ps := mtq.order; len(ps) > 0 {
+	if ps := mq.order; len(ps) > 0 {
 		_spec.Order = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
@@ -435,33 +435,33 @@ func (mtq *MoneyTransferQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (mtq *MoneyTransferQuery) sqlQuery() *sql.Selector {
-	builder := sql.Dialect(mtq.driver.Dialect())
+func (mq *MoneytransferQuery) sqlQuery() *sql.Selector {
+	builder := sql.Dialect(mq.driver.Dialect())
 	t1 := builder.Table(moneytransfer.Table)
 	selector := builder.Select(t1.Columns(moneytransfer.Columns...)...).From(t1)
-	if mtq.sql != nil {
-		selector = mtq.sql
+	if mq.sql != nil {
+		selector = mq.sql
 		selector.Select(selector.Columns(moneytransfer.Columns...)...)
 	}
-	for _, p := range mtq.predicates {
+	for _, p := range mq.predicates {
 		p(selector)
 	}
-	for _, p := range mtq.order {
+	for _, p := range mq.order {
 		p(selector)
 	}
-	if offset := mtq.offset; offset != nil {
+	if offset := mq.offset; offset != nil {
 		// limit is mandatory for offset clause. We start
 		// with default value, and override it below if needed.
 		selector.Offset(*offset).Limit(math.MaxInt32)
 	}
-	if limit := mtq.limit; limit != nil {
+	if limit := mq.limit; limit != nil {
 		selector.Limit(*limit)
 	}
 	return selector
 }
 
-// MoneyTransferGroupBy is the builder for group-by MoneyTransfer entities.
-type MoneyTransferGroupBy struct {
+// MoneytransferGroupBy is the builder for group-by Moneytransfer entities.
+type MoneytransferGroupBy struct {
 	config
 	fields []string
 	fns    []AggregateFunc
@@ -471,43 +471,43 @@ type MoneyTransferGroupBy struct {
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (mtgb *MoneyTransferGroupBy) Aggregate(fns ...AggregateFunc) *MoneyTransferGroupBy {
-	mtgb.fns = append(mtgb.fns, fns...)
-	return mtgb
+func (mgb *MoneytransferGroupBy) Aggregate(fns ...AggregateFunc) *MoneytransferGroupBy {
+	mgb.fns = append(mgb.fns, fns...)
+	return mgb
 }
 
 // Scan applies the group-by query and scan the result into the given value.
-func (mtgb *MoneyTransferGroupBy) Scan(ctx context.Context, v interface{}) error {
-	query, err := mtgb.path(ctx)
+func (mgb *MoneytransferGroupBy) Scan(ctx context.Context, v interface{}) error {
+	query, err := mgb.path(ctx)
 	if err != nil {
 		return err
 	}
-	mtgb.sql = query
-	return mtgb.sqlScan(ctx, v)
+	mgb.sql = query
+	return mgb.sqlScan(ctx, v)
 }
 
 // ScanX is like Scan, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) ScanX(ctx context.Context, v interface{}) {
-	if err := mtgb.Scan(ctx, v); err != nil {
+func (mgb *MoneytransferGroupBy) ScanX(ctx context.Context, v interface{}) {
+	if err := mgb.Scan(ctx, v); err != nil {
 		panic(err)
 	}
 }
 
 // Strings returns list of strings from group-by. It is only allowed when querying group-by with one field.
-func (mtgb *MoneyTransferGroupBy) Strings(ctx context.Context) ([]string, error) {
-	if len(mtgb.fields) > 1 {
-		return nil, errors.New("ent: MoneyTransferGroupBy.Strings is not achievable when grouping more than 1 field")
+func (mgb *MoneytransferGroupBy) Strings(ctx context.Context) ([]string, error) {
+	if len(mgb.fields) > 1 {
+		return nil, errors.New("ent: MoneytransferGroupBy.Strings is not achievable when grouping more than 1 field")
 	}
 	var v []string
-	if err := mtgb.Scan(ctx, &v); err != nil {
+	if err := mgb.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // StringsX is like Strings, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) StringsX(ctx context.Context) []string {
-	v, err := mtgb.Strings(ctx)
+func (mgb *MoneytransferGroupBy) StringsX(ctx context.Context) []string {
+	v, err := mgb.Strings(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -515,9 +515,9 @@ func (mtgb *MoneyTransferGroupBy) StringsX(ctx context.Context) []string {
 }
 
 // String returns a single string from group-by. It is only allowed when querying group-by with one field.
-func (mtgb *MoneyTransferGroupBy) String(ctx context.Context) (_ string, err error) {
+func (mgb *MoneytransferGroupBy) String(ctx context.Context) (_ string, err error) {
 	var v []string
-	if v, err = mtgb.Strings(ctx); err != nil {
+	if v, err = mgb.Strings(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -526,14 +526,14 @@ func (mtgb *MoneyTransferGroupBy) String(ctx context.Context) (_ string, err err
 	case 0:
 		err = &NotFoundError{moneytransfer.Label}
 	default:
-		err = fmt.Errorf("ent: MoneyTransferGroupBy.Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: MoneytransferGroupBy.Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // StringX is like String, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) StringX(ctx context.Context) string {
-	v, err := mtgb.String(ctx)
+func (mgb *MoneytransferGroupBy) StringX(ctx context.Context) string {
+	v, err := mgb.String(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -541,20 +541,20 @@ func (mtgb *MoneyTransferGroupBy) StringX(ctx context.Context) string {
 }
 
 // Ints returns list of ints from group-by. It is only allowed when querying group-by with one field.
-func (mtgb *MoneyTransferGroupBy) Ints(ctx context.Context) ([]int, error) {
-	if len(mtgb.fields) > 1 {
-		return nil, errors.New("ent: MoneyTransferGroupBy.Ints is not achievable when grouping more than 1 field")
+func (mgb *MoneytransferGroupBy) Ints(ctx context.Context) ([]int, error) {
+	if len(mgb.fields) > 1 {
+		return nil, errors.New("ent: MoneytransferGroupBy.Ints is not achievable when grouping more than 1 field")
 	}
 	var v []int
-	if err := mtgb.Scan(ctx, &v); err != nil {
+	if err := mgb.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // IntsX is like Ints, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) IntsX(ctx context.Context) []int {
-	v, err := mtgb.Ints(ctx)
+func (mgb *MoneytransferGroupBy) IntsX(ctx context.Context) []int {
+	v, err := mgb.Ints(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -562,9 +562,9 @@ func (mtgb *MoneyTransferGroupBy) IntsX(ctx context.Context) []int {
 }
 
 // Int returns a single int from group-by. It is only allowed when querying group-by with one field.
-func (mtgb *MoneyTransferGroupBy) Int(ctx context.Context) (_ int, err error) {
+func (mgb *MoneytransferGroupBy) Int(ctx context.Context) (_ int, err error) {
 	var v []int
-	if v, err = mtgb.Ints(ctx); err != nil {
+	if v, err = mgb.Ints(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -573,14 +573,14 @@ func (mtgb *MoneyTransferGroupBy) Int(ctx context.Context) (_ int, err error) {
 	case 0:
 		err = &NotFoundError{moneytransfer.Label}
 	default:
-		err = fmt.Errorf("ent: MoneyTransferGroupBy.Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: MoneytransferGroupBy.Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // IntX is like Int, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) IntX(ctx context.Context) int {
-	v, err := mtgb.Int(ctx)
+func (mgb *MoneytransferGroupBy) IntX(ctx context.Context) int {
+	v, err := mgb.Int(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -588,20 +588,20 @@ func (mtgb *MoneyTransferGroupBy) IntX(ctx context.Context) int {
 }
 
 // Float64s returns list of float64s from group-by. It is only allowed when querying group-by with one field.
-func (mtgb *MoneyTransferGroupBy) Float64s(ctx context.Context) ([]float64, error) {
-	if len(mtgb.fields) > 1 {
-		return nil, errors.New("ent: MoneyTransferGroupBy.Float64s is not achievable when grouping more than 1 field")
+func (mgb *MoneytransferGroupBy) Float64s(ctx context.Context) ([]float64, error) {
+	if len(mgb.fields) > 1 {
+		return nil, errors.New("ent: MoneytransferGroupBy.Float64s is not achievable when grouping more than 1 field")
 	}
 	var v []float64
-	if err := mtgb.Scan(ctx, &v); err != nil {
+	if err := mgb.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // Float64sX is like Float64s, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) Float64sX(ctx context.Context) []float64 {
-	v, err := mtgb.Float64s(ctx)
+func (mgb *MoneytransferGroupBy) Float64sX(ctx context.Context) []float64 {
+	v, err := mgb.Float64s(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -609,9 +609,9 @@ func (mtgb *MoneyTransferGroupBy) Float64sX(ctx context.Context) []float64 {
 }
 
 // Float64 returns a single float64 from group-by. It is only allowed when querying group-by with one field.
-func (mtgb *MoneyTransferGroupBy) Float64(ctx context.Context) (_ float64, err error) {
+func (mgb *MoneytransferGroupBy) Float64(ctx context.Context) (_ float64, err error) {
 	var v []float64
-	if v, err = mtgb.Float64s(ctx); err != nil {
+	if v, err = mgb.Float64s(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -620,14 +620,14 @@ func (mtgb *MoneyTransferGroupBy) Float64(ctx context.Context) (_ float64, err e
 	case 0:
 		err = &NotFoundError{moneytransfer.Label}
 	default:
-		err = fmt.Errorf("ent: MoneyTransferGroupBy.Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: MoneytransferGroupBy.Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // Float64X is like Float64, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) Float64X(ctx context.Context) float64 {
-	v, err := mtgb.Float64(ctx)
+func (mgb *MoneytransferGroupBy) Float64X(ctx context.Context) float64 {
+	v, err := mgb.Float64(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -635,20 +635,20 @@ func (mtgb *MoneyTransferGroupBy) Float64X(ctx context.Context) float64 {
 }
 
 // Bools returns list of bools from group-by. It is only allowed when querying group-by with one field.
-func (mtgb *MoneyTransferGroupBy) Bools(ctx context.Context) ([]bool, error) {
-	if len(mtgb.fields) > 1 {
-		return nil, errors.New("ent: MoneyTransferGroupBy.Bools is not achievable when grouping more than 1 field")
+func (mgb *MoneytransferGroupBy) Bools(ctx context.Context) ([]bool, error) {
+	if len(mgb.fields) > 1 {
+		return nil, errors.New("ent: MoneytransferGroupBy.Bools is not achievable when grouping more than 1 field")
 	}
 	var v []bool
-	if err := mtgb.Scan(ctx, &v); err != nil {
+	if err := mgb.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // BoolsX is like Bools, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) BoolsX(ctx context.Context) []bool {
-	v, err := mtgb.Bools(ctx)
+func (mgb *MoneytransferGroupBy) BoolsX(ctx context.Context) []bool {
+	v, err := mgb.Bools(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -656,9 +656,9 @@ func (mtgb *MoneyTransferGroupBy) BoolsX(ctx context.Context) []bool {
 }
 
 // Bool returns a single bool from group-by. It is only allowed when querying group-by with one field.
-func (mtgb *MoneyTransferGroupBy) Bool(ctx context.Context) (_ bool, err error) {
+func (mgb *MoneytransferGroupBy) Bool(ctx context.Context) (_ bool, err error) {
 	var v []bool
-	if v, err = mtgb.Bools(ctx); err != nil {
+	if v, err = mgb.Bools(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -667,42 +667,42 @@ func (mtgb *MoneyTransferGroupBy) Bool(ctx context.Context) (_ bool, err error) 
 	case 0:
 		err = &NotFoundError{moneytransfer.Label}
 	default:
-		err = fmt.Errorf("ent: MoneyTransferGroupBy.Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: MoneytransferGroupBy.Bools returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // BoolX is like Bool, but panics if an error occurs.
-func (mtgb *MoneyTransferGroupBy) BoolX(ctx context.Context) bool {
-	v, err := mtgb.Bool(ctx)
+func (mgb *MoneytransferGroupBy) BoolX(ctx context.Context) bool {
+	v, err := mgb.Bool(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return v
 }
 
-func (mtgb *MoneyTransferGroupBy) sqlScan(ctx context.Context, v interface{}) error {
+func (mgb *MoneytransferGroupBy) sqlScan(ctx context.Context, v interface{}) error {
 	rows := &sql.Rows{}
-	query, args := mtgb.sqlQuery().Query()
-	if err := mtgb.driver.Query(ctx, query, args, rows); err != nil {
+	query, args := mgb.sqlQuery().Query()
+	if err := mgb.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
 }
 
-func (mtgb *MoneyTransferGroupBy) sqlQuery() *sql.Selector {
-	selector := mtgb.sql
-	columns := make([]string, 0, len(mtgb.fields)+len(mtgb.fns))
-	columns = append(columns, mtgb.fields...)
-	for _, fn := range mtgb.fns {
+func (mgb *MoneytransferGroupBy) sqlQuery() *sql.Selector {
+	selector := mgb.sql
+	columns := make([]string, 0, len(mgb.fields)+len(mgb.fns))
+	columns = append(columns, mgb.fields...)
+	for _, fn := range mgb.fns {
 		columns = append(columns, fn(selector))
 	}
-	return selector.Select(columns...).GroupBy(mtgb.fields...)
+	return selector.Select(columns...).GroupBy(mgb.fields...)
 }
 
-// MoneyTransferSelect is the builder for select fields of MoneyTransfer entities.
-type MoneyTransferSelect struct {
+// MoneytransferSelect is the builder for select fields of Moneytransfer entities.
+type MoneytransferSelect struct {
 	config
 	fields []string
 	// intermediate query (i.e. traversal path).
@@ -711,37 +711,37 @@ type MoneyTransferSelect struct {
 }
 
 // Scan applies the selector query and scan the result into the given value.
-func (mts *MoneyTransferSelect) Scan(ctx context.Context, v interface{}) error {
-	query, err := mts.path(ctx)
+func (ms *MoneytransferSelect) Scan(ctx context.Context, v interface{}) error {
+	query, err := ms.path(ctx)
 	if err != nil {
 		return err
 	}
-	mts.sql = query
-	return mts.sqlScan(ctx, v)
+	ms.sql = query
+	return ms.sqlScan(ctx, v)
 }
 
 // ScanX is like Scan, but panics if an error occurs.
-func (mts *MoneyTransferSelect) ScanX(ctx context.Context, v interface{}) {
-	if err := mts.Scan(ctx, v); err != nil {
+func (ms *MoneytransferSelect) ScanX(ctx context.Context, v interface{}) {
+	if err := ms.Scan(ctx, v); err != nil {
 		panic(err)
 	}
 }
 
 // Strings returns list of strings from selector. It is only allowed when selecting one field.
-func (mts *MoneyTransferSelect) Strings(ctx context.Context) ([]string, error) {
-	if len(mts.fields) > 1 {
-		return nil, errors.New("ent: MoneyTransferSelect.Strings is not achievable when selecting more than 1 field")
+func (ms *MoneytransferSelect) Strings(ctx context.Context) ([]string, error) {
+	if len(ms.fields) > 1 {
+		return nil, errors.New("ent: MoneytransferSelect.Strings is not achievable when selecting more than 1 field")
 	}
 	var v []string
-	if err := mts.Scan(ctx, &v); err != nil {
+	if err := ms.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // StringsX is like Strings, but panics if an error occurs.
-func (mts *MoneyTransferSelect) StringsX(ctx context.Context) []string {
-	v, err := mts.Strings(ctx)
+func (ms *MoneytransferSelect) StringsX(ctx context.Context) []string {
+	v, err := ms.Strings(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -749,9 +749,9 @@ func (mts *MoneyTransferSelect) StringsX(ctx context.Context) []string {
 }
 
 // String returns a single string from selector. It is only allowed when selecting one field.
-func (mts *MoneyTransferSelect) String(ctx context.Context) (_ string, err error) {
+func (ms *MoneytransferSelect) String(ctx context.Context) (_ string, err error) {
 	var v []string
-	if v, err = mts.Strings(ctx); err != nil {
+	if v, err = ms.Strings(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -760,14 +760,14 @@ func (mts *MoneyTransferSelect) String(ctx context.Context) (_ string, err error
 	case 0:
 		err = &NotFoundError{moneytransfer.Label}
 	default:
-		err = fmt.Errorf("ent: MoneyTransferSelect.Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: MoneytransferSelect.Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // StringX is like String, but panics if an error occurs.
-func (mts *MoneyTransferSelect) StringX(ctx context.Context) string {
-	v, err := mts.String(ctx)
+func (ms *MoneytransferSelect) StringX(ctx context.Context) string {
+	v, err := ms.String(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -775,20 +775,20 @@ func (mts *MoneyTransferSelect) StringX(ctx context.Context) string {
 }
 
 // Ints returns list of ints from selector. It is only allowed when selecting one field.
-func (mts *MoneyTransferSelect) Ints(ctx context.Context) ([]int, error) {
-	if len(mts.fields) > 1 {
-		return nil, errors.New("ent: MoneyTransferSelect.Ints is not achievable when selecting more than 1 field")
+func (ms *MoneytransferSelect) Ints(ctx context.Context) ([]int, error) {
+	if len(ms.fields) > 1 {
+		return nil, errors.New("ent: MoneytransferSelect.Ints is not achievable when selecting more than 1 field")
 	}
 	var v []int
-	if err := mts.Scan(ctx, &v); err != nil {
+	if err := ms.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // IntsX is like Ints, but panics if an error occurs.
-func (mts *MoneyTransferSelect) IntsX(ctx context.Context) []int {
-	v, err := mts.Ints(ctx)
+func (ms *MoneytransferSelect) IntsX(ctx context.Context) []int {
+	v, err := ms.Ints(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -796,9 +796,9 @@ func (mts *MoneyTransferSelect) IntsX(ctx context.Context) []int {
 }
 
 // Int returns a single int from selector. It is only allowed when selecting one field.
-func (mts *MoneyTransferSelect) Int(ctx context.Context) (_ int, err error) {
+func (ms *MoneytransferSelect) Int(ctx context.Context) (_ int, err error) {
 	var v []int
-	if v, err = mts.Ints(ctx); err != nil {
+	if v, err = ms.Ints(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -807,14 +807,14 @@ func (mts *MoneyTransferSelect) Int(ctx context.Context) (_ int, err error) {
 	case 0:
 		err = &NotFoundError{moneytransfer.Label}
 	default:
-		err = fmt.Errorf("ent: MoneyTransferSelect.Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: MoneytransferSelect.Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // IntX is like Int, but panics if an error occurs.
-func (mts *MoneyTransferSelect) IntX(ctx context.Context) int {
-	v, err := mts.Int(ctx)
+func (ms *MoneytransferSelect) IntX(ctx context.Context) int {
+	v, err := ms.Int(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -822,20 +822,20 @@ func (mts *MoneyTransferSelect) IntX(ctx context.Context) int {
 }
 
 // Float64s returns list of float64s from selector. It is only allowed when selecting one field.
-func (mts *MoneyTransferSelect) Float64s(ctx context.Context) ([]float64, error) {
-	if len(mts.fields) > 1 {
-		return nil, errors.New("ent: MoneyTransferSelect.Float64s is not achievable when selecting more than 1 field")
+func (ms *MoneytransferSelect) Float64s(ctx context.Context) ([]float64, error) {
+	if len(ms.fields) > 1 {
+		return nil, errors.New("ent: MoneytransferSelect.Float64s is not achievable when selecting more than 1 field")
 	}
 	var v []float64
-	if err := mts.Scan(ctx, &v); err != nil {
+	if err := ms.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // Float64sX is like Float64s, but panics if an error occurs.
-func (mts *MoneyTransferSelect) Float64sX(ctx context.Context) []float64 {
-	v, err := mts.Float64s(ctx)
+func (ms *MoneytransferSelect) Float64sX(ctx context.Context) []float64 {
+	v, err := ms.Float64s(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -843,9 +843,9 @@ func (mts *MoneyTransferSelect) Float64sX(ctx context.Context) []float64 {
 }
 
 // Float64 returns a single float64 from selector. It is only allowed when selecting one field.
-func (mts *MoneyTransferSelect) Float64(ctx context.Context) (_ float64, err error) {
+func (ms *MoneytransferSelect) Float64(ctx context.Context) (_ float64, err error) {
 	var v []float64
-	if v, err = mts.Float64s(ctx); err != nil {
+	if v, err = ms.Float64s(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -854,14 +854,14 @@ func (mts *MoneyTransferSelect) Float64(ctx context.Context) (_ float64, err err
 	case 0:
 		err = &NotFoundError{moneytransfer.Label}
 	default:
-		err = fmt.Errorf("ent: MoneyTransferSelect.Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: MoneytransferSelect.Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // Float64X is like Float64, but panics if an error occurs.
-func (mts *MoneyTransferSelect) Float64X(ctx context.Context) float64 {
-	v, err := mts.Float64(ctx)
+func (ms *MoneytransferSelect) Float64X(ctx context.Context) float64 {
+	v, err := ms.Float64(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -869,20 +869,20 @@ func (mts *MoneyTransferSelect) Float64X(ctx context.Context) float64 {
 }
 
 // Bools returns list of bools from selector. It is only allowed when selecting one field.
-func (mts *MoneyTransferSelect) Bools(ctx context.Context) ([]bool, error) {
-	if len(mts.fields) > 1 {
-		return nil, errors.New("ent: MoneyTransferSelect.Bools is not achievable when selecting more than 1 field")
+func (ms *MoneytransferSelect) Bools(ctx context.Context) ([]bool, error) {
+	if len(ms.fields) > 1 {
+		return nil, errors.New("ent: MoneytransferSelect.Bools is not achievable when selecting more than 1 field")
 	}
 	var v []bool
-	if err := mts.Scan(ctx, &v); err != nil {
+	if err := ms.Scan(ctx, &v); err != nil {
 		return nil, err
 	}
 	return v, nil
 }
 
 // BoolsX is like Bools, but panics if an error occurs.
-func (mts *MoneyTransferSelect) BoolsX(ctx context.Context) []bool {
-	v, err := mts.Bools(ctx)
+func (ms *MoneytransferSelect) BoolsX(ctx context.Context) []bool {
+	v, err := ms.Bools(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -890,9 +890,9 @@ func (mts *MoneyTransferSelect) BoolsX(ctx context.Context) []bool {
 }
 
 // Bool returns a single bool from selector. It is only allowed when selecting one field.
-func (mts *MoneyTransferSelect) Bool(ctx context.Context) (_ bool, err error) {
+func (ms *MoneytransferSelect) Bool(ctx context.Context) (_ bool, err error) {
 	var v []bool
-	if v, err = mts.Bools(ctx); err != nil {
+	if v, err = ms.Bools(ctx); err != nil {
 		return
 	}
 	switch len(v) {
@@ -901,32 +901,32 @@ func (mts *MoneyTransferSelect) Bool(ctx context.Context) (_ bool, err error) {
 	case 0:
 		err = &NotFoundError{moneytransfer.Label}
 	default:
-		err = fmt.Errorf("ent: MoneyTransferSelect.Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("ent: MoneytransferSelect.Bools returned %d results when one was expected", len(v))
 	}
 	return
 }
 
 // BoolX is like Bool, but panics if an error occurs.
-func (mts *MoneyTransferSelect) BoolX(ctx context.Context) bool {
-	v, err := mts.Bool(ctx)
+func (ms *MoneytransferSelect) BoolX(ctx context.Context) bool {
+	v, err := ms.Bool(ctx)
 	if err != nil {
 		panic(err)
 	}
 	return v
 }
 
-func (mts *MoneyTransferSelect) sqlScan(ctx context.Context, v interface{}) error {
+func (ms *MoneytransferSelect) sqlScan(ctx context.Context, v interface{}) error {
 	rows := &sql.Rows{}
-	query, args := mts.sqlQuery().Query()
-	if err := mts.driver.Query(ctx, query, args, rows); err != nil {
+	query, args := ms.sqlQuery().Query()
+	if err := ms.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
 }
 
-func (mts *MoneyTransferSelect) sqlQuery() sql.Querier {
-	selector := mts.sql
-	selector.Select(selector.Columns(mts.fields...)...)
+func (ms *MoneytransferSelect) sqlQuery() sql.Querier {
+	selector := ms.sql
+	selector.Select(selector.Columns(ms.fields...)...)
 	return selector
 }
