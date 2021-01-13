@@ -85,6 +85,7 @@ var (
 	InquiriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "inquiry_messages", Type: field.TypeString},
+		{Name: "inquiry_phone_messages", Type: field.TypeString},
 		{Name: "inquiry_time_messages", Type: field.TypeTime},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
 		{Name: "member_id", Type: field.TypeInt, Nullable: true},
@@ -99,28 +100,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "inquiries_categories_category_inquiry",
-				Columns: []*schema.Column{InquiriesColumns[3]},
+				Columns: []*schema.Column{InquiriesColumns[4]},
 
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "inquiries_members_member_inquiry",
-				Columns: []*schema.Column{InquiriesColumns[4]},
+				Columns: []*schema.Column{InquiriesColumns[5]},
 
 				RefColumns: []*schema.Column{MembersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "inquiries_officers_officer_inquiry",
-				Columns: []*schema.Column{InquiriesColumns[5]},
+				Columns: []*schema.Column{InquiriesColumns[6]},
 
 				RefColumns: []*schema.Column{OfficersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "inquiries_products_product_inquiry",
-				Columns: []*schema.Column{InquiriesColumns[6]},
+				Columns: []*schema.Column{InquiriesColumns[7]},
 
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,

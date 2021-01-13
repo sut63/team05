@@ -180,12 +180,12 @@ func main() {
 	controllers.NewPaymentController(v1, client)
 	controllers.NewPaybackController(v1, client)
 
-
 	// Set Members Data
 	members := Members{
 		Member: []Member{
 			Member{"b6115296@g.sut.ac.th", "Teerapat Saiprom", "123456789"},
 			Member{"b6132552@g.sut.ac.th", "Teerasuk Supawaha", "123456789"},
+			Member{"b6111458@g.sut.ac.th", "Pongsathon Petsuwan", "123456789"},
 		},
 	}
 
@@ -328,7 +328,12 @@ func main() {
 		Category: []Category{
 			Category{"สนใจผลิตภัณฑ์ประกันสุขภาพ"},
 			Category{"สอบถามข้อมูลผลตอบแทน"},
+			Category{"สอบถามเช็คเงินปันผล"},
 			Category{"สอบถามการชำระเบี้ยประกัน"},
+			Category{"สอบถามการชดเชยสินไหม"},
+			Category{"สอบถามการเปลี่ยนแปลงข้อมูลกรมธรรม์"},
+			Category{"สอบถามการยกเลิกกรมธรรม์"},
+			Category{"สอบถามรายละเอียดอื่นๆ"},
 		},
 	}
 

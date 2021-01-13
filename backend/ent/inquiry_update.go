@@ -38,6 +38,12 @@ func (iu *InquiryUpdate) SetInquiryMessages(s string) *InquiryUpdate {
 	return iu
 }
 
+// SetInquiryPhoneMessages sets the Inquiry_phone_messages field.
+func (iu *InquiryUpdate) SetInquiryPhoneMessages(s string) *InquiryUpdate {
+	iu.mutation.SetInquiryPhoneMessages(s)
+	return iu
+}
+
 // SetInquiryTimeMessages sets the Inquiry_time_messages field.
 func (iu *InquiryUpdate) SetInquiryTimeMessages(t time.Time) *InquiryUpdate {
 	iu.mutation.SetInquiryTimeMessages(t)
@@ -164,6 +170,11 @@ func (iu *InquiryUpdate) Save(ctx context.Context) (int, error) {
 			return 0, &ValidationError{Name: "Inquiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_messages\": %w", err)}
 		}
 	}
+	if v, ok := iu.mutation.InquiryPhoneMessages(); ok {
+		if err := inquiry.InquiryPhoneMessagesValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Inquiry_phone_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_phone_messages\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -237,6 +248,13 @@ func (iu *InquiryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: inquiry.FieldInquiryMessages,
+		})
+	}
+	if value, ok := iu.mutation.InquiryPhoneMessages(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: inquiry.FieldInquiryPhoneMessages,
 		})
 	}
 	if value, ok := iu.mutation.InquiryTimeMessages(); ok {
@@ -410,6 +428,12 @@ func (iuo *InquiryUpdateOne) SetInquiryMessages(s string) *InquiryUpdateOne {
 	return iuo
 }
 
+// SetInquiryPhoneMessages sets the Inquiry_phone_messages field.
+func (iuo *InquiryUpdateOne) SetInquiryPhoneMessages(s string) *InquiryUpdateOne {
+	iuo.mutation.SetInquiryPhoneMessages(s)
+	return iuo
+}
+
 // SetInquiryTimeMessages sets the Inquiry_time_messages field.
 func (iuo *InquiryUpdateOne) SetInquiryTimeMessages(t time.Time) *InquiryUpdateOne {
 	iuo.mutation.SetInquiryTimeMessages(t)
@@ -536,6 +560,11 @@ func (iuo *InquiryUpdateOne) Save(ctx context.Context) (*Inquiry, error) {
 			return nil, &ValidationError{Name: "Inquiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_messages\": %w", err)}
 		}
 	}
+	if v, ok := iuo.mutation.InquiryPhoneMessages(); ok {
+		if err := inquiry.InquiryPhoneMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Inquiry_phone_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_phone_messages\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -607,6 +636,13 @@ func (iuo *InquiryUpdateOne) sqlSave(ctx context.Context) (i *Inquiry, err error
 			Type:   field.TypeString,
 			Value:  value,
 			Column: inquiry.FieldInquiryMessages,
+		})
+	}
+	if value, ok := iuo.mutation.InquiryPhoneMessages(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: inquiry.FieldInquiryPhoneMessages,
 		})
 	}
 	if value, ok := iuo.mutation.InquiryTimeMessages(); ok {

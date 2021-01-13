@@ -2486,22 +2486,23 @@ func (m *HospitalMutation) ResetEdge(name string) error {
 // nodes in the graph.
 type InquiryMutation struct {
 	config
-	op                     Op
-	typ                    string
-	id                     *int
-	_Inquiry_messages      *string
-	_Inquiry_time_messages *time.Time
-	clearedFields          map[string]struct{}
-	_Member                *int
-	cleared_Member         bool
-	_Category              *int
-	cleared_Category       bool
-	_Officer               *int
-	cleared_Officer        bool
-	_Product               *int
-	cleared_Product        bool
-	done                   bool
-	oldValue               func(context.Context) (*Inquiry, error)
+	op                      Op
+	typ                     string
+	id                      *int
+	_Inquiry_messages       *string
+	_Inquiry_phone_messages *string
+	_Inquiry_time_messages  *time.Time
+	clearedFields           map[string]struct{}
+	_Member                 *int
+	cleared_Member          bool
+	_Category               *int
+	cleared_Category        bool
+	_Officer                *int
+	cleared_Officer         bool
+	_Product                *int
+	cleared_Product         bool
+	done                    bool
+	oldValue                func(context.Context) (*Inquiry, error)
 }
 
 var _ ent.Mutation = (*InquiryMutation)(nil)
@@ -2618,6 +2619,43 @@ func (m *InquiryMutation) OldInquiryMessages(ctx context.Context) (v string, err
 // ResetInquiryMessages reset all changes of the "Inquiry_messages" field.
 func (m *InquiryMutation) ResetInquiryMessages() {
 	m._Inquiry_messages = nil
+}
+
+// SetInquiryPhoneMessages sets the Inquiry_phone_messages field.
+func (m *InquiryMutation) SetInquiryPhoneMessages(s string) {
+	m._Inquiry_phone_messages = &s
+}
+
+// InquiryPhoneMessages returns the Inquiry_phone_messages value in the mutation.
+func (m *InquiryMutation) InquiryPhoneMessages() (r string, exists bool) {
+	v := m._Inquiry_phone_messages
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInquiryPhoneMessages returns the old Inquiry_phone_messages value of the Inquiry.
+// If the Inquiry object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *InquiryMutation) OldInquiryPhoneMessages(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldInquiryPhoneMessages is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldInquiryPhoneMessages requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInquiryPhoneMessages: %w", err)
+	}
+	return oldValue.InquiryPhoneMessages, nil
+}
+
+// ResetInquiryPhoneMessages reset all changes of the "Inquiry_phone_messages" field.
+func (m *InquiryMutation) ResetInquiryPhoneMessages() {
+	m._Inquiry_phone_messages = nil
 }
 
 // SetInquiryTimeMessages sets the Inquiry_time_messages field.
@@ -2827,9 +2865,12 @@ func (m *InquiryMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *InquiryMutation) Fields() []string {
-	fields := make([]string, 0, 2)
+	fields := make([]string, 0, 3)
 	if m._Inquiry_messages != nil {
 		fields = append(fields, inquiry.FieldInquiryMessages)
+	}
+	if m._Inquiry_phone_messages != nil {
+		fields = append(fields, inquiry.FieldInquiryPhoneMessages)
 	}
 	if m._Inquiry_time_messages != nil {
 		fields = append(fields, inquiry.FieldInquiryTimeMessages)
@@ -2844,6 +2885,8 @@ func (m *InquiryMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case inquiry.FieldInquiryMessages:
 		return m.InquiryMessages()
+	case inquiry.FieldInquiryPhoneMessages:
+		return m.InquiryPhoneMessages()
 	case inquiry.FieldInquiryTimeMessages:
 		return m.InquiryTimeMessages()
 	}
@@ -2857,6 +2900,8 @@ func (m *InquiryMutation) OldField(ctx context.Context, name string) (ent.Value,
 	switch name {
 	case inquiry.FieldInquiryMessages:
 		return m.OldInquiryMessages(ctx)
+	case inquiry.FieldInquiryPhoneMessages:
+		return m.OldInquiryPhoneMessages(ctx)
 	case inquiry.FieldInquiryTimeMessages:
 		return m.OldInquiryTimeMessages(ctx)
 	}
@@ -2874,6 +2919,13 @@ func (m *InquiryMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetInquiryMessages(v)
+		return nil
+	case inquiry.FieldInquiryPhoneMessages:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInquiryPhoneMessages(v)
 		return nil
 	case inquiry.FieldInquiryTimeMessages:
 		v, ok := value.(time.Time)
@@ -2934,6 +2986,9 @@ func (m *InquiryMutation) ResetField(name string) error {
 	switch name {
 	case inquiry.FieldInquiryMessages:
 		m.ResetInquiryMessages()
+		return nil
+	case inquiry.FieldInquiryPhoneMessages:
+		m.ResetInquiryPhoneMessages()
 		return nil
 	case inquiry.FieldInquiryTimeMessages:
 		m.ResetInquiryTimeMessages()
