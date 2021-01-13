@@ -3017,6 +3017,9 @@ var doc = `{
                 "inquiryMessages": {
                     "type": "string"
                 },
+                "inquiryPhoneMessages": {
+                    "type": "string"
+                },
                 "inquiryTimeMessages": {
                     "type": "string"
                 },
@@ -3361,6 +3364,10 @@ var doc = `{
             "properties": {
                 "Inquiry_messages": {
                     "description": "InquiryMessages holds the value of the \"Inquiry_messages\" field.",
+                    "type": "string"
+                },
+                "Inquiry_phone_messages": {
+                    "description": "InquiryPhoneMessages holds the value of the \"Inquiry_phone_messages\" field.",
                     "type": "string"
                 },
                 "Inquiry_time_messages": {

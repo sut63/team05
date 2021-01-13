@@ -59,8 +59,12 @@ func init() {
 	inquiryDescInquiryMessages := inquiryFields[0].Descriptor()
 	// inquiry.InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
 	inquiry.InquiryMessagesValidator = inquiryDescInquiryMessages.Validators[0].(func(string) error)
+	// inquiryDescInquiryPhoneMessages is the schema descriptor for Inquiry_phone_messages field.
+	inquiryDescInquiryPhoneMessages := inquiryFields[1].Descriptor()
+	// inquiry.InquiryPhoneMessagesValidator is a validator for the "Inquiry_phone_messages" field. It is called by the builders before save.
+	inquiry.InquiryPhoneMessagesValidator = inquiryDescInquiryPhoneMessages.Validators[0].(func(string) error)
 	// inquiryDescInquiryTimeMessages is the schema descriptor for Inquiry_time_messages field.
-	inquiryDescInquiryTimeMessages := inquiryFields[1].Descriptor()
+	inquiryDescInquiryTimeMessages := inquiryFields[2].Descriptor()
 	// inquiry.DefaultInquiryTimeMessages holds the default value on creation for the Inquiry_time_messages field.
 	inquiry.DefaultInquiryTimeMessages = inquiryDescInquiryTimeMessages.Default.(func() time.Time)
 	insuranceFields := schema.Insurance{}.Fields()
