@@ -14,8 +14,8 @@ type GroupOfAge struct {
 // Fields of the GroupOfAge.
 func (GroupOfAge) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("group_of_age_name").Unique(),
-		field.String("group_of_age_age"),
+		field.String("group_of_age_name").NotEmpty(),
+		field.String("group_of_age_age").NotEmpty(),
 	}
 }
 

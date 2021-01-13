@@ -178,6 +178,7 @@ func main() {
 	controllers.NewInquiryController(v1, client)
 	controllers.NewBankController(v1, client)
 	controllers.NewPaymentController(v1, client)
+	controllers.NewPaybackController(v1, client)
 
 
 	// Set Members Data
