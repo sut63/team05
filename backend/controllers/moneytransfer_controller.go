@@ -16,13 +16,13 @@ type MoneyTransferController struct {
 	router gin.IRouter
 }
 
-// CreateMoneyTransfer handles POST requests for adding MoneyTransfer entities
-// @Summary Create MoneyTransfer
-// @Description Create MoneyTransfer
-// @ID create-MoneyTransfer
+// CreateMoneyTransfer handles POST requests for adding moneytransfer entities
+// @Summary Create moneytransfer
+// @Description Create moneytransfer
+// @ID create-moneyTransfer
 // @Accept   json
 // @Produce  json
-// @Param MoneyTransfer body ent.MoneyTransfer true "MoneyTransfer entity"
+// @Param moneytransfer body ent.MoneyTransfer true "MoneyTransfer entity"
 // @Success 200 {object} ent.MoneyTransfer
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -50,10 +50,10 @@ func (ctl *MoneyTransferController) CreateMoneyTransfer(c *gin.Context) {
 	c.JSON(200, m)
 }
 
-// GetMoneyTransfer handles GET requests to retrieve a MoneyTransfer entity
-// @Summary Get a MoneyTransfer entity by ID
-// @Description get MoneyTransfer by ID
-// @ID get-MoneyTransfer
+// GetMoneyTransfer handles GET requests to retrieve a moneytransfer entity
+// @Summary Get a moneytransfer entity by ID
+// @Description get moneytransfer by ID
+// @ID get-moneytransfer
 // @Produce  json
 // @Param id path int true "MoneyTransfer ID"
 // @Success 200 {object} ent.MoneyTransfer
@@ -84,10 +84,10 @@ func (ctl *MoneyTransferController) GetMoneyTransfer(c *gin.Context) {
 	c.JSON(200, m)
 }
 
-// ListMoneyTransfer handles request to get a list of MoneyTransfer entities
-// @Summary List MoneyTransfer entities
-// @Description list MoneyTransfer entities
-// @ID list-MoneyTransfer
+// ListMoneyTransfer handles request to get a list of moneytransfer entities
+// @Summary List moneytransfer entities
+// @Description list moneytransfer entities
+// @ID list-moneytransfer
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
@@ -127,10 +127,10 @@ func (ctl *MoneyTransferController) ListMoneyTransfer(c *gin.Context) {
 	c.JSON(200, moneyTransfers)
 }
 
-// DeleteMoneyTransfer handles DELETE requests to delete a MoneyTransfer entity
-// @Summary Delete a MoneyTransfer entity by ID
-// @Description get MoneyTransfer by ID
-// @ID delete-MoneyTransfer
+// DeleteMoneyTransfer handles DELETE requests to delete a moneytransfer entity
+// @Summary Delete a moneytransfer entity by ID
+// @Description get moneytransfer by ID
+// @ID delete-moneytransfer
 // @Produce  json
 // @Param id path int true "MoneyTransfer ID"
 // @Success 200 {object} gin.H
@@ -160,14 +160,14 @@ func (ctl *MoneyTransferController) DeleteMoneyTransfer(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdateMoneyTransfer handles PUT requests to update a MoneyTransfer entity
-// @Summary Update a MoneyTransfer entity by ID
-// @Description update MoneyTransfer by ID
-// @ID update-MoneyTransfer
+// UpdateMoneyTransfer handles PUT requests to update a moneytransfer entity
+// @Summary Update a moneytransfer entity by ID
+// @Description update moneytransfer by ID
+// @ID update-moneytransfer
 // @Accept   json
 // @Produce  json
-// @Param id path int true "MoneyTransfer ID"
-// @Param MoneyTransfer body ent.MoneyTransfer true "MoneyTransfer entity"
+// @Param id path int true "moneytransfer ID"
+// @Param moneytransfer body ent.MoneyTransfer true "MoneyTransfer entity"
 // @Success 200 {object} ent.MoneyTransfer
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
