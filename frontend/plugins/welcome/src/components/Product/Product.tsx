@@ -106,6 +106,10 @@ export default function Create() {
 
 
   const CreateProduct = async () => {
+    if ((productName != null) && (productName != "") && (productPrice != 0) && (productPrice != null) 
+    && (productTime != 0) && (productTime != null) && (productPaymentOfYear != null) && (productPaymentOfYear != 0) 
+    && (genderID != null) && (groupOfAgeID != null) && (officerID != null)) { 
+
     const product = {
 
       gender: genderID,
@@ -120,14 +124,16 @@ export default function Create() {
     console.log(product);
 
     const res: any = await api.createProduct({ product: product });
-    setStatus(true);
-    if (res.id != '') {
-      setAlert(true);
-    } else {
-      setAlert(false);
-    }
-   
-  };
+            setStatus(true);
+            if (res.id != '') {
+                setAlert(true);
+            }
+        }
+        else {
+            setStatus(true);
+            setAlert(false);
+        }
+    };
 
   const GenderhandleChange = (
     event: React.ChangeEvent<{ value: unknown }>,
@@ -191,19 +197,17 @@ export default function Create() {
                 <div>
                   {alert ? (
                     <Alert severity="success" style={{ width: 300 }}>
-                      สั่งซื้อสำเร็จ :)
+                      บันทึกข้อมูลสำเร็จ :)
                     </Alert>
                   ) : (
-                    <Alert severity="warning" style={{ marginTop: 300 }}>
-                      ไม่สำเร็จ !
+                    <Alert severity="error" style={{ width: 300 }}>
+                       บันทึกข้อมูลไม่สำเร็จ
                     </Alert>
                   )}
                 </div>
               ) : null}
             </Grid>
-
-            
-
+          
             <Grid item xs={4}>
               <div className={classes.paper}>ผลิตภัณฑ์</div>
             </Grid>
