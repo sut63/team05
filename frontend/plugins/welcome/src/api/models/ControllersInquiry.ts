@@ -36,6 +36,12 @@ export interface ControllersInquiry {
      * @type {string}
      * @memberof ControllersInquiry
      */
+    inquiryPhoneMessages?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersInquiry
+     */
     inquiryTimeMessages?: string;
     /**
      * 
@@ -69,6 +75,7 @@ export function ControllersInquiryFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'categoryID': !exists(json, 'categoryID') ? undefined : json['categoryID'],
         'inquiryMessages': !exists(json, 'inquiryMessages') ? undefined : json['inquiryMessages'],
+        'inquiryPhoneMessages': !exists(json, 'inquiryPhoneMessages') ? undefined : json['inquiryPhoneMessages'],
         'inquiryTimeMessages': !exists(json, 'inquiryTimeMessages') ? undefined : json['inquiryTimeMessages'],
         'memberID': !exists(json, 'memberID') ? undefined : json['memberID'],
         'officerID': !exists(json, 'officerID') ? undefined : json['officerID'],
@@ -87,6 +94,7 @@ export function ControllersInquiryToJSON(value?: ControllersInquiry | null): any
         
         'categoryID': value.categoryID,
         'inquiryMessages': value.inquiryMessages,
+        'inquiryPhoneMessages': value.inquiryPhoneMessages,
         'inquiryTimeMessages': value.inquiryTimeMessages,
         'memberID': value.memberID,
         'officerID': value.officerID,
