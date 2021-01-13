@@ -12,6 +12,8 @@ import { Alert } from '@material-ui/lab';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { EntGender } from '../../api/models/EntGender'; // import interface Gender
 import { EntGroupOfAge } from '../../api/models/EntGroupOfAge'; // import interface GroupOfAge
@@ -183,16 +185,16 @@ export default function Create() {
           <Grid container spacing={3}>
             <Grid item xs={12}></Grid>
 
-            <Grid item xs={3}></Grid>
-            <Grid item xs={9}>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={8}>
               {status ? (
                 <div>
                   {alert ? (
-                    <Alert severity="success" style={{ width: 305 }}>
+                    <Alert severity="success" style={{ width: 300 }}>
                       สั่งซื้อสำเร็จ :)
                     </Alert>
                   ) : (
-                    <Alert severity="warning" style={{ marginTop: 20 }}>
+                    <Alert severity="warning" style={{ marginTop: 300 }}>
                       ไม่สำเร็จ !
                     </Alert>
                   )}
@@ -224,66 +226,48 @@ export default function Create() {
 
 
             <Grid item xs={4}>
-              <div className={classes.paper}>ประกันสูงสุด : ฿</div>
+              <div className={classes.paper}> เงินประกัน : ฿</div>
             </Grid>
             <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <TextField
-                  //  label="ป้อนจำนวนเงินเอาประกัน"
-                  name="productprie"
-                  type=" "
-                  value={productPrice}
-                  onChange={ProductPricehandleChange}
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                />
-              </FormControl>
+            <FormControl variant="outlined" className={classes.formControl}>
+             <OutlinedInput
+                id="outlined-adornment-amount"
+                value={productPrice}
+                onChange={ProductPricehandleChange}
+                startAdornment={<InputAdornment position="start">฿</InputAdornment>}
+               />
+             </FormControl>
             </Grid>
 
 
             <Grid item xs={4}>
-              <div className={classes.paper}>ระยะเวลา : Y</div>
+              <div className={classes.paper}> ระยะเวลา</div>
             </Grid>
             <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <TextField
-                 //  label="ป้อนระยะเวลาในารชำระ"
-                 name="producttime"
-                 type=" "
-                 value={productTime}
-                 onChange={ProductTimehandleChange}
-                 className={classes.textField}
-                 InputLabelProps={{
-                   shrink: true,
-                 }}
-                  variant="outlined"
-                />
-              </FormControl>
+            <FormControl variant="outlined" className={classes.formControl}>
+             <OutlinedInput
+                //id="outlined-adornment-amount"
+                value={productTime}
+                onChange={ProductTimehandleChange}
+                startAdornment={<InputAdornment position="start">ปี</InputAdornment>}
+               />
+             </FormControl>
             </Grid>
-
+            
 
             <Grid item xs={4}>
-              <div className={classes.paper}>ผ่อนชำระ / Y</div>
+              <div className={classes.paper}> ผ่อนชำระ / ปี</div>
             </Grid>
             <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <TextField
-                 name="producttime"
-                 type=" "
-                 value={productPaymentOfYear}
-                 onChange={ProductPaymentOfYearhandleChange}
-                 className={classes.textField}
-                 InputLabelProps={{
-                   shrink: true,
-                 }}
-                  variant="outlined"
-                />
-              </FormControl>
+            <FormControl variant="outlined" className={classes.formControl}>
+             <OutlinedInput
+                id="outlined-adornment-amount"
+                value={productPaymentOfYear}
+                onChange={ProductPaymentOfYearhandleChange}
+                startAdornment={<InputAdornment position="start">฿</InputAdornment>}
+               />
+             </FormControl>
             </Grid>
-
 
             <Grid item xs={4}>
               <div className={classes.paper}>เพศ</div>
@@ -352,8 +336,8 @@ export default function Create() {
             </Grid>
 
 
-            <Grid item xs={3}></Grid>
-            <Grid item xs={9}>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={8}>
               <Button
                 variant="contained"
                 color="primary"

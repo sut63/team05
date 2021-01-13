@@ -29,3 +29,8 @@ var Columns = []string{
 	FieldID,
 	FieldGenderName,
 }
+
+var (
+	// GenderNameValidator is a validator for the "gender_name" field. It is called by the builders before save.
+	GenderNameValidator func(string) error
+)

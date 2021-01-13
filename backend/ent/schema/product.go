@@ -14,7 +14,7 @@ type Product struct {
 // Fields of the Product.
 func (Product) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("product_name").Unique(),
+		field.String("product_name").NotEmpty(),
 		field.Int("product_price"),
 		field.Int("product_time"),
 		field.Int("product_payment_of_year"),

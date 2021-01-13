@@ -99,3 +99,8 @@ var ForeignKeys = []string{
 	"group_of_age_id",
 	"officer_id",
 }
+
+var (
+	// ProductNameValidator is a validator for the "product_name" field. It is called by the builders before save.
+	ProductNameValidator func(string) error
+)

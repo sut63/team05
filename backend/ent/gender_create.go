@@ -51,6 +51,11 @@ func (gc *GenderCreate) Save(ctx context.Context) (*Gender, error) {
 	if _, ok := gc.mutation.GenderName(); !ok {
 		return nil, &ValidationError{Name: "gender_name", err: errors.New("ent: missing required field \"gender_name\"")}
 	}
+	if v, ok := gc.mutation.GenderName(); ok {
+		if err := gender.GenderNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "gender_name", err: fmt.Errorf("ent: validator failed for field \"gender_name\": %w", err)}
+		}
+	}
 	var (
 		err  error
 		node *Gender

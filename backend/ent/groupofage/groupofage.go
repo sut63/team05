@@ -32,3 +32,10 @@ var Columns = []string{
 	FieldGroupOfAgeName,
 	FieldGroupOfAgeAge,
 }
+
+var (
+	// GroupOfAgeNameValidator is a validator for the "group_of_age_name" field. It is called by the builders before save.
+	GroupOfAgeNameValidator func(string) error
+	// GroupOfAgeAgeValidator is a validator for the "group_of_age_age" field. It is called by the builders before save.
+	GroupOfAgeAgeValidator func(string) error
+)

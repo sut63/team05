@@ -71,6 +71,11 @@ func (gu *GenderUpdate) RemoveGenderProduct(p ...*Product) *GenderUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (gu *GenderUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := gu.mutation.GenderName(); ok {
+		if err := gender.GenderNameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "gender_name", err: fmt.Errorf("ent: validator failed for field \"gender_name\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -245,6 +250,11 @@ func (guo *GenderUpdateOne) RemoveGenderProduct(p ...*Product) *GenderUpdateOne 
 
 // Save executes the query and returns the updated entity.
 func (guo *GenderUpdateOne) Save(ctx context.Context) (*Gender, error) {
+	if v, ok := guo.mutation.GenderName(); ok {
+		if err := gender.GenderNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "gender_name", err: fmt.Errorf("ent: validator failed for field \"gender_name\": %w", err)}
+		}
+	}
 
 	var (
 		err  error

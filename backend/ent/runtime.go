@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/sut63/team05/ent/bank"
+	"github.com/sut63/team05/ent/gender"
+	"github.com/sut63/team05/ent/groupofage"
 	"github.com/sut63/team05/ent/hospital"
 	"github.com/sut63/team05/ent/inquiry"
 	"github.com/sut63/team05/ent/insurance"
@@ -14,6 +16,7 @@ import (
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/product"
 	"github.com/sut63/team05/ent/recordinsurance"
 	"github.com/sut63/team05/ent/schema"
 )
@@ -28,6 +31,22 @@ func init() {
 	bankDescBankType := bankFields[0].Descriptor()
 	// bank.BankTypeValidator is a validator for the "bank_type" field. It is called by the builders before save.
 	bank.BankTypeValidator = bankDescBankType.Validators[0].(func(string) error)
+	genderFields := schema.Gender{}.Fields()
+	_ = genderFields
+	// genderDescGenderName is the schema descriptor for gender_name field.
+	genderDescGenderName := genderFields[0].Descriptor()
+	// gender.GenderNameValidator is a validator for the "gender_name" field. It is called by the builders before save.
+	gender.GenderNameValidator = genderDescGenderName.Validators[0].(func(string) error)
+	groupofageFields := schema.GroupOfAge{}.Fields()
+	_ = groupofageFields
+	// groupofageDescGroupOfAgeName is the schema descriptor for group_of_age_name field.
+	groupofageDescGroupOfAgeName := groupofageFields[0].Descriptor()
+	// groupofage.GroupOfAgeNameValidator is a validator for the "group_of_age_name" field. It is called by the builders before save.
+	groupofage.GroupOfAgeNameValidator = groupofageDescGroupOfAgeName.Validators[0].(func(string) error)
+	// groupofageDescGroupOfAgeAge is the schema descriptor for group_of_age_age field.
+	groupofageDescGroupOfAgeAge := groupofageFields[1].Descriptor()
+	// groupofage.GroupOfAgeAgeValidator is a validator for the "group_of_age_age" field. It is called by the builders before save.
+	groupofage.GroupOfAgeAgeValidator = groupofageDescGroupOfAgeAge.Validators[0].(func(string) error)
 	hospitalFields := schema.Hospital{}.Fields()
 	_ = hospitalFields
 	// hospitalDescHospitalName is the schema descriptor for hospital_name field.
@@ -120,6 +139,12 @@ func init() {
 	paymentDescTransferTime := paymentFields[2].Descriptor()
 	// payment.DefaultTransferTime holds the default value on creation for the transfer_time field.
 	payment.DefaultTransferTime = paymentDescTransferTime.Default.(func() time.Time)
+	productFields := schema.Product{}.Fields()
+	_ = productFields
+	// productDescProductName is the schema descriptor for product_name field.
+	productDescProductName := productFields[0].Descriptor()
+	// product.ProductNameValidator is a validator for the "product_name" field. It is called by the builders before save.
+	product.ProductNameValidator = productDescProductName.Validators[0].(func(string) error)
 	recordinsuranceFields := schema.Recordinsurance{}.Fields()
 	_ = recordinsuranceFields
 	// recordinsuranceDescRecordinsuranceTime is the schema descriptor for recordinsurance_time field.

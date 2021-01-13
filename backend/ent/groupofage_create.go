@@ -57,8 +57,18 @@ func (goac *GroupOfAgeCreate) Save(ctx context.Context) (*GroupOfAge, error) {
 	if _, ok := goac.mutation.GroupOfAgeName(); !ok {
 		return nil, &ValidationError{Name: "group_of_age_name", err: errors.New("ent: missing required field \"group_of_age_name\"")}
 	}
+	if v, ok := goac.mutation.GroupOfAgeName(); ok {
+		if err := groupofage.GroupOfAgeNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "group_of_age_name", err: fmt.Errorf("ent: validator failed for field \"group_of_age_name\": %w", err)}
+		}
+	}
 	if _, ok := goac.mutation.GroupOfAgeAge(); !ok {
 		return nil, &ValidationError{Name: "group_of_age_age", err: errors.New("ent: missing required field \"group_of_age_age\"")}
+	}
+	if v, ok := goac.mutation.GroupOfAgeAge(); ok {
+		if err := groupofage.GroupOfAgeAgeValidator(v); err != nil {
+			return nil, &ValidationError{Name: "group_of_age_age", err: fmt.Errorf("ent: validator failed for field \"group_of_age_age\": %w", err)}
+		}
 	}
 	var (
 		err  error

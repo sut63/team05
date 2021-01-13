@@ -281,6 +281,11 @@ func (pu *ProductUpdate) RemoveProductRecordinsurance(r ...*Recordinsurance) *Pr
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (pu *ProductUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := pu.mutation.ProductName(); ok {
+		if err := product.ProductNameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "product_name", err: fmt.Errorf("ent: validator failed for field \"product_name\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -920,6 +925,11 @@ func (puo *ProductUpdateOne) RemoveProductRecordinsurance(r ...*Recordinsurance)
 
 // Save executes the query and returns the updated entity.
 func (puo *ProductUpdateOne) Save(ctx context.Context) (*Product, error) {
+	if v, ok := puo.mutation.ProductName(); ok {
+		if err := product.ProductNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "product_name", err: fmt.Errorf("ent: validator failed for field \"product_name\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
