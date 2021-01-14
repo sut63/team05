@@ -100,7 +100,7 @@ func (ctl *InsuranceController) CreateInsurance(c *gin.Context) {
 		})
 		return
 	}
-	timeb, err := time.Parse(time.RFC3339, obj.InsuranceTimeBuy)
+	timeb := time.Now().Local()
 	timep, err := time.Parse(time.RFC3339, obj.InsuranceTimeFirstpay)
 
 	in, err := ctl.client.Insurance.

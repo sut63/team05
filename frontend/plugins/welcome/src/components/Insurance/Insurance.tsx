@@ -153,11 +153,11 @@ export default function Insurance() {
   });*/
 
   const CreateInsurance = async () => {
-    if ((insurance_addresss != null) && (insurance_addresss != "") && (insurance_insurers!= null) && (insurance_insurers != "") && (insuranceTimeBuys != null) && (insuranceTimeBuys != "") && (insuranceTimeFirstpays != null) && (insuranceTimeFirstpays != "") && (productid != null) && (memberid != null) && (hospitalid != null) && (officerid != null) ) {
+    if ((insurance_addresss != null) && (insurance_addresss != "") && (insurance_insurers!= null) && (insurance_insurers != "") && (insuranceTimeFirstpays != null) && (insuranceTimeFirstpays != "") && (productid != null) && (memberid != null) && (hospitalid != null) && (officerid != null) ) {
       const insurance = {
          insuranceAddress      : insurance_addresss,
          insuranceInsurer     : insurance_insurers,
-         insuranceTimeBuy     : insuranceTimeBuys + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+         insuranceTimeBuy     : insuranceTimeBuys , //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          insuranceTimeFirstpay  : insuranceTimeFirstpays  + "T00:00:00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          productID          : productid,
          memberID        : memberid,
@@ -169,11 +169,17 @@ export default function Insurance() {
              setStatus(true);
             if (res.id != '') {
                 setAlert(true);
+                setTimeout(() => {
+                  setStatus(false);
+                }, 5000);
             }
         }
         else {
             setStatus(true);
             setAlert(false);
+            setTimeout(() => {
+              setStatus(false);
+            }, 5000);
         }
     };
  
