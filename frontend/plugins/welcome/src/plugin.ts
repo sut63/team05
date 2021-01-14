@@ -5,7 +5,7 @@ import Insurance from './components/Insurance';
 import TableInsurance from './components/TableInsurance';
 
 import Product from './components/Product';
-import Officerlongin from './components/Officerlongin';
+import Officerlogin from './components/Officerlogin';
 
 import Payment from './components/Payment';
 import Inquiry from './components/Inquiry'
@@ -19,9 +19,7 @@ export const plugin = createPlugin({
     router.registerRoute('/insurance', Insurance);
     router.registerRoute('/tableinsurance', TableInsurance);
     router.registerRoute('/product', Product);
-
-    router.registerRoute('/officerlongin', Officerlongin);
-
+    router.registerRoute('/officerlogin', Officerlogin);
     router.registerRoute('/inquiry', Inquiry);
   },
 });
