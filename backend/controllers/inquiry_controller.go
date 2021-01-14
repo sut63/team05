@@ -14,13 +14,13 @@ import (
 	"github.com/sut63/team05/ent/product"
 )
 
-// inquiryController defines the struct for the inquiry controller
+// InquiryController defines the struct for the inquiry controller
 type InquiryController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-// inquiry defines the struct for the inquiry
+// Inquiry defines the struct for the inquiry
 type Inquiry struct {
 	ProductID            int
 	MemberID             int

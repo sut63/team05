@@ -44,7 +44,7 @@ export function EntCategoryEdgesFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'categoryInquiry': !exists(json, 'CategoryInquiry') ? undefined : ((json['CategoryInquiry'] as Array<any>).map(EntInquiryFromJSON)),
+        'categoryInquiry': !exists(json, 'categoryInquiry') ? undefined : ((json['categoryInquiry'] as Array<any>).map(EntInquiryFromJSON)),
     };
 }
 
