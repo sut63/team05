@@ -31,10 +31,10 @@ type Payment struct {
 	TransferTime          string
 }
 
-// CreatePayment handles POST requests for adding Payment entities
-// @Summary Create Payment
-// @Description Create Payment
-// @ID create-Payment
+// CreatePayment handles POST requests for adding payment entities
+// @Summary Create payment
+// @Description Create payment
+// @ID create-payment
 // @Accept   json
 // @Produce  json
 // @Param Payment body Payment true "Payment entity"
@@ -75,7 +75,7 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 		return
 	}
 
-	mn, err := ctl.client.MoneyTransfer.
+	mn, err := ctl.client.Moneytransfer.
 		Query().
 		Where(moneytransfer.IDEQ(int(obj.MoneytransferID))).
 		Only(context.Background())
@@ -105,7 +105,7 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 		Create().
 		SetBank(b).
 		SetMember(m).
-		SetMoneyTransfer(mn).
+		SetMoneytransfer(mn).
 		SetInsurance(in).
 		SetAccountName(obj.AccountName).
 		SetAccountNumber (obj.AccountNumber ).
@@ -121,10 +121,10 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 	c.JSON(200, p)
 }
 
-// ListPayment handles request to get a list of Payment entities
-// @Summary List Payment entities
-// @Description list Payment entities
-// @ID list-Payment
+// ListPayment handles request to get a list of payment entities
+// @Summary List payment entities
+// @Description list payment entities
+// @ID list-payment
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
@@ -155,7 +155,7 @@ func (ctl *PaymentController) ListPayment(c *gin.Context) {
 		Query().
 		WithBank().
 		WithMember().
-		WithMoneyTransfer().
+		WithMoneytransfer().
 		WithInsurance().
 		Limit(limit).
 		Offset(offset).
@@ -168,10 +168,10 @@ func (ctl *PaymentController) ListPayment(c *gin.Context) {
 	c.JSON(200, payments)
 }
 
-// DeletePayment handles DELETE requests to delete a Payment entity
-// @Summary Delete a Payment entity by ID
-// @Description get Payment by ID
-// @ID delete-Payment
+// DeletePayment handles DELETE requests to delete a payment entity
+// @Summary Delete a payment entity by ID
+// @Description get payment by ID
+// @ID delete-payment
 // @Produce  json
 // @Param id path int true "Payment ID"
 // @Success 200 {object} gin.H

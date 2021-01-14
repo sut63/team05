@@ -74,6 +74,7 @@ func (ctl *MemberController) GetMember(c *gin.Context) {
 
 	m, err := ctl.client.Member.
 		Query().
+		WithPosition().
 		Where(member.IDEQ(int(id))).
 		Only(context.Background())
 	if err != nil {
@@ -118,6 +119,7 @@ func (ctl *MemberController) ListMember(c *gin.Context) {
 
 	members, err := ctl.client.Member.
 		Query().
+		WithPosition().
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())

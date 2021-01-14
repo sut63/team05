@@ -28,5 +28,6 @@ func (Member) Edges() []ent.Edge {
 		edge.To("member_inquiry", Inquiry.Type).StorageKey(edge.Column("member_id")),
 		edge.To("member_payback", Payback.Type).StorageKey(edge.Column("member_id")),
 		edge.To("member_recordinsurance", Recordinsurance.Type).StorageKey(edge.Column("member_id")),
+		edge.From("position", Position.Type).Ref("members").Unique(),
 	}
 }

@@ -440,25 +440,25 @@ func HasInsuranceWith(preds ...predicate.Insurance) predicate.Payment {
 	})
 }
 
-// HasMoneyTransfer applies the HasEdge predicate on the "MoneyTransfer" edge.
-func HasMoneyTransfer() predicate.Payment {
+// HasMoneytransfer applies the HasEdge predicate on the "Moneytransfer" edge.
+func HasMoneytransfer() predicate.Payment {
 	return predicate.Payment(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(MoneyTransferTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, MoneyTransferTable, MoneyTransferColumn),
+			sqlgraph.To(MoneytransferTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, MoneytransferTable, MoneytransferColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasMoneyTransferWith applies the HasEdge predicate on the "MoneyTransfer" edge with a given conditions (other predicates).
-func HasMoneyTransferWith(preds ...predicate.MoneyTransfer) predicate.Payment {
+// HasMoneytransferWith applies the HasEdge predicate on the "Moneytransfer" edge with a given conditions (other predicates).
+func HasMoneytransferWith(preds ...predicate.Moneytransfer) predicate.Payment {
 	return predicate.Payment(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(MoneyTransferInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, MoneyTransferTable, MoneyTransferColumn),
+			sqlgraph.To(MoneytransferInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, MoneytransferTable, MoneytransferColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

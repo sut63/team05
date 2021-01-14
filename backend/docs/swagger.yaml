@@ -6,6 +6,8 @@ definitions:
         type: integer
       inquiryMessages:
         type: string
+      inquiryPhoneMessages:
+        type: string
       inquiryTimeMessages:
         type: string
       memberID:
@@ -256,6 +258,10 @@ definitions:
       Inquiry_messages:
         description: InquiryMessages holds the value of the "Inquiry_messages" field.
         type: string
+      Inquiry_phone_messages:
+        description: InquiryPhoneMessages holds the value of the "Inquiry_phone_messages"
+          field.
+        type: string
       Inquiry_time_messages:
         description: InquiryTimeMessages holds the value of the "Inquiry_time_messages"
           field.
@@ -388,14 +394,18 @@ definitions:
         items:
           $ref: '#/definitions/ent.Recordinsurance'
         type: array
+      position:
+        $ref: '#/definitions/ent.Position'
+        description: Position holds the value of the position edge.
+        type: object
     type: object
-  ent.MoneyTransfer:
+  ent.Moneytransfer:
     properties:
       edges:
-        $ref: '#/definitions/ent.MoneyTransferEdges'
+        $ref: '#/definitions/ent.MoneytransferEdges'
         description: |-
           Edges holds the relations/edges for other nodes in the graph.
-          The values are being populated by the MoneyTransferQuery when eager-loading is set.
+          The values are being populated by the MoneytransferQuery when eager-loading is set.
         type: object
       id:
         description: ID of the ent.
@@ -405,7 +415,7 @@ definitions:
           field.
         type: string
     type: object
-  ent.MoneyTransferEdges:
+  ent.MoneytransferEdges:
     properties:
       moneytransferPayment:
         description: MoneytransferPayment holds the value of the moneytransfer_payment
@@ -463,6 +473,10 @@ definitions:
         items:
           $ref: '#/definitions/ent.Recordinsurance'
         type: array
+      position:
+        $ref: '#/definitions/ent.Position'
+        description: Position holds the value of the position edge.
+        type: object
     type: object
   ent.Payback:
     properties:
@@ -538,10 +552,38 @@ definitions:
         $ref: '#/definitions/ent.Member'
         description: Member holds the value of the Member edge.
         type: object
-      moneyTransfer:
-        $ref: '#/definitions/ent.MoneyTransfer'
-        description: MoneyTransfer holds the value of the MoneyTransfer edge.
+      moneytransfer:
+        $ref: '#/definitions/ent.Moneytransfer'
+        description: Moneytransfer holds the value of the Moneytransfer edge.
         type: object
+    type: object
+  ent.Position:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.PositionEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the PositionQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      position_name:
+        description: PositionName holds the value of the "position_name" field.
+        type: string
+    type: object
+  ent.PositionEdges:
+    properties:
+      members:
+        description: Members holds the value of the members edge.
+        items:
+          $ref: '#/definitions/ent.Member'
+        type: array
+      officers:
+        description: Officers holds the value of the officers edge.
+        items:
+          $ref: '#/definitions/ent.Officer'
+        type: array
     type: object
   ent.Product:
     properties:
@@ -813,8 +855,8 @@ paths:
       summary: Update a amountpaid entity by ID
   /banks:
     get:
-      description: list Bank entities
-      operationId: list-Bank
+      description: list bank entities
+      operationId: list-bank
       parameters:
       - description: Limit
         in: query
@@ -841,16 +883,16 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: List Bank entities
+      summary: List bank entities
     post:
       consumes:
       - application/json
-      description: Create Bank
-      operationId: create-Bank
+      description: Create bank
+      operationId: create-bank
       parameters:
       - description: Bank entity
         in: body
-        name: Bank
+        name: bank
         required: true
         schema:
           $ref: '#/definitions/ent.Bank'
@@ -869,11 +911,11 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Create Bank
+      summary: Create bank
   /banks/{id}:
     delete:
-      description: get Bank by ID
-      operationId: delete-Bank
+      description: get bank by ID
+      operationId: delete-bank
       parameters:
       - description: Bank ID
         in: path
@@ -899,10 +941,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Delete a Bank entity by ID
+      summary: Delete a bank entity by ID
     get:
-      description: get Bank by ID
-      operationId: get-Bank
+      description: get bank by ID
+      operationId: get-bank
       parameters:
       - description: Bank ID
         in: path
@@ -928,12 +970,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Get a Bank entity by ID
+      summary: Get a bank entity by ID
     put:
       consumes:
       - application/json
-      description: update Bank by ID
-      operationId: update-Bank
+      description: update bank by ID
+      operationId: update-bank
       parameters:
       - description: Bank ID
         in: path
@@ -942,7 +984,7 @@ paths:
         type: integer
       - description: Bank entity
         in: body
-        name: Bank
+        name: bank
         required: true
         schema:
           $ref: '#/definitions/ent.Bank'
@@ -961,7 +1003,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Update a Bank entity by ID
+      summary: Update a bank entity by ID
   /categorys:
     get:
       description: list category entities
@@ -1924,10 +1966,10 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Update a member entity by ID
-  /moneyTransfers:
+  /moneytransfers:
     get:
-      description: list MoneyTransfer entities
-      operationId: list-MoneyTransfer
+      description: list moneytransfer entities
+      operationId: list-moneytransfer
       parameters:
       - description: Limit
         in: query
@@ -1944,7 +1986,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/ent.MoneyTransfer'
+              $ref: '#/definitions/ent.Moneytransfer'
             type: array
         "400":
           description: Bad Request
@@ -1954,26 +1996,26 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: List MoneyTransfer entities
+      summary: List moneytransfer entities
     post:
       consumes:
       - application/json
-      description: Create MoneyTransfer
-      operationId: create-MoneyTransfer
+      description: Create moneytransfer
+      operationId: create-moneyTransfer
       parameters:
-      - description: MoneyTransfer entity
+      - description: Moneytransfer entity
         in: body
-        name: MoneyTransfer
+        name: moneytransfer
         required: true
         schema:
-          $ref: '#/definitions/ent.MoneyTransfer'
+          $ref: '#/definitions/ent.Moneytransfer'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.MoneyTransfer'
+            $ref: '#/definitions/ent.Moneytransfer'
         "400":
           description: Bad Request
           schema:
@@ -1982,13 +2024,13 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Create MoneyTransfer
-  /moneyTransfers/{id}:
+      summary: Create moneytransfer
+  /moneytransfers/{id}:
     delete:
-      description: get MoneyTransfer by ID
-      operationId: delete-MoneyTransfer
+      description: get moneytransfer by ID
+      operationId: delete-moneytransfer
       parameters:
-      - description: MoneyTransfer ID
+      - description: Moneytransfer ID
         in: path
         name: id
         required: true
@@ -2012,12 +2054,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Delete a MoneyTransfer entity by ID
+      summary: Delete a moneytransfer entity by ID
     get:
-      description: get MoneyTransfer by ID
-      operationId: get-MoneyTransfer
+      description: get moneytransfer by ID
+      operationId: get-moneytransfer
       parameters:
-      - description: MoneyTransfer ID
+      - description: Moneytransfer ID
         in: path
         name: id
         required: true
@@ -2028,7 +2070,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.MoneyTransfer'
+            $ref: '#/definitions/ent.Moneytransfer'
         "400":
           description: Bad Request
           schema:
@@ -2041,31 +2083,31 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Get a MoneyTransfer entity by ID
+      summary: Get a moneytransfer entity by ID
     put:
       consumes:
       - application/json
-      description: update MoneyTransfer by ID
-      operationId: update-MoneyTransfer
+      description: update moneytransfer by ID
+      operationId: update-moneytransfer
       parameters:
-      - description: MoneyTransfer ID
+      - description: moneytransfer ID
         in: path
         name: id
         required: true
         type: integer
-      - description: MoneyTransfer entity
+      - description: Moneytransfer entity
         in: body
-        name: MoneyTransfer
+        name: moneytransfer
         required: true
         schema:
-          $ref: '#/definitions/ent.MoneyTransfer'
+          $ref: '#/definitions/ent.Moneytransfer'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ent.MoneyTransfer'
+            $ref: '#/definitions/ent.Moneytransfer'
         "400":
           description: Bad Request
           schema:
@@ -2074,7 +2116,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Update a MoneyTransfer entity by ID
+      summary: Update a moneytransfer entity by ID
   /officers:
     get:
       description: list officer entities
@@ -2317,8 +2359,8 @@ paths:
       summary: Delete a payback entity by ID
   /payments:
     get:
-      description: list Payment entities
-      operationId: list-Payment
+      description: list payment entities
+      operationId: list-payment
       parameters:
       - description: Limit
         in: query
@@ -2345,12 +2387,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: List Payment entities
+      summary: List payment entities
     post:
       consumes:
       - application/json
-      description: Create Payment
-      operationId: create-Payment
+      description: Create payment
+      operationId: create-payment
       parameters:
       - description: Payment entity
         in: body
@@ -2373,11 +2415,11 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Create Payment
+      summary: Create payment
   /payments/{id}:
     delete:
-      description: get Payment by ID
-      operationId: delete-Payment
+      description: get payment by ID
+      operationId: delete-payment
       parameters:
       - description: Payment ID
         in: path
@@ -2403,7 +2445,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Delete a Payment entity by ID
+      summary: Delete a payment entity by ID
   /products:
     get:
       description: list product entities

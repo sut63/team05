@@ -30,6 +30,12 @@ func (ic *InquiryCreate) SetInquiryMessages(s string) *InquiryCreate {
 	return ic
 }
 
+// SetInquiryPhoneMessages sets the Inquiry_phone_messages field.
+func (ic *InquiryCreate) SetInquiryPhoneMessages(s string) *InquiryCreate {
+	ic.mutation.SetInquiryPhoneMessages(s)
+	return ic
+}
+
 // SetInquiryTimeMessages sets the Inquiry_time_messages field.
 func (ic *InquiryCreate) SetInquiryTimeMessages(t time.Time) *InquiryCreate {
 	ic.mutation.SetInquiryTimeMessages(t)
@@ -135,6 +141,14 @@ func (ic *InquiryCreate) Save(ctx context.Context) (*Inquiry, error) {
 			return nil, &ValidationError{Name: "Inquiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_messages\": %w", err)}
 		}
 	}
+	if _, ok := ic.mutation.InquiryPhoneMessages(); !ok {
+		return nil, &ValidationError{Name: "Inquiry_phone_messages", err: errors.New("ent: missing required field \"Inquiry_phone_messages\"")}
+	}
+	if v, ok := ic.mutation.InquiryPhoneMessages(); ok {
+		if err := inquiry.InquiryPhoneMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Inquiry_phone_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_phone_messages\": %w", err)}
+		}
+	}
 	if _, ok := ic.mutation.InquiryTimeMessages(); !ok {
 		v := inquiry.DefaultInquiryTimeMessages()
 		ic.mutation.SetInquiryTimeMessages(v)
@@ -206,6 +220,14 @@ func (ic *InquiryCreate) createSpec() (*Inquiry, *sqlgraph.CreateSpec) {
 			Column: inquiry.FieldInquiryMessages,
 		})
 		i.InquiryMessages = value
+	}
+	if value, ok := ic.mutation.InquiryPhoneMessages(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: inquiry.FieldInquiryPhoneMessages,
+		})
+		i.InquiryPhoneMessages = value
 	}
 	if value, ok := ic.mutation.InquiryTimeMessages(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

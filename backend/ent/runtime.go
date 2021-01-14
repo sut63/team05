@@ -16,6 +16,7 @@ import (
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/product"
 	"github.com/sut63/team05/ent/recordinsurance"
 	"github.com/sut63/team05/ent/schema"
@@ -59,8 +60,12 @@ func init() {
 	inquiryDescInquiryMessages := inquiryFields[0].Descriptor()
 	// inquiry.InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
 	inquiry.InquiryMessagesValidator = inquiryDescInquiryMessages.Validators[0].(func(string) error)
+	// inquiryDescInquiryPhoneMessages is the schema descriptor for Inquiry_phone_messages field.
+	inquiryDescInquiryPhoneMessages := inquiryFields[1].Descriptor()
+	// inquiry.InquiryPhoneMessagesValidator is a validator for the "Inquiry_phone_messages" field. It is called by the builders before save.
+	inquiry.InquiryPhoneMessagesValidator = inquiryDescInquiryPhoneMessages.Validators[0].(func(string) error)
 	// inquiryDescInquiryTimeMessages is the schema descriptor for Inquiry_time_messages field.
-	inquiryDescInquiryTimeMessages := inquiryFields[1].Descriptor()
+	inquiryDescInquiryTimeMessages := inquiryFields[2].Descriptor()
 	// inquiry.DefaultInquiryTimeMessages holds the default value on creation for the Inquiry_time_messages field.
 	inquiry.DefaultInquiryTimeMessages = inquiryDescInquiryTimeMessages.Default.(func() time.Time)
 	insuranceFields := schema.Insurance{}.Fields()
@@ -95,7 +100,7 @@ func init() {
 	memberDescMemberPassword := memberFields[2].Descriptor()
 	// member.MemberPasswordValidator is a validator for the "member_password" field. It is called by the builders before save.
 	member.MemberPasswordValidator = memberDescMemberPassword.Validators[0].(func(string) error)
-	moneytransferFields := schema.MoneyTransfer{}.Fields()
+	moneytransferFields := schema.Moneytransfer{}.Fields()
 	_ = moneytransferFields
 	// moneytransferDescMoneytransferType is the schema descriptor for moneytransfer_type field.
 	moneytransferDescMoneytransferType := moneytransferFields[0].Descriptor()
@@ -139,6 +144,12 @@ func init() {
 	paymentDescTransferTime := paymentFields[2].Descriptor()
 	// payment.DefaultTransferTime holds the default value on creation for the transfer_time field.
 	payment.DefaultTransferTime = paymentDescTransferTime.Default.(func() time.Time)
+	positionFields := schema.Position{}.Fields()
+	_ = positionFields
+	// positionDescPositionName is the schema descriptor for position_name field.
+	positionDescPositionName := positionFields[0].Descriptor()
+	// position.PositionNameValidator is a validator for the "position_name" field. It is called by the builders before save.
+	position.PositionNameValidator = positionDescPositionName.Validators[0].(func(string) error)
 	productFields := schema.Product{}.Fields()
 	_ = productFields
 	// productDescProductName is the schema descriptor for product_name field.

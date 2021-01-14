@@ -85,6 +85,7 @@ var (
 	InquiriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "inquiry_messages", Type: field.TypeString},
+		{Name: "inquiry_phone_messages", Type: field.TypeString},
 		{Name: "inquiry_time_messages", Type: field.TypeTime},
 		{Name: "category_id", Type: field.TypeInt, Nullable: true},
 		{Name: "member_id", Type: field.TypeInt, Nullable: true},
@@ -99,28 +100,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "inquiries_categories_category_inquiry",
-				Columns: []*schema.Column{InquiriesColumns[3]},
+				Columns: []*schema.Column{InquiriesColumns[4]},
 
 				RefColumns: []*schema.Column{CategoriesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "inquiries_members_member_inquiry",
-				Columns: []*schema.Column{InquiriesColumns[4]},
+				Columns: []*schema.Column{InquiriesColumns[5]},
 
 				RefColumns: []*schema.Column{MembersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "inquiries_officers_officer_inquiry",
-				Columns: []*schema.Column{InquiriesColumns[5]},
+				Columns: []*schema.Column{InquiriesColumns[6]},
 
 				RefColumns: []*schema.Column{OfficersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "inquiries_products_product_inquiry",
-				Columns: []*schema.Column{InquiriesColumns[6]},
+				Columns: []*schema.Column{InquiriesColumns[7]},
 
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -181,24 +182,33 @@ var (
 		{Name: "member_email", Type: field.TypeString, Unique: true},
 		{Name: "member_name", Type: field.TypeString, Unique: true},
 		{Name: "member_password", Type: field.TypeString},
+		{Name: "position_id", Type: field.TypeInt, Nullable: true},
 	}
 	// MembersTable holds the schema information for the "members" table.
 	MembersTable = &schema.Table{
-		Name:        "members",
-		Columns:     MembersColumns,
-		PrimaryKey:  []*schema.Column{MembersColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{},
+		Name:       "members",
+		Columns:    MembersColumns,
+		PrimaryKey: []*schema.Column{MembersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "members_positions_members",
+				Columns: []*schema.Column{MembersColumns[4]},
+
+				RefColumns: []*schema.Column{PositionsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
-	// MoneyTransfersColumns holds the columns for the "money_transfers" table.
-	MoneyTransfersColumns = []*schema.Column{
+	// MoneytransfersColumns holds the columns for the "moneytransfers" table.
+	MoneytransfersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "moneytransfer_type", Type: field.TypeString},
 	}
-	// MoneyTransfersTable holds the schema information for the "money_transfers" table.
-	MoneyTransfersTable = &schema.Table{
-		Name:        "money_transfers",
-		Columns:     MoneyTransfersColumns,
-		PrimaryKey:  []*schema.Column{MoneyTransfersColumns[0]},
+	// MoneytransfersTable holds the schema information for the "moneytransfers" table.
+	MoneytransfersTable = &schema.Table{
+		Name:        "moneytransfers",
+		Columns:     MoneytransfersColumns,
+		PrimaryKey:  []*schema.Column{MoneytransfersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
 	}
 	// OfficersColumns holds the columns for the "officers" table.
@@ -207,13 +217,22 @@ var (
 		{Name: "officer_email", Type: field.TypeString, Unique: true},
 		{Name: "officer_name", Type: field.TypeString, Unique: true},
 		{Name: "officer_password", Type: field.TypeString},
+		{Name: "position_id", Type: field.TypeInt, Nullable: true},
 	}
 	// OfficersTable holds the schema information for the "officers" table.
 	OfficersTable = &schema.Table{
-		Name:        "officers",
-		Columns:     OfficersColumns,
-		PrimaryKey:  []*schema.Column{OfficersColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{},
+		Name:       "officers",
+		Columns:    OfficersColumns,
+		PrimaryKey: []*schema.Column{OfficersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:  "officers_positions_officers",
+				Columns: []*schema.Column{OfficersColumns[4]},
+
+				RefColumns: []*schema.Column{PositionsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// PaybacksColumns holds the columns for the "paybacks" table.
 	PaybacksColumns = []*schema.Column{
@@ -300,13 +319,25 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "payments_money_transfers_moneytransfer_payment",
+				Symbol:  "payments_moneytransfers_moneytransfer_payment",
 				Columns: []*schema.Column{PaymentsColumns[7]},
 
-				RefColumns: []*schema.Column{MoneyTransfersColumns[0]},
+				RefColumns: []*schema.Column{MoneytransfersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
+	}
+	// PositionsColumns holds the columns for the "positions" table.
+	PositionsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "position_name", Type: field.TypeString, Unique: true},
+	}
+	// PositionsTable holds the schema information for the "positions" table.
+	PositionsTable = &schema.Table{
+		Name:        "positions",
+		Columns:     PositionsColumns,
+		PrimaryKey:  []*schema.Column{PositionsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{},
 	}
 	// ProductsColumns holds the columns for the "products" table.
 	ProductsColumns = []*schema.Column{
@@ -412,10 +443,11 @@ var (
 		InquiriesTable,
 		InsurancesTable,
 		MembersTable,
-		MoneyTransfersTable,
+		MoneytransfersTable,
 		OfficersTable,
 		PaybacksTable,
 		PaymentsTable,
+		PositionsTable,
 		ProductsTable,
 		RecordinsurancesTable,
 	}
@@ -430,6 +462,8 @@ func init() {
 	InsurancesTable.ForeignKeys[1].RefTable = MembersTable
 	InsurancesTable.ForeignKeys[2].RefTable = OfficersTable
 	InsurancesTable.ForeignKeys[3].RefTable = ProductsTable
+	MembersTable.ForeignKeys[0].RefTable = PositionsTable
+	OfficersTable.ForeignKeys[0].RefTable = PositionsTable
 	PaybacksTable.ForeignKeys[0].RefTable = BanksTable
 	PaybacksTable.ForeignKeys[1].RefTable = MembersTable
 	PaybacksTable.ForeignKeys[2].RefTable = OfficersTable
@@ -437,7 +471,7 @@ func init() {
 	PaymentsTable.ForeignKeys[0].RefTable = BanksTable
 	PaymentsTable.ForeignKeys[1].RefTable = InsurancesTable
 	PaymentsTable.ForeignKeys[2].RefTable = MembersTable
-	PaymentsTable.ForeignKeys[3].RefTable = MoneyTransfersTable
+	PaymentsTable.ForeignKeys[3].RefTable = MoneytransfersTable
 	ProductsTable.ForeignKeys[0].RefTable = GendersTable
 	ProductsTable.ForeignKeys[1].RefTable = GroupOfAgesTable
 	ProductsTable.ForeignKeys[2].RefTable = OfficersTable

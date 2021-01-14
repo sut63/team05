@@ -8,6 +8,7 @@ import (
 
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/sut63/team05/ent/member"
+	"github.com/sut63/team05/ent/position"
 )
 
 // Member is the model entity for the Member schema.
@@ -23,7 +24,8 @@ type Member struct {
 	MemberPassword string `json:"member_password,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the MemberQuery when eager-loading is set.
-	Edges MemberEdges `json:"edges"`
+	Edges       MemberEdges `json:"edges"`
+	position_id *int
 }
 
 // MemberEdges holds the relations/edges for other nodes in the graph.
@@ -38,9 +40,11 @@ type MemberEdges struct {
 	MemberPayback []*Payback
 	// MemberRecordinsurance holds the value of the member_recordinsurance edge.
 	MemberRecordinsurance []*Recordinsurance
+	// Position holds the value of the position edge.
+	Position *Position
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [5]bool
+	loadedTypes [6]bool
 }
 
 // MemberInsuranceOrErr returns the MemberInsurance value or an error if the edge
@@ -88,6 +92,20 @@ func (e MemberEdges) MemberRecordinsuranceOrErr() ([]*Recordinsurance, error) {
 	return nil, &NotLoadedError{edge: "member_recordinsurance"}
 }
 
+// PositionOrErr returns the Position value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e MemberEdges) PositionOrErr() (*Position, error) {
+	if e.loadedTypes[5] {
+		if e.Position == nil {
+			// The edge position was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: position.Label}
+		}
+		return e.Position, nil
+	}
+	return nil, &NotLoadedError{edge: "position"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Member) scanValues() []interface{} {
 	return []interface{}{
@@ -95,6 +113,13 @@ func (*Member) scanValues() []interface{} {
 		&sql.NullString{}, // member_email
 		&sql.NullString{}, // member_name
 		&sql.NullString{}, // member_password
+	}
+}
+
+// fkValues returns the types for scanning foreign-keys values from sql.Rows.
+func (*Member) fkValues() []interface{} {
+	return []interface{}{
+		&sql.NullInt64{}, // position_id
 	}
 }
 
@@ -125,6 +150,15 @@ func (m *Member) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		m.MemberPassword = value.String
 	}
+	values = values[3:]
+	if len(values) == len(member.ForeignKeys) {
+		if value, ok := values[0].(*sql.NullInt64); !ok {
+			return fmt.Errorf("unexpected type %T for edge-field position_id", value)
+		} else if value.Valid {
+			m.position_id = new(int)
+			*m.position_id = int(value.Int64)
+		}
+	}
 	return nil
 }
 
@@ -151,6 +185,11 @@ func (m *Member) QueryMemberPayback() *PaybackQuery {
 // QueryMemberRecordinsurance queries the member_recordinsurance edge of the Member.
 func (m *Member) QueryMemberRecordinsurance() *RecordinsuranceQuery {
 	return (&MemberClient{config: m.config}).QueryMemberRecordinsurance(m)
+}
+
+// QueryPosition queries the position edge of the Member.
+func (m *Member) QueryPosition() *PositionQuery {
+	return (&MemberClient{config: m.config}).QueryPosition(m)
 }
 
 // Update returns a builder for updating this Member.

@@ -14,20 +14,21 @@ import (
 	"github.com/sut63/team05/ent/product"
 )
 
-// inquiryController defines the struct for the inquiry controller
+// InquiryController defines the struct for the inquiry controller
 type InquiryController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-// inquiry defines the struct for the inquiry
+// Inquiry defines the struct for the inquiry
 type Inquiry struct {
-	ProductID           int
-	MemberID            int
-	CategoryID          int
-	OfficerID           int
-	InquiryMessages     string
-	InquiryTimeMessages string
+	ProductID            int
+	MemberID             int
+	CategoryID           int
+	OfficerID            int
+	InquiryMessages      string
+	InquiryTimeMessages  string
+	InquiryPhoneMessages string
 }
 
 // CreateInquiry handles POST requests for adding inquiry entities
@@ -106,6 +107,7 @@ func (ctl *InquiryController) CreateInquiry(c *gin.Context) {
 		SetCategory(cg).
 		SetOfficer(of).
 		SetInquiryMessages(obj.InquiryMessages).
+		SetInquiryPhoneMessages(obj.InquiryPhoneMessages).
 		SetInquiryTimeMessages(timem).
 		Save(context.Background())
 	if err != nil {

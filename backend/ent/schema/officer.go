@@ -28,5 +28,6 @@ func (Officer) Edges() []ent.Edge {
 		edge.To("officer_inquiry", Inquiry.Type).StorageKey(edge.Column("officer_id")),
 		edge.To("officer_payback", Payback.Type).StorageKey(edge.Column("officer_id")),
 		edge.To("officer_recordinsurance", Recordinsurance.Type).StorageKey(edge.Column("officer_id")),
+		edge.From("position", Position.Type).Ref("officers").Unique(),
 	}
 }

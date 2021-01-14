@@ -14,55 +14,55 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    EntMoneyTransferEdges,
-    EntMoneyTransferEdgesFromJSON,
-    EntMoneyTransferEdgesFromJSONTyped,
-    EntMoneyTransferEdgesToJSON,
+    EntMoneytransferEdges,
+    EntMoneytransferEdgesFromJSON,
+    EntMoneytransferEdgesFromJSONTyped,
+    EntMoneytransferEdgesToJSON,
 } from './';
 
 /**
  * 
  * @export
- * @interface EntMoneyTransfer
+ * @interface EntMoneytransfer
  */
-export interface EntMoneyTransfer {
+export interface EntMoneytransfer {
     /**
      * 
-     * @type {EntMoneyTransferEdges}
-     * @memberof EntMoneyTransfer
+     * @type {EntMoneytransferEdges}
+     * @memberof EntMoneytransfer
      */
-    edges?: EntMoneyTransferEdges;
+    edges?: EntMoneytransferEdges;
     /**
      * ID of the ent.
      * @type {number}
-     * @memberof EntMoneyTransfer
+     * @memberof EntMoneytransfer
      */
     id?: number;
     /**
      * MoneytransferType holds the value of the "moneytransfer_type" field.
      * @type {string}
-     * @memberof EntMoneyTransfer
+     * @memberof EntMoneytransfer
      */
     moneytransferType?: string;
 }
 
-export function EntMoneyTransferFromJSON(json: any): EntMoneyTransfer {
-    return EntMoneyTransferFromJSONTyped(json, false);
+export function EntMoneytransferFromJSON(json: any): EntMoneytransfer {
+    return EntMoneytransferFromJSONTyped(json, false);
 }
 
-export function EntMoneyTransferFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntMoneyTransfer {
+export function EntMoneytransferFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntMoneytransfer {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'edges': !exists(json, 'edges') ? undefined : EntMoneyTransferEdgesFromJSON(json['edges']),
+        'edges': !exists(json, 'edges') ? undefined : EntMoneytransferEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
         'moneytransferType': !exists(json, 'moneytransfer_type') ? undefined : json['moneytransfer_type'],
     };
 }
 
-export function EntMoneyTransferToJSON(value?: EntMoneyTransfer | null): any {
+export function EntMoneytransferToJSON(value?: EntMoneytransfer | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -71,7 +71,7 @@ export function EntMoneyTransferToJSON(value?: EntMoneyTransfer | null): any {
     }
     return {
         
-        'edges': EntMoneyTransferEdgesToJSON(value.edges),
+        'edges': EntMoneytransferEdgesToJSON(value.edges),
         'id': value.id,
         'moneytransfer_type': value.moneytransferType,
     };

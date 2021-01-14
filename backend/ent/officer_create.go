@@ -13,6 +13,7 @@ import (
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/product"
 	"github.com/sut63/team05/ent/recordinsurance"
 )
@@ -115,6 +116,25 @@ func (oc *OfficerCreate) AddOfficerRecordinsurance(r ...*Recordinsurance) *Offic
 		ids[i] = r[i].ID
 	}
 	return oc.AddOfficerRecordinsuranceIDs(ids...)
+}
+
+// SetPositionID sets the position edge to Position by id.
+func (oc *OfficerCreate) SetPositionID(id int) *OfficerCreate {
+	oc.mutation.SetPositionID(id)
+	return oc
+}
+
+// SetNillablePositionID sets the position edge to Position by id if the given value is not nil.
+func (oc *OfficerCreate) SetNillablePositionID(id *int) *OfficerCreate {
+	if id != nil {
+		oc = oc.SetPositionID(*id)
+	}
+	return oc
+}
+
+// SetPosition sets the position edge to Position.
+func (oc *OfficerCreate) SetPosition(p *Position) *OfficerCreate {
+	return oc.SetPositionID(p.ID)
 }
 
 // Mutation returns the OfficerMutation object of the builder.
@@ -319,6 +339,25 @@ func (oc *OfficerCreate) createSpec() (*Officer, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := oc.mutation.PositionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   officer.PositionTable,
+			Columns: []string{officer.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
 				},
 			},
 		}

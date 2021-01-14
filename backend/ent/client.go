@@ -22,6 +22,7 @@ import (
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/product"
 	"github.com/sut63/team05/ent/recordinsurance"
 
@@ -53,14 +54,16 @@ type Client struct {
 	Insurance *InsuranceClient
 	// Member is the client for interacting with the Member builders.
 	Member *MemberClient
-	// MoneyTransfer is the client for interacting with the MoneyTransfer builders.
-	MoneyTransfer *MoneyTransferClient
+	// Moneytransfer is the client for interacting with the Moneytransfer builders.
+	Moneytransfer *MoneytransferClient
 	// Officer is the client for interacting with the Officer builders.
 	Officer *OfficerClient
 	// Payback is the client for interacting with the Payback builders.
 	Payback *PaybackClient
 	// Payment is the client for interacting with the Payment builders.
 	Payment *PaymentClient
+	// Position is the client for interacting with the Position builders.
+	Position *PositionClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
 	// Recordinsurance is the client for interacting with the Recordinsurance builders.
@@ -87,10 +90,11 @@ func (c *Client) init() {
 	c.Inquiry = NewInquiryClient(c.config)
 	c.Insurance = NewInsuranceClient(c.config)
 	c.Member = NewMemberClient(c.config)
-	c.MoneyTransfer = NewMoneyTransferClient(c.config)
+	c.Moneytransfer = NewMoneytransferClient(c.config)
 	c.Officer = NewOfficerClient(c.config)
 	c.Payback = NewPaybackClient(c.config)
 	c.Payment = NewPaymentClient(c.config)
+	c.Position = NewPositionClient(c.config)
 	c.Product = NewProductClient(c.config)
 	c.Recordinsurance = NewRecordinsuranceClient(c.config)
 }
@@ -134,10 +138,11 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Inquiry:         NewInquiryClient(cfg),
 		Insurance:       NewInsuranceClient(cfg),
 		Member:          NewMemberClient(cfg),
-		MoneyTransfer:   NewMoneyTransferClient(cfg),
+		Moneytransfer:   NewMoneytransferClient(cfg),
 		Officer:         NewOfficerClient(cfg),
 		Payback:         NewPaybackClient(cfg),
 		Payment:         NewPaymentClient(cfg),
+		Position:        NewPositionClient(cfg),
 		Product:         NewProductClient(cfg),
 		Recordinsurance: NewRecordinsuranceClient(cfg),
 	}, nil
@@ -164,10 +169,11 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Inquiry:         NewInquiryClient(cfg),
 		Insurance:       NewInsuranceClient(cfg),
 		Member:          NewMemberClient(cfg),
-		MoneyTransfer:   NewMoneyTransferClient(cfg),
+		Moneytransfer:   NewMoneytransferClient(cfg),
 		Officer:         NewOfficerClient(cfg),
 		Payback:         NewPaybackClient(cfg),
 		Payment:         NewPaymentClient(cfg),
+		Position:        NewPositionClient(cfg),
 		Product:         NewProductClient(cfg),
 		Recordinsurance: NewRecordinsuranceClient(cfg),
 	}, nil
@@ -207,10 +213,11 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Inquiry.Use(hooks...)
 	c.Insurance.Use(hooks...)
 	c.Member.Use(hooks...)
-	c.MoneyTransfer.Use(hooks...)
+	c.Moneytransfer.Use(hooks...)
 	c.Officer.Use(hooks...)
 	c.Payback.Use(hooks...)
 	c.Payment.Use(hooks...)
+	c.Position.Use(hooks...)
 	c.Product.Use(hooks...)
 	c.Recordinsurance.Use(hooks...)
 }
@@ -1309,108 +1316,124 @@ func (c *MemberClient) QueryMemberRecordinsurance(m *Member) *RecordinsuranceQue
 	return query
 }
 
-// Hooks returns the client hooks.
-func (c *MemberClient) Hooks() []Hook {
-	return c.hooks.Member
-}
-
-// MoneyTransferClient is a client for the MoneyTransfer schema.
-type MoneyTransferClient struct {
-	config
-}
-
-// NewMoneyTransferClient returns a client for the MoneyTransfer from the given config.
-func NewMoneyTransferClient(c config) *MoneyTransferClient {
-	return &MoneyTransferClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `moneytransfer.Hooks(f(g(h())))`.
-func (c *MoneyTransferClient) Use(hooks ...Hook) {
-	c.hooks.MoneyTransfer = append(c.hooks.MoneyTransfer, hooks...)
-}
-
-// Create returns a create builder for MoneyTransfer.
-func (c *MoneyTransferClient) Create() *MoneyTransferCreate {
-	mutation := newMoneyTransferMutation(c.config, OpCreate)
-	return &MoneyTransferCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Update returns an update builder for MoneyTransfer.
-func (c *MoneyTransferClient) Update() *MoneyTransferUpdate {
-	mutation := newMoneyTransferMutation(c.config, OpUpdate)
-	return &MoneyTransferUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *MoneyTransferClient) UpdateOne(mt *MoneyTransfer) *MoneyTransferUpdateOne {
-	mutation := newMoneyTransferMutation(c.config, OpUpdateOne, withMoneyTransfer(mt))
-	return &MoneyTransferUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *MoneyTransferClient) UpdateOneID(id int) *MoneyTransferUpdateOne {
-	mutation := newMoneyTransferMutation(c.config, OpUpdateOne, withMoneyTransferID(id))
-	return &MoneyTransferUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for MoneyTransfer.
-func (c *MoneyTransferClient) Delete() *MoneyTransferDelete {
-	mutation := newMoneyTransferMutation(c.config, OpDelete)
-	return &MoneyTransferDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a delete builder for the given entity.
-func (c *MoneyTransferClient) DeleteOne(mt *MoneyTransfer) *MoneyTransferDeleteOne {
-	return c.DeleteOneID(mt.ID)
-}
-
-// DeleteOneID returns a delete builder for the given id.
-func (c *MoneyTransferClient) DeleteOneID(id int) *MoneyTransferDeleteOne {
-	builder := c.Delete().Where(moneytransfer.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &MoneyTransferDeleteOne{builder}
-}
-
-// Create returns a query builder for MoneyTransfer.
-func (c *MoneyTransferClient) Query() *MoneyTransferQuery {
-	return &MoneyTransferQuery{config: c.config}
-}
-
-// Get returns a MoneyTransfer entity by its id.
-func (c *MoneyTransferClient) Get(ctx context.Context, id int) (*MoneyTransfer, error) {
-	return c.Query().Where(moneytransfer.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *MoneyTransferClient) GetX(ctx context.Context, id int) *MoneyTransfer {
-	mt, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return mt
-}
-
-// QueryMoneytransferPayment queries the moneytransfer_payment edge of a MoneyTransfer.
-func (c *MoneyTransferClient) QueryMoneytransferPayment(mt *MoneyTransfer) *PaymentQuery {
-	query := &PaymentQuery{config: c.config}
+// QueryPosition queries the position edge of a Member.
+func (c *MemberClient) QueryPosition(m *Member) *PositionQuery {
+	query := &PositionQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := mt.ID
+		id := m.ID
 		step := sqlgraph.NewStep(
-			sqlgraph.From(moneytransfer.Table, moneytransfer.FieldID, id),
-			sqlgraph.To(payment.Table, payment.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, moneytransfer.MoneytransferPaymentTable, moneytransfer.MoneytransferPaymentColumn),
+			sqlgraph.From(member.Table, member.FieldID, id),
+			sqlgraph.To(position.Table, position.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, member.PositionTable, member.PositionColumn),
 		)
-		fromV = sqlgraph.Neighbors(mt.driver.Dialect(), step)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
 		return fromV, nil
 	}
 	return query
 }
 
 // Hooks returns the client hooks.
-func (c *MoneyTransferClient) Hooks() []Hook {
-	return c.hooks.MoneyTransfer
+func (c *MemberClient) Hooks() []Hook {
+	return c.hooks.Member
+}
+
+// MoneytransferClient is a client for the Moneytransfer schema.
+type MoneytransferClient struct {
+	config
+}
+
+// NewMoneytransferClient returns a client for the Moneytransfer from the given config.
+func NewMoneytransferClient(c config) *MoneytransferClient {
+	return &MoneytransferClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `moneytransfer.Hooks(f(g(h())))`.
+func (c *MoneytransferClient) Use(hooks ...Hook) {
+	c.hooks.Moneytransfer = append(c.hooks.Moneytransfer, hooks...)
+}
+
+// Create returns a create builder for Moneytransfer.
+func (c *MoneytransferClient) Create() *MoneytransferCreate {
+	mutation := newMoneytransferMutation(c.config, OpCreate)
+	return &MoneytransferCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Update returns an update builder for Moneytransfer.
+func (c *MoneytransferClient) Update() *MoneytransferUpdate {
+	mutation := newMoneytransferMutation(c.config, OpUpdate)
+	return &MoneytransferUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *MoneytransferClient) UpdateOne(m *Moneytransfer) *MoneytransferUpdateOne {
+	mutation := newMoneytransferMutation(c.config, OpUpdateOne, withMoneytransfer(m))
+	return &MoneytransferUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *MoneytransferClient) UpdateOneID(id int) *MoneytransferUpdateOne {
+	mutation := newMoneytransferMutation(c.config, OpUpdateOne, withMoneytransferID(id))
+	return &MoneytransferUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Moneytransfer.
+func (c *MoneytransferClient) Delete() *MoneytransferDelete {
+	mutation := newMoneytransferMutation(c.config, OpDelete)
+	return &MoneytransferDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *MoneytransferClient) DeleteOne(m *Moneytransfer) *MoneytransferDeleteOne {
+	return c.DeleteOneID(m.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *MoneytransferClient) DeleteOneID(id int) *MoneytransferDeleteOne {
+	builder := c.Delete().Where(moneytransfer.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &MoneytransferDeleteOne{builder}
+}
+
+// Create returns a query builder for Moneytransfer.
+func (c *MoneytransferClient) Query() *MoneytransferQuery {
+	return &MoneytransferQuery{config: c.config}
+}
+
+// Get returns a Moneytransfer entity by its id.
+func (c *MoneytransferClient) Get(ctx context.Context, id int) (*Moneytransfer, error) {
+	return c.Query().Where(moneytransfer.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *MoneytransferClient) GetX(ctx context.Context, id int) *Moneytransfer {
+	m, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return m
+}
+
+// QueryMoneytransferPayment queries the moneytransfer_payment edge of a Moneytransfer.
+func (c *MoneytransferClient) QueryMoneytransferPayment(m *Moneytransfer) *PaymentQuery {
+	query := &PaymentQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(moneytransfer.Table, moneytransfer.FieldID, id),
+			sqlgraph.To(payment.Table, payment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, moneytransfer.MoneytransferPaymentTable, moneytransfer.MoneytransferPaymentColumn),
+		)
+		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *MoneytransferClient) Hooks() []Hook {
+	return c.hooks.Moneytransfer
 }
 
 // OfficerClient is a client for the Officer schema.
@@ -1564,6 +1587,22 @@ func (c *OfficerClient) QueryOfficerRecordinsurance(o *Officer) *Recordinsurance
 			sqlgraph.From(officer.Table, officer.FieldID, id),
 			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, officer.OfficerRecordinsuranceTable, officer.OfficerRecordinsuranceColumn),
+		)
+		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPosition queries the position edge of a Officer.
+func (c *OfficerClient) QueryPosition(o *Officer) *PositionQuery {
+	query := &PositionQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := o.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(officer.Table, officer.FieldID, id),
+			sqlgraph.To(position.Table, position.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, officer.PositionTable, officer.PositionColumn),
 		)
 		fromV = sqlgraph.Neighbors(o.driver.Dialect(), step)
 		return fromV, nil
@@ -1817,15 +1856,15 @@ func (c *PaymentClient) QueryInsurance(pa *Payment) *InsuranceQuery {
 	return query
 }
 
-// QueryMoneyTransfer queries the MoneyTransfer edge of a Payment.
-func (c *PaymentClient) QueryMoneyTransfer(pa *Payment) *MoneyTransferQuery {
-	query := &MoneyTransferQuery{config: c.config}
+// QueryMoneytransfer queries the Moneytransfer edge of a Payment.
+func (c *PaymentClient) QueryMoneytransfer(pa *Payment) *MoneytransferQuery {
+	query := &MoneytransferQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := pa.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(payment.Table, payment.FieldID, id),
 			sqlgraph.To(moneytransfer.Table, moneytransfer.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, payment.MoneyTransferTable, payment.MoneyTransferColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, payment.MoneytransferTable, payment.MoneytransferColumn),
 		)
 		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
 		return fromV, nil
@@ -1868,6 +1907,121 @@ func (c *PaymentClient) QueryMember(pa *Payment) *MemberQuery {
 // Hooks returns the client hooks.
 func (c *PaymentClient) Hooks() []Hook {
 	return c.hooks.Payment
+}
+
+// PositionClient is a client for the Position schema.
+type PositionClient struct {
+	config
+}
+
+// NewPositionClient returns a client for the Position from the given config.
+func NewPositionClient(c config) *PositionClient {
+	return &PositionClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `position.Hooks(f(g(h())))`.
+func (c *PositionClient) Use(hooks ...Hook) {
+	c.hooks.Position = append(c.hooks.Position, hooks...)
+}
+
+// Create returns a create builder for Position.
+func (c *PositionClient) Create() *PositionCreate {
+	mutation := newPositionMutation(c.config, OpCreate)
+	return &PositionCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Update returns an update builder for Position.
+func (c *PositionClient) Update() *PositionUpdate {
+	mutation := newPositionMutation(c.config, OpUpdate)
+	return &PositionUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PositionClient) UpdateOne(po *Position) *PositionUpdateOne {
+	mutation := newPositionMutation(c.config, OpUpdateOne, withPosition(po))
+	return &PositionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PositionClient) UpdateOneID(id int) *PositionUpdateOne {
+	mutation := newPositionMutation(c.config, OpUpdateOne, withPositionID(id))
+	return &PositionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Position.
+func (c *PositionClient) Delete() *PositionDelete {
+	mutation := newPositionMutation(c.config, OpDelete)
+	return &PositionDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *PositionClient) DeleteOne(po *Position) *PositionDeleteOne {
+	return c.DeleteOneID(po.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *PositionClient) DeleteOneID(id int) *PositionDeleteOne {
+	builder := c.Delete().Where(position.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PositionDeleteOne{builder}
+}
+
+// Create returns a query builder for Position.
+func (c *PositionClient) Query() *PositionQuery {
+	return &PositionQuery{config: c.config}
+}
+
+// Get returns a Position entity by its id.
+func (c *PositionClient) Get(ctx context.Context, id int) (*Position, error) {
+	return c.Query().Where(position.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PositionClient) GetX(ctx context.Context, id int) *Position {
+	po, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return po
+}
+
+// QueryMembers queries the members edge of a Position.
+func (c *PositionClient) QueryMembers(po *Position) *MemberQuery {
+	query := &MemberQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := po.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(position.Table, position.FieldID, id),
+			sqlgraph.To(member.Table, member.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, position.MembersTable, position.MembersColumn),
+		)
+		fromV = sqlgraph.Neighbors(po.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOfficers queries the officers edge of a Position.
+func (c *PositionClient) QueryOfficers(po *Position) *OfficerQuery {
+	query := &OfficerQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := po.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(position.Table, position.FieldID, id),
+			sqlgraph.To(officer.Table, officer.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, position.OfficersTable, position.OfficersColumn),
+		)
+		fromV = sqlgraph.Neighbors(po.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *PositionClient) Hooks() []Hook {
+	return c.hooks.Position
 }
 
 // ProductClient is a client for the Product schema.

@@ -30,14 +30,16 @@ type Tx struct {
 	Insurance *InsuranceClient
 	// Member is the client for interacting with the Member builders.
 	Member *MemberClient
-	// MoneyTransfer is the client for interacting with the MoneyTransfer builders.
-	MoneyTransfer *MoneyTransferClient
+	// Moneytransfer is the client for interacting with the Moneytransfer builders.
+	Moneytransfer *MoneytransferClient
 	// Officer is the client for interacting with the Officer builders.
 	Officer *OfficerClient
 	// Payback is the client for interacting with the Payback builders.
 	Payback *PaybackClient
 	// Payment is the client for interacting with the Payment builders.
 	Payment *PaymentClient
+	// Position is the client for interacting with the Position builders.
+	Position *PositionClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
 	// Recordinsurance is the client for interacting with the Recordinsurance builders.
@@ -186,10 +188,11 @@ func (tx *Tx) init() {
 	tx.Inquiry = NewInquiryClient(tx.config)
 	tx.Insurance = NewInsuranceClient(tx.config)
 	tx.Member = NewMemberClient(tx.config)
-	tx.MoneyTransfer = NewMoneyTransferClient(tx.config)
+	tx.Moneytransfer = NewMoneytransferClient(tx.config)
 	tx.Officer = NewOfficerClient(tx.config)
 	tx.Payback = NewPaybackClient(tx.config)
 	tx.Payment = NewPaymentClient(tx.config)
+	tx.Position = NewPositionClient(tx.config)
 	tx.Product = NewProductClient(tx.config)
 	tx.Recordinsurance = NewRecordinsuranceClient(tx.config)
 }

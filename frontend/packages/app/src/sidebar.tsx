@@ -6,6 +6,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 
@@ -68,7 +69,7 @@ export const AppSidebar = () => {
         members.filter((filter:EntMember) => filter.id == memberid).map((item:EntMember) => 
           <><SidebarItem icon={PermIdentityIcon} text={item.memberName} />
           <SidebarItem
-            icon={MonetizationOnIcon}
+            icon={DescriptionIcon}
             to="Inquiry"
             text="Inquiry" />
             <SidebarItem
@@ -113,6 +114,7 @@ export const AppSidebar = () => {
         <SidebarItem icon={MeetingRoomIcon} to="./SignIn" text="ออกจากระบบ"
           onClick={() => {
             localStorage.setItem("memberdata", JSON.stringify(null));
+            localStorage.setItem("positiondata", JSON.stringify(null));
             history.pushState("", "", "./SignIn");
             window.location.reload(false);
           }} />

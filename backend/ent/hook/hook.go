@@ -126,15 +126,15 @@ func (f MemberFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return f(ctx, mv)
 }
 
-// The MoneyTransferFunc type is an adapter to allow the use of ordinary
-// function as MoneyTransfer mutator.
-type MoneyTransferFunc func(context.Context, *ent.MoneyTransferMutation) (ent.Value, error)
+// The MoneytransferFunc type is an adapter to allow the use of ordinary
+// function as Moneytransfer mutator.
+type MoneytransferFunc func(context.Context, *ent.MoneytransferMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f MoneyTransferFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.MoneyTransferMutation)
+func (f MoneytransferFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.MoneytransferMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.MoneyTransferMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.MoneytransferMutation", m)
 	}
 	return f(ctx, mv)
 }
@@ -174,6 +174,19 @@ func (f PaymentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	mv, ok := m.(*ent.PaymentMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PaymentMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The PositionFunc type is an adapter to allow the use of ordinary
+// function as Position mutator.
+type PositionFunc func(context.Context, *ent.PositionMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PositionFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PositionMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PositionMutation", m)
 	}
 	return f(ctx, mv)
 }

@@ -75,7 +75,8 @@ export default function Login(props: any) {
 
     const resetMemberData = async () => {
       setLoading(false);
-      localStorage.setItem("userdata", JSON.stringify(null));
+      localStorage.setItem("memberdata", JSON.stringify(null));
+      localStorage.setItem("positiondata", JSON.stringify(null));
     }
     resetMemberData();
 
@@ -95,6 +96,7 @@ export default function Login(props: any) {
       if ((item.memberEmail == memberemail) && (item.memberPassword == memberpassword)) {
         setAlert(true);
         localStorage.setItem("memberdata", JSON.stringify(item.id));
+        localStorage.setItem("positiondata", JSON.stringify(item.edges.position.positionName))
         history.pushState("", "", "/Insurance");
         window.location.reload(false);
 
@@ -194,5 +196,3 @@ export default function Login(props: any) {
     </Container>
   );
 };
-
-
