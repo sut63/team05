@@ -30,6 +30,10 @@ import {
     EntPaymentFromJSON,
     EntPaymentFromJSONTyped,
     EntPaymentToJSON,
+    EntPosition,
+    EntPositionFromJSON,
+    EntPositionFromJSONTyped,
+    EntPositionToJSON,
     EntRecordinsurance,
     EntRecordinsuranceFromJSON,
     EntRecordinsuranceFromJSONTyped,
@@ -72,6 +76,12 @@ export interface EntMemberEdges {
      * @memberof EntMemberEdges
      */
     memberRecordinsurance?: Array<EntRecordinsurance>;
+    /**
+     * 
+     * @type {EntPosition}
+     * @memberof EntMemberEdges
+     */
+    position?: EntPosition;
 }
 
 export function EntMemberEdgesFromJSON(json: any): EntMemberEdges {
@@ -89,6 +99,7 @@ export function EntMemberEdgesFromJSONTyped(json: any, ignoreDiscriminator: bool
         'memberPayback': !exists(json, 'MemberPayback') ? undefined : ((json['MemberPayback'] as Array<any>).map(EntPaybackFromJSON)),
         'memberPayment': !exists(json, 'MemberPayment') ? undefined : ((json['MemberPayment'] as Array<any>).map(EntPaymentFromJSON)),
         'memberRecordinsurance': !exists(json, 'MemberRecordinsurance') ? undefined : ((json['MemberRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
+        'position': !exists(json, 'Position') ? undefined : EntPositionFromJSON(json['Position']),
     };
 }
 
@@ -106,6 +117,7 @@ export function EntMemberEdgesToJSON(value?: EntMemberEdges | null): any {
         'memberPayback': value.memberPayback === undefined ? undefined : ((value.memberPayback as Array<any>).map(EntPaybackToJSON)),
         'memberPayment': value.memberPayment === undefined ? undefined : ((value.memberPayment as Array<any>).map(EntPaymentToJSON)),
         'memberRecordinsurance': value.memberRecordinsurance === undefined ? undefined : ((value.memberRecordinsurance as Array<any>).map(EntRecordinsuranceToJSON)),
+        'position': EntPositionToJSON(value.position),
     };
 }
 

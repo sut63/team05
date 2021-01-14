@@ -14,6 +14,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/recordinsurance"
 )
 
@@ -115,6 +116,25 @@ func (mc *MemberCreate) AddMemberRecordinsurance(r ...*Recordinsurance) *MemberC
 		ids[i] = r[i].ID
 	}
 	return mc.AddMemberRecordinsuranceIDs(ids...)
+}
+
+// SetPositionID sets the position edge to Position by id.
+func (mc *MemberCreate) SetPositionID(id int) *MemberCreate {
+	mc.mutation.SetPositionID(id)
+	return mc
+}
+
+// SetNillablePositionID sets the position edge to Position by id if the given value is not nil.
+func (mc *MemberCreate) SetNillablePositionID(id *int) *MemberCreate {
+	if id != nil {
+		mc = mc.SetPositionID(*id)
+	}
+	return mc
+}
+
+// SetPosition sets the position edge to Position.
+func (mc *MemberCreate) SetPosition(p *Position) *MemberCreate {
+	return mc.SetPositionID(p.ID)
 }
 
 // Mutation returns the MemberMutation object of the builder.
@@ -319,6 +339,25 @@ func (mc *MemberCreate) createSpec() (*Member, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := mc.mutation.PositionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.PositionTable,
+			Columns: []string{member.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
 				},
 			},
 		}

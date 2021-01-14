@@ -26,6 +26,10 @@ import {
     EntPaybackFromJSON,
     EntPaybackFromJSONTyped,
     EntPaybackToJSON,
+    EntPosition,
+    EntPositionFromJSON,
+    EntPositionFromJSONTyped,
+    EntPositionToJSON,
     EntProduct,
     EntProductFromJSON,
     EntProductFromJSONTyped,
@@ -72,6 +76,12 @@ export interface EntOfficerEdges {
      * @memberof EntOfficerEdges
      */
     officerRecordinsurance?: Array<EntRecordinsurance>;
+    /**
+     * 
+     * @type {EntPosition}
+     * @memberof EntOfficerEdges
+     */
+    position?: EntPosition;
 }
 
 export function EntOfficerEdgesFromJSON(json: any): EntOfficerEdges {
@@ -89,6 +99,7 @@ export function EntOfficerEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
         'officerPayback': !exists(json, 'OfficerPayback') ? undefined : ((json['OfficerPayback'] as Array<any>).map(EntPaybackFromJSON)),
         'officerProduct': !exists(json, 'OfficerProduct') ? undefined : ((json['OfficerProduct'] as Array<any>).map(EntProductFromJSON)),
         'officerRecordinsurance': !exists(json, 'OfficerRecordinsurance') ? undefined : ((json['OfficerRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
+        'position': !exists(json, 'Position') ? undefined : EntPositionFromJSON(json['Position']),
     };
 }
 
@@ -106,6 +117,7 @@ export function EntOfficerEdgesToJSON(value?: EntOfficerEdges | null): any {
         'officerPayback': value.officerPayback === undefined ? undefined : ((value.officerPayback as Array<any>).map(EntPaybackToJSON)),
         'officerProduct': value.officerProduct === undefined ? undefined : ((value.officerProduct as Array<any>).map(EntProductToJSON)),
         'officerRecordinsurance': value.officerRecordinsurance === undefined ? undefined : ((value.officerRecordinsurance as Array<any>).map(EntRecordinsuranceToJSON)),
+        'position': EntPositionToJSON(value.position),
     };
 }
 

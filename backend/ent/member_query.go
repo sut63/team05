@@ -17,6 +17,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/recordinsurance"
 )
@@ -35,6 +36,8 @@ type MemberQuery struct {
 	withMemberInquiry         *InquiryQuery
 	withMemberPayback         *PaybackQuery
 	withMemberRecordinsurance *RecordinsuranceQuery
+	withPosition              *PositionQuery
+	withFKs                   bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -147,6 +150,24 @@ func (mq *MemberQuery) QueryMemberRecordinsurance() *RecordinsuranceQuery {
 			sqlgraph.From(member.Table, member.FieldID, mq.sqlQuery()),
 			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, member.MemberRecordinsuranceTable, member.MemberRecordinsuranceColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPosition chains the current query on the position edge.
+func (mq *MemberQuery) QueryPosition() *PositionQuery {
+	query := &PositionQuery{config: mq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := mq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(member.Table, member.FieldID, mq.sqlQuery()),
+			sqlgraph.To(position.Table, position.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, member.PositionTable, member.PositionColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
 		return fromU, nil
@@ -388,6 +409,17 @@ func (mq *MemberQuery) WithMemberRecordinsurance(opts ...func(*RecordinsuranceQu
 	return mq
 }
 
+//  WithPosition tells the query-builder to eager-loads the nodes that are connected to
+// the "position" edge. The optional arguments used to configure the query builder of the edge.
+func (mq *MemberQuery) WithPosition(opts ...func(*PositionQuery)) *MemberQuery {
+	query := &PositionQuery{config: mq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	mq.withPosition = query
+	return mq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -453,19 +485,30 @@ func (mq *MemberQuery) prepareQuery(ctx context.Context) error {
 func (mq *MemberQuery) sqlAll(ctx context.Context) ([]*Member, error) {
 	var (
 		nodes       = []*Member{}
+		withFKs     = mq.withFKs
 		_spec       = mq.querySpec()
-		loadedTypes = [5]bool{
+		loadedTypes = [6]bool{
 			mq.withMemberInsurance != nil,
 			mq.withMemberPayment != nil,
 			mq.withMemberInquiry != nil,
 			mq.withMemberPayback != nil,
 			mq.withMemberRecordinsurance != nil,
+			mq.withPosition != nil,
 		}
 	)
+	if mq.withPosition != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, member.ForeignKeys...)
+	}
 	_spec.ScanValues = func() []interface{} {
 		node := &Member{config: mq.config}
 		nodes = append(nodes, node)
 		values := node.scanValues()
+		if withFKs {
+			values = append(values, node.fkValues()...)
+		}
 		return values
 	}
 	_spec.Assign = func(values ...interface{}) error {
@@ -620,6 +663,31 @@ func (mq *MemberQuery) sqlAll(ctx context.Context) ([]*Member, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "member_id" returned %v for node %v`, *fk, n.ID)
 			}
 			node.Edges.MemberRecordinsurance = append(node.Edges.MemberRecordinsurance, n)
+		}
+	}
+
+	if query := mq.withPosition; query != nil {
+		ids := make([]int, 0, len(nodes))
+		nodeids := make(map[int][]*Member)
+		for i := range nodes {
+			if fk := nodes[i].position_id; fk != nil {
+				ids = append(ids, *fk)
+				nodeids[*fk] = append(nodeids[*fk], nodes[i])
+			}
+		}
+		query.Where(position.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "position_id" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Position = n
+			}
 		}
 	}
 

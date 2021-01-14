@@ -24,6 +24,8 @@ const (
 	EdgeMemberPayback = "member_payback"
 	// EdgeMemberRecordinsurance holds the string denoting the member_recordinsurance edge name in mutations.
 	EdgeMemberRecordinsurance = "member_recordinsurance"
+	// EdgePosition holds the string denoting the position edge name in mutations.
+	EdgePosition = "position"
 
 	// Table holds the table name of the member in the database.
 	Table = "members"
@@ -62,6 +64,13 @@ const (
 	MemberRecordinsuranceInverseTable = "recordinsurances"
 	// MemberRecordinsuranceColumn is the table column denoting the member_recordinsurance relation/edge.
 	MemberRecordinsuranceColumn = "member_id"
+	// PositionTable is the table the holds the position relation/edge.
+	PositionTable = "members"
+	// PositionInverseTable is the table name for the Position entity.
+	// It exists in this package in order to avoid circular dependency with the "position" package.
+	PositionInverseTable = "positions"
+	// PositionColumn is the table column denoting the position relation/edge.
+	PositionColumn = "position_id"
 )
 
 // Columns holds all SQL columns for member fields.
@@ -70,6 +79,11 @@ var Columns = []string{
 	FieldMemberEmail,
 	FieldMemberName,
 	FieldMemberPassword,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the Member type.
+var ForeignKeys = []string{
+	"position_id",
 }
 
 var (

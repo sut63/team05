@@ -394,6 +394,10 @@ definitions:
         items:
           $ref: '#/definitions/ent.Recordinsurance'
         type: array
+      position:
+        $ref: '#/definitions/ent.Position'
+        description: Position holds the value of the position edge.
+        type: object
     type: object
   ent.Moneytransfer:
     properties:
@@ -469,6 +473,10 @@ definitions:
         items:
           $ref: '#/definitions/ent.Recordinsurance'
         type: array
+      position:
+        $ref: '#/definitions/ent.Position'
+        description: Position holds the value of the position edge.
+        type: object
     type: object
   ent.Payback:
     properties:
@@ -548,6 +556,34 @@ definitions:
         $ref: '#/definitions/ent.Moneytransfer'
         description: Moneytransfer holds the value of the Moneytransfer edge.
         type: object
+    type: object
+  ent.Position:
+    properties:
+      edges:
+        $ref: '#/definitions/ent.PositionEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the PositionQuery when eager-loading is set.
+        type: object
+      id:
+        description: ID of the ent.
+        type: integer
+      position_name:
+        description: PositionName holds the value of the "position_name" field.
+        type: string
+    type: object
+  ent.PositionEdges:
+    properties:
+      members:
+        description: Members holds the value of the members edge.
+        items:
+          $ref: '#/definitions/ent.Member'
+        type: array
+      officers:
+        description: Officers holds the value of the officers edge.
+        items:
+          $ref: '#/definitions/ent.Officer'
+        type: array
     type: object
   ent.Product:
     properties:

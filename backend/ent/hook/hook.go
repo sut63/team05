@@ -178,6 +178,19 @@ func (f PaymentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	return f(ctx, mv)
 }
 
+// The PositionFunc type is an adapter to allow the use of ordinary
+// function as Position mutator.
+type PositionFunc func(context.Context, *ent.PositionMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PositionFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PositionMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PositionMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The ProductFunc type is an adapter to allow the use of ordinary
 // function as Product mutator.
 type ProductFunc func(context.Context, *ent.ProductMutation) (ent.Value, error)

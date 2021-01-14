@@ -93,43 +93,50 @@ export default function Insurance() {
  
     const getProducts = async () => {
  
-      const cn = await api.listProduct({ limit: 10, offset: 0 });
+      const pd = await api.listProduct({ limit: 10, offset: 0 });
       setLoading(false);
-      setProducts(cn);
+      setProducts(pd);
     };
     getProducts();
  
     const getMembers = async () => {
  
-    const u = await api.listMember({});
+    const m = await api.listMember({});
       setLoading(false);
-      setMembers(u);
+      setMembers(m);
     };
     getMembers();
  
     const getHospitals = async () => {
  
-     const s = await api.listHospital({ limit: 10, offset: 0 });
+     const h = await api.listHospital({ limit: 10, offset: 0 });
        setLoading(false);
-       setHospitals(s);
+       setHospitals(h);
      };
      getHospitals();
 
      const getOfficers = async () => {
  
-      const st = await api.listOfficer({ limit: 10, offset: 0 });
+      const of = await api.listOfficer({ limit: 10, offset: 0 });
         setLoading(false);
-        setOfficers(st);
+        setOfficers(of);
       };
       getOfficers();
 
-      const data = localStorage.getItem("memberdata");
-      if (data) {
-      setMemberid(Number(localStorage.getItem("memberdata")));
-      setLoading(false);
-    }
-
-    
+      const checkJobPosition = async () => {
+        const jobdata = JSON.parse(String(localStorage.getItem("positiondata")));
+        setLoading(false);
+        if (jobdata != "สมาชิกระบบประกันสุขภาพ" ) {
+          localStorage.setItem("memberdata",JSON.stringify(null));
+          localStorage.setItem("positiondata",JSON.stringify(null));
+          history.pushState("","","./SignIn");
+          window.location.reload(false);        
+        }
+        else{
+            setMemberid(Number(localStorage.getItem("memberdata")))
+        }
+      }
+    checkJobPosition();
 
   }, [loading]);
  
@@ -146,8 +153,8 @@ export default function Insurance() {
   });*/
 
   const CreateInsurance = async () => {
+    if ((insurance_addresss != null) && (insurance_addresss != "") && (insurance_insurers!= null) && (insurance_insurers != "") && (insuranceTimeBuys != null) && (insuranceTimeBuys != "") && (insuranceTimeFirstpays != null) && (insuranceTimeFirstpays != "") && (productid != null) && (memberid != null) && (hospitalid != null) && (officerid != null) ) {
       const insurance = {
-
          insuranceAddress      : insurance_addresss,
          insuranceInsurer     : insurance_insurers,
          insuranceTimeBuy     : insuranceTimeBuys + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
@@ -156,24 +163,19 @@ export default function Insurance() {
          memberID        : memberid,
          hospitalID    : hospitalid,
          officerID         : officerid,
-      }
+      };
       console.log(insurance);
-
     const res:any = await api.createInsurance({ insurance : insurance});
-    setStatus(true);
-    if (res.id != ''){
-      const timer = setTimeout(() => {
-      setAlert(true);
-    }, 10000);
-    } else {
-      setStatus(true);
-      setAlert(false);
-    }
- 
-    const timer = setTimeout(() => {
-      setStatus(false);
-    }, 1000);
-  };
+             setStatus(true);
+            if (res.id != '') {
+                setAlert(true);
+            }
+        }
+        else {
+            setStatus(true);
+            setAlert(false);
+        }
+    };
  
    const product_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
    setProductid(event.target.value as number);
@@ -220,11 +222,11 @@ export default function Insurance() {
        {status ? (
          <div>
            {alert ? (
-             <Alert severity="success">
+             <Alert variant="filled" severity="success">
                บันทึกเรียบร้อย!
              </Alert>
            ) : (
-             <Alert severity="warning" style={{ marginTop: 20 }}>
+             <Alert variant="filled" severity="error" style={{ marginTop: 20 }}>
                บันทึกไม่สำเร็จ!
              </Alert>
            )}
@@ -442,5 +444,4 @@ export default function Insurance() {
         </Content>
       </Page>
     );
-  };
-  
+  }

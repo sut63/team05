@@ -16,6 +16,7 @@ import (
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/product"
 	"github.com/sut63/team05/ent/recordinsurance"
 	"github.com/sut63/team05/ent/schema"
@@ -143,6 +144,12 @@ func init() {
 	paymentDescTransferTime := paymentFields[2].Descriptor()
 	// payment.DefaultTransferTime holds the default value on creation for the transfer_time field.
 	payment.DefaultTransferTime = paymentDescTransferTime.Default.(func() time.Time)
+	positionFields := schema.Position{}.Fields()
+	_ = positionFields
+	// positionDescPositionName is the schema descriptor for position_name field.
+	positionDescPositionName := positionFields[0].Descriptor()
+	// position.PositionNameValidator is a validator for the "position_name" field. It is called by the builders before save.
+	position.PositionNameValidator = positionDescPositionName.Validators[0].(func(string) error)
 	productFields := schema.Product{}.Fields()
 	_ = productFields
 	// productDescProductName is the schema descriptor for product_name field.

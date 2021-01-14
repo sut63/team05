@@ -21,6 +21,7 @@ import (
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/product"
 	"github.com/sut63/team05/ent/recordinsurance"
 
@@ -49,6 +50,7 @@ const (
 	TypeOfficer         = "Officer"
 	TypePayback         = "Payback"
 	TypePayment         = "Payment"
+	TypePosition        = "Position"
 	TypeProduct         = "Product"
 	TypeRecordinsurance = "Recordinsurance"
 )
@@ -3921,6 +3923,8 @@ type MemberMutation struct {
 	removedmember_payback         map[int]struct{}
 	member_recordinsurance        map[int]struct{}
 	removedmember_recordinsurance map[int]struct{}
+	position                      *int
+	clearedposition               bool
 	done                          bool
 	oldValue                      func(context.Context) (*Member, error)
 }
@@ -4325,6 +4329,45 @@ func (m *MemberMutation) ResetMemberRecordinsurance() {
 	m.removedmember_recordinsurance = nil
 }
 
+// SetPositionID sets the position edge to Position by id.
+func (m *MemberMutation) SetPositionID(id int) {
+	m.position = &id
+}
+
+// ClearPosition clears the position edge to Position.
+func (m *MemberMutation) ClearPosition() {
+	m.clearedposition = true
+}
+
+// PositionCleared returns if the edge position was cleared.
+func (m *MemberMutation) PositionCleared() bool {
+	return m.clearedposition
+}
+
+// PositionID returns the position id in the mutation.
+func (m *MemberMutation) PositionID() (id int, exists bool) {
+	if m.position != nil {
+		return *m.position, true
+	}
+	return
+}
+
+// PositionIDs returns the position ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// PositionID instead. It exists only for internal usage by the builders.
+func (m *MemberMutation) PositionIDs() (ids []int) {
+	if id := m.position; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPosition reset all changes of the "position" edge.
+func (m *MemberMutation) ResetPosition() {
+	m.position = nil
+	m.clearedposition = false
+}
+
 // Op returns the operation name.
 func (m *MemberMutation) Op() Op {
 	return m.op
@@ -4474,7 +4517,7 @@ func (m *MemberMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *MemberMutation) AddedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.member_insurance != nil {
 		edges = append(edges, member.EdgeMemberInsurance)
 	}
@@ -4489,6 +4532,9 @@ func (m *MemberMutation) AddedEdges() []string {
 	}
 	if m.member_recordinsurance != nil {
 		edges = append(edges, member.EdgeMemberRecordinsurance)
+	}
+	if m.position != nil {
+		edges = append(edges, member.EdgePosition)
 	}
 	return edges
 }
@@ -4527,6 +4573,10 @@ func (m *MemberMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case member.EdgePosition:
+		if id := m.position; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
@@ -4534,7 +4584,7 @@ func (m *MemberMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *MemberMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.removedmember_insurance != nil {
 		edges = append(edges, member.EdgeMemberInsurance)
 	}
@@ -4594,7 +4644,10 @@ func (m *MemberMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *MemberMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
+	if m.clearedposition {
+		edges = append(edges, member.EdgePosition)
+	}
 	return edges
 }
 
@@ -4602,6 +4655,8 @@ func (m *MemberMutation) ClearedEdges() []string {
 // cleared in this mutation.
 func (m *MemberMutation) EdgeCleared(name string) bool {
 	switch name {
+	case member.EdgePosition:
+		return m.clearedposition
 	}
 	return false
 }
@@ -4610,6 +4665,9 @@ func (m *MemberMutation) EdgeCleared(name string) bool {
 // error if the edge name is not defined in the schema.
 func (m *MemberMutation) ClearEdge(name string) error {
 	switch name {
+	case member.EdgePosition:
+		m.ClearPosition()
+		return nil
 	}
 	return fmt.Errorf("unknown Member unique edge %s", name)
 }
@@ -4633,6 +4691,9 @@ func (m *MemberMutation) ResetEdge(name string) error {
 		return nil
 	case member.EdgeMemberRecordinsurance:
 		m.ResetMemberRecordinsurance()
+		return nil
+	case member.EdgePosition:
+		m.ResetPosition()
 		return nil
 	}
 	return fmt.Errorf("unknown Member edge %s", name)
@@ -5027,6 +5088,8 @@ type OfficerMutation struct {
 	removedofficer_payback         map[int]struct{}
 	officer_recordinsurance        map[int]struct{}
 	removedofficer_recordinsurance map[int]struct{}
+	position                       *int
+	clearedposition                bool
 	done                           bool
 	oldValue                       func(context.Context) (*Officer, error)
 }
@@ -5431,6 +5494,45 @@ func (m *OfficerMutation) ResetOfficerRecordinsurance() {
 	m.removedofficer_recordinsurance = nil
 }
 
+// SetPositionID sets the position edge to Position by id.
+func (m *OfficerMutation) SetPositionID(id int) {
+	m.position = &id
+}
+
+// ClearPosition clears the position edge to Position.
+func (m *OfficerMutation) ClearPosition() {
+	m.clearedposition = true
+}
+
+// PositionCleared returns if the edge position was cleared.
+func (m *OfficerMutation) PositionCleared() bool {
+	return m.clearedposition
+}
+
+// PositionID returns the position id in the mutation.
+func (m *OfficerMutation) PositionID() (id int, exists bool) {
+	if m.position != nil {
+		return *m.position, true
+	}
+	return
+}
+
+// PositionIDs returns the position ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// PositionID instead. It exists only for internal usage by the builders.
+func (m *OfficerMutation) PositionIDs() (ids []int) {
+	if id := m.position; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetPosition reset all changes of the "position" edge.
+func (m *OfficerMutation) ResetPosition() {
+	m.position = nil
+	m.clearedposition = false
+}
+
 // Op returns the operation name.
 func (m *OfficerMutation) Op() Op {
 	return m.op
@@ -5580,7 +5682,7 @@ func (m *OfficerMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *OfficerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.officer_product != nil {
 		edges = append(edges, officer.EdgeOfficerProduct)
 	}
@@ -5595,6 +5697,9 @@ func (m *OfficerMutation) AddedEdges() []string {
 	}
 	if m.officer_recordinsurance != nil {
 		edges = append(edges, officer.EdgeOfficerRecordinsurance)
+	}
+	if m.position != nil {
+		edges = append(edges, officer.EdgePosition)
 	}
 	return edges
 }
@@ -5633,6 +5738,10 @@ func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case officer.EdgePosition:
+		if id := m.position; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
@@ -5640,7 +5749,7 @@ func (m *OfficerMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *OfficerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
 	if m.removedofficer_product != nil {
 		edges = append(edges, officer.EdgeOfficerProduct)
 	}
@@ -5700,7 +5809,10 @@ func (m *OfficerMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *OfficerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 5)
+	edges := make([]string, 0, 6)
+	if m.clearedposition {
+		edges = append(edges, officer.EdgePosition)
+	}
 	return edges
 }
 
@@ -5708,6 +5820,8 @@ func (m *OfficerMutation) ClearedEdges() []string {
 // cleared in this mutation.
 func (m *OfficerMutation) EdgeCleared(name string) bool {
 	switch name {
+	case officer.EdgePosition:
+		return m.clearedposition
 	}
 	return false
 }
@@ -5716,6 +5830,9 @@ func (m *OfficerMutation) EdgeCleared(name string) bool {
 // error if the edge name is not defined in the schema.
 func (m *OfficerMutation) ClearEdge(name string) error {
 	switch name {
+	case officer.EdgePosition:
+		m.ClearPosition()
+		return nil
 	}
 	return fmt.Errorf("unknown Officer unique edge %s", name)
 }
@@ -5739,6 +5856,9 @@ func (m *OfficerMutation) ResetEdge(name string) error {
 		return nil
 	case officer.EdgeOfficerRecordinsurance:
 		m.ResetOfficerRecordinsurance()
+		return nil
+	case officer.EdgePosition:
+		m.ResetPosition()
 		return nil
 	}
 	return fmt.Errorf("unknown Officer edge %s", name)
@@ -6985,6 +7105,439 @@ func (m *PaymentMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Payment edge %s", name)
+}
+
+// PositionMutation represents an operation that mutate the Positions
+// nodes in the graph.
+type PositionMutation struct {
+	config
+	op              Op
+	typ             string
+	id              *int
+	position_name   *string
+	clearedFields   map[string]struct{}
+	members         map[int]struct{}
+	removedmembers  map[int]struct{}
+	officers        map[int]struct{}
+	removedofficers map[int]struct{}
+	done            bool
+	oldValue        func(context.Context) (*Position, error)
+}
+
+var _ ent.Mutation = (*PositionMutation)(nil)
+
+// positionOption allows to manage the mutation configuration using functional options.
+type positionOption func(*PositionMutation)
+
+// newPositionMutation creates new mutation for $n.Name.
+func newPositionMutation(c config, op Op, opts ...positionOption) *PositionMutation {
+	m := &PositionMutation{
+		config:        c,
+		op:            op,
+		typ:           TypePosition,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withPositionID sets the id field of the mutation.
+func withPositionID(id int) positionOption {
+	return func(m *PositionMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Position
+		)
+		m.oldValue = func(ctx context.Context) (*Position, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Position.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withPosition sets the old Position of the mutation.
+func withPosition(node *Position) positionOption {
+	return func(m *PositionMutation) {
+		m.oldValue = func(context.Context) (*Position, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m PositionMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m PositionMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the id value in the mutation. Note that, the id
+// is available only if it was provided to the builder.
+func (m *PositionMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetPositionName sets the position_name field.
+func (m *PositionMutation) SetPositionName(s string) {
+	m.position_name = &s
+}
+
+// PositionName returns the position_name value in the mutation.
+func (m *PositionMutation) PositionName() (r string, exists bool) {
+	v := m.position_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPositionName returns the old position_name value of the Position.
+// If the Position object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *PositionMutation) OldPositionName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPositionName is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPositionName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPositionName: %w", err)
+	}
+	return oldValue.PositionName, nil
+}
+
+// ResetPositionName reset all changes of the "position_name" field.
+func (m *PositionMutation) ResetPositionName() {
+	m.position_name = nil
+}
+
+// AddMemberIDs adds the members edge to Member by ids.
+func (m *PositionMutation) AddMemberIDs(ids ...int) {
+	if m.members == nil {
+		m.members = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.members[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveMemberIDs removes the members edge to Member by ids.
+func (m *PositionMutation) RemoveMemberIDs(ids ...int) {
+	if m.removedmembers == nil {
+		m.removedmembers = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedmembers[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedMembers returns the removed ids of members.
+func (m *PositionMutation) RemovedMembersIDs() (ids []int) {
+	for id := range m.removedmembers {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// MembersIDs returns the members ids in the mutation.
+func (m *PositionMutation) MembersIDs() (ids []int) {
+	for id := range m.members {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetMembers reset all changes of the "members" edge.
+func (m *PositionMutation) ResetMembers() {
+	m.members = nil
+	m.removedmembers = nil
+}
+
+// AddOfficerIDs adds the officers edge to Officer by ids.
+func (m *PositionMutation) AddOfficerIDs(ids ...int) {
+	if m.officers == nil {
+		m.officers = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.officers[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveOfficerIDs removes the officers edge to Officer by ids.
+func (m *PositionMutation) RemoveOfficerIDs(ids ...int) {
+	if m.removedofficers == nil {
+		m.removedofficers = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedofficers[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedOfficers returns the removed ids of officers.
+func (m *PositionMutation) RemovedOfficersIDs() (ids []int) {
+	for id := range m.removedofficers {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// OfficersIDs returns the officers ids in the mutation.
+func (m *PositionMutation) OfficersIDs() (ids []int) {
+	for id := range m.officers {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetOfficers reset all changes of the "officers" edge.
+func (m *PositionMutation) ResetOfficers() {
+	m.officers = nil
+	m.removedofficers = nil
+}
+
+// Op returns the operation name.
+func (m *PositionMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Position).
+func (m *PositionMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during
+// this mutation. Note that, in order to get all numeric
+// fields that were in/decremented, call AddedFields().
+func (m *PositionMutation) Fields() []string {
+	fields := make([]string, 0, 1)
+	if m.position_name != nil {
+		fields = append(fields, position.FieldPositionName)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name.
+// The second boolean value indicates that this field was
+// not set, or was not define in the schema.
+func (m *PositionMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case position.FieldPositionName:
+		return m.PositionName()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database.
+// An error is returned if the mutation operation is not UpdateOne,
+// or the query to the database was failed.
+func (m *PositionMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case position.FieldPositionName:
+		return m.OldPositionName(ctx)
+	}
+	return nil, fmt.Errorf("unknown Position field %s", name)
+}
+
+// SetField sets the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *PositionMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case position.FieldPositionName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPositionName(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Position field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented
+// or decremented during this mutation.
+func (m *PositionMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was in/decremented
+// from a field with the given name. The second value indicates
+// that this field was not set, or was not define in the schema.
+func (m *PositionMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value for the given name. It returns an
+// error if the field is not defined in the schema, or if the
+// type mismatch the field type.
+func (m *PositionMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Position numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared
+// during this mutation.
+func (m *PositionMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicates if this field was
+// cleared in this mutation.
+func (m *PositionMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value for the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *PositionMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Position nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation regarding the
+// given field name. It returns an error if the field is not
+// defined in the schema.
+func (m *PositionMutation) ResetField(name string) error {
+	switch name {
+	case position.FieldPositionName:
+		m.ResetPositionName()
+		return nil
+	}
+	return fmt.Errorf("unknown Position field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this
+// mutation.
+func (m *PositionMutation) AddedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.members != nil {
+		edges = append(edges, position.EdgeMembers)
+	}
+	if m.officers != nil {
+		edges = append(edges, position.EdgeOfficers)
+	}
+	return edges
+}
+
+// AddedIDs returns all ids (to other nodes) that were added for
+// the given edge name.
+func (m *PositionMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case position.EdgeMembers:
+		ids := make([]ent.Value, 0, len(m.members))
+		for id := range m.members {
+			ids = append(ids, id)
+		}
+		return ids
+	case position.EdgeOfficers:
+		ids := make([]ent.Value, 0, len(m.officers))
+		for id := range m.officers {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this
+// mutation.
+func (m *PositionMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.removedmembers != nil {
+		edges = append(edges, position.EdgeMembers)
+	}
+	if m.removedofficers != nil {
+		edges = append(edges, position.EdgeOfficers)
+	}
+	return edges
+}
+
+// RemovedIDs returns all ids (to other nodes) that were removed for
+// the given edge name.
+func (m *PositionMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case position.EdgeMembers:
+		ids := make([]ent.Value, 0, len(m.removedmembers))
+		for id := range m.removedmembers {
+			ids = append(ids, id)
+		}
+		return ids
+	case position.EdgeOfficers:
+		ids := make([]ent.Value, 0, len(m.removedofficers))
+		for id := range m.removedofficers {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this
+// mutation.
+func (m *PositionMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 2)
+	return edges
+}
+
+// EdgeCleared returns a boolean indicates if this edge was
+// cleared in this mutation.
+func (m *PositionMutation) EdgeCleared(name string) bool {
+	switch name {
+	}
+	return false
+}
+
+// ClearEdge clears the value for the given name. It returns an
+// error if the edge name is not defined in the schema.
+func (m *PositionMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown Position unique edge %s", name)
+}
+
+// ResetEdge resets all changes in the mutation regarding the
+// given edge name. It returns an error if the edge is not
+// defined in the schema.
+func (m *PositionMutation) ResetEdge(name string) error {
+	switch name {
+	case position.EdgeMembers:
+		m.ResetMembers()
+		return nil
+	case position.EdgeOfficers:
+		m.ResetOfficers()
+		return nil
+	}
+	return fmt.Errorf("unknown Position edge %s", name)
 }
 
 // ProductMutation represents an operation that mutate the Products

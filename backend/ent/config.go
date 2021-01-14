@@ -37,6 +37,7 @@ type hooks struct {
 	Officer         []ent.Hook
 	Payback         []ent.Hook
 	Payment         []ent.Hook
+	Position        []ent.Hook
 	Product         []ent.Hook
 	Recordinsurance []ent.Hook
 }

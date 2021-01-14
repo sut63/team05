@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -10,11 +11,12 @@ import (
 	"github.com/sut63/team05/controllers"
 	_ "github.com/sut63/team05/docs"
 	"github.com/sut63/team05/ent"
+	"github.com/sut63/team05/ent/position"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// Hospital struct input data
+// Hospitals struct input data
 type Hospitals struct {
 	Hospital []Hospital
 }
@@ -24,7 +26,7 @@ type Hospital struct {
 	HospitalName string
 }
 
-// Member struct input data
+// Members struct input data
 type Members struct {
 	Member []Member
 }
@@ -34,6 +36,17 @@ type Member struct {
 	MemberEmail    string
 	MemberName     string
 	MemberPassword string
+	PositionNameID int
+}
+
+// Positions struct
+type Positions struct {
+	Position []Position
+}
+
+// Position struct input data
+type Position struct {
+	PositionName string
 }
 
 // Genders struct input data
@@ -67,6 +80,7 @@ type Officer struct {
 	OfficerEmail    string
 	OfficerName     string
 	OfficerPassword string
+	PositionNameID  int
 }
 
 // Moneytransfers struct input data
@@ -99,12 +113,12 @@ type Amountpaid struct {
 	AmountpaidMoney int
 }
 
-// Category struct input data
+// Categorys struct input data
 type Categorys struct {
 	Category []Category
 }
 
-// Gender struct
+// Category struct
 type Category struct {
 	CategoryName string
 }
@@ -179,22 +193,45 @@ func main() {
 	controllers.NewBankController(v1, client)
 	controllers.NewPaymentController(v1, client)
 	controllers.NewPaybackController(v1, client)
+	controllers.NewRecordinsuranceController(v1, client)
+
+	//ลงข้อมูล Position
+	positions := []string{"สมาชิกระบบประกันสุขภาพ", "พนักงานบริษัทประกันสุขภาพ"}
+
+	for _, pst := range positions {
+		client.Position.
+			Create().
+			SetPositionName(pst).
+			Save(context.Background())
+	}
 
 	// Set Members Data
 	members := Members{
 		Member: []Member{
-			Member{"b6115296@g.sut.ac.th", "Teerapat Saiprom", "123456789"},
-			Member{"b6132552@g.sut.ac.th", "Teerasuk Supawaha", "123456789"},
-			Member{"b6111458@g.sut.ac.th", "Pongsathon Petsuwan", "123456789"},
+			Member{"b6115296@g.sut.ac.th", "Teerapat Saiprom", "1234", 1},
+			Member{"b6132552@g.sut.ac.th", "Teerasuk Supawaha", "1234", 1},
+			Member{"b6111458@g.sut.ac.th", "Pongsathon Petsuwan", "1234", 1},
 		},
 	}
 
 	for _, m := range members.Member {
+
+		pst, err := client.Position.
+			Query().
+			Where(position.IDEQ(int(m.PositionNameID))).
+			Only(context.Background())
+
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+
 		client.Member.
 			Create().
 			SetMemberEmail(m.MemberEmail).
 			SetMemberName(m.MemberName).
 			SetMemberPassword(m.MemberPassword).
+			SetPosition(pst).
 			Save(context.Background())
 	}
 
@@ -216,17 +253,29 @@ func main() {
 	// Set Offices Data
 	officers := Officers{
 		Officer: []Officer{
-			Officer{"gamse0505@gmail.com", "Somchai Ngaosri", "Aa123"},
-			Officer{"Panyaporn@gmail.com", "Panyaporn Ngaosri", "Bb123"},
+			Officer{"gamse0505@gmail.com", "Somchai Ngaosri", "Aa123", 2},
+			Officer{"Panyaporn@gmail.com", "Panyaporn Ngaosri", "Bb123", 2},
 		},
 	}
 
 	for _, ofc := range officers.Officer {
+
+		pst, err := client.Position.
+			Query().
+			Where(position.IDEQ(int(ofc.PositionNameID))).
+			Only(context.Background())
+
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+
 		client.Officer.
 			Create().
 			SetOfficerEmail(ofc.OfficerEmail).
 			SetOfficerName(ofc.OfficerName).
 			SetOfficerPassword(ofc.OfficerPassword).
+			SetPosition(pst).
 			Save(context.Background())
 	}
 
