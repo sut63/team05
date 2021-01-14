@@ -3520,6 +3520,11 @@
                     "items": {
                         "$ref": "#/definitions/ent.Recordinsurance"
                     }
+                },
+                "position": {
+                    "description": "Position holds the value of the position edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Position"
                 }
             }
         },
@@ -3616,6 +3621,11 @@
                     "items": {
                         "$ref": "#/definitions/ent.Recordinsurance"
                     }
+                },
+                "position": {
+                    "description": "Position holds the value of the position edge.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.Position"
                 }
             }
         },
@@ -3714,6 +3724,43 @@
                     "description": "Moneytransfer holds the value of the Moneytransfer edge.",
                     "type": "object",
                     "$ref": "#/definitions/ent.Moneytransfer"
+                }
+            }
+        },
+        "ent.Position": {
+            "type": "object",
+            "properties": {
+                "edges": {
+                    "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the PositionQuery when eager-loading is set.",
+                    "type": "object",
+                    "$ref": "#/definitions/ent.PositionEdges"
+                },
+                "id": {
+                    "description": "ID of the ent.",
+                    "type": "integer"
+                },
+                "position_name": {
+                    "description": "PositionName holds the value of the \"position_name\" field.",
+                    "type": "string"
+                }
+            }
+        },
+        "ent.PositionEdges": {
+            "type": "object",
+            "properties": {
+                "members": {
+                    "description": "Members holds the value of the members edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Member"
+                    }
+                },
+                "officers": {
+                    "description": "Officers holds the value of the officers edge.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Officer"
+                    }
                 }
             }
         },

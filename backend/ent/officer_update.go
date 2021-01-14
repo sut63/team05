@@ -13,6 +13,7 @@ import (
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
 	"github.com/sut63/team05/ent/recordinsurance"
@@ -125,6 +126,25 @@ func (ou *OfficerUpdate) AddOfficerRecordinsurance(r ...*Recordinsurance) *Offic
 	return ou.AddOfficerRecordinsuranceIDs(ids...)
 }
 
+// SetPositionID sets the position edge to Position by id.
+func (ou *OfficerUpdate) SetPositionID(id int) *OfficerUpdate {
+	ou.mutation.SetPositionID(id)
+	return ou
+}
+
+// SetNillablePositionID sets the position edge to Position by id if the given value is not nil.
+func (ou *OfficerUpdate) SetNillablePositionID(id *int) *OfficerUpdate {
+	if id != nil {
+		ou = ou.SetPositionID(*id)
+	}
+	return ou
+}
+
+// SetPosition sets the position edge to Position.
+func (ou *OfficerUpdate) SetPosition(p *Position) *OfficerUpdate {
+	return ou.SetPositionID(p.ID)
+}
+
 // Mutation returns the OfficerMutation object of the builder.
 func (ou *OfficerUpdate) Mutation() *OfficerMutation {
 	return ou.mutation
@@ -203,6 +223,12 @@ func (ou *OfficerUpdate) RemoveOfficerRecordinsurance(r ...*Recordinsurance) *Of
 		ids[i] = r[i].ID
 	}
 	return ou.RemoveOfficerRecordinsuranceIDs(ids...)
+}
+
+// ClearPosition clears the position edge to Position.
+func (ou *OfficerUpdate) ClearPosition() *OfficerUpdate {
+	ou.mutation.ClearPosition()
+	return ou
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -501,6 +527,41 @@ func (ou *OfficerUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if ou.mutation.PositionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   officer.PositionTable,
+			Columns: []string{officer.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ou.mutation.PositionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   officer.PositionTable,
+			Columns: []string{officer.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ou.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{officer.Label}
@@ -612,6 +673,25 @@ func (ouo *OfficerUpdateOne) AddOfficerRecordinsurance(r ...*Recordinsurance) *O
 	return ouo.AddOfficerRecordinsuranceIDs(ids...)
 }
 
+// SetPositionID sets the position edge to Position by id.
+func (ouo *OfficerUpdateOne) SetPositionID(id int) *OfficerUpdateOne {
+	ouo.mutation.SetPositionID(id)
+	return ouo
+}
+
+// SetNillablePositionID sets the position edge to Position by id if the given value is not nil.
+func (ouo *OfficerUpdateOne) SetNillablePositionID(id *int) *OfficerUpdateOne {
+	if id != nil {
+		ouo = ouo.SetPositionID(*id)
+	}
+	return ouo
+}
+
+// SetPosition sets the position edge to Position.
+func (ouo *OfficerUpdateOne) SetPosition(p *Position) *OfficerUpdateOne {
+	return ouo.SetPositionID(p.ID)
+}
+
 // Mutation returns the OfficerMutation object of the builder.
 func (ouo *OfficerUpdateOne) Mutation() *OfficerMutation {
 	return ouo.mutation
@@ -690,6 +770,12 @@ func (ouo *OfficerUpdateOne) RemoveOfficerRecordinsurance(r ...*Recordinsurance)
 		ids[i] = r[i].ID
 	}
 	return ouo.RemoveOfficerRecordinsuranceIDs(ids...)
+}
+
+// ClearPosition clears the position edge to Position.
+func (ouo *OfficerUpdateOne) ClearPosition() *OfficerUpdateOne {
+	ouo.mutation.ClearPosition()
+	return ouo
 }
 
 // Save executes the query and returns the updated entity.
@@ -978,6 +1064,41 @@ func (ouo *OfficerUpdateOne) sqlSave(ctx context.Context) (o *Officer, err error
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ouo.mutation.PositionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   officer.PositionTable,
+			Columns: []string{officer.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ouo.mutation.PositionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   officer.PositionTable,
+			Columns: []string{officer.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
 				},
 			},
 		}

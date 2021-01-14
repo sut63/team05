@@ -14,6 +14,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/position"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/recordinsurance"
 )
@@ -125,6 +126,25 @@ func (mu *MemberUpdate) AddMemberRecordinsurance(r ...*Recordinsurance) *MemberU
 	return mu.AddMemberRecordinsuranceIDs(ids...)
 }
 
+// SetPositionID sets the position edge to Position by id.
+func (mu *MemberUpdate) SetPositionID(id int) *MemberUpdate {
+	mu.mutation.SetPositionID(id)
+	return mu
+}
+
+// SetNillablePositionID sets the position edge to Position by id if the given value is not nil.
+func (mu *MemberUpdate) SetNillablePositionID(id *int) *MemberUpdate {
+	if id != nil {
+		mu = mu.SetPositionID(*id)
+	}
+	return mu
+}
+
+// SetPosition sets the position edge to Position.
+func (mu *MemberUpdate) SetPosition(p *Position) *MemberUpdate {
+	return mu.SetPositionID(p.ID)
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (mu *MemberUpdate) Mutation() *MemberMutation {
 	return mu.mutation
@@ -203,6 +223,12 @@ func (mu *MemberUpdate) RemoveMemberRecordinsurance(r ...*Recordinsurance) *Memb
 		ids[i] = r[i].ID
 	}
 	return mu.RemoveMemberRecordinsuranceIDs(ids...)
+}
+
+// ClearPosition clears the position edge to Position.
+func (mu *MemberUpdate) ClearPosition() *MemberUpdate {
+	mu.mutation.ClearPosition()
+	return mu
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -501,6 +527,41 @@ func (mu *MemberUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if mu.mutation.PositionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.PositionTable,
+			Columns: []string{member.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := mu.mutation.PositionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.PositionTable,
+			Columns: []string{member.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{member.Label}
@@ -612,6 +673,25 @@ func (muo *MemberUpdateOne) AddMemberRecordinsurance(r ...*Recordinsurance) *Mem
 	return muo.AddMemberRecordinsuranceIDs(ids...)
 }
 
+// SetPositionID sets the position edge to Position by id.
+func (muo *MemberUpdateOne) SetPositionID(id int) *MemberUpdateOne {
+	muo.mutation.SetPositionID(id)
+	return muo
+}
+
+// SetNillablePositionID sets the position edge to Position by id if the given value is not nil.
+func (muo *MemberUpdateOne) SetNillablePositionID(id *int) *MemberUpdateOne {
+	if id != nil {
+		muo = muo.SetPositionID(*id)
+	}
+	return muo
+}
+
+// SetPosition sets the position edge to Position.
+func (muo *MemberUpdateOne) SetPosition(p *Position) *MemberUpdateOne {
+	return muo.SetPositionID(p.ID)
+}
+
 // Mutation returns the MemberMutation object of the builder.
 func (muo *MemberUpdateOne) Mutation() *MemberMutation {
 	return muo.mutation
@@ -690,6 +770,12 @@ func (muo *MemberUpdateOne) RemoveMemberRecordinsurance(r ...*Recordinsurance) *
 		ids[i] = r[i].ID
 	}
 	return muo.RemoveMemberRecordinsuranceIDs(ids...)
+}
+
+// ClearPosition clears the position edge to Position.
+func (muo *MemberUpdateOne) ClearPosition() *MemberUpdateOne {
+	muo.mutation.ClearPosition()
+	return muo
 }
 
 // Save executes the query and returns the updated entity.
@@ -978,6 +1064,41 @@ func (muo *MemberUpdateOne) sqlSave(ctx context.Context) (m *Member, err error) 
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if muo.mutation.PositionCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.PositionTable,
+			Columns: []string{member.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := muo.mutation.PositionIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   member.PositionTable,
+			Columns: []string{member.PositionColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: position.FieldID,
 				},
 			},
 		}

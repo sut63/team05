@@ -24,6 +24,8 @@ const (
 	EdgeOfficerPayback = "officer_payback"
 	// EdgeOfficerRecordinsurance holds the string denoting the officer_recordinsurance edge name in mutations.
 	EdgeOfficerRecordinsurance = "officer_recordinsurance"
+	// EdgePosition holds the string denoting the position edge name in mutations.
+	EdgePosition = "position"
 
 	// Table holds the table name of the officer in the database.
 	Table = "officers"
@@ -62,6 +64,13 @@ const (
 	OfficerRecordinsuranceInverseTable = "recordinsurances"
 	// OfficerRecordinsuranceColumn is the table column denoting the officer_recordinsurance relation/edge.
 	OfficerRecordinsuranceColumn = "officer_id"
+	// PositionTable is the table the holds the position relation/edge.
+	PositionTable = "officers"
+	// PositionInverseTable is the table name for the Position entity.
+	// It exists in this package in order to avoid circular dependency with the "position" package.
+	PositionInverseTable = "positions"
+	// PositionColumn is the table column denoting the position relation/edge.
+	PositionColumn = "position_id"
 )
 
 // Columns holds all SQL columns for officer fields.
@@ -70,6 +79,11 @@ var Columns = []string{
 	FieldOfficerEmail,
 	FieldOfficerName,
 	FieldOfficerPassword,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the Officer type.
+var ForeignKeys = []string{
+	"position_id",
 }
 
 var (

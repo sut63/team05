@@ -8,7 +8,6 @@ import Product from './components/Product';
 import Officerlongin from './components/Officerlongin';
 
 import Payment from './components/Payment';
-import Product from './components/Product'
 import Inquiry from './components/Inquiry'
 
 export const plugin = createPlugin({

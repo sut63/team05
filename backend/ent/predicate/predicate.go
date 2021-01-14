@@ -45,6 +45,9 @@ type Payback func(*sql.Selector)
 // Payment is the predicate function for payment builders.
 type Payment func(*sql.Selector)
 
+// Position is the predicate function for position builders.
+type Position func(*sql.Selector)
+
 // Product is the predicate function for product builders.
 type Product func(*sql.Selector)
 

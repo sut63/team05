@@ -585,6 +585,34 @@ func HasOfficerRecordinsuranceWith(preds ...predicate.Recordinsurance) predicate
 	})
 }
 
+// HasPosition applies the HasEdge predicate on the "position" edge.
+func HasPosition() predicate.Officer {
+	return predicate.Officer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PositionTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, PositionTable, PositionColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPositionWith applies the HasEdge predicate on the "position" edge with a given conditions (other predicates).
+func HasPositionWith(preds ...predicate.Position) predicate.Officer {
+	return predicate.Officer(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PositionInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, PositionTable, PositionColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Officer) predicate.Officer {
 	return predicate.Officer(func(s *sql.Selector) {

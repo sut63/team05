@@ -74,6 +74,7 @@ func (ctl *OfficerController) GetOfficer(c *gin.Context) {
 	}
 	ofc, err := ctl.client.Officer.
 		Query().
+		WithPosition().
 		Where(officer.IDEQ(int(id))).
 		Only(context.Background())
 
@@ -119,6 +120,7 @@ func (ctl *OfficerController) ListOfficer(c *gin.Context) {
 
 	officers, err := ctl.client.Officer.
 		Query().
+		WithPosition().
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())

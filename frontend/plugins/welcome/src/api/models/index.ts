@@ -30,6 +30,8 @@ export * from './EntPayback';
 export * from './EntPaybackEdges';
 export * from './EntPayment';
 export * from './EntPaymentEdges';
+export * from './EntPosition';
+export * from './EntPositionEdges';
 export * from './EntProduct';
 export * from './EntProductEdges';
 export * from './EntRecordinsurance';

@@ -38,6 +38,8 @@ type Tx struct {
 	Payback *PaybackClient
 	// Payment is the client for interacting with the Payment builders.
 	Payment *PaymentClient
+	// Position is the client for interacting with the Position builders.
+	Position *PositionClient
 	// Product is the client for interacting with the Product builders.
 	Product *ProductClient
 	// Recordinsurance is the client for interacting with the Recordinsurance builders.
@@ -190,6 +192,7 @@ func (tx *Tx) init() {
 	tx.Officer = NewOfficerClient(tx.config)
 	tx.Payback = NewPaybackClient(tx.config)
 	tx.Payment = NewPaymentClient(tx.config)
+	tx.Position = NewPositionClient(tx.config)
 	tx.Product = NewProductClient(tx.config)
 	tx.Recordinsurance = NewRecordinsuranceClient(tx.config)
 }
