@@ -77,6 +77,7 @@ export default function Login(props: any) {
     const resetOfficerData = async () => {
       setLoading(false);
       localStorage.setItem("officerdata", JSON.stringify(null));
+      
     }
     resetOfficerData();
 
@@ -92,8 +93,8 @@ export default function Login(props: any) {
 
   const LoginChecker = async () => {
     officers.map((item: any) => {
-      console.log(item.OfficerEmail);
-      if ((item.OfficerEmail == officeremail) && (item.officerpassword == officerpassword)) {
+      console.log(item.officerEmail);
+      if ((item.officerEmail == officeremail) && (item.officerPassword == officerpassword)) {
         setAlert(true);
         localStorage.setItem("officerdata", JSON.stringify(item.id));
         history.pushState("", "", "/Product");
