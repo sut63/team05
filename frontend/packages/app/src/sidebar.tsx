@@ -7,6 +7,9 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+
+
 import {
   Sidebar,
   SidebarItem,
@@ -18,12 +21,16 @@ import {
 
 import { EntMember } from 'plugin-welcome/src/api/models/EntMember';
 import { DefaultApi } from 'plugin-welcome/src/api/apis';
+import { EntOfficer } from 'plugin-welcome/src/api';
 export const AppSidebar = () => {
 
   const api = new DefaultApi();
   const [memberid, setMember] = useState(Number);
   const [members, setMembers] = useState<EntMember[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [officers, setOfficers] = useState<EntOfficer[]>([]);
+  const [officerID, setOfficerID] = useState(Number);
 
   useEffect(() => {
     const getMembers = async () => {
@@ -35,6 +42,18 @@ export const AppSidebar = () => {
     const data = localStorage.getItem("memberdata");
     if (data) {
       setMember(Number(JSON.parse(data)));
+      setLoading(false);
+    }
+
+    const getOfficers = async () => {
+      const ofc: any = await api.listOfficer({});
+      setLoading(false);
+      setOfficers(ofc);
+    }
+    getOfficers();
+    const dataa = localStorage.getItem("officerdata");
+    if (dataa) {
+      setOfficerID(Number(JSON.parse(dataa)));
       setLoading(false);
     }
     
@@ -65,7 +84,26 @@ export const AppSidebar = () => {
         :
         null
       }
+
       {/* End global nav */}
+
+      {/* Global nav, not org-specific */}
+      {(officerID) ?
+        officers.filter((filter:EntOfficer) => filter.id == officerID).map((item:EntOfficer) => 
+          <><SidebarItem icon={PermIdentityIcon} text={item.officerName} />
+          <SidebarItem
+            icon={PlaylistAddIcon}
+            to="Product"
+            text="Product" />
+            </>
+        )
+        :
+        null
+      }
+
+      {/* End global nav */}
+
+      
       
       <SidebarDivider />
       <SidebarSpace />
@@ -76,6 +114,17 @@ export const AppSidebar = () => {
           onClick={() => {
             localStorage.setItem("memberdata", JSON.stringify(null));
             history.pushState("", "", "./SignIn");
+            window.location.reload(false);
+          }} />
+        :
+        null
+      }
+
+      {(officerID) ?
+        <SidebarItem icon={MeetingRoomIcon} to="./Officerlogin" text="ออกจากระบบ"
+          onClick={() => {
+            localStorage.setItem("officerdata", JSON.stringify(null));
+            history.pushState("", "", "./Officerlogin");
             window.location.reload(false);
           }} />
         :
