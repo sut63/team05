@@ -74,10 +74,10 @@ export function EntInquiryEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'category': !exists(json, 'category') ? undefined : EntCategoryFromJSON(json['category']),
-        'member': !exists(json, 'member') ? undefined : EntMemberFromJSON(json['member']),
-        'officer': !exists(json, 'officer') ? undefined : EntOfficerFromJSON(json['officer']),
-        'product': !exists(json, 'product') ? undefined : EntProductFromJSON(json['product']),
+        'category': !exists(json, 'Category') ? undefined : EntCategoryFromJSON(json['Category']),
+        'member': !exists(json, 'Member') ? undefined : EntMemberFromJSON(json['Member']),
+        'officer': !exists(json, 'Officer') ? undefined : EntOfficerFromJSON(json['Officer']),
+        'product': !exists(json, 'Product') ? undefined : EntProductFromJSON(json['Product']),
     };
 }
 

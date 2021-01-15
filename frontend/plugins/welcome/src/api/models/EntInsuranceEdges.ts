@@ -84,11 +84,11 @@ export function EntInsuranceEdgesFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'hospital': !exists(json, 'hospital') ? undefined : EntHospitalFromJSON(json['hospital']),
-        'insurancePayment': !exists(json, 'insurancePayment') ? undefined : ((json['insurancePayment'] as Array<any>).map(EntPaymentFromJSON)),
-        'member': !exists(json, 'member') ? undefined : EntMemberFromJSON(json['member']),
-        'officer': !exists(json, 'officer') ? undefined : EntOfficerFromJSON(json['officer']),
-        'product': !exists(json, 'product') ? undefined : EntProductFromJSON(json['product']),
+        'hospital': !exists(json, 'Hospital') ? undefined : EntHospitalFromJSON(json['Hospital']),
+        'insurancePayment': !exists(json, 'InsurancePayment') ? undefined : ((json['InsurancePayment'] as Array<any>).map(EntPaymentFromJSON)),
+        'member': !exists(json, 'Member') ? undefined : EntMemberFromJSON(json['Member']),
+        'officer': !exists(json, 'Officer') ? undefined : EntOfficerFromJSON(json['Officer']),
+        'product': !exists(json, 'Product') ? undefined : EntProductFromJSON(json['Product']),
     };
 }
 

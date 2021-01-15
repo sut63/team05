@@ -54,8 +54,8 @@ export function EntHospitalEdgesFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'hospitalInsurance': !exists(json, 'hospitalInsurance') ? undefined : ((json['hospitalInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
-        'hospitalRecordinsurance': !exists(json, 'hospitalRecordinsurance') ? undefined : ((json['hospitalRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
+        'hospitalInsurance': !exists(json, 'HospitalInsurance') ? undefined : ((json['HospitalInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
+        'hospitalRecordinsurance': !exists(json, 'HospitalRecordinsurance') ? undefined : ((json['HospitalRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
     };
 }
 
