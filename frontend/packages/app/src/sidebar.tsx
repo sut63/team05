@@ -9,7 +9,7 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import CommentIcon from '@material-ui/icons/Comment';
 
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-
+import SaveAltTwoToneIcon from '@material-ui/icons/SaveAltTwoTone';
 
 import {
   Sidebar,
@@ -96,6 +96,10 @@ export const AppSidebar = () => {
             icon={PlaylistAddIcon}
             to="Product"
             text="Product" />
+          <SidebarItem
+            icon={SaveAltTwoToneIcon}
+            to="Recordinsurance"
+            text="Recordinsurance" />
             </>
         )
         :
