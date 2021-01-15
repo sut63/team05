@@ -77,7 +77,7 @@ export default function Create() {
   const [officerid, setOfficerid] = useState(Number);
   const [inquiry_messages, setInquiryMessages] = useState(String);
   const [inquiry_phone_messages, setInquiryPhoneMessages] = useState(String);
-  const [inquiryTimeMessages, setInquiryTimeMessages] = useState(String);
+  //const [inquiryTimeMessages, setInquiryTimeMessages] = useState(String);
   
   useEffect(() => {
  
@@ -135,13 +135,13 @@ export default function Create() {
   });
 
   const CreateInquiry = async ()=>{
-    if ((productid != null) && (categoryid != null) && (officerid != null) && (inquiry_messages != null) && (inquiry_messages != "") && (inquiry_phone_messages != null) && (inquiry_phone_messages != "")&& (inquiryTimeMessages != null) && (inquiryTimeMessages != "")) {
+    if ((productid != null) && (categoryid != null) && (officerid != null) && (inquiry_messages != null) && (inquiry_messages != "") && (inquiry_phone_messages != null) && (inquiry_phone_messages != "")) {
     const inquiry ={
 
 
          inquiryMessages      : inquiry_messages,
          inquiryPhoneMessages      : inquiry_phone_messages,
-         inquiryTimeMessages     : inquiryTimeMessages + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+         //inquiryTimeMessages     : inquiryTimeMessages + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          productID          : productid,
          memberID        : memberid,
          categoryID    : categoryid,
@@ -188,14 +188,13 @@ export default function Create() {
         setInquiryPhoneMessages(event.target.value as string);
      };
 
-     const inquiryTimeMessages_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     /*const inquiryTimeMessages_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setInquiryTimeMessages(event.target.value as string);
-     };
+     };*/
 
      return (
         <Page theme={pageTheme.app}>
           <Header style={HeaderCustom} title={`ระบบติดต่อสอบถามข้อมูล`}>
-            <Avatar alt="Remy Sharp" src="../../components/image/image1.tsx" />
           </Header>
           <Content>
           <ContentHeader title="บันทึกการสอบถามข้อมูล">
@@ -303,25 +302,6 @@ export default function Create() {
                     })}
                   </Select>
                 </FormControl>
-              </Grid>
-
-              <Grid item xs={4}>
-                <div className={classes.paper}>วันเวลาที่สอบถาม</div>
-              </Grid>
-              <Grid item xs={8}>
-                <form className={classes.container} noValidate>
-                  <TextField
-                    label="วันเวลาที่สอบถาม"
-                    name="inquiryTimeMessages"
-                    type="datetime-local"
-                    value={inquiryTimeMessages || ''} // (undefined || '') = ''
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    onChange={inquiryTimeMessages_handleChange}
-                  />
-                </form>
               </Grid>
 
               <Grid item xs={4}>

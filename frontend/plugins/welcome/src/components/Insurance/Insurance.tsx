@@ -86,7 +86,7 @@ export default function Insurance() {
   const [officerid, setOfficerid] = useState(Number);
   const [insurance_addresss, setInsuranceAddress] = useState(String);
   const [insurance_insurers, setInsuranceInsurer] = useState(String);
-  const [insuranceTimeBuys, setInsuranceTimeBuy] = useState(String);
+  //const [insuranceTimeBuys, setInsuranceTimeBuy] = useState(String);
   const [insuranceTimeFirstpays, setInsuranceTimeFirstpay] = useState(String);
  
   useEffect(() => {
@@ -157,7 +157,7 @@ export default function Insurance() {
       const insurance = {
          insuranceAddress      : insurance_addresss,
          insuranceInsurer     : insurance_insurers,
-         insuranceTimeBuy     : insuranceTimeBuys , //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+         //insuranceTimeBuy     : insuranceTimeBuys , //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          insuranceTimeFirstpay  : insuranceTimeFirstpays  + "T00:00:00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          productID          : productid,
          memberID        : memberid,
@@ -207,9 +207,9 @@ export default function Insurance() {
       setInsuranceInsurer(event.target.value as string);
      };
 
-     const insuranceTimeBuy_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     /*const insuranceTimeBuy_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
       setInsuranceTimeBuy(event.target.value as string);
-    };
+    };*/
 
     const insuranceTimeFirstpay_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
       setInsuranceTimeFirstpay(event.target.value as string);
@@ -220,7 +220,6 @@ export default function Insurance() {
     return (
       <Page theme={pageTheme.tool}>
         <Header style={HeaderCustom} title={`ระบบการซื้อประกันสุขภาพ`}>
-          <Avatar alt="Remy Sharp" src="../../components/image/image1.tsx" />
         </Header>
         <Content>
         <ContentHeader title="บันทึกการซื้อประกันสุขภาพ">
@@ -392,25 +391,6 @@ export default function Insurance() {
                 />
               </FormControl>
             </Grid>
-
-              <Grid item xs={3}>
-                <div className={classes.paper}>เวลาที่ซื้อประกันสุขภาพ</div>
-              </Grid>
-              <Grid item xs={9}>
-                <form className={classes.container} noValidate>
-                  <TextField
-                    label="เลือกเวลาที่ซื้อ"
-                    name="insurance_timebuy"
-                    type="datetime-local"
-                    value={insuranceTimeBuys || ''} // (undefined || '') = ''
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    onChange={insuranceTimeBuy_handleChange}
-                  />
-                </form>
-              </Grid>
   
               <Grid item xs={3}>
                 <div className={classes.paper}>วันที่ต้องการจ่ายงวดแรก</div>
