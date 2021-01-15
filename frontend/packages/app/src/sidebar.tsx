@@ -7,6 +7,8 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import CommentIcon from '@material-ui/icons/Comment';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
+import PaymentIcon from '@material-ui/icons/Payment';
 
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import SaveAltTwoToneIcon from '@material-ui/icons/SaveAltTwoTone';
@@ -77,7 +79,7 @@ export const AppSidebar = () => {
             to="payment"
             text="Payment" />
             <SidebarItem
-            icon={CommentIcon}
+            icon={CreditCardIcon}
             to="Inquiry"
             text="Inquiry" />
             </>
@@ -100,6 +102,10 @@ export const AppSidebar = () => {
             icon={SaveAltTwoToneIcon}
             to="Recordinsurance"
             text="Recordinsurance" />
+            <SidebarItem
+            icon={PaymentIcon}
+            to="payback"
+            text="payback" />
             </>
         )
         :
@@ -118,7 +124,7 @@ export const AppSidebar = () => {
         <SidebarItem icon={MeetingRoomIcon} to="./SignIn" text="ออกจากระบบ"
           onClick={() => {
             localStorage.setItem("memberdata", JSON.stringify(null));
-            history.pushState("", "", "./SignIn");
+            history.pushState("", "", "/");
             window.location.reload(false);
           }} />
         :
@@ -129,7 +135,7 @@ export const AppSidebar = () => {
         <SidebarItem icon={MeetingRoomIcon} to="./Officerlogin" text="ออกจากระบบ"
           onClick={() => {
             localStorage.setItem("officerdata", JSON.stringify(null));
-            history.pushState("", "", "./Officerlogin");
+            history.pushState("", "", "./");
             window.location.reload(false);
           }} />
         :

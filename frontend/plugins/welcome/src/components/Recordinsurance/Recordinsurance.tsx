@@ -2,7 +2,7 @@ import React, { FC, useEffect,useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Content, Header, Page, pageTheme } from '@backstage/core';
 import SaveIcon from '@material-ui/icons/Save'; // icon save
-import Swal from 'sweetalert2'; // alert
+
 
 import {
   Container,
@@ -12,23 +12,18 @@ import {
   InputLabel,
   MenuItem,
   TextField,
-  Avatar,
   Button,
 } from '@material-ui/core'
 import { DefaultApi } from '../../api/apis';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { EntProduct } from '../../api/models/EntProduct';
 import { EntMember } from '../../api/models/EntMember';
 import { EntHospital } from '../../api/models/EntHospital';
 import { EntOfficer } from '../../api/models/EntOfficer';
 import { EntAmountpaid } from '../../api/models/EntAmountpaid';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { Link as RouterLink } from 'react-router-dom';
 import { Alert } from '@material-ui/lab';
 import { ContentHeader } from '@backstage/core';
-import { Link } from '@material-ui/core';
-import { Theme, createStyles } from '@material-ui/core/styles';
+
+
 
 // header css
 const HeaderCustom = {
@@ -72,7 +67,7 @@ export default function Create() {
     const [status, setStatus] = useState(false);
     const [alert, setAlert] = useState(true);
     const [loading, setLoading] = useState(true);
-  
+    const [officerID, setOfficerID] = React.useState(Number);
     const [memberid, setMemberid] = React.useState(Number);
     const [productid, setProductid] = React.useState(Number);
     const [amountpaidid, setAmountpaidid] = React.useState(Number);
@@ -123,6 +118,12 @@ export default function Create() {
           setAmountpaids(am);
         };
         getAmountpaids();
+
+    const dataa = localStorage.getItem("officerdata");
+    if (dataa) {
+    setOfficerID(Number(localStorage.getItem("officerdata")));
+    setLoading(false);
+    }
  
   }, [loading]);
  
@@ -145,7 +146,7 @@ export default function Create() {
          amountpaidID      : amountpaidid,
          hospitalID        : hospitalid,
          memberID          : memberid,
-         officerID         : officerid,
+         officerID         : officerID,
          productID         : productid,
          recordinsuranceTime    : recordinsurance_time + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
       }
@@ -304,22 +305,17 @@ export default function Create() {
                 <div className={classes.paper}>พนักงานบริษัทประกันสุขภาพที่แนะนำ</div>
               </Grid>
               <Grid item xs={9}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>เลือกพนักงานบริษัทประกันสุขภาพ</InputLabel>
-                  <Select
-                    name="officer"
-                    value={officerid || ''} // (undefined || '') = ''
-                    onChange={officer_id_handleChange}
-                  >
-                    {officers.map(item => {
-                      return (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.officerName}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
+              <TextField id="outlined-basic" 
+              style={{ width: 300}}
+              name = "officer"
+              variant="outlined"
+              value={officers.filter((filter: EntOfficer) => filter.id == officerID).map((item: EntOfficer) => `${item.officerName}`)}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              
+              />
               </Grid>
 
               <Grid item xs={3}>

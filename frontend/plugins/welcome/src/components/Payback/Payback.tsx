@@ -75,6 +75,7 @@ export default function Create() {
   const [memberid, setMemberid] = useState(Number);
   const [bankid, setBankid] = useState(Number);
   const [officerid, setOfficerid] = useState(Number);
+  const [officerID, setOfficerID] = React.useState(Number);
   const [payback_accountnumber, setPaybackAccountnumber] = useState(String);
   const [payback_transfertime, setPaybackTransfertime] = useState(String);
   const [productPrice, setProductPrice] = useState(String);
@@ -114,6 +115,12 @@ export default function Create() {
         setOfficers(st);
       };
       getOfficers();
+
+      const dataa = localStorage.getItem("officerdata");
+    if (dataa) {
+    setOfficerID(Number(localStorage.getItem("officerdata")));
+    setLoading(false);
+    }
  
   }, [loading]);
  
@@ -135,7 +142,7 @@ export default function Create() {
 
          bankID    : bankid, 
          memberID        : memberid,
-         officerID         : officerid,
+         officerID         : officerID,
          paybackAccountnumber      : payback_accountnumber,
          paybackTransfertime  : payback_transfertime  + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          productID          : productid,     
@@ -198,7 +205,7 @@ export default function Create() {
         </Header>
         <Content>
           
-        <ContentHeader title="ทำการบันทึกข้อมูลสิทธิประกันสุขภาพ" >
+        <ContentHeader title="ทำการบันทึกข้อมูลคืนทุนประกัน" >
 
             {status ? (
                 <div>
@@ -335,22 +342,17 @@ export default function Create() {
                 <div className={classes.paper}>พนักงานที่ทำรายการ</div>
               </Grid>
               <Grid item xs={9}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>เลือกพนักงานบริษัทประกันสุขภาพ</InputLabel>
-                  <Select
-                    name="officer"
-                    value={officerid || ''} // (undefined || '') = ''
-                    onChange={officer_id_handleChange}
-                  >
-                    {officers.map(item => {
-                      return (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.officerName}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
+              <TextField id="outlined-basic" 
+              style={{ width: 300}}
+              name = "officer"
+              variant="outlined"
+              value={officers.filter((filter: EntOfficer) => filter.id == officerID).map((item: EntOfficer) => `${item.officerName}`)}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              
+              />
               </Grid>
 
               
