@@ -65,6 +65,9 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
   },
+  secondary: {
+    main: '#f44336',
+  },
 }));
  
 const HeaderCustom = {
@@ -148,36 +151,33 @@ export default function Create() {
 
  
   const createPayment = async () => {
+    if ((accountname != "") && (accountnumber != "") && (bankid != null) && (insuranceid != null) 
+    && (memberid != null) && (moneytransferid != null) && (transfertime != "") ) {
       const payment = {
-        accountName    : accountname,
-        accountNumber  : accountnumber,
-        bankID         : bankid,
-        insuranceID    : insuranceid,
-        memberID       : memberid,
-        moneytransferID : moneytransferid,
-        transferTime   : transfertime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
-      }
-      console.log(payment);
-      
+          accountName    : accountname,
+          accountNumber  : accountnumber,
+          bankID         : bankid,
+          insuranceID    : insuranceid,
+          memberID       : memberid,
+          moneytransferID : moneytransferid,
+          transferTime   : transfertime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+      };
+      const res: any = await api.createPayment({ payment : payment });
+            setStatus(true);
+            if (res.id != '') {
+                setAlert(true);
+               window.location.reload(false);
+            }
+          }
+          else {
+              setStatus(true);
+              setAlert(false);
+          }
+        const timer = setTimeout(() => {
+        setStatus(false);
+    }, 1000); 
+  };  
 
-    const res:any = await api.createPayment({ payment : payment});
-    setStatus(true);
-    if (res !== undefined) {
-      Toast.fire({
-        icon: 'success',
-        title: 'บันทึกข้อมูลสำเร็จ',
-      });
-    } else {
-      Toast.fire({
-        icon: 'error',
-        title: 'บันทึกข้อมูลไม่สำเร็จ',
-      });
-    }
- 
-    const timer = setTimeout(() => {
-      setStatus(false);
-    }, 1000);
-  };
  
    const bank_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
      setBankid(event.target.value as number);
@@ -221,6 +221,19 @@ export default function Create() {
            </Button>
          </Link>
       </ContentHeader>
+      {status ? (
+                        <div>
+                            {alert ? (
+                                <Alert variant="filled" severity="success">
+                                    บันทึกสำเร็จ
+                                </Alert>
+                            ) : (
+                                <Alert variant="filled" severity="error" style={{ marginTop: 20 }}>
+                                    กรุณากรอกข้อมูลให้ครบถ้วน
+                                </Alert>
+                                )}
+                        </div>
+                    ) : null}
         <Container maxWidth="sm">
           <Grid container spacing={3}>
             <Grid item xs={12}></Grid>
