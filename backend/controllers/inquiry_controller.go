@@ -98,7 +98,7 @@ func (ctl *InquiryController) CreateInquiry(c *gin.Context) {
 		})
 		return
 	}
-	timem, err := time.Parse(time.RFC3339, obj.InquiryTimeMessages)
+	timem := time.Now().Local()
 
 	in, err := ctl.client.Inquiry.
 		Create().
