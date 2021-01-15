@@ -76,6 +76,7 @@ export default function Create() {
   const [groupOfAgeID, setGroupOfAgeID] = React.useState(Number);
   const [officerID, setOfficerID] = React.useState(Number);
 
+
   const [productName, setProductName] = React.useState(String);
   const [productPrice, setProductPrice] = React.useState(Number);
   const [productTime, setProductTime] = React.useState(Number);
@@ -102,6 +103,12 @@ export default function Create() {
       setOfficers(ofc);
     };
     getOfficer();
+
+    const dataa = localStorage.getItem("officerdata");
+    if (dataa) {
+    setOfficerID(Number(localStorage.getItem("officerdata")));
+    setLoading(false);
+    }
   }, [loading]);
 
 
@@ -134,6 +141,7 @@ export default function Create() {
             setAlert(false);
         }
     };
+
 
   const GenderhandleChange = (
     event: React.ChangeEvent<{ value: unknown }>,
@@ -321,22 +329,17 @@ export default function Create() {
               <div className={classes.paper}>ผู้บันทึกข้อมูล</div>
             </Grid>
             <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel></InputLabel>
-                <Select
-                  name="officer"
-                  value={officerID}
-                  onChange={OfficerhandleChange}
-                >
-                  {officers.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.officerName}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
+            <TextField id="outlined-basic" 
+              style={{ width: 300}}
+              name = "officer"
+              variant="outlined"
+              value={officers.filter((filter: EntOfficer) => filter.id == officerID).map((item: EntOfficer) => `${item.officerName}`)}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              
+              />
             </Grid>
 
 

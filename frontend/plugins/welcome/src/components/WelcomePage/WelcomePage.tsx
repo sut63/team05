@@ -1,89 +1,122 @@
-import React, { FC } from 'react';
-import { Typography, Grid,Container} from '@material-ui/core';
-import {
-  Content,
-  Header,
-  Page,
-  pageTheme,
-  ContentHeader,
-} from '@backstage/core';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import { Content, Header, Page, pageTheme } from '@backstage/core';
+import ApartmentIcon from '@material-ui/icons/Apartment';
+import FaceIcon from '@material-ui/icons/Face';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import HowToRegIcon from '@material-ui/icons/HowToReg';
+import Typography from '@material-ui/core/Typography';
+import { orange, red} from '@material-ui/core/colors';
+import EnhancedEncryptionIcon from '@material-ui/icons/EnhancedEncryption';
+
+
+import {
+  Container,
+  Grid,
+  Table,
+} from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
+import { DefaultApi } from '../../api/apis'; // Api Gennerate From Command
 
 const HeaderCustom = {
   minHeight: '50px',
 };
-
-const useStyles = makeStyles({
+// css style 
+const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 345,
+    flexGrow: 1,
   },
-});
+  paper: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  formControl: {
+    width: 300,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    width: 1000,
+  },
+  secondary: {
+    main: '#ff3d00',
+  }
+}));
 
-export type ProfileProps = {
-  name: string; 
-  id: string;
-  system: string;
-};
+  
+      function a11yProps(index: any) {
+        return {
+          id: `scrollable-force-tab-${index}`,
+          'aria-controls': `scrollable-force-tabpanel-${index}`,
+        };
+      }
 
-export function CardTeam({ name, id, system }: ProfileProps) {
-  const classes = useStyles();
+      export default function ScrollableTabsButtonForce() {
+        const classes = useStyles();
+        const [value, setValue] = React.useState(0);
+      
+        const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+          setValue(newValue);
+        };
+
   return (
-    <Grid item xs={12} md={3}>
-      <Card className={classes.root}>
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            alt="นาย สมชาย ใจดี"
-            height="140"
-            image="url(https://source.unsplash.com/random)"
-            title="นาย สมชาย ใจดี"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h6" component="h6">
-              {system}
-            </Typography>
-            <Typography gutterBottom variant="h6" component="h6">
-              {id} {name}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </Grid>
-  );
-}
 
-const WelcomePage: FC<{}> = () => {
-  return (
-    <Page theme={pageTheme.home}>
-      <Header style={HeaderCustom} title={`ระบบประกันสุขภาพ`}></Header>
+    <Page theme={pageTheme.app}>
+      <Header style={HeaderCustom} title={`ระบบประกันสุขภาพ`}>
+      </Header>
       <Content>
-        <ContentHeader title="สมาชิกในกลุ่ม"></ContentHeader>
-        <Container>
+        <Container maxWidth="sm">
           <Grid container spacing={1}>
-            <Grid item xs={12}></Grid>
-              <Grid item xs={4}>
-                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-                
-              </Grid>
-              <Grid item xs={4}>
-                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-              </Grid>
+            <Grid item xs={8}>
+   <Table >
+     <tr><td></td>
+       <td  align="center">
+           <br></br>
+         <EnhancedEncryptionIcon  style={{ color: red[500] , fontSize: 150}}  />
+     <Typography component="h1" variant="h5">
+     SE63 Health Insurance
+     </Typography><br></br>
+     </td>
+     </tr>
 
-              <Grid item xs={4}>
-                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-                <CardTeam name={"นาย สมชาย ใจดี"} id={"B5012345"} system={"ระบบย่อย..."}></CardTeam>
-              </Grid>
-          </Grid>
+     <tr><td></td><td>
+         <hr ></hr></td>
+     </tr>
+     <Grid item xs={5}>
+              <div className={classes.paper}> </div>
+            </Grid>
+     <tr><br></br></tr>
+     <tr><td></td>
+     <td>
+     <AppBar position="static" color="default">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="on"
+          indicatorColor="secondary"
+          textColor="secondary"
+          aria-label="scrollable force tabs example"
+        >
+           <Tab label="Member Longin" icon={<FaceIcon style={{ color: red[500] }} />}  component={RouterLink} to="/signin"/>
+           <Tab label="Officer Longin" icon={<HowToRegIcon style={{ color: red[500] }} />}   component={RouterLink} to="/officerlongin"/>
+        </Tabs>
+      </AppBar>
+     </td>
+     </tr>
+     </Table>
+     </Grid> 
+            </Grid>
         </Container>
       </Content>
+   
     </Page>
   );
-};
-
-export default WelcomePage;
+  }
