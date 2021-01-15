@@ -250,10 +250,10 @@ export default function Create() {
             <Grid item xs={8}>
             <FormControl variant="outlined" className={classes.formControl}>
              <OutlinedInput
-                id="outlined-adornment-year"
+                //id="outlined-adornment-amount"
                 value={productTime}
                 onChange={ProductTimehandleChange}
-               startAdornment={<InputAdornment position="start">ปี</InputAdornment>}
+                startAdornment={<InputAdornment position="start">ปี</InputAdornment>}
                />
              </FormControl>
             </Grid>
@@ -327,7 +327,6 @@ export default function Create() {
                   name="officer"
                   value={officerID}
                   onChange={OfficerhandleChange}
-                  //value={officers.filter((filter: EntOfficer) => filter.id == officerID).map((item: EntOfficer) => `${item.officerName}`)}
                 >
                   {officers.map(item => {
                     return (
@@ -339,8 +338,6 @@ export default function Create() {
                 </Select>
               </FormControl>
             </Grid>
-
-            
 
 
             <Grid item xs={4}></Grid>

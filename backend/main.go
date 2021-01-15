@@ -253,8 +253,8 @@ func main() {
 	// Set Offices Data
 	officers := Officers{
 		Officer: []Officer{
-			Officer{"gamse0505@gmail.com", "Somchai Ngaosri", "Aa123", 2},
-			Officer{"Panyaporn@gmail.com", "Panyaporn Ngaosri", "Bb123", 2},
+			Officer{"b6104641@gmail.com", "Somchai Ngaosri", "1234", 2},
+			Officer{"Panyaporn@gmail.com", "Panyaporn Ngaosri", "1234", 2},
 		},
 	}
 
