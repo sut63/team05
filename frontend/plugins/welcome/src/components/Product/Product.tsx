@@ -258,7 +258,7 @@ export default function Create() {
             <Grid item xs={8}>
             <FormControl variant="outlined" className={classes.formControl}>
              <OutlinedInput
-                //id="outlined-adornment-amount"
+                id="outlined-adornment-amount"
                 value={productTime}
                 onChange={ProductTimehandleChange}
                 startAdornment={<InputAdornment position="start">ปี</InputAdornment>}
