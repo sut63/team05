@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import ContentHeader from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -12,6 +13,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { DefaultApi } from '../../api/apis';
+import { Alert } from '@material-ui/lab';
+
+import { EntMember } from '../../api/models/EntMember';
 
 function Copyright() {
   return (
@@ -46,11 +51,78 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SignIn: FC<{}> = () => {
+export default function Login(props: any) {
   const classes = useStyles();
+  const api = new DefaultApi();
+
+  const [members, setMembers] = useState<EntMember[]>([]);
+  const [status, setStatus] = useState(false);
+  const [alert, setAlert] = useState(Boolean);
+
+  const [memberemail, setmemberEmail] = useState(String);
+  const [memberpassword, setmemberPassword] = useState(String);
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getMembers = async () => {
+      const res: any = await api.listMember({});
+      setLoading(false);
+      setMembers(res);
+    }
+
+    getMembers();
+
+    const resetMemberData = async () => {
+      setLoading(false);
+      localStorage.setItem("userdata", JSON.stringify(null));
+      localStorage.setItem("jobpositiondata", JSON.stringify(null));
+    }
+    resetMemberData();
+
+  }, [loading]);
+
+  const EmailthandleChange = (event: any) => {
+    setmemberEmail(event.target.value as string);
+  };
+
+  const PasswordthandleChange = (event: any) => {
+    setmemberPassword(event.target.value as string);
+  };
+
+  const LoginChecker = async () => {
+    members.map((item: any) => {
+      console.log(item.memberEmail);
+      if ((item.memberEmail == memberemail) && (item.memberPassword == memberpassword)) {
+        setAlert(true);
+        history.pushState("", "", "/welcompage");
+        window.location.reload(false);
+
+      }
+    })
+    setStatus(true);
+    const timer = setTimeout(() => {
+      setStatus(false);
+    }, 1000);
+  };
+
   return (
+    
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      {status ? (
+            <div>
+              {alert ? (
+                <Alert severity="success">
+                  เข้าสู่ระบบสำเร็จ
+                </Alert>
+              ) : (
+                  <Alert severity="warning" style={{ marginTop: 20 }}>
+                    ไม่พบข้อมูลในระบบ
+                  </Alert>
+                )}
+            </div>
+          ) : null}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -67,6 +139,8 @@ const SignIn: FC<{}> = () => {
             id="email"
             label="Email Address"
             name="email"
+            value={memberemail}
+            onChange={EmailthandleChange}
             autoComplete="email"
             autoFocus
           />
@@ -79,6 +153,8 @@ const SignIn: FC<{}> = () => {
             label="Password"
             type="password"
             id="password"
+            value={memberpassword}
+            onChange={PasswordthandleChange}
             autoComplete="current-password"
           />
           <FormControlLabel
@@ -91,8 +167,12 @@ const SignIn: FC<{}> = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => {
+              LoginChecker();
+            }}
           >
             Sign In
+
           </Button>
           <Grid container>
             <Grid item xs>
@@ -115,4 +195,4 @@ const SignIn: FC<{}> = () => {
   );
 };
 
-export default SignIn;
+

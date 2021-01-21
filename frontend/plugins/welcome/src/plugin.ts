@@ -8,8 +8,8 @@ import Payment from './components/Payment'
 export const plugin = createPlugin({
   id: 'welcome',
   register({ router }) {
-    router.registerRoute('/', WelcomePage);
     router.registerRoute('/signin', SignIn);
+    router.registerRoute('/welcompage', WelcomePage);
     router.registerRoute('/insurance', Insurance);
     router.registerRoute('/payment', Payment);
   },

@@ -116,7 +116,7 @@ export interface CreateMemberRequest {
     member: EntMember;
 }
 
-export interface CreateMoneyTransferRequest {
+export interface CreateMoneytransferRequest {
     moneyTransfer: EntMoneyTransfer;
 }
 
@@ -176,7 +176,7 @@ export interface DeleteMemberRequest {
     id: number;
 }
 
-export interface DeleteMoneyTransferRequest {
+export interface DeleteMoneytransferRequest {
     id: number;
 }
 
@@ -224,15 +224,23 @@ export interface GetHospitalRequest {
     id: number;
 }
 
+export interface GetInsuranceRequest {
+    id: number;
+}
+
 export interface GetMemberRequest {
     id: number;
 }
 
-export interface GetMoneyTransferRequest {
+export interface GetMoneytransferRequest {
     id: number;
 }
 
 export interface GetOfficerRequest {
+    id: number;
+}
+
+export interface GetPaymentRequest {
     id: number;
 }
 
@@ -285,7 +293,7 @@ export interface ListMemberRequest {
     offset?: number;
 }
 
-export interface ListMoneyTransferRequest {
+export interface ListMoneytransferRequest {
     limit?: number;
     offset?: number;
 }
@@ -350,7 +358,7 @@ export interface UpdateMemberRequest {
     member: EntMember;
 }
 
-export interface UpdateMoneyTransferRequest {
+export interface UpdateMoneytransferRequest {
     id: number;
     moneyTransfer: EntMoneyTransfer;
 }
@@ -406,8 +414,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Bank
-     * Create Bank
+     * Create bank
+     * Create bank
      */
     async createBankRaw(requestParameters: CreateBankRequest): Promise<runtime.ApiResponse<EntBank>> {
         if (requestParameters.bank === null || requestParameters.bank === undefined) {
@@ -432,8 +440,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Bank
-     * Create Bank
+     * Create bank
+     * Create bank
      */
     async createBank(requestParameters: CreateBankRequest): Promise<EntBank> {
         const response = await this.createBankRaw(requestParameters);
@@ -686,12 +694,12 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create MoneyTransfer
-     * Create MoneyTransfer
+     * Create moneytransfer
+     * Create moneytransfer
      */
-    async createMoneyTransferRaw(requestParameters: CreateMoneyTransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
+    async createMoneytransferRaw(requestParameters: CreateMoneytransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
         if (requestParameters.moneyTransfer === null || requestParameters.moneyTransfer === undefined) {
-            throw new runtime.RequiredError('moneyTransfer','Required parameter requestParameters.moneyTransfer was null or undefined when calling createMoneyTransfer.');
+            throw new runtime.RequiredError('moneyTransfer','Required parameter requestParameters.moneyTransfer was null or undefined when calling createMoneytransfer.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
@@ -701,7 +709,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/moneyTransfers`,
+            path: `/moneytransfers`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -712,11 +720,11 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create MoneyTransfer
-     * Create MoneyTransfer
+     * Create moneytransfer
+     * Create moneytransfer
      */
-    async createMoneyTransfer(requestParameters: CreateMoneyTransferRequest): Promise<EntMoneyTransfer> {
-        const response = await this.createMoneyTransferRaw(requestParameters);
+    async createMoneytransfer(requestParameters: CreateMoneytransferRequest): Promise<EntMoneyTransfer> {
+        const response = await this.createMoneytransferRaw(requestParameters);
         return await response.value();
     }
 
@@ -791,8 +799,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Payment
-     * Create Payment
+     * Create payment
+     * Create payment
      */
     async createPaymentRaw(requestParameters: CreatePaymentRequest): Promise<runtime.ApiResponse<EntPayment>> {
         if (requestParameters.payment === null || requestParameters.payment === undefined) {
@@ -817,8 +825,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create Payment
-     * Create Payment
+     * Create payment
+     * Create payment
      */
     async createPayment(requestParameters: CreatePaymentRequest): Promise<EntPayment> {
         const response = await this.createPaymentRaw(requestParameters);
@@ -928,8 +936,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Bank by ID
-     * Delete a Bank entity by ID
+     * get bank by ID
+     * Delete a bank entity by ID
      */
     async deleteBankRaw(requestParameters: DeleteBankRequest): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -951,8 +959,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Bank by ID
-     * Delete a Bank entity by ID
+     * get bank by ID
+     * Delete a bank entity by ID
      */
     async deleteBank(requestParameters: DeleteBankRequest): Promise<object> {
         const response = await this.deleteBankRaw(requestParameters);
@@ -1184,12 +1192,12 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get MoneyTransfer by ID
-     * Delete a MoneyTransfer entity by ID
+     * get moneytransfer by ID
+     * Delete a moneytransfer entity by ID
      */
-    async deleteMoneyTransferRaw(requestParameters: DeleteMoneyTransferRequest): Promise<runtime.ApiResponse<object>> {
+    async deleteMoneytransferRaw(requestParameters: DeleteMoneytransferRequest): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteMoneyTransfer.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteMoneytransfer.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
@@ -1197,7 +1205,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/moneyTransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/moneytransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -1207,11 +1215,11 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get MoneyTransfer by ID
-     * Delete a MoneyTransfer entity by ID
+     * get moneytransfer by ID
+     * Delete a moneytransfer entity by ID
      */
-    async deleteMoneyTransfer(requestParameters: DeleteMoneyTransferRequest): Promise<object> {
-        const response = await this.deleteMoneyTransferRaw(requestParameters);
+    async deleteMoneytransfer(requestParameters: DeleteMoneytransferRequest): Promise<object> {
+        const response = await this.deleteMoneytransferRaw(requestParameters);
         return await response.value();
     }
 
@@ -1280,8 +1288,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Payment by ID
-     * Delete a Payment entity by ID
+     * get payment by ID
+     * Delete a payment entity by ID
      */
     async deletePaymentRaw(requestParameters: DeletePaymentRequest): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -1303,8 +1311,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Payment by ID
-     * Delete a Payment entity by ID
+     * get payment by ID
+     * Delete a payment entity by ID
      */
     async deletePayment(requestParameters: DeletePaymentRequest): Promise<object> {
         const response = await this.deletePaymentRaw(requestParameters);
@@ -1408,8 +1416,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Bank by ID
-     * Get a Bank entity by ID
+     * get bank by ID
+     * Get a bank entity by ID
      */
     async getBankRaw(requestParameters: GetBankRequest): Promise<runtime.ApiResponse<EntBank>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -1431,8 +1439,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Bank by ID
-     * Get a Bank entity by ID
+     * get bank by ID
+     * Get a bank entity by ID
      */
     async getBank(requestParameters: GetBankRequest): Promise<EntBank> {
         const response = await this.getBankRaw(requestParameters);
@@ -1568,6 +1576,38 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * get insurance by ID
+     * Get a insurance entity by ID
+     */
+    async getInsuranceRaw(requestParameters: GetInsuranceRequest): Promise<runtime.ApiResponse<EntInsurance>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getInsurance.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/insurances/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntInsuranceFromJSON(jsonValue));
+    }
+
+    /**
+     * get insurance by ID
+     * Get a insurance entity by ID
+     */
+    async getInsurance(requestParameters: GetInsuranceRequest): Promise<EntInsurance> {
+        const response = await this.getInsuranceRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * get member by ID
      * Get a member entity by ID
      */
@@ -1600,12 +1640,12 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get MoneyTransfer by ID
-     * Get a MoneyTransfer entity by ID
+     * get moneytransfer by ID
+     * Get a moneytransfer entity by ID
      */
-    async getMoneyTransferRaw(requestParameters: GetMoneyTransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
+    async getMoneytransferRaw(requestParameters: GetMoneytransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getMoneyTransfer.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getMoneytransfer.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
@@ -1613,7 +1653,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/moneyTransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/moneytransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -1623,11 +1663,11 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get MoneyTransfer by ID
-     * Get a MoneyTransfer entity by ID
+     * get moneytransfer by ID
+     * Get a moneytransfer entity by ID
      */
-    async getMoneyTransfer(requestParameters: GetMoneyTransferRequest): Promise<EntMoneyTransfer> {
-        const response = await this.getMoneyTransferRaw(requestParameters);
+    async getMoneytransfer(requestParameters: GetMoneytransferRequest): Promise<EntMoneyTransfer> {
+        const response = await this.getMoneytransferRaw(requestParameters);
         return await response.value();
     }
 
@@ -1660,6 +1700,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getOfficer(requestParameters: GetOfficerRequest): Promise<EntOfficer> {
         const response = await this.getOfficerRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get payment by ID
+     * Get a payment entity by ID
+     */
+    async getPaymentRaw(requestParameters: GetPaymentRequest): Promise<runtime.ApiResponse<EntPayment>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getPayment.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/payments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntPaymentFromJSON(jsonValue));
+    }
+
+    /**
+     * get payment by ID
+     * Get a payment entity by ID
+     */
+    async getPayment(requestParameters: GetPaymentRequest): Promise<EntPayment> {
+        const response = await this.getPaymentRaw(requestParameters);
         return await response.value();
     }
 
@@ -1732,8 +1804,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Bank entities
-     * List Bank entities
+     * list bank entities
+     * List bank entities
      */
     async listBankRaw(requestParameters: ListBankRequest): Promise<runtime.ApiResponse<Array<EntBank>>> {
         const queryParameters: runtime.HTTPQuery = {};
@@ -1759,8 +1831,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Bank entities
-     * List Bank entities
+     * list bank entities
+     * List bank entities
      */
     async listBank(requestParameters: ListBankRequest): Promise<Array<EntBank>> {
         const response = await this.listBankRaw(requestParameters);
@@ -2020,10 +2092,10 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list MoneyTransfer entities
-     * List MoneyTransfer entities
+     * list moneytransfer entities
+     * List moneytransfer entities
      */
-    async listMoneyTransferRaw(requestParameters: ListMoneyTransferRequest): Promise<runtime.ApiResponse<Array<EntMoneyTransfer>>> {
+    async listMoneytransferRaw(requestParameters: ListMoneytransferRequest): Promise<runtime.ApiResponse<Array<EntMoneyTransfer>>> {
         const queryParameters: runtime.HTTPQuery = {};
 
         if (requestParameters.limit !== undefined) {
@@ -2037,7 +2109,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/moneyTransfers`,
+            path: `/moneytransfers`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -2047,11 +2119,11 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list MoneyTransfer entities
-     * List MoneyTransfer entities
+     * list moneytransfer entities
+     * List moneytransfer entities
      */
-    async listMoneyTransfer(requestParameters: ListMoneyTransferRequest): Promise<Array<EntMoneyTransfer>> {
-        const response = await this.listMoneyTransferRaw(requestParameters);
+    async listMoneytransfer(requestParameters: ListMoneytransferRequest): Promise<Array<EntMoneyTransfer>> {
+        const response = await this.listMoneytransferRaw(requestParameters);
         return await response.value();
     }
 
@@ -2128,8 +2200,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Payment entities
-     * List Payment entities
+     * list payment entities
+     * List payment entities
      */
     async listPaymentRaw(requestParameters: ListPaymentRequest): Promise<runtime.ApiResponse<Array<EntPayment>>> {
         const queryParameters: runtime.HTTPQuery = {};
@@ -2155,8 +2227,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Payment entities
-     * List Payment entities
+     * list payment entities
+     * List payment entities
      */
     async listPayment(requestParameters: ListPaymentRequest): Promise<Array<EntPayment>> {
         const response = await this.listPaymentRaw(requestParameters);
@@ -2275,8 +2347,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update Bank by ID
-     * Update a Bank entity by ID
+     * update bank by ID
+     * Update a bank entity by ID
      */
     async updateBankRaw(requestParameters: UpdateBankRequest): Promise<runtime.ApiResponse<EntBank>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -2305,8 +2377,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update Bank by ID
-     * Update a Bank entity by ID
+     * update bank by ID
+     * Update a bank entity by ID
      */
     async updateBank(requestParameters: UpdateBankRequest): Promise<EntBank> {
         const response = await this.updateBankRaw(requestParameters);
@@ -2509,16 +2581,16 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update MoneyTransfer by ID
-     * Update a MoneyTransfer entity by ID
+     * update moneytransfer by ID
+     * Update a moneytransfer entity by ID
      */
-    async updateMoneyTransferRaw(requestParameters: UpdateMoneyTransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
+    async updateMoneytransferRaw(requestParameters: UpdateMoneytransferRequest): Promise<runtime.ApiResponse<EntMoneyTransfer>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateMoneyTransfer.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateMoneytransfer.');
         }
 
         if (requestParameters.moneyTransfer === null || requestParameters.moneyTransfer === undefined) {
-            throw new runtime.RequiredError('moneyTransfer','Required parameter requestParameters.moneyTransfer was null or undefined when calling updateMoneyTransfer.');
+            throw new runtime.RequiredError('moneyTransfer','Required parameter requestParameters.moneyTransfer was null or undefined when calling updateMoneytransfer.');
         }
 
         const queryParameters: runtime.HTTPQuery = {};
@@ -2528,7 +2600,7 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/moneyTransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/moneytransfers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -2539,11 +2611,11 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update MoneyTransfer by ID
-     * Update a MoneyTransfer entity by ID
+     * update moneytransfer by ID
+     * Update a moneytransfer entity by ID
      */
-    async updateMoneyTransfer(requestParameters: UpdateMoneyTransferRequest): Promise<EntMoneyTransfer> {
-        const response = await this.updateMoneyTransferRaw(requestParameters);
+    async updateMoneytransfer(requestParameters: UpdateMoneytransferRequest): Promise<EntMoneyTransfer> {
+        const response = await this.updateMoneytransferRaw(requestParameters);
         return await response.value();
     }
 

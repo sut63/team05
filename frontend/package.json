@@ -44,6 +44,7 @@
     ]
   },
   "dependencies": {
+    "react-feather": "^2.0.9",
     "sweetalert2": "^10.13.0"
   }
 }

@@ -57,6 +57,12 @@ export interface ControllersPayment {
     moneytransferID?: number;
     /**
      * 
+     * @type {number}
+     * @memberof ControllersPayment
+     */
+    productID?: number;
+    /**
+     * 
      * @type {string}
      * @memberof ControllersPayment
      */
@@ -73,13 +79,14 @@ export function ControllersPaymentFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'accountName': !exists(json, 'accountName') ? undefined : json['accountName'],
-        'accountNumber': !exists(json, 'accountNumber') ? undefined : json['accountNumber'],
-        'bankID': !exists(json, 'bankID') ? undefined : json['bankID'],
-        'insuranceID': !exists(json, 'insuranceID') ? undefined : json['insuranceID'],
-        'memberID': !exists(json, 'memberID') ? undefined : json['memberID'],
-        'moneytransferID': !exists(json, 'moneytransferID') ? undefined : json['moneytransferID'],
-        'transferTime': !exists(json, 'transferTime') ? undefined : json['transferTime'],
+        'accountName': !exists(json, 'AccountName') ? undefined : json['AccountName'],
+        'accountNumber': !exists(json, 'AccountNumber') ? undefined : json['AccountNumber'],
+        'bankID': !exists(json, 'BankID') ? undefined : json['BankID'],
+        'insuranceID': !exists(json, 'InsuranceID') ? undefined : json['InsuranceID'],
+        'memberID': !exists(json, 'MemberID') ? undefined : json['MemberID'],
+        'moneytransferID': !exists(json, 'MoneytransferID') ? undefined : json['MoneytransferID'],
+        'productID': !exists(json, 'ProductID') ? undefined : json['ProductID'],
+        'transferTime': !exists(json, 'TransferTime') ? undefined : json['TransferTime'],
     };
 }
 
@@ -98,6 +105,7 @@ export function ControllersPaymentToJSON(value?: ControllersPayment | null): any
         'insuranceID': value.insuranceID,
         'memberID': value.memberID,
         'moneytransferID': value.moneytransferID,
+        'productID': value.productID,
         'transferTime': value.transferTime,
     };
 }

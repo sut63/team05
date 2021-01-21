@@ -1,9 +1,16 @@
-import React, { FC, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Content, Header, Page, pageTheme } from '@backstage/core';
+import React, { useState, useEffect} from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import SaveIcon from '@material-ui/icons/Save'; // icon save
+import { Alert } from '@material-ui/lab';
 import Swal from 'sweetalert2'; // alert
-
+import {
+ Content,
+ Header,
+ Page,
+ pageTheme,
+ ContentHeader,
+} from '@backstage/core';
+import { deepOrange } from '@material-ui/core/colors';
 import {
   Container,
   Grid,
@@ -14,26 +21,23 @@ import {
   TextField,
   Avatar,
   Button,
+  Link,
 } from '@material-ui/core';
-import { DefaultApi } from '../../services/apis'; // Api Gennerate From Command
-import { EntUser } from '../../services/models/EntUser'; // import interface User
-import { EntVideo } from '../../services/models/EntVideo'; // import interface Video
-import { EntResolution } from '../../services/models/EntResolution'; // import interface Resolution
-import { EntPlaylist } from '../../services/models/EntPlaylist'; // import interface Playlist
+import { makeStyles} from '@material-ui/core/styles';
+import { DefaultApi } from '../../api/apis';
+import { EntInsurance } from '../../api/models/EntInsurance';
+import { EntBank } from '../../api/models/EntBank';
+import { EntMember } from '../../api/models/EntMember';
+import { EntMoneyTransfer } from '../../api/models/EntMoneyTransfer';
+import { EntProduct } from '../../api/models/EntProduct';
 
-// header css
-const HeaderCustom = {
-  minHeight: '50px',
-};
 
-// css style
+
+// css style 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
   paper: {
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   formControl: {
     width: 300,
@@ -48,30 +52,93 @@ const useStyles = makeStyles(theme => ({
   textField: {
     width: 300,
   },
+  datetimepicker:{
+    width: 300,
+  },
+  root: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+  },
 }));
+ 
+const HeaderCustom = {
+  minHeight: '50px',
+};
 
-interface watchVideo {
-  playlist: number;
-  video: number;
-  resolution: number;
-  added: Date;
-  // create_by: number;
-}
-
-const WatchVideo: FC<{}> = () => {
+export default function Create() {
   const classes = useStyles();
-  const http = new DefaultApi();
+  const api = new DefaultApi();
 
-  const [playlist_video, setPlaylistVideo] = React.useState<
-    Partial<watchVideo>
-  >({});
 
-  const [users, setUsers] = React.useState<EntUser[]>([]);
-  const [videos, setVideos] = React.useState<EntVideo[]>([]);
-  const [resolutions, setResolutions] = React.useState<EntResolution[]>([]);
-  const [playlists, setPlaylists] = React.useState<EntPlaylist[]>([]);
+  const [insurances, setInsurances] = useState<EntInsurance[]>([]);
+  const [banks, setBanks] = useState<EntBank[]>([]);
+  const [members, setMembers] = useState<EntMember[]>([]);
+  const [moneytransfers, setMoneytransfers] = useState<EntMoneyTransfer[]>([]);
+  const [products, setProducts] = useState<EntProduct[]>([]);
+  const [status, setStatus] = useState(false);
+  const [alert, setAlert] = useState(true);
+  const [loading, setLoading] = useState(true);
+ 
+ 
+  const [insuranceid, setInsuranceid] = useState(Number);
+  const [bankid, setBankid] = useState(Number);
+  const [memberid, setMemberid] = useState(Number);
+  const [productid, setProductid] = useState(Number);
+  const [moneytransferid, setMoneytransferid] = useState(Number);
+  const [accountname, setaccountName] = useState(String);
+  const [accountnumber, setaccountNumber] = useState(String);
+  const [transfertime, settransferTime] = useState(String);
+ 
+  useEffect(() => {
+ 
+    const getInsurances = async () => {
+ 
+      const r = await api.listInsurance({ limit: 10, offset: 0 });
+      setLoading(false);
+      setInsurances(r);
+    };
+    getInsurances();
+ 
+    const getBanks = async () => {
+ 
+    const b = await api.listBank({ limit: 10, offset: 0 });
+      setLoading(false);
+      setBanks(b);
+    };
+    getBanks();
+ 
+    const getMembers = async () => {
+ 
+     const j = await api.listMember({ limit: 10, offset: 0 });
+       setLoading(false);
+       setMembers(j);
+     };
+     getMembers();
 
-  // alert setting
+     const getProducts = async () => {
+ 
+      const pr = await api.listProduct({ limit: 10, offset: 0 });
+        setLoading(false);
+        setProducts(pr);
+      };
+      getProducts();
+ 
+
+    const getMoneytransfers = async () => {
+ 
+    const mn = await api.listMoneytransfer({ limit: 10, offset: 0 });
+       setLoading(false);
+       setMoneytransfers(mn);
+     };
+     getMoneytransfers();
+
+  }, [loading]);
   const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -84,104 +151,107 @@ const WatchVideo: FC<{}> = () => {
     },
   });
 
-  const getUsers = async () => {
-    const res = await http.listUser({ limit: 10, offset: 0 });
-    setUsers(res);
+ 
+  const createPayment = async () => {
+      const payment = {
+        acoountName    : accountname,
+        accountNumber  : accountnumber,
+        bankID         : bankid,
+        insuranceID    : insuranceid,
+        memberID       : memberid,
+        moneytarnferID : moneytransferid,
+        productID      : productid,
+        transferTime   : transfertime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+      }
+      console.log(payment);
+      
+
+    const res:any = await api.createPayment({ payment : payment});
+    setStatus(true);
+    if (res !== undefined) {
+      Toast.fire({
+        icon: 'success',
+        title: 'บันทึกข้อมูลสำเร็จ',
+      });
+    } else {
+      Toast.fire({
+        icon: 'error',
+        title: 'บันทึกข้อมูลไม่สำเร็จ',
+      });
+    }
+ 
+    const timer = setTimeout(() => {
+      setStatus(false);
+    }, 1000);
   };
-
-  const getPlaylist = async () => {
-    const res = await http.listPlaylist({ limit: 10, offset: 0 });
-    setPlaylists(res);
-  };
-
-  const getVideo = async () => {
-    const res = await http.listVideo({ limit: 10, offset: 0 });
-    setVideos(res);
-  };
-
-  const getResolution = async () => {
-    const res = await http.listResolution({ limit: 10, offset: 0 });
-    setResolutions(res);
-  };
-
-  // Lifecycle Hooks
-  useEffect(() => {
-    getUsers();
-    getVideo();
-    getResolution();
-    getPlaylist();
-  }, []);
-
-  // set data to object playlist_video
-  const handleChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
-  ) => {
-    const name = event.target.name as keyof typeof WatchVideo;
-    const { value } = event.target;
-    setPlaylistVideo({ ...playlist_video, [name]: value });
-    console.log(playlist_video);
-  };
-
-  // clear input form
-  function clear() {
-    setPlaylistVideo({});
-  }
-
-  // function save data
-  function save() {
-    const apiUrl = 'http://localhost:8080/api/v1/playlist-videos';
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(playlist_video),
+ 
+   const bank_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     setBankid(event.target.value as number);
     };
 
-    console.log(playlist_video); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
+   const insurance_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     setInsuranceid(event.target.value as number);
+    };
 
-    fetch(apiUrl, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (data.status === true) {
-          clear();
-          Toast.fire({
-            icon: 'success',
-            title: 'บันทึกข้อมูลสำเร็จ',
-          });
-        } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
-        }
-      });
-  }
+   const member_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     setMemberid(event.target.value as number);
+    };
 
+   const moneytransfer_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     setMoneytransferid(event.target.value as number);
+    };
+
+   const product_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setProductid(event.target.value as number);
+     };
+
+   const transfer_time_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     settransferTime(event.target.value as string);
+    };
+
+   const account_name_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     setaccountName(event.target.value as string);
+    };
+
+   const account_number_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+     setaccountNumber(event.target.value as string);
+    };
+   
+ 
   return (
-    <Page theme={pageTheme.website}>
+    <Page theme={pageTheme.library}>
       <Header style={HeaderCustom} title={`ระบบชำระเบี้ยประกัน`}>
-        <Avatar alt="Remy Sharp" src="../components/image/account.jpg" />
+        <Avatar alt="Teerasak Supavaha" src="../../image/account.jpg" className={classes.orange}/>
         <div style={{ marginLeft: 10 }}>Teerasak Supawaha</div>
+        <td></td>
       </Header>
       <Content>
+      <ContentHeader title="กรุณากรอกข้อมูลการชำระเงิน">
+      <Link component={RouterLink} to="/results">
+           <Button variant="contained" color="secondary">
+             ผลการบันทึกข้อมูล
+           </Button>
+         </Link>
+      </ContentHeader>
         <Container maxWidth="sm">
           <Grid container spacing={3}>
             <Grid item xs={12}></Grid>
-            <Grid item xs={3}>
-              <div className={classes.paper}>กรมธรรม์</div>
+            <Grid item xs={4}>
+              <div className={classes.paper}>สมาชิกระบบประกันสุขภาพ</div>
             </Grid>
-            <Grid item xs={9}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกกรมธรรม์</InputLabel>
+            <Grid item xs={8}>
+            <FormControl variant="outlined" className={classes.formControl}>
+                
+                <InputLabel>เลือกสมาชิกระบบประกันสุขภาพ</InputLabel>
                 <Select
-                  name="video"
-                  value={playlist_video.video || ''} // (undefined || '') = ''
-                  onChange={handleChange}
+                  name="member"
+                  value={memberid || ''}
+                  onChange={member_id_handleChange}
                 >
-                  {videos.map(item => {
+                  {members.map(item => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
-                        {item.name}
+                        {item.memberName}
                       </MenuItem>
                     );
                   })}
@@ -189,21 +259,68 @@ const WatchVideo: FC<{}> = () => {
               </FormControl>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={4}>
+              <div className={classes.paper}>หมายเลขกรมธรรม์</div>
+            </Grid>
+            <Grid item xs={8}>
+            <FormControl variant="outlined" className={classes.formControl}>
+                
+                <InputLabel>เลือกหมายเลขกรมธรรม์</InputLabel>
+                <Select
+                  name="insurance"
+                  value={insuranceid || ''}
+                  onChange={insurance_id_handleChange}
+                >
+                  {insurances.map(item => {
+                    return (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.id}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={4}>
+              <div className={classes.paper}>เบี้ยประกัน</div>
+            </Grid>
+            <Grid item xs={8}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                
+                <InputLabel>เลือกเบี้ยประกัน</InputLabel>
+                <Select
+
+                  name="product"
+                  value={productid || ''}
+                  onChange={product_id_handleChange}
+                >
+                  {products.map(item => {
+                    return (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.productPrice}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={4}>
               <div className={classes.paper}>ช่องทางการชำระเงิน</div>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={8}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>เลือกช่องทางการชำระเงิน</InputLabel>
                 <Select
-                  name="playlist"
-                  value={playlist_video.playlist || ''} // (undefined || '') = ''
-                  onChange={handleChange}
+                  name="moneytransfer"
+                  value={moneytransferid|| ''}
+                  onChange={moneytransfer_id_handleChange}
                 >
-                  {playlists.map(item => {
+                  {moneytransfers.map(item => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
-                        {item.title}
+                        {item.moneytransferType}
                       </MenuItem>
                     );
                   })}
@@ -211,21 +328,22 @@ const WatchVideo: FC<{}> = () => {
               </FormControl>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <div className={classes.paper}>ธนาคาร</div>
             </Grid>
-            <Grid item xs={9}>
+
+            <Grid item xs={8}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>เลือกธนาคาร</InputLabel>
                 <Select
-                  name="resolution"
-                  value={playlist_video.resolution || ''} // (undefined || '') = ''
-                  onChange={handleChange}
+                  name="bank"
+                  value={bankid|| ''}
+                  onChange={bank_id_handleChange}
                 >
-                  {resolutions.map(item => {
+                  {banks.map(item => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
-                        {item.value}
+                        {item.bankType}
                       </MenuItem>
                     );
                   })}
@@ -233,63 +351,77 @@ const WatchVideo: FC<{}> = () => {
               </FormControl>
             </Grid>
 
-            <Grid item xs={3}>
-              <div className={classes.paper}>สมาชิกระบบประกันสุขภาพ</div>
+
+            <Grid item xs={4}>
+              <div className={classes.paper}>ป้อนชื่อบัญชี</div>
             </Grid>
-            <Grid item xs={9}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>เลือกสมาชิกระบบประกันสุขภาพ</InputLabel>
-                <Select
-                  // value={playlist_video.create_by || ''} // (undefined || '') = ''
-                  // onChange={handleChange}
-                  name="create_by"
-                >
-                  {users.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.email}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
+            <Grid item xs={8}>
+            <TextField id="outlined-basic" 
+              style={{ width: 300}}
+              name = "account_name"
+              variant="outlined"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={account_name_handleChange}
+              />
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={4}>
+              <div className={classes.paper}>ป้อนเลขที่บัญชี</div>
+            </Grid>
+            <Grid item xs={8}>
+            <TextField id="outlined-basic" 
+              style={{ width: 300}}
+              name = "account_number"
+              variant="outlined"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={account_number_handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={4}>
               <div className={classes.paper}>เวลา</div>
             </Grid>
-            <Grid item xs={9}>
-              <form className={classes.container} noValidate>
+            <Grid item xs={8}>
+            <form className={classes.container} noValidate>
                 <TextField
                   label="เลือกเวลา"
-                  name="added"
-                  type="date"
-                  value={playlist_video.added || ''} // (undefined || '') = ''
+                  name="transfertime"
+                  type="datetime-local"
+                  value={transfertime || ''} // (undefined || '') = ''
                   className={classes.textField}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onChange={handleChange}
+                  onChange={transfer_time_handleChange}
                 />
               </form>
             </Grid>
-
-            <Grid item xs={3}></Grid>
-            <Grid item xs={9}>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={8}>
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 size="large"
                 startIcon={<SaveIcon />}
-                onClick={save}
+                onClick={() => {
+                  createPayment();
+                }}
               >
-                บันทึกการดู
+                บันทึกข้อมูล
               </Button>
             </Grid>
+           
           </Grid>
         </Container>
+        
       </Content>
+      
     </Page>
   );
 };
-export default WatchVideo;

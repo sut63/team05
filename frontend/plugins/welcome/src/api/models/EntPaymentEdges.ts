@@ -30,6 +30,10 @@ import {
     EntMoneyTransferFromJSON,
     EntMoneyTransferFromJSONTyped,
     EntMoneyTransferToJSON,
+    EntProduct,
+    EntProductFromJSON,
+    EntProductFromJSONTyped,
+    EntProductToJSON,
 } from './';
 
 /**
@@ -62,6 +66,12 @@ export interface EntPaymentEdges {
      * @memberof EntPaymentEdges
      */
     moneyTransfer?: EntMoneyTransfer;
+    /**
+     * 
+     * @type {EntProduct}
+     * @memberof EntPaymentEdges
+     */
+    product?: EntProduct;
 }
 
 export function EntPaymentEdgesFromJSON(json: any): EntPaymentEdges {
@@ -78,6 +88,7 @@ export function EntPaymentEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
         'insurance': !exists(json, 'insurance') ? undefined : EntInsuranceFromJSON(json['insurance']),
         'member': !exists(json, 'member') ? undefined : EntMemberFromJSON(json['member']),
         'moneyTransfer': !exists(json, 'moneyTransfer') ? undefined : EntMoneyTransferFromJSON(json['moneyTransfer']),
+        'product': !exists(json, 'product') ? undefined : EntProductFromJSON(json['product']),
     };
 }
 
@@ -94,6 +105,7 @@ export function EntPaymentEdgesToJSON(value?: EntPaymentEdges | null): any {
         'insurance': EntInsuranceToJSON(value.insurance),
         'member': EntMemberToJSON(value.member),
         'moneyTransfer': EntMoneyTransferToJSON(value.moneyTransfer),
+        'product': EntProductToJSON(value.product),
     };
 }
 
