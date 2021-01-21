@@ -19,7 +19,6 @@ import {
   InputLabel,
   MenuItem,
   TextField,
-  Avatar,
   Button,
   Link,
 } from '@material-ui/core';
@@ -77,6 +76,12 @@ const HeaderCustom = {
 export default function Create() {
   const classes = useStyles();
   const api = new DefaultApi();
+  const [errormessege, setErrorMessege] = useState(String);
+  const [alerttype, setAlertType] = useState(String);
+
+  const [errorAccountNumber, setErrorAccountNumber] = useState(true);
+  const [errorPhoneNumber, setErrorPhoneNumber] = useState(true);
+  const [errorPrice, setErrorPrice] = useState(true);
 
 
   const [insurances, setInsurances] = useState<EntInsurance[]>([]);
@@ -84,7 +89,6 @@ export default function Create() {
   const [members, setMembers] = useState<EntMember[]>([]);
   const [moneytransfers, setMoneytransfers] = useState<EntMoneytransfer[]>([]);
   const [status, setStatus] = useState(false);
-  const [alert, setAlert] = useState(true);
   const [loading, setLoading] = useState(true);
  
  
@@ -94,6 +98,8 @@ export default function Create() {
   const [moneytransferid, setMoneytransferid] = useState(Number);
   const [accountname, setaccountName] = useState(String);
   const [accountnumber, setaccountNumber] = useState(String);
+  const [phonenumber, setphoneNumber] = useState(String);
+  const [price, setPrice] = useState(Number);
   const [transfertime, settransferTime] = useState(String);
  
   useEffect(() => {
@@ -160,23 +166,49 @@ export default function Create() {
           insuranceID    : insuranceid,
           memberID       : memberid,
           moneytransferID : moneytransferid,
+          phoneNumber    :  phonenumber,
+          price          :  Number(price),
           transferTime   : transfertime + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
       };
-      const res: any = await api.createPayment({ payment : payment });
-            setStatus(true);
-            if (res.id != '') {
-                setAlert(true);
-               window.location.reload(false);
-            }
-          }
-          else {
-              setStatus(true);
-              setAlert(false);
-          }
-        const timer = setTimeout(() => {
-        setStatus(false);
-    }, 1000); 
-  };  
+      console.log(payment);
+        const apiUrl = 'http://localhost:8080/api/v1/payments';
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payment),
+        };
+        fetch(apiUrl, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.status === true) {
+                    setErrorMessege("บันทึกข้อมูลสำเร็จ");
+                    setAlertType("success");
+
+                }
+                else {
+                    ErrorCaseCheck(data.error.Name);
+                    setAlertType("error");
+                }
+            });
+        }
+        else {
+            ErrorCaseCheck("เวลาไม่ได้ใส่");
+            setAlertType("error");
+        }
+
+        setStatus(true);
+    };
+
+    const ErrorCaseCheck = (casename: string) => {
+      ValidateaccountNumber(accountnumber);
+      Validateprice(Number(price));
+      ValidatephoneNumber(phonenumber);
+      if (casename == "account_number") { setErrorMessege("หมายเลขบัญชีไม่ครบ 10 หลัก"); }
+      else if (casename == "price") { setErrorMessege("รูปแบบจำนวนเบี้ยประกันไม่ถูกต้อง"); }
+      else if (casename == "phone_number") { setErrorMessege("เบอร์ติดต่อไม่ครบ 10 หลัก"); }
+      else { setErrorMessege("บันทึกไม่สำเร็จ"); }
+  }
 
  
    const bank_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -206,9 +238,33 @@ export default function Create() {
 
    const account_number_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
      setaccountNumber(event.target.value as string);
+     ValidateaccountNumber(event.target.value as string)
     };
+
+    const phone_number_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setphoneNumber(event.target.value as string);
+      ValidatephoneNumber(event.target.value as string)
+     };
+
+     const price_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setPrice(event.target.value as number);
+      Validateprice(event.target.value as number)
+     };
+    
    
- 
+    const ValidateaccountNumber = (value : string) => {
+      return value.length == 10 ?  setErrorAccountNumber(true) : setErrorAccountNumber(false);
+  }
+  
+     const ValidatephoneNumber = (value : string) => {
+    return value.length == 10 ? setErrorPhoneNumber(true) : setErrorPhoneNumber(false);
+  }
+
+  
+  const Validateprice = (value : number) => {
+    value > 0 ? setErrorPrice(true) : setErrorPrice(false);
+  } 
+
   return (
     <Page theme={pageTheme.library}>
       <Header style={HeaderCustom} title={`ระบบชำระเบี้ยประกัน`}>
@@ -223,15 +279,11 @@ export default function Create() {
       </ContentHeader>
       {status ? (
                         <div>
-                            {alert ? (
-                                <Alert variant="filled" severity="success">
-                                    บันทึกสำเร็จ
+                            {alerttype != "" ? (
+                                <Alert severity={alerttype} onClose={() => { setStatus(false) }}>
+                                    {errormessege}
                                 </Alert>
-                            ) : (
-                                <Alert variant="filled" severity="error" style={{ marginTop: 20 }}>
-                                    กรุณากรอกข้อมูลให้ครบถ้วน
-                                </Alert>
-                                )}
+                            ) : null}
                         </div>
                     ) : null}
         <Container maxWidth="sm">
@@ -245,12 +297,27 @@ export default function Create() {
               style={{ width: 300}}
               name = "member"
               variant="outlined"
-              value={members.filter((filter: EntMember) => filter.id == memberid).map((item: EntMember) => `${item.memberName}`)}
+              value={members.filter((filter: EntMember) => filter.id == memberid).map((item: EntMember) => `${item.memberEmail}`)}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
               }}
               
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <div className={classes.paper}>ชื่อ-สกุล</div>
+            </Grid>
+            <Grid item xs={8}>
+            <TextField id="outlined-basic" 
+              style={{ width: 300}}
+              name = "account_name"
+              variant="outlined"
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={account_name_handleChange}
               />
             </Grid>
 
@@ -278,14 +345,14 @@ export default function Create() {
             </Grid>
 
             <Grid item xs={4}>
-              <div className={classes.paper}>เบี้ยประกัน</div>
+              <div className={classes.paper}>ประเภทเบี้ยประกันภัย</div>
             </Grid>
             <Grid item xs={8}>
             <TextField id="outlined-basic" 
               style={{ width: 300}}
               name = "insuranceproduct"
               variant="outlined"
-              value={insurances.filter((filter: EntInsurance) => filter.id == insuranceid).map((item: EntInsurance) => `${item.edges?.product?.productPrice}`)}
+              value={insurances.filter((filter: EntInsurance) => filter.id == insuranceid).map((item: EntInsurance) => `${item.edges?.product?.productName}`)}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -338,36 +405,51 @@ export default function Create() {
               </FormControl>
             </Grid>
 
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>ป้อนชื่อบัญชี</div>
-            </Grid>
-            <Grid item xs={8}>
-            <TextField id="outlined-basic" 
-              style={{ width: 300}}
-              name = "account_name"
-              variant="outlined"
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={account_name_handleChange}
-              />
-            </Grid>
-
             <Grid item xs={4}>
               <div className={classes.paper}>ป้อนเลขที่บัญชี</div>
             </Grid>
             <Grid item xs={8}>
-            <TextField id="outlined-basic" 
-              style={{ width: 300}}
-              name = "account_number"
+            <TextField
+              id="outlined-basic" 
+              type="string"
               variant="outlined"
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
+              style={{ width: 300 }}
+              value={accountnumber}
+              helperText={errorAccountNumber? "" : "กรอกเลขที่บัญชีให้ครบถ้วน"}
+              error={errorAccountNumber? false : true}
               onChange={account_number_handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={4}>
+              <div className={classes.paper}>จำนวนเบี้ยประกัน</div>
+            </Grid>
+            <Grid item xs={8}>
+            <TextField
+              id="price"
+              name = "price"
+              variant="outlined"
+              value={price}
+              helperText={errorPrice? "" : "กรอกรูปแบบจำนวนเงินให้ถูกต้อง"}
+              error={errorPrice? false : true}
+              onChange={price_handleChange}
+              style={{ width: 300 }}
+              />
+            </Grid>
+            
+            <Grid item xs={4}>
+              <div className={classes.paper}>เบอร์ติดต่อ</div>
+            </Grid>
+            <Grid item xs={8}>
+            <TextField
+              id="phonenumber"
+              name = "phonenumber"
+              variant="outlined"
+              value={phonenumber}
+              helperText={errorPhoneNumber? "" : "กรุณากรอกหมายเลขโทรศัพท์ให้ครบถ้วน"}
+              error={errorPhoneNumber? false : true}
+              onChange={phone_number_handleChange}
+              style={{ width: 300 }}
               />
             </Grid>
 
