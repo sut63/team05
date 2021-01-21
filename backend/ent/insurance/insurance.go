@@ -11,10 +11,12 @@ const (
 	Label = "insurance"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldInsuranceAddress holds the string denoting the insurance_address field in the database.
-	FieldInsuranceAddress = "insurance_address"
+	// FieldInsuranceIdentification holds the string denoting the insurance_identification field in the database.
+	FieldInsuranceIdentification = "insurance_identification"
 	// FieldInsuranceInsurer holds the string denoting the insurance_insurer field in the database.
 	FieldInsuranceInsurer = "insurance_insurer"
+	// FieldInsuranceAddress holds the string denoting the insurance_address field in the database.
+	FieldInsuranceAddress = "insurance_address"
 	// FieldInsuranceTimeBuy holds the string denoting the insurance_time_buy field in the database.
 	FieldInsuranceTimeBuy = "insurance_time_buy"
 	// FieldInsuranceTimeFirstpay holds the string denoting the insurance_time_firstpay field in the database.
@@ -73,8 +75,9 @@ const (
 // Columns holds all SQL columns for insurance fields.
 var Columns = []string{
 	FieldID,
-	FieldInsuranceAddress,
+	FieldInsuranceIdentification,
 	FieldInsuranceInsurer,
+	FieldInsuranceAddress,
 	FieldInsuranceTimeBuy,
 	FieldInsuranceTimeFirstpay,
 }
@@ -88,12 +91,12 @@ var ForeignKeys = []string{
 }
 
 var (
-	// InsuranceAddressValidator is a validator for the "insurance_address" field. It is called by the builders before save.
-	InsuranceAddressValidator func(string) error
+	// InsuranceIdentificationValidator is a validator for the "insurance_identification" field. It is called by the builders before save.
+	InsuranceIdentificationValidator func(string) error
 	// InsuranceInsurerValidator is a validator for the "insurance_insurer" field. It is called by the builders before save.
 	InsuranceInsurerValidator func(string) error
+	// InsuranceAddressValidator is a validator for the "insurance_address" field. It is called by the builders before save.
+	InsuranceAddressValidator func(string) error
 	// DefaultInsuranceTimeBuy holds the default value on creation for the insurance_time_buy field.
 	DefaultInsuranceTimeBuy func() time.Time
-	// DefaultInsuranceTimeFirstpay holds the default value on creation for the insurance_time_firstpay field.
-	DefaultInsuranceTimeFirstpay func() time.Time
 )

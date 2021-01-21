@@ -36,6 +36,12 @@ export interface ControllersInsurance {
      * @type {string}
      * @memberof ControllersInsurance
      */
+    insuranceIdentification?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersInsurance
+     */
     insuranceInsurer?: string;
     /**
      * 
@@ -81,6 +87,7 @@ export function ControllersInsuranceFromJSONTyped(json: any, ignoreDiscriminator
         
         'hospitalID': !exists(json, 'hospitalID') ? undefined : json['hospitalID'],
         'insuranceAddress': !exists(json, 'insuranceAddress') ? undefined : json['insuranceAddress'],
+        'insuranceIdentification': !exists(json, 'insuranceIdentification') ? undefined : json['insuranceIdentification'],
         'insuranceInsurer': !exists(json, 'insuranceInsurer') ? undefined : json['insuranceInsurer'],
         'insuranceTimeBuy': !exists(json, 'insuranceTimeBuy') ? undefined : json['insuranceTimeBuy'],
         'insuranceTimeFirstpay': !exists(json, 'insuranceTimeFirstpay') ? undefined : json['insuranceTimeFirstpay'],
@@ -101,6 +108,7 @@ export function ControllersInsuranceToJSON(value?: ControllersInsurance | null):
         
         'hospitalID': value.hospitalID,
         'insuranceAddress': value.insuranceAddress,
+        'insuranceIdentification': value.insuranceIdentification,
         'insuranceInsurer': value.insuranceInsurer,
         'insuranceTimeBuy': value.insuranceTimeBuy,
         'insuranceTimeFirstpay': value.insuranceTimeFirstpay,

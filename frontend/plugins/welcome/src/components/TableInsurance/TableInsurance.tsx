@@ -47,12 +47,13 @@ export default function ComponentsTable() {
      <Table className={classes.table} aria-label="simple table">
        <TableHead>
          <TableRow>
-            <TableCell align="center">ลำดับ Order</TableCell>
-            <TableCell align="center">Car No.xx (หมายเลขประจำรถ)</TableCell>
-            <TableCell align="center">ผู้รับผิดชอบประจำรถ</TableCell>
-            <TableCell align="center">สถานะรถพยาบาล</TableCell>
-            <TableCell align="center">เจ้าหน้าที่จัดการรถที่บันทึก</TableCell>
-            <TableCell align="center">เวลาที่บันทึก</TableCell>
+            <TableCell align="center">ลำดับประกันที่ซื้อ</TableCell>
+            <TableCell align="center">ชื่อ Prodcut</TableCell>
+            <TableCell align="center">ชื่อผู้รับผลประโยชน์</TableCell>
+            <TableCell align="center">ราคา</TableCell>
+            <TableCell align="center">โรงพยาบาล</TableCell>
+            <TableCell align="center">วันเวลาที่ซื้อ</TableCell>
+            <TableCell align="center">วันที่ต้องการจ่ายงวดแรก</TableCell>
             <TableCell align="center">Manage</TableCell>
          </TableRow>
        </TableHead>
@@ -62,12 +63,12 @@ export default function ComponentsTable() {
             : insurances.map((item) => (
            <TableRow key={item.id}>
              <TableCell align="center">{item.id}</TableCell>
-             <TableCell align="center">{item.edges?.car?.carNo}</TableCell>
-             <TableCell align="center">{item.edges?.staff?.staffName}</TableCell>
-             <TableCell align="center">{item.edges?.statuscar?.statusDetail}</TableCell>
-             <TableCell align="center">{item.edges?.user?.userEmail}</TableCell>
-             <TableCell align="center">{item.edges?.user?.userEmail}</TableCell>
-             <TableCell align="center">{moment(item.addedTime).format('yyyy-MM-ddThh:mm')}</TableCell>
+             <TableCell align="center">{item.edges?.product?.productName}</TableCell>
+             <TableCell align="center">{item.insuranceInsurer}</TableCell>
+             <TableCell align="center">{item.edges?.product?.productPrice}</TableCell>
+             <TableCell align="center">{item.edges?.hospital?.hospitalName}</TableCell>
+             <TableCell align="center">{moment(item.insuranceTimeBuy).format('DD/MM/YYYY HH.mm น.')}</TableCell>
+             <TableCell align="center">{moment(item.insuranceTimeFirstpay).format('DD/MM/YYYY')}</TableCell>
              <TableCell align="center">
                <Button
                  onClick={() => {

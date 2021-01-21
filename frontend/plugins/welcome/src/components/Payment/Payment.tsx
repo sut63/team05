@@ -166,16 +166,16 @@ export default function Create() {
             setStatus(true);
             if (res.id != '') {
                 setAlert(true);
-               // window.location.reload(false);
+               window.location.reload(false);
             }
           }
           else {
               setStatus(true);
               setAlert(false);
           }
-       // const timer = setTimeout(() => {
-        //setStatus(false);
-    //}, 10000); 
+        const timer = setTimeout(() => {
+        setStatus(false);
+    }, 1000); 
   };  
 
  

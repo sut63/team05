@@ -84,7 +84,8 @@ export default function Login(props: any) {
       if ((item.memberEmail == memberemail) && (item.memberPassword == memberpassword)) {
         setAlert(true);
         localStorage.setItem("memberdata", JSON.stringify(item.id));
-        localStorage.setItem("positiondata", JSON.stringify(item.edges.position.positionName))
+        //localStorage.setItem("positiondata", JSON.stringify(item.edges.position.positionName))
+        localStorage.setItem("positiondata", JSON.stringify("สมาชิกระบบประกันสุขภาพ"))
         history.pushState("", "", "/Insurance");
         window.location.reload(false);
 
