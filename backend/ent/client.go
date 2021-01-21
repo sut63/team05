@@ -1865,6 +1865,22 @@ func (c *PaymentClient) QueryMember(pa *Payment) *MemberQuery {
 	return query
 }
 
+// QueryProduct queries the Product edge of a Payment.
+func (c *PaymentClient) QueryProduct(pa *Payment) *ProductQuery {
+	query := &ProductQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pa.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(payment.Table, payment.FieldID, id),
+			sqlgraph.To(product.Table, product.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, payment.ProductTable, payment.ProductColumn),
+		)
+		fromV = sqlgraph.Neighbors(pa.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *PaymentClient) Hooks() []Hook {
 	return c.hooks.Payment
@@ -2053,6 +2069,22 @@ func (c *ProductClient) QueryProductRecordinsurance(pr *Product) *Recordinsuranc
 			sqlgraph.From(product.Table, product.FieldID, id),
 			sqlgraph.To(recordinsurance.Table, recordinsurance.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductRecordinsuranceTable, product.ProductRecordinsuranceColumn),
+		)
+		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProductPayment queries the product_payment edge of a Product.
+func (c *ProductClient) QueryProductPayment(pr *Product) *PaymentQuery {
+	query := &PaymentQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := pr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(product.Table, product.FieldID, id),
+			sqlgraph.To(payment.Table, payment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, product.ProductPaymentTable, product.ProductPaymentColumn),
 		)
 		fromV = sqlgraph.Neighbors(pr.driver.Dialect(), step)
 		return fromV, nil

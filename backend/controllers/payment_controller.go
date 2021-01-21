@@ -8,36 +8,40 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sut63/team05/ent"
-	"github.com/sut63/team05/ent/moneytransfer"
-	"github.com/sut63/team05/ent/member"
-	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/bank"
+	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/member"
+	"github.com/sut63/team05/ent/moneytransfer"
+	"github.com/sut63/team05/ent/product"
+	"github.com/sut63/team05/ent/insurance"
 )
 
-// PaymentController defines the struct for the Payment controller
+// PaymentController defines the struct for the payment controller
 type PaymentController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
-// Payment defines the struct for the Payment
+// Payment defines the struct for the payment
 type Payment struct {
-	BankID                int
+	ProductID             int
 	MemberID              int
-	MoneytransferID       int
+    MoneytransferID       int
 	InsuranceID           int
-	AccountName           string
-	AccountNumber         string
-	TransferTime          string
+	BankID                int
+	AccountName         string
+	AccountNumber       string
+	TransferTime        string
+
 }
 
-// CreatePayment handles POST requests for adding Payment entities
-// @Summary Create Payment
-// @Description Create Payment
-// @ID create-Payment
+// CreatePayment handles POST requests for adding payment entities
+// @Summary Create payment
+// @Description Create payment
+// @ID create-payment
 // @Accept   json
 // @Produce  json
-// @Param Payment body Payment true "Payment entity"
+// @Param payment body Payment true "Payment entity"
 // @Success 200 {object} ent.Payment
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -51,14 +55,14 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 		return
 	}
 
-	b, err := ctl.client.Bank.
+	p, err := ctl.client.Product.
 		Query().
-		Where(bank.IDEQ(int(obj.BankID))).
+		Where(product.IDEQ(int(obj.ProductID))).
 		Only(context.Background())
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "bank not found",
+			"error": "product not found",
 		})
 		return
 	}
@@ -98,18 +102,34 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 		})
 		return
 	}
+	
+	b, err := ctl.client.Bank.
+		Query().
+		Where(bank.IDEQ(int(obj.BankID))).
+		Only(context.Background())
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "bank not found",
+		})
+		return
+	}
+
+
+
 	time, err := time.Parse(time.RFC3339, obj.TransferTime)
 	
 
-	p, err := ctl.client.Payment.
+	py, err := ctl.client.Payment.
 		Create().
-		SetBank(b).
+		SetProduct(p).
 		SetMember(m).
 		SetMoneyTransfer(mn).
 		SetInsurance(in).
+		SetBank(b).
 		SetAccountName(obj.AccountName).
-		SetAccountNumber (obj.AccountNumber ).
-		SetTransferTime (time).
+		SetAccountNumber(obj.AccountNumber).
+		SetTransferTime(time).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -118,13 +138,13 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, p)
+	c.JSON(200, py)
 }
 
-// ListPayment handles request to get a list of Payment entities
-// @Summary List Payment entities
-// @Description list Payment entities
-// @ID list-Payment
+// ListPayment handles request to get a list of payment entities
+// @Summary List payment entities
+// @Description list payment entities
+// @ID list-payment
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
@@ -153,10 +173,11 @@ func (ctl *PaymentController) ListPayment(c *gin.Context) {
 
 	payments, err := ctl.client.Payment.
 		Query().
-		WithBank().
+		WithProduct().
 		WithMember().
 		WithMoneyTransfer().
 		WithInsurance().
+		WithBank().
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())
@@ -168,10 +189,45 @@ func (ctl *PaymentController) ListPayment(c *gin.Context) {
 	c.JSON(200, payments)
 }
 
-// DeletePayment handles DELETE requests to delete a Payment entity
-// @Summary Delete a Payment entity by ID
-// @Description get Payment by ID
-// @ID delete-Payment
+// GetPayment handles GET requests to retrieve a payment entity
+// @Summary Get a payment entity by ID
+// @Description get payment by ID
+// @ID get-payment
+// @Produce  json
+// @Param id path int true "Payment ID"
+// @Success 200 {object} ent.Payment
+// @Failure 400 {object} gin.H
+// @Failure 404 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /payments/{id} [get]
+func (ctl *PaymentController) GetPayment(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	p, err := ctl.client.Payment.
+		Query().
+		WithProduct().
+		Where(payment.IDEQ(int(id))).
+		Only(context.Background())
+
+	if err != nil {
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, p)
+}
+
+// DeletePayment handles DELETE requests to delete a payment entity
+// @Summary Delete a payment entity by ID
+// @Description get payment by ID
+// @ID delete-payment
 // @Produce  json
 // @Param id path int true "Payment ID"
 // @Success 200 {object} gin.H
@@ -201,7 +257,7 @@ func (ctl *PaymentController) DeletePayment(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// NewPaymentController creates and registers handles for the Payment controller
+// NewPaymentController creates and registers handles for the payment controller
 func NewPaymentController(router gin.IRouter, client *ent.Client) *PaymentController {
 	ic := &PaymentController{
 		client: client,
@@ -216,6 +272,7 @@ func (ctl *PaymentController) register() {
 	payments := ctl.router.Group("/payments")
 
 	payments.GET("", ctl.ListPayment)
+	payments.GET(":id", ctl.GetPayment)
 	payments.POST("", ctl.CreatePayment)
 	payments.DELETE(":id", ctl.DeletePayment)
 }

@@ -29,5 +29,6 @@ func (Payment) Edges() []ent.Edge {
 		edge.From("MoneyTransfer", MoneyTransfer.Type).Ref("moneytransfer_payment").Unique(),
 		edge.From("Bank", Bank.Type).Ref("bank_payment").Unique(),
 		edge.From("Member", Member.Type).Ref("member_payment").Unique(),
+		edge.From("Product", Product.Type).Ref("product_payment").Unique(),
 	}
 }

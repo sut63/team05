@@ -17,6 +17,7 @@ import (
 	"github.com/sut63/team05/ent/moneytransfer"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
+	"github.com/sut63/team05/ent/product"
 )
 
 // PaymentQuery is the builder for querying Payment entities.
@@ -32,6 +33,7 @@ type PaymentQuery struct {
 	withMoneyTransfer *MoneyTransferQuery
 	withBank          *BankQuery
 	withMember        *MemberQuery
+	withProduct       *ProductQuery
 	withFKs           bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -127,6 +129,24 @@ func (pq *PaymentQuery) QueryMember() *MemberQuery {
 			sqlgraph.From(payment.Table, payment.FieldID, pq.sqlQuery()),
 			sqlgraph.To(member.Table, member.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, payment.MemberTable, payment.MemberColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProduct chains the current query on the Product edge.
+func (pq *PaymentQuery) QueryProduct() *ProductQuery {
+	query := &ProductQuery{config: pq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := pq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(payment.Table, payment.FieldID, pq.sqlQuery()),
+			sqlgraph.To(product.Table, product.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, payment.ProductTable, payment.ProductColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -357,6 +377,17 @@ func (pq *PaymentQuery) WithMember(opts ...func(*MemberQuery)) *PaymentQuery {
 	return pq
 }
 
+//  WithProduct tells the query-builder to eager-loads the nodes that are connected to
+// the "Product" edge. The optional arguments used to configure the query builder of the edge.
+func (pq *PaymentQuery) WithProduct(opts ...func(*ProductQuery)) *PaymentQuery {
+	query := &ProductQuery{config: pq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	pq.withProduct = query
+	return pq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -424,14 +455,15 @@ func (pq *PaymentQuery) sqlAll(ctx context.Context) ([]*Payment, error) {
 		nodes       = []*Payment{}
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			pq.withInsurance != nil,
 			pq.withMoneyTransfer != nil,
 			pq.withBank != nil,
 			pq.withMember != nil,
+			pq.withProduct != nil,
 		}
 	)
-	if pq.withInsurance != nil || pq.withMoneyTransfer != nil || pq.withBank != nil || pq.withMember != nil {
+	if pq.withInsurance != nil || pq.withMoneyTransfer != nil || pq.withBank != nil || pq.withMember != nil || pq.withProduct != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -557,6 +589,31 @@ func (pq *PaymentQuery) sqlAll(ctx context.Context) ([]*Payment, error) {
 			}
 			for i := range nodes {
 				nodes[i].Edges.Member = n
+			}
+		}
+	}
+
+	if query := pq.withProduct; query != nil {
+		ids := make([]int, 0, len(nodes))
+		nodeids := make(map[int][]*Payment)
+		for i := range nodes {
+			if fk := nodes[i].product_id; fk != nil {
+				ids = append(ids, *fk)
+				nodeids[*fk] = append(nodeids[*fk], nodes[i])
+			}
+		}
+		query.Where(product.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "product_id" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Product = n
 			}
 		}
 	}

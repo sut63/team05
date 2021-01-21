@@ -25,7 +25,6 @@ type Product struct {
 	ProductPrice         int
 	ProductTime          int
 	ProductPaymentOfYear float64
-
 	GenderID   int
 	GroupOfAge int
 	Officer    int

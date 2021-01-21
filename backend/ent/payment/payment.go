@@ -26,6 +26,8 @@ const (
 	EdgeBank = "Bank"
 	// EdgeMember holds the string denoting the member edge name in mutations.
 	EdgeMember = "Member"
+	// EdgeProduct holds the string denoting the product edge name in mutations.
+	EdgeProduct = "Product"
 
 	// Table holds the table name of the payment in the database.
 	Table = "payments"
@@ -57,6 +59,13 @@ const (
 	MemberInverseTable = "members"
 	// MemberColumn is the table column denoting the Member relation/edge.
 	MemberColumn = "member_id"
+	// ProductTable is the table the holds the Product relation/edge.
+	ProductTable = "payments"
+	// ProductInverseTable is the table name for the Product entity.
+	// It exists in this package in order to avoid circular dependency with the "product" package.
+	ProductInverseTable = "products"
+	// ProductColumn is the table column denoting the Product relation/edge.
+	ProductColumn = "product_id"
 )
 
 // Columns holds all SQL columns for payment fields.
@@ -73,6 +82,7 @@ var ForeignKeys = []string{
 	"insurance_id",
 	"member_id",
 	"moneytransfer_id",
+	"product_id",
 }
 
 var (

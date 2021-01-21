@@ -524,6 +524,34 @@ func HasMemberWith(preds ...predicate.Member) predicate.Payment {
 	})
 }
 
+// HasProduct applies the HasEdge predicate on the "Product" edge.
+func HasProduct() predicate.Payment {
+	return predicate.Payment(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ProductTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProductWith applies the HasEdge predicate on the "Product" edge with a given conditions (other predicates).
+func HasProductWith(preds ...predicate.Product) predicate.Payment {
+	return predicate.Payment(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(ProductInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProductTable, ProductColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Payment) predicate.Payment {
 	return predicate.Payment(func(s *sql.Selector) {

@@ -6302,6 +6302,8 @@ type PaymentMutation struct {
 	cleared_Bank          bool
 	_Member               *int
 	cleared_Member        bool
+	_Product              *int
+	cleared_Product       bool
 	done                  bool
 	oldValue              func(context.Context) (*Payment, error)
 }
@@ -6652,6 +6654,45 @@ func (m *PaymentMutation) ResetMember() {
 	m.cleared_Member = false
 }
 
+// SetProductID sets the Product edge to Product by id.
+func (m *PaymentMutation) SetProductID(id int) {
+	m._Product = &id
+}
+
+// ClearProduct clears the Product edge to Product.
+func (m *PaymentMutation) ClearProduct() {
+	m.cleared_Product = true
+}
+
+// ProductCleared returns if the edge Product was cleared.
+func (m *PaymentMutation) ProductCleared() bool {
+	return m.cleared_Product
+}
+
+// ProductID returns the Product id in the mutation.
+func (m *PaymentMutation) ProductID() (id int, exists bool) {
+	if m._Product != nil {
+		return *m._Product, true
+	}
+	return
+}
+
+// ProductIDs returns the Product ids in the mutation.
+// Note that ids always returns len(ids) <= 1 for unique edges, and you should use
+// ProductID instead. It exists only for internal usage by the builders.
+func (m *PaymentMutation) ProductIDs() (ids []int) {
+	if id := m._Product; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetProduct reset all changes of the "Product" edge.
+func (m *PaymentMutation) ResetProduct() {
+	m._Product = nil
+	m.cleared_Product = false
+}
+
 // Op returns the operation name.
 func (m *PaymentMutation) Op() Op {
 	return m.op
@@ -6801,7 +6842,7 @@ func (m *PaymentMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *PaymentMutation) AddedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m._Insurance != nil {
 		edges = append(edges, payment.EdgeInsurance)
 	}
@@ -6813,6 +6854,9 @@ func (m *PaymentMutation) AddedEdges() []string {
 	}
 	if m._Member != nil {
 		edges = append(edges, payment.EdgeMember)
+	}
+	if m._Product != nil {
+		edges = append(edges, payment.EdgeProduct)
 	}
 	return edges
 }
@@ -6837,6 +6881,10 @@ func (m *PaymentMutation) AddedIDs(name string) []ent.Value {
 		if id := m._Member; id != nil {
 			return []ent.Value{*id}
 		}
+	case payment.EdgeProduct:
+		if id := m._Product; id != nil {
+			return []ent.Value{*id}
+		}
 	}
 	return nil
 }
@@ -6844,7 +6892,7 @@ func (m *PaymentMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *PaymentMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	return edges
 }
 
@@ -6859,7 +6907,7 @@ func (m *PaymentMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *PaymentMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 4)
+	edges := make([]string, 0, 5)
 	if m.cleared_Insurance {
 		edges = append(edges, payment.EdgeInsurance)
 	}
@@ -6871,6 +6919,9 @@ func (m *PaymentMutation) ClearedEdges() []string {
 	}
 	if m.cleared_Member {
 		edges = append(edges, payment.EdgeMember)
+	}
+	if m.cleared_Product {
+		edges = append(edges, payment.EdgeProduct)
 	}
 	return edges
 }
@@ -6887,6 +6938,8 @@ func (m *PaymentMutation) EdgeCleared(name string) bool {
 		return m.cleared_Bank
 	case payment.EdgeMember:
 		return m.cleared_Member
+	case payment.EdgeProduct:
+		return m.cleared_Product
 	}
 	return false
 }
@@ -6906,6 +6959,9 @@ func (m *PaymentMutation) ClearEdge(name string) error {
 		return nil
 	case payment.EdgeMember:
 		m.ClearMember()
+		return nil
+	case payment.EdgeProduct:
+		m.ClearProduct()
 		return nil
 	}
 	return fmt.Errorf("unknown Payment unique edge %s", name)
@@ -6927,6 +6983,9 @@ func (m *PaymentMutation) ResetEdge(name string) error {
 		return nil
 	case payment.EdgeMember:
 		m.ResetMember()
+		return nil
+	case payment.EdgeProduct:
+		m.ResetProduct()
 		return nil
 	}
 	return fmt.Errorf("unknown Payment edge %s", name)
@@ -6961,6 +7020,8 @@ type ProductMutation struct {
 	removedproduct_payback         map[int]struct{}
 	product_recordinsurance        map[int]struct{}
 	removedproduct_recordinsurance map[int]struct{}
+	product_payment                map[int]struct{}
+	removedproduct_payment         map[int]struct{}
 	done                           bool
 	oldValue                       func(context.Context) (*Product, error)
 }
@@ -7537,6 +7598,48 @@ func (m *ProductMutation) ResetProductRecordinsurance() {
 	m.removedproduct_recordinsurance = nil
 }
 
+// AddProductPaymentIDs adds the product_payment edge to Payment by ids.
+func (m *ProductMutation) AddProductPaymentIDs(ids ...int) {
+	if m.product_payment == nil {
+		m.product_payment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.product_payment[ids[i]] = struct{}{}
+	}
+}
+
+// RemoveProductPaymentIDs removes the product_payment edge to Payment by ids.
+func (m *ProductMutation) RemoveProductPaymentIDs(ids ...int) {
+	if m.removedproduct_payment == nil {
+		m.removedproduct_payment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.removedproduct_payment[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedProductPayment returns the removed ids of product_payment.
+func (m *ProductMutation) RemovedProductPaymentIDs() (ids []int) {
+	for id := range m.removedproduct_payment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ProductPaymentIDs returns the product_payment ids in the mutation.
+func (m *ProductMutation) ProductPaymentIDs() (ids []int) {
+	for id := range m.product_payment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetProductPayment reset all changes of the "product_payment" edge.
+func (m *ProductMutation) ResetProductPayment() {
+	m.product_payment = nil
+	m.removedproduct_payment = nil
+}
+
 // Op returns the operation name.
 func (m *ProductMutation) Op() Op {
 	return m.op
@@ -7742,7 +7845,7 @@ func (m *ProductMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this
 // mutation.
 func (m *ProductMutation) AddedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 8)
 	if m.product_gender != nil {
 		edges = append(edges, product.EdgeProductGender)
 	}
@@ -7763,6 +7866,9 @@ func (m *ProductMutation) AddedEdges() []string {
 	}
 	if m.product_recordinsurance != nil {
 		edges = append(edges, product.EdgeProductRecordinsurance)
+	}
+	if m.product_payment != nil {
+		edges = append(edges, product.EdgeProductPayment)
 	}
 	return edges
 }
@@ -7807,6 +7913,12 @@ func (m *ProductMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case product.EdgeProductPayment:
+		ids := make([]ent.Value, 0, len(m.product_payment))
+		for id := range m.product_payment {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -7814,7 +7926,7 @@ func (m *ProductMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this
 // mutation.
 func (m *ProductMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 8)
 	if m.removedproduct_insurance != nil {
 		edges = append(edges, product.EdgeProductInsurance)
 	}
@@ -7826,6 +7938,9 @@ func (m *ProductMutation) RemovedEdges() []string {
 	}
 	if m.removedproduct_recordinsurance != nil {
 		edges = append(edges, product.EdgeProductRecordinsurance)
+	}
+	if m.removedproduct_payment != nil {
+		edges = append(edges, product.EdgeProductPayment)
 	}
 	return edges
 }
@@ -7858,6 +7973,12 @@ func (m *ProductMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case product.EdgeProductPayment:
+		ids := make([]ent.Value, 0, len(m.removedproduct_payment))
+		for id := range m.removedproduct_payment {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
@@ -7865,7 +7986,7 @@ func (m *ProductMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this
 // mutation.
 func (m *ProductMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 8)
 	if m.clearedproduct_gender {
 		edges = append(edges, product.EdgeProductGender)
 	}
@@ -7934,6 +8055,9 @@ func (m *ProductMutation) ResetEdge(name string) error {
 		return nil
 	case product.EdgeProductRecordinsurance:
 		m.ResetProductRecordinsurance()
+		return nil
+	case product.EdgeProductPayment:
+		m.ResetProductPayment()
 		return nil
 	}
 	return fmt.Errorf("unknown Product edge %s", name)

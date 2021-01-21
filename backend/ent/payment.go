@@ -13,6 +13,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/moneytransfer"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/product"
 )
 
 // Payment is the model entity for the Payment schema.
@@ -33,6 +34,7 @@ type Payment struct {
 	insurance_id     *int
 	member_id        *int
 	moneytransfer_id *int
+	product_id       *int
 }
 
 // PaymentEdges holds the relations/edges for other nodes in the graph.
@@ -45,9 +47,11 @@ type PaymentEdges struct {
 	Bank *Bank
 	// Member holds the value of the Member edge.
 	Member *Member
+	// Product holds the value of the Product edge.
+	Product *Product
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 }
 
 // InsuranceOrErr returns the Insurance value or an error if the edge
@@ -106,6 +110,20 @@ func (e PaymentEdges) MemberOrErr() (*Member, error) {
 	return nil, &NotLoadedError{edge: "Member"}
 }
 
+// ProductOrErr returns the Product value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e PaymentEdges) ProductOrErr() (*Product, error) {
+	if e.loadedTypes[4] {
+		if e.Product == nil {
+			// The edge Product was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: product.Label}
+		}
+		return e.Product, nil
+	}
+	return nil, &NotLoadedError{edge: "Product"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Payment) scanValues() []interface{} {
 	return []interface{}{
@@ -123,6 +141,7 @@ func (*Payment) fkValues() []interface{} {
 		&sql.NullInt64{}, // insurance_id
 		&sql.NullInt64{}, // member_id
 		&sql.NullInt64{}, // moneytransfer_id
+		&sql.NullInt64{}, // product_id
 	}
 }
 
@@ -179,6 +198,12 @@ func (pa *Payment) assignValues(values ...interface{}) error {
 			pa.moneytransfer_id = new(int)
 			*pa.moneytransfer_id = int(value.Int64)
 		}
+		if value, ok := values[4].(*sql.NullInt64); !ok {
+			return fmt.Errorf("unexpected type %T for edge-field product_id", value)
+		} else if value.Valid {
+			pa.product_id = new(int)
+			*pa.product_id = int(value.Int64)
+		}
 	}
 	return nil
 }
@@ -201,6 +226,11 @@ func (pa *Payment) QueryBank() *BankQuery {
 // QueryMember queries the Member edge of the Payment.
 func (pa *Payment) QueryMember() *MemberQuery {
 	return (&PaymentClient{config: pa.config}).QueryMember(pa)
+}
+
+// QueryProduct queries the Product edge of the Payment.
+func (pa *Payment) QueryProduct() *ProductQuery {
+	return (&PaymentClient{config: pa.config}).QueryProduct(pa)
 }
 
 // Update returns a builder for updating this Payment.

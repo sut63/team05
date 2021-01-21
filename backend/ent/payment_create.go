@@ -15,6 +15,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/moneytransfer"
 	"github.com/sut63/team05/ent/payment"
+	"github.com/sut63/team05/ent/product"
 )
 
 // PaymentCreate is the builder for creating a Payment entity.
@@ -124,6 +125,25 @@ func (pc *PaymentCreate) SetNillableMemberID(id *int) *PaymentCreate {
 // SetMember sets the Member edge to Member.
 func (pc *PaymentCreate) SetMember(m *Member) *PaymentCreate {
 	return pc.SetMemberID(m.ID)
+}
+
+// SetProductID sets the Product edge to Product by id.
+func (pc *PaymentCreate) SetProductID(id int) *PaymentCreate {
+	pc.mutation.SetProductID(id)
+	return pc
+}
+
+// SetNillableProductID sets the Product edge to Product by id if the given value is not nil.
+func (pc *PaymentCreate) SetNillableProductID(id *int) *PaymentCreate {
+	if id != nil {
+		pc = pc.SetProductID(*id)
+	}
+	return pc
+}
+
+// SetProduct sets the Product edge to Product.
+func (pc *PaymentCreate) SetProduct(p *Product) *PaymentCreate {
+	return pc.SetProductID(p.ID)
 }
 
 // Mutation returns the PaymentMutation object of the builder.
@@ -305,6 +325,25 @@ func (pc *PaymentCreate) createSpec() (*Payment, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: member.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := pc.mutation.ProductIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   payment.ProductTable,
+			Columns: []string{payment.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: product.FieldID,
 				},
 			},
 		}

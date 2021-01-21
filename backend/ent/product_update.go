@@ -15,6 +15,7 @@ import (
 	"github.com/sut63/team05/ent/insurance"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/payback"
+	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
 	"github.com/sut63/team05/ent/product"
 	"github.com/sut63/team05/ent/recordinsurance"
@@ -196,6 +197,21 @@ func (pu *ProductUpdate) AddProductRecordinsurance(r ...*Recordinsurance) *Produ
 	return pu.AddProductRecordinsuranceIDs(ids...)
 }
 
+// AddProductPaymentIDs adds the product_payment edge to Payment by ids.
+func (pu *ProductUpdate) AddProductPaymentIDs(ids ...int) *ProductUpdate {
+	pu.mutation.AddProductPaymentIDs(ids...)
+	return pu
+}
+
+// AddProductPayment adds the product_payment edges to Payment.
+func (pu *ProductUpdate) AddProductPayment(p ...*Payment) *ProductUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pu.AddProductPaymentIDs(ids...)
+}
+
 // Mutation returns the ProductMutation object of the builder.
 func (pu *ProductUpdate) Mutation() *ProductMutation {
 	return pu.mutation
@@ -277,6 +293,21 @@ func (pu *ProductUpdate) RemoveProductRecordinsurance(r ...*Recordinsurance) *Pr
 		ids[i] = r[i].ID
 	}
 	return pu.RemoveProductRecordinsuranceIDs(ids...)
+}
+
+// RemoveProductPaymentIDs removes the product_payment edge to Payment by ids.
+func (pu *ProductUpdate) RemoveProductPaymentIDs(ids ...int) *ProductUpdate {
+	pu.mutation.RemoveProductPaymentIDs(ids...)
+	return pu
+}
+
+// RemoveProductPayment removes product_payment edges to Payment.
+func (pu *ProductUpdate) RemoveProductPayment(p ...*Payment) *ProductUpdate {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return pu.RemoveProductPaymentIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -655,6 +686,44 @@ func (pu *ProductUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if nodes := pu.mutation.RemovedProductPaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductPaymentTable,
+			Columns: []string{product.ProductPaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.ProductPaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductPaymentTable,
+			Columns: []string{product.ProductPaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{product.Label}
@@ -835,6 +904,21 @@ func (puo *ProductUpdateOne) AddProductRecordinsurance(r ...*Recordinsurance) *P
 	return puo.AddProductRecordinsuranceIDs(ids...)
 }
 
+// AddProductPaymentIDs adds the product_payment edge to Payment by ids.
+func (puo *ProductUpdateOne) AddProductPaymentIDs(ids ...int) *ProductUpdateOne {
+	puo.mutation.AddProductPaymentIDs(ids...)
+	return puo
+}
+
+// AddProductPayment adds the product_payment edges to Payment.
+func (puo *ProductUpdateOne) AddProductPayment(p ...*Payment) *ProductUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return puo.AddProductPaymentIDs(ids...)
+}
+
 // Mutation returns the ProductMutation object of the builder.
 func (puo *ProductUpdateOne) Mutation() *ProductMutation {
 	return puo.mutation
@@ -916,6 +1000,21 @@ func (puo *ProductUpdateOne) RemoveProductRecordinsurance(r ...*Recordinsurance)
 		ids[i] = r[i].ID
 	}
 	return puo.RemoveProductRecordinsuranceIDs(ids...)
+}
+
+// RemoveProductPaymentIDs removes the product_payment edge to Payment by ids.
+func (puo *ProductUpdateOne) RemoveProductPaymentIDs(ids ...int) *ProductUpdateOne {
+	puo.mutation.RemoveProductPaymentIDs(ids...)
+	return puo
+}
+
+// RemoveProductPayment removes product_payment edges to Payment.
+func (puo *ProductUpdateOne) RemoveProductPayment(p ...*Payment) *ProductUpdateOne {
+	ids := make([]int, len(p))
+	for i := range p {
+		ids[i] = p[i].ID
+	}
+	return puo.RemoveProductPaymentIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -1284,6 +1383,44 @@ func (puo *ProductUpdateOne) sqlSave(ctx context.Context) (pr *Product, err erro
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: recordinsurance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if nodes := puo.mutation.RemovedProductPaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductPaymentTable,
+			Columns: []string{product.ProductPaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.ProductPaymentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   product.ProductPaymentTable,
+			Columns: []string{product.ProductPaymentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: payment.FieldID,
 				},
 			},
 		}

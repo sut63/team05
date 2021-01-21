@@ -16,6 +16,7 @@ import (
 	"github.com/sut63/team05/ent/moneytransfer"
 	"github.com/sut63/team05/ent/payment"
 	"github.com/sut63/team05/ent/predicate"
+	"github.com/sut63/team05/ent/product"
 )
 
 // PaymentUpdate is the builder for updating Payment entities.
@@ -134,6 +135,25 @@ func (pu *PaymentUpdate) SetMember(m *Member) *PaymentUpdate {
 	return pu.SetMemberID(m.ID)
 }
 
+// SetProductID sets the Product edge to Product by id.
+func (pu *PaymentUpdate) SetProductID(id int) *PaymentUpdate {
+	pu.mutation.SetProductID(id)
+	return pu
+}
+
+// SetNillableProductID sets the Product edge to Product by id if the given value is not nil.
+func (pu *PaymentUpdate) SetNillableProductID(id *int) *PaymentUpdate {
+	if id != nil {
+		pu = pu.SetProductID(*id)
+	}
+	return pu
+}
+
+// SetProduct sets the Product edge to Product.
+func (pu *PaymentUpdate) SetProduct(p *Product) *PaymentUpdate {
+	return pu.SetProductID(p.ID)
+}
+
 // Mutation returns the PaymentMutation object of the builder.
 func (pu *PaymentUpdate) Mutation() *PaymentMutation {
 	return pu.mutation
@@ -160,6 +180,12 @@ func (pu *PaymentUpdate) ClearBank() *PaymentUpdate {
 // ClearMember clears the Member edge to Member.
 func (pu *PaymentUpdate) ClearMember() *PaymentUpdate {
 	pu.mutation.ClearMember()
+	return pu
+}
+
+// ClearProduct clears the Product edge to Product.
+func (pu *PaymentUpdate) ClearProduct() *PaymentUpdate {
+	pu.mutation.ClearProduct()
 	return pu
 }
 
@@ -404,6 +430,41 @@ func (pu *PaymentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if pu.mutation.ProductCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   payment.ProductTable,
+			Columns: []string{payment.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: product.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := pu.mutation.ProductIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   payment.ProductTable,
+			Columns: []string{payment.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: product.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, pu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{payment.Label}
@@ -524,6 +585,25 @@ func (puo *PaymentUpdateOne) SetMember(m *Member) *PaymentUpdateOne {
 	return puo.SetMemberID(m.ID)
 }
 
+// SetProductID sets the Product edge to Product by id.
+func (puo *PaymentUpdateOne) SetProductID(id int) *PaymentUpdateOne {
+	puo.mutation.SetProductID(id)
+	return puo
+}
+
+// SetNillableProductID sets the Product edge to Product by id if the given value is not nil.
+func (puo *PaymentUpdateOne) SetNillableProductID(id *int) *PaymentUpdateOne {
+	if id != nil {
+		puo = puo.SetProductID(*id)
+	}
+	return puo
+}
+
+// SetProduct sets the Product edge to Product.
+func (puo *PaymentUpdateOne) SetProduct(p *Product) *PaymentUpdateOne {
+	return puo.SetProductID(p.ID)
+}
+
 // Mutation returns the PaymentMutation object of the builder.
 func (puo *PaymentUpdateOne) Mutation() *PaymentMutation {
 	return puo.mutation
@@ -550,6 +630,12 @@ func (puo *PaymentUpdateOne) ClearBank() *PaymentUpdateOne {
 // ClearMember clears the Member edge to Member.
 func (puo *PaymentUpdateOne) ClearMember() *PaymentUpdateOne {
 	puo.mutation.ClearMember()
+	return puo
+}
+
+// ClearProduct clears the Product edge to Product.
+func (puo *PaymentUpdateOne) ClearProduct() *PaymentUpdateOne {
+	puo.mutation.ClearProduct()
 	return puo
 }
 
@@ -784,6 +870,41 @@ func (puo *PaymentUpdateOne) sqlSave(ctx context.Context) (pa *Payment, err erro
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: member.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if puo.mutation.ProductCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   payment.ProductTable,
+			Columns: []string{payment.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: product.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := puo.mutation.ProductIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   payment.ProductTable,
+			Columns: []string{payment.ProductColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: product.FieldID,
 				},
 			},
 		}

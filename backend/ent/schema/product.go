@@ -33,5 +33,6 @@ func (Product) Edges() []ent.Edge {
 		edge.To("product_inquiry", Inquiry.Type).StorageKey(edge.Column("product_id")),
 		edge.To("product_payback", Payback.Type).StorageKey(edge.Column("product_id")),
 		edge.To("product_recordinsurance", Recordinsurance.Type).StorageKey(edge.Column("product_id")),
+		edge.To("product_payment", Payment.Type).StorageKey(edge.Column("product_id")),
 	}
 }

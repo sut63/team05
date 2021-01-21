@@ -271,6 +271,7 @@ var (
 		{Name: "insurance_id", Type: field.TypeInt, Nullable: true},
 		{Name: "member_id", Type: field.TypeInt, Nullable: true},
 		{Name: "moneytransfer_id", Type: field.TypeInt, Nullable: true},
+		{Name: "product_id", Type: field.TypeInt, Nullable: true},
 	}
 	// PaymentsTable holds the schema information for the "payments" table.
 	PaymentsTable = &schema.Table{
@@ -304,6 +305,13 @@ var (
 				Columns: []*schema.Column{PaymentsColumns[7]},
 
 				RefColumns: []*schema.Column{MoneyTransfersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:  "payments_products_product_payment",
+				Columns: []*schema.Column{PaymentsColumns[8]},
+
+				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
@@ -438,6 +446,7 @@ func init() {
 	PaymentsTable.ForeignKeys[1].RefTable = InsurancesTable
 	PaymentsTable.ForeignKeys[2].RefTable = MembersTable
 	PaymentsTable.ForeignKeys[3].RefTable = MoneyTransfersTable
+	PaymentsTable.ForeignKeys[4].RefTable = ProductsTable
 	ProductsTable.ForeignKeys[0].RefTable = GendersTable
 	ProductsTable.ForeignKeys[1].RefTable = GroupOfAgesTable
 	ProductsTable.ForeignKeys[2].RefTable = OfficersTable
