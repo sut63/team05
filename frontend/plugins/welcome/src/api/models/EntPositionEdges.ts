@@ -54,8 +54,8 @@ export function EntPositionEdgesFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'members': !exists(json, 'members') ? undefined : ((json['members'] as Array<any>).map(EntMemberFromJSON)),
-        'officers': !exists(json, 'officers') ? undefined : ((json['officers'] as Array<any>).map(EntOfficerFromJSON)),
+        'members': !exists(json, 'Members') ? undefined : ((json['Members'] as Array<any>).map(EntMemberFromJSON)),
+        'officers': !exists(json, 'Officers') ? undefined : ((json['Officers'] as Array<any>).map(EntOfficerFromJSON)),
     };
 }
 
