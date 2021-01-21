@@ -17,7 +17,9 @@ type Payment struct {
 func (Payment) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("account_name").NotEmpty(),
-		field.String("account_number").NotEmpty(),
+		field.String("account_number").MinLen(10).MaxLen(10),
+		field.String("phone_number").MinLen(10).MaxLen(10),
+		field.Float("price").Min(0).Positive(),
 		field.Time("transfer_time").Default(time.Now),
 	}
 }

@@ -6522,6 +6522,9 @@ type PaymentMutation struct {
 	id                    *int
 	account_name          *string
 	account_number        *string
+	phone_number          *string
+	price                 *float64
+	addprice              *float64
 	transfer_time         *time.Time
 	clearedFields         map[string]struct{}
 	_Insurance            *int
@@ -6687,6 +6690,100 @@ func (m *PaymentMutation) OldAccountNumber(ctx context.Context) (v string, err e
 // ResetAccountNumber reset all changes of the "account_number" field.
 func (m *PaymentMutation) ResetAccountNumber() {
 	m.account_number = nil
+}
+
+// SetPhoneNumber sets the phone_number field.
+func (m *PaymentMutation) SetPhoneNumber(s string) {
+	m.phone_number = &s
+}
+
+// PhoneNumber returns the phone_number value in the mutation.
+func (m *PaymentMutation) PhoneNumber() (r string, exists bool) {
+	v := m.phone_number
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPhoneNumber returns the old phone_number value of the Payment.
+// If the Payment object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *PaymentMutation) OldPhoneNumber(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPhoneNumber is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPhoneNumber requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPhoneNumber: %w", err)
+	}
+	return oldValue.PhoneNumber, nil
+}
+
+// ResetPhoneNumber reset all changes of the "phone_number" field.
+func (m *PaymentMutation) ResetPhoneNumber() {
+	m.phone_number = nil
+}
+
+// SetPrice sets the price field.
+func (m *PaymentMutation) SetPrice(f float64) {
+	m.price = &f
+	m.addprice = nil
+}
+
+// Price returns the price value in the mutation.
+func (m *PaymentMutation) Price() (r float64, exists bool) {
+	v := m.price
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPrice returns the old price value of the Payment.
+// If the Payment object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *PaymentMutation) OldPrice(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPrice is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPrice requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPrice: %w", err)
+	}
+	return oldValue.Price, nil
+}
+
+// AddPrice adds f to price.
+func (m *PaymentMutation) AddPrice(f float64) {
+	if m.addprice != nil {
+		*m.addprice += f
+	} else {
+		m.addprice = &f
+	}
+}
+
+// AddedPrice returns the value that was added to the price field in this mutation.
+func (m *PaymentMutation) AddedPrice() (r float64, exists bool) {
+	v := m.addprice
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetPrice reset all changes of the "price" field.
+func (m *PaymentMutation) ResetPrice() {
+	m.price = nil
+	m.addprice = nil
 }
 
 // SetTransferTime sets the transfer_time field.
@@ -6896,12 +6993,18 @@ func (m *PaymentMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *PaymentMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 5)
 	if m.account_name != nil {
 		fields = append(fields, payment.FieldAccountName)
 	}
 	if m.account_number != nil {
 		fields = append(fields, payment.FieldAccountNumber)
+	}
+	if m.phone_number != nil {
+		fields = append(fields, payment.FieldPhoneNumber)
+	}
+	if m.price != nil {
+		fields = append(fields, payment.FieldPrice)
 	}
 	if m.transfer_time != nil {
 		fields = append(fields, payment.FieldTransferTime)
@@ -6918,6 +7021,10 @@ func (m *PaymentMutation) Field(name string) (ent.Value, bool) {
 		return m.AccountName()
 	case payment.FieldAccountNumber:
 		return m.AccountNumber()
+	case payment.FieldPhoneNumber:
+		return m.PhoneNumber()
+	case payment.FieldPrice:
+		return m.Price()
 	case payment.FieldTransferTime:
 		return m.TransferTime()
 	}
@@ -6933,6 +7040,10 @@ func (m *PaymentMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldAccountName(ctx)
 	case payment.FieldAccountNumber:
 		return m.OldAccountNumber(ctx)
+	case payment.FieldPhoneNumber:
+		return m.OldPhoneNumber(ctx)
+	case payment.FieldPrice:
+		return m.OldPrice(ctx)
 	case payment.FieldTransferTime:
 		return m.OldTransferTime(ctx)
 	}
@@ -6958,6 +7069,20 @@ func (m *PaymentMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAccountNumber(v)
 		return nil
+	case payment.FieldPhoneNumber:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPhoneNumber(v)
+		return nil
+	case payment.FieldPrice:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPrice(v)
+		return nil
 	case payment.FieldTransferTime:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -6972,13 +7097,21 @@ func (m *PaymentMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented
 // or decremented during this mutation.
 func (m *PaymentMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addprice != nil {
+		fields = append(fields, payment.FieldPrice)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was in/decremented
 // from a field with the given name. The second value indicates
 // that this field was not set, or was not define in the schema.
 func (m *PaymentMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case payment.FieldPrice:
+		return m.AddedPrice()
+	}
 	return nil, false
 }
 
@@ -6987,6 +7120,13 @@ func (m *PaymentMutation) AddedField(name string) (ent.Value, bool) {
 // type mismatch the field type.
 func (m *PaymentMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case payment.FieldPrice:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddPrice(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Payment numeric field %s", name)
 }
@@ -7020,6 +7160,12 @@ func (m *PaymentMutation) ResetField(name string) error {
 		return nil
 	case payment.FieldAccountNumber:
 		m.ResetAccountNumber()
+		return nil
+	case payment.FieldPhoneNumber:
+		m.ResetPhoneNumber()
+		return nil
+	case payment.FieldPrice:
+		m.ResetPrice()
 		return nil
 	case payment.FieldTransferTime:
 		m.ResetTransferTime()

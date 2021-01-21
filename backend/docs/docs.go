@@ -3110,6 +3110,12 @@ var doc = `{
                 "moneytransferID": {
                     "type": "integer"
                 },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
                 "transferTime": {
                     "type": "string"
                 }
@@ -3717,6 +3723,14 @@ var doc = `{
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
+                },
+                "phone_number": {
+                    "description": "PhoneNumber holds the value of the \"phone_number\" field.",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "Price holds the value of the \"price\" field.",
+                    "type": "number"
                 },
                 "transfer_time": {
                     "description": "TransferTime holds the value of the \"transfer_time\" field.",
