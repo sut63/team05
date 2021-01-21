@@ -139,9 +139,59 @@ func init() {
 	// paymentDescAccountNumber is the schema descriptor for account_number field.
 	paymentDescAccountNumber := paymentFields[1].Descriptor()
 	// payment.AccountNumberValidator is a validator for the "account_number" field. It is called by the builders before save.
-	payment.AccountNumberValidator = paymentDescAccountNumber.Validators[0].(func(string) error)
+	payment.AccountNumberValidator = func() func(string) error {
+		validators := paymentDescAccountNumber.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(account_number string) error {
+			for _, fn := range fns {
+				if err := fn(account_number); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// paymentDescPhoneNumber is the schema descriptor for phone_number field.
+	paymentDescPhoneNumber := paymentFields[2].Descriptor()
+	// payment.PhoneNumberValidator is a validator for the "phone_number" field. It is called by the builders before save.
+	payment.PhoneNumberValidator = func() func(string) error {
+		validators := paymentDescPhoneNumber.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(phone_number string) error {
+			for _, fn := range fns {
+				if err := fn(phone_number); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// paymentDescPrice is the schema descriptor for price field.
+	paymentDescPrice := paymentFields[3].Descriptor()
+	// payment.PriceValidator is a validator for the "price" field. It is called by the builders before save.
+	payment.PriceValidator = func() func(float64) error {
+		validators := paymentDescPrice.Validators
+		fns := [...]func(float64) error{
+			validators[0].(func(float64) error),
+			validators[1].(func(float64) error),
+		}
+		return func(price float64) error {
+			for _, fn := range fns {
+				if err := fn(price); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// paymentDescTransferTime is the schema descriptor for transfer_time field.
-	paymentDescTransferTime := paymentFields[2].Descriptor()
+	paymentDescTransferTime := paymentFields[4].Descriptor()
 	// payment.DefaultTransferTime holds the default value on creation for the transfer_time field.
 	payment.DefaultTransferTime = paymentDescTransferTime.Default.(func() time.Time)
 	positionFields := schema.Position{}.Fields()
