@@ -131,8 +131,9 @@ var (
 	// InsurancesColumns holds the columns for the "insurances" table.
 	InsurancesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "insurance_address", Type: field.TypeString},
+		{Name: "insurance_identification", Type: field.TypeString, Size: 13},
 		{Name: "insurance_insurer", Type: field.TypeString},
+		{Name: "insurance_address", Type: field.TypeString},
 		{Name: "insurance_time_buy", Type: field.TypeTime},
 		{Name: "insurance_time_firstpay", Type: field.TypeTime},
 		{Name: "hospital_id", Type: field.TypeInt, Nullable: true},
@@ -148,28 +149,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "insurances_hospitals_hospital_insurance",
-				Columns: []*schema.Column{InsurancesColumns[5]},
+				Columns: []*schema.Column{InsurancesColumns[6]},
 
 				RefColumns: []*schema.Column{HospitalsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "insurances_members_member_insurance",
-				Columns: []*schema.Column{InsurancesColumns[6]},
+				Columns: []*schema.Column{InsurancesColumns[7]},
 
 				RefColumns: []*schema.Column{MembersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "insurances_officers_officer_insurance",
-				Columns: []*schema.Column{InsurancesColumns[7]},
+				Columns: []*schema.Column{InsurancesColumns[8]},
 
 				RefColumns: []*schema.Column{OfficersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "insurances_products_product_insurance",
-				Columns: []*schema.Column{InsurancesColumns[8]},
+				Columns: []*schema.Column{InsurancesColumns[9]},
 
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,

@@ -25,6 +25,7 @@ import { EntOfficer } from '../../api/models/EntOfficer';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Link as RouterLink } from 'react-router-dom';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Alert } from '@material-ui/lab';
 import { ContentHeader } from '@backstage/core';
 import { Link } from '@material-ui/core';
@@ -67,9 +68,23 @@ const useStyles = makeStyles(theme => ({
 }
 }));
 
+interface Insurance {
+  productid: string;
+  memberid:   string;
+  hospitalid:   number;
+  officerid:        number;
+  insurance_age:       number;
+  insurance_identification:      number;
+  insurance_address:      number;
+  insurance_insurer: string;
+  insuranceTimeFirstpays: string;
+  // create_by: number;
+}
+
 export default function Insurance() {
   const classes = useStyles();
   const api = new DefaultApi();
+  const [alerttype, setAlertType] = useState(String);
 
   const [products, setProducts] = useState<EntProduct[]>([]);
   const [members, setMembers] = useState<EntMember[]>([]);
@@ -84,10 +99,34 @@ export default function Insurance() {
   const [memberid, setMemberid] = useState(Number);
   const [hospitalid, setHospitalid] = useState(Number);
   const [officerid, setOfficerid] = useState(Number);
-  const [insurance_addresss, setInsuranceAddress] = useState(String);
-  const [insurance_insurers, setInsuranceInsurer] = useState(String);
+  const [insurance_identification, setInsuranceIdentifications] = useState(String);
+  const [insurance_address, setInsuranceAddress] = useState(String);
+  const [insurance_insurer, setInsuranceInsurer] = useState(String);
   //const [insuranceTimeBuys, setInsuranceTimeBuy] = useState(String);
   const [insuranceTimeFirstpays, setInsuranceTimeFirstpay] = useState(String);
+
+  const [insurance_insurererror, setInsurerError] = React.useState('');
+  const [insurance_identificationerror, setIdentificationError] = React.useState('');
+  const [insurance_addressserror, setAddressError] = React.useState('');
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: toast => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
+  
+  const setErrorMessege = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
  
   useEffect(() => {
  
@@ -139,24 +178,87 @@ export default function Insurance() {
     checkJobPosition();
 
   }, [loading]);
+
+     const product_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setProductid(event.target.value as number);
+     };
  
-  /*const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: toast => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
-    },
-  });*/
+     const member_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setMemberid(event.target.value as number);
+     };
+ 
+     const hospital_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+       setHospitalid(event.target.value as number);
+      };
+ 
+      const officer_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+       setOfficerid(event.target.value as number);
+      };
+ 
+     const insuranceTimeFirstpay_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+       setInsuranceTimeFirstpay(event.target.value as string);
+     };
+
+      const insuranceIdentification_handleChange = (event: React.ChangeEvent<{ value: any }>) => {
+        const { value } = event.target;
+          const validateValue = value
+          checkpattern('insurance_identification', validateValue)
+          setInsuranceIdentifications(event.target.value as string);
+      };
+
+      const insuranceInsurer_handleChange = (event: React.ChangeEvent<{ value: any }>) => {
+        const { value } = event.target;
+          const validateValue = value
+          checkpattern('insurance_insurer', validateValue)
+          setInsuranceInsurer(event.target.value as string);
+      };
+
+      const insuranceAddress_handleChange = (event: React.ChangeEvent<{ value: any }>) => {
+        const { value } = event.target;
+          const validateValue = value
+          checkpattern('insurance_address', validateValue)
+          setInsuranceAddress(event.target.value as string);
+      };
+      
+      const validateAddress = (val: string) => {
+        return val.match("^[ก-๙0-9a-zA-Z- ./\\s]+$");
+     }
+     
+     const validateIdentification = (val: string) => {
+      return val.match("^[0-9]+$");
+    }
+
+     const validateInsurer = (val: string) => {
+       return val.match("^[a-zA-Z ]+$");
+     }
+
+     const checkpattern = (id: string, value:string) => {
+      console.log(value);
+      switch(id) {
+        case 'insurance_identification' :
+          validateIdentification(value) ? setIdentificationError('') : setIdentificationError('กรุณากรอกเลขประจำตัวประชาชนให้ถูกต้อง');
+          return;
+        case 'insurance_address':
+          validateAddress(value) ? setAddressError('') : setAddressError('กรุณากรอกที่อยู่ให้ถูกต้อง');
+          return;
+          case 'insurance_insurer':
+            validateInsurer(value) ? setInsurerError('') : setInsurerError('ระบุชื่อเป็นภาษาอังกฤษให้ถูกต้อง และตัวแรกเป็นตัวพิมพ์ใหญ่');
+        return;
+        default:
+          return;
+      }
+    }
+
 
   const CreateInsurance = async () => {
-    if ((insurance_addresss != null) && (insurance_addresss != "") && (insurance_insurers!= null) && (insurance_insurers != "") && (insuranceTimeFirstpays != null) && (insuranceTimeFirstpays != "") && (productid != null) && (memberid != null) && (hospitalid != null) && (officerid != null) ) {
+    /*if ( (insurance_address != null) && (insurance_address != "") && (insurance_insurer!= null) && (insurance_insurer != "") && (insuranceTimeFirstpays != null) && (insuranceTimeFirstpays != "") && (productid != null) && (memberid != null) && (hospitalid != null) && (officerid != null) ) {*/
+      if ((insuranceTimeFirstpays != null) && (insuranceTimeFirstpays != "")){
+      const apiUrl = 'http://localhost:8080/api/v1/insurances';
       const insurance = {
-         insuranceAddress      : insurance_addresss,
-         insuranceInsurer     : insurance_insurers,
+
+         insuranceIdentification : insurance_identification,
+         insuranceAddress      : insurance_address,
+         insuranceInsurer     : insurance_insurer,
          //insuranceTimeBuy     : insuranceTimeBuys , //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          insuranceTimeFirstpay  : insuranceTimeFirstpays  + "T00:00:00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          productID          : productid,
@@ -165,57 +267,55 @@ export default function Insurance() {
          officerID         : officerid,
       };
       console.log(insurance);
-    const res:any = await api.createInsurance({ insurance : insurance});
-             setStatus(true);
-            if (res.id != '') {
-                setAlert(true);
-                setTimeout(() => {
-                  setStatus(false);
-                }, 5000);
-            }
+      
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(insurance),
+      };
+          fetch(apiUrl, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+              console.log(data);
+              if (data.status === true) {
+                Toast.fire({
+                  icon: 'success',
+                  title: 'บันทึกข้อมูลสำเร็จ',
+                });
+              }
+              else {
+                ErrorCaseCheck(data.error.Name);
+                setAlertType("error");
+              }  
+            });
         }
         else {
-            setStatus(true);
-            setAlert(false);
-            setTimeout(() => {
-              setStatus(false);
-            }, 5000);
+          Toast.fire({
+            icon: 'error',
+            title: 'บันทึกข้อมูลไม่สำเร็จ',
+          });
+          setAlertType("error");
         }
-    };
- 
-   const product_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-   setProductid(event.target.value as number);
-    };
+          setStatus(true);
+        
+      };
 
-   const member_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-     setMemberid(event.target.value as number);
-    };
-
-    const hospital_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setHospitalid(event.target.value as number);
-     };
-
-     const officer_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setOfficerid(event.target.value as number);
-     };
-
-     const insuranceAddress_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setInsuranceAddress(event.target.value as string);
-     };
-
-     const insuranceInsurer_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setInsuranceInsurer(event.target.value as string);
-     };
-
-     /*const insuranceTimeBuy_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setInsuranceTimeBuy(event.target.value as string);
-    };*/
-
-    const insuranceTimeFirstpay_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-      setInsuranceTimeFirstpay(event.target.value as string);
-    };
-    
-    
+      const ErrorCaseCheck = (field: string) => {
+        switch(field) {
+          case 'insurance_identification':
+            setErrorMessege("error","ระบุเลขประจำตัวประชาชนให้ครบ 13 หลัก");
+            return;
+          case 'insurance_insurer':
+            setErrorMessege("error","ระบุชื่อเป็นภาษาอังกฤษให้ถูกต้อง และตัวแรกเป็นตัวพิมพ์ใหญ่");
+            return;
+          case 'insurance_address':
+            setErrorMessege("error","ระบุที่อยู่ที่ติดต่อได้");
+            return;
+          default:
+            setErrorMessege("error","บันทึกข้อมูลไม่สำเร็จ");
+            return;
+        }
+      }
 
     return (
       <Page theme={pageTheme.tool}>
@@ -223,20 +323,6 @@ export default function Insurance() {
         </Header>
         <Content>
         <ContentHeader title="บันทึกการซื้อประกันสุขภาพ">
-
-       {status ? (
-         <div>
-           {alert ? (
-             <Alert variant="filled" severity="success">
-               บันทึกเรียบร้อย!
-             </Alert>
-           ) : (
-             <Alert variant="filled" severity="error" style={{ marginTop: 20 }}>
-               บันทึกไม่สำเร็จ!
-             </Alert>
-           )}
-         </div>
-       ) : null}
 
      </ContentHeader>
           <Container maxWidth="sm">
@@ -348,24 +434,26 @@ export default function Insurance() {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={3}>
-              <div className={classes.paper}>ที่อยู่ของผู้ซื้อ</div>
+            <Grid item xs={3}>
+              <div className={classes.paper}>เลขประจำตัวประชาชน</div>
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   //style={{ width: 300 }}
+                  error = {insurance_identificationerror ? true : false}
                   id="outlined-number"
-                  name="insurance_addresss"
+                  name="insurance_identification"
                   multiline
                   rows={4}
-                  value={insurance_addresss}
+                  value={insurance_identification}
                   type="string"
-                  onChange={insuranceAddress_handleChange}
+                  onChange={insuranceIdentification_handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   variant="outlined"
+                  helperText ={insurance_identificationerror}
                 />
               </FormControl>
             </Grid>
@@ -377,20 +465,47 @@ export default function Insurance() {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   //style={{ width: 300 }}
+                  error = {insurance_insurererror ? true : false}
                   id="outlined-number"
                   name="insurance_insurer"
                   multiline
                   rows={4}
-                  value={insurance_insurers}
+                  value={insurance_insurer}
                   type="string"
                   onChange={insuranceInsurer_handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   variant="outlined"
+                  helperText ={insurance_insurererror}
                 />
               </FormControl>
             </Grid>
+
+            <Grid item xs={3}>
+              <div className={classes.paper}>ที่อยู่ของผู้ซื้อ</div>
+            </Grid>
+            <Grid item xs={9}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  //style={{ width: 300 }}
+                  error = {insurance_addressserror ? true : false}
+                  id="outlined-number"
+                  name="insurance_address"
+                  multiline
+                  rows={4}
+                  value={insurance_address}
+                  type="string"
+                  onChange={insuranceAddress_handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  helperText ={insurance_addressserror}
+                />
+              </FormControl>
+            </Grid>
+
   
               <Grid item xs={3}>
                 <div className={classes.paper}>วันที่ต้องการจ่ายงวดแรก</div>

@@ -3043,6 +3043,9 @@ var doc = `{
                 "insuranceAddress": {
                     "type": "string"
                 },
+                "insuranceIdentification": {
+                    "type": "string"
+                },
                 "insuranceInsurer": {
                     "type": "string"
                 },
@@ -3424,6 +3427,10 @@ var doc = `{
                 },
                 "insurance_address": {
                     "description": "InsuranceAddress holds the value of the \"insurance_address\" field.",
+                    "type": "string"
+                },
+                "insurance_identification": {
+                    "description": "InsuranceIdentification holds the value of the \"insurance_identification\" field.",
                     "type": "string"
                 },
                 "insurance_insurer": {

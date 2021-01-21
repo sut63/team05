@@ -54,8 +54,8 @@ export function EntBankEdgesFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'bankPayback': !exists(json, 'BankPayback') ? undefined : ((json['BankPayback'] as Array<any>).map(EntPaybackFromJSON)),
-        'bankPayment': !exists(json, 'BankPayment') ? undefined : ((json['BankPayment'] as Array<any>).map(EntPaymentFromJSON)),
+        'bankPayback': !exists(json, 'bankPayback') ? undefined : ((json['bankPayback'] as Array<any>).map(EntPaybackFromJSON)),
+        'bankPayment': !exists(json, 'bankPayment') ? undefined : ((json['bankPayment'] as Array<any>).map(EntPaymentFromJSON)),
     };
 }
 

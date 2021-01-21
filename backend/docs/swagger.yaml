@@ -23,6 +23,8 @@ definitions:
         type: integer
       insuranceAddress:
         type: string
+      insuranceIdentification:
+        type: string
       insuranceInsurer:
         type: string
       insuranceTimeBuy:
@@ -308,6 +310,10 @@ definitions:
         type: integer
       insurance_address:
         description: InsuranceAddress holds the value of the "insurance_address" field.
+        type: string
+      insurance_identification:
+        description: InsuranceIdentification holds the value of the "insurance_identification"
+          field.
         type: string
       insurance_insurer:
         description: InsuranceInsurer holds the value of the "insurance_insurer" field.
