@@ -33,9 +33,9 @@ func (iu *InsuranceUpdate) Where(ps ...predicate.Insurance) *InsuranceUpdate {
 	return iu
 }
 
-// SetInsuranceIdentification sets the insurance_identification field.
-func (iu *InsuranceUpdate) SetInsuranceIdentification(s string) *InsuranceUpdate {
-	iu.mutation.SetInsuranceIdentification(s)
+// SetInsuranceAddress sets the insurance_address field.
+func (iu *InsuranceUpdate) SetInsuranceAddress(s string) *InsuranceUpdate {
+	iu.mutation.SetInsuranceAddress(s)
 	return iu
 }
 
@@ -45,15 +45,31 @@ func (iu *InsuranceUpdate) SetInsuranceInsurer(s string) *InsuranceUpdate {
 	return iu
 }
 
-// SetInsuranceAddress sets the insurance_address field.
-func (iu *InsuranceUpdate) SetInsuranceAddress(s string) *InsuranceUpdate {
-	iu.mutation.SetInsuranceAddress(s)
+// SetInsuranceTimeBuy sets the insurance_time_buy field.
+func (iu *InsuranceUpdate) SetInsuranceTimeBuy(t time.Time) *InsuranceUpdate {
+	iu.mutation.SetInsuranceTimeBuy(t)
+	return iu
+}
+
+// SetNillableInsuranceTimeBuy sets the insurance_time_buy field if the given value is not nil.
+func (iu *InsuranceUpdate) SetNillableInsuranceTimeBuy(t *time.Time) *InsuranceUpdate {
+	if t != nil {
+		iu.SetInsuranceTimeBuy(*t)
+	}
 	return iu
 }
 
 // SetInsuranceTimeFirstpay sets the insurance_time_firstpay field.
 func (iu *InsuranceUpdate) SetInsuranceTimeFirstpay(t time.Time) *InsuranceUpdate {
 	iu.mutation.SetInsuranceTimeFirstpay(t)
+	return iu
+}
+
+// SetNillableInsuranceTimeFirstpay sets the insurance_time_firstpay field if the given value is not nil.
+func (iu *InsuranceUpdate) SetNillableInsuranceTimeFirstpay(t *time.Time) *InsuranceUpdate {
+	if t != nil {
+		iu.SetInsuranceTimeFirstpay(*t)
+	}
 	return iu
 }
 
@@ -194,19 +210,14 @@ func (iu *InsuranceUpdate) RemoveInsurancePayment(p ...*Payment) *InsuranceUpdat
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (iu *InsuranceUpdate) Save(ctx context.Context) (int, error) {
-	if v, ok := iu.mutation.InsuranceIdentification(); ok {
-		if err := insurance.InsuranceIdentificationValidator(v); err != nil {
-			return 0, &ValidationError{Name: "insurance_identification", err: fmt.Errorf("ent: validator failed for field \"insurance_identification\": %w", err)}
+	if v, ok := iu.mutation.InsuranceAddress(); ok {
+		if err := insurance.InsuranceAddressValidator(v); err != nil {
+			return 0, &ValidationError{Name: "insurance_address", err: fmt.Errorf("ent: validator failed for field \"insurance_address\": %w", err)}
 		}
 	}
 	if v, ok := iu.mutation.InsuranceInsurer(); ok {
 		if err := insurance.InsuranceInsurerValidator(v); err != nil {
 			return 0, &ValidationError{Name: "insurance_insurer", err: fmt.Errorf("ent: validator failed for field \"insurance_insurer\": %w", err)}
-		}
-	}
-	if v, ok := iu.mutation.InsuranceAddress(); ok {
-		if err := insurance.InsuranceAddressValidator(v); err != nil {
-			return 0, &ValidationError{Name: "insurance_address", err: fmt.Errorf("ent: validator failed for field \"insurance_address\": %w", err)}
 		}
 	}
 
@@ -277,11 +288,11 @@ func (iu *InsuranceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := iu.mutation.InsuranceIdentification(); ok {
+	if value, ok := iu.mutation.InsuranceAddress(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: insurance.FieldInsuranceIdentification,
+			Column: insurance.FieldInsuranceAddress,
 		})
 	}
 	if value, ok := iu.mutation.InsuranceInsurer(); ok {
@@ -291,11 +302,11 @@ func (iu *InsuranceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: insurance.FieldInsuranceInsurer,
 		})
 	}
-	if value, ok := iu.mutation.InsuranceAddress(); ok {
+	if value, ok := iu.mutation.InsuranceTimeBuy(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeTime,
 			Value:  value,
-			Column: insurance.FieldInsuranceAddress,
+			Column: insurance.FieldInsuranceTimeBuy,
 		})
 	}
 	if value, ok := iu.mutation.InsuranceTimeFirstpay(); ok {
@@ -501,9 +512,9 @@ type InsuranceUpdateOne struct {
 	mutation *InsuranceMutation
 }
 
-// SetInsuranceIdentification sets the insurance_identification field.
-func (iuo *InsuranceUpdateOne) SetInsuranceIdentification(s string) *InsuranceUpdateOne {
-	iuo.mutation.SetInsuranceIdentification(s)
+// SetInsuranceAddress sets the insurance_address field.
+func (iuo *InsuranceUpdateOne) SetInsuranceAddress(s string) *InsuranceUpdateOne {
+	iuo.mutation.SetInsuranceAddress(s)
 	return iuo
 }
 
@@ -513,15 +524,31 @@ func (iuo *InsuranceUpdateOne) SetInsuranceInsurer(s string) *InsuranceUpdateOne
 	return iuo
 }
 
-// SetInsuranceAddress sets the insurance_address field.
-func (iuo *InsuranceUpdateOne) SetInsuranceAddress(s string) *InsuranceUpdateOne {
-	iuo.mutation.SetInsuranceAddress(s)
+// SetInsuranceTimeBuy sets the insurance_time_buy field.
+func (iuo *InsuranceUpdateOne) SetInsuranceTimeBuy(t time.Time) *InsuranceUpdateOne {
+	iuo.mutation.SetInsuranceTimeBuy(t)
+	return iuo
+}
+
+// SetNillableInsuranceTimeBuy sets the insurance_time_buy field if the given value is not nil.
+func (iuo *InsuranceUpdateOne) SetNillableInsuranceTimeBuy(t *time.Time) *InsuranceUpdateOne {
+	if t != nil {
+		iuo.SetInsuranceTimeBuy(*t)
+	}
 	return iuo
 }
 
 // SetInsuranceTimeFirstpay sets the insurance_time_firstpay field.
 func (iuo *InsuranceUpdateOne) SetInsuranceTimeFirstpay(t time.Time) *InsuranceUpdateOne {
 	iuo.mutation.SetInsuranceTimeFirstpay(t)
+	return iuo
+}
+
+// SetNillableInsuranceTimeFirstpay sets the insurance_time_firstpay field if the given value is not nil.
+func (iuo *InsuranceUpdateOne) SetNillableInsuranceTimeFirstpay(t *time.Time) *InsuranceUpdateOne {
+	if t != nil {
+		iuo.SetInsuranceTimeFirstpay(*t)
+	}
 	return iuo
 }
 
@@ -662,19 +689,14 @@ func (iuo *InsuranceUpdateOne) RemoveInsurancePayment(p ...*Payment) *InsuranceU
 
 // Save executes the query and returns the updated entity.
 func (iuo *InsuranceUpdateOne) Save(ctx context.Context) (*Insurance, error) {
-	if v, ok := iuo.mutation.InsuranceIdentification(); ok {
-		if err := insurance.InsuranceIdentificationValidator(v); err != nil {
-			return nil, &ValidationError{Name: "insurance_identification", err: fmt.Errorf("ent: validator failed for field \"insurance_identification\": %w", err)}
+	if v, ok := iuo.mutation.InsuranceAddress(); ok {
+		if err := insurance.InsuranceAddressValidator(v); err != nil {
+			return nil, &ValidationError{Name: "insurance_address", err: fmt.Errorf("ent: validator failed for field \"insurance_address\": %w", err)}
 		}
 	}
 	if v, ok := iuo.mutation.InsuranceInsurer(); ok {
 		if err := insurance.InsuranceInsurerValidator(v); err != nil {
 			return nil, &ValidationError{Name: "insurance_insurer", err: fmt.Errorf("ent: validator failed for field \"insurance_insurer\": %w", err)}
-		}
-	}
-	if v, ok := iuo.mutation.InsuranceAddress(); ok {
-		if err := insurance.InsuranceAddressValidator(v); err != nil {
-			return nil, &ValidationError{Name: "insurance_address", err: fmt.Errorf("ent: validator failed for field \"insurance_address\": %w", err)}
 		}
 	}
 
@@ -743,11 +765,11 @@ func (iuo *InsuranceUpdateOne) sqlSave(ctx context.Context) (i *Insurance, err e
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Insurance.ID for update")}
 	}
 	_spec.Node.ID.Value = id
-	if value, ok := iuo.mutation.InsuranceIdentification(); ok {
+	if value, ok := iuo.mutation.InsuranceAddress(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: insurance.FieldInsuranceIdentification,
+			Column: insurance.FieldInsuranceAddress,
 		})
 	}
 	if value, ok := iuo.mutation.InsuranceInsurer(); ok {
@@ -757,11 +779,11 @@ func (iuo *InsuranceUpdateOne) sqlSave(ctx context.Context) (i *Insurance, err e
 			Column: insurance.FieldInsuranceInsurer,
 		})
 	}
-	if value, ok := iuo.mutation.InsuranceAddress(); ok {
+	if value, ok := iuo.mutation.InsuranceTimeBuy(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeTime,
 			Value:  value,
-			Column: insurance.FieldInsuranceAddress,
+			Column: insurance.FieldInsuranceTimeBuy,
 		})
 	}
 	if value, ok := iuo.mutation.InsuranceTimeFirstpay(); ok {

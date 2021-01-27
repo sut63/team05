@@ -185,11 +185,26 @@ func (pc *ProductCreate) Save(ctx context.Context) (*Product, error) {
 	if _, ok := pc.mutation.ProductPrice(); !ok {
 		return nil, &ValidationError{Name: "product_price", err: errors.New("ent: missing required field \"product_price\"")}
 	}
+	if v, ok := pc.mutation.ProductPrice(); ok {
+		if err := product.ProductPriceValidator(v); err != nil {
+			return nil, &ValidationError{Name: "product_price", err: fmt.Errorf("ent: validator failed for field \"product_price\": %w", err)}
+		}
+	}
 	if _, ok := pc.mutation.ProductTime(); !ok {
 		return nil, &ValidationError{Name: "product_time", err: errors.New("ent: missing required field \"product_time\"")}
 	}
+	if v, ok := pc.mutation.ProductTime(); ok {
+		if err := product.ProductTimeValidator(v); err != nil {
+			return nil, &ValidationError{Name: "product_time", err: fmt.Errorf("ent: validator failed for field \"product_time\": %w", err)}
+		}
+	}
 	if _, ok := pc.mutation.ProductPaymentOfYear(); !ok {
 		return nil, &ValidationError{Name: "product_payment_of_year", err: errors.New("ent: missing required field \"product_payment_of_year\"")}
+	}
+	if v, ok := pc.mutation.ProductPaymentOfYear(); ok {
+		if err := product.ProductPaymentOfYearValidator(v); err != nil {
+			return nil, &ValidationError{Name: "product_payment_of_year", err: fmt.Errorf("ent: validator failed for field \"product_payment_of_year\": %w", err)}
+		}
 	}
 	var (
 		err  error

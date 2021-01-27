@@ -51,18 +51,6 @@ export interface EntPayment {
      */
     id?: number;
     /**
-     * PhoneNumber holds the value of the "phone_number" field.
-     * @type {string}
-     * @memberof EntPayment
-     */
-    phoneNumber?: string;
-    /**
-     * Price holds the value of the "price" field.
-     * @type {number}
-     * @memberof EntPayment
-     */
-    price?: number;
-    /**
      * TransferTime holds the value of the "transfer_time" field.
      * @type {string}
      * @memberof EntPayment
@@ -84,8 +72,6 @@ export function EntPaymentFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'accountNumber': !exists(json, 'account_number') ? undefined : json['account_number'],
         'edges': !exists(json, 'edges') ? undefined : EntPaymentEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'phoneNumber': !exists(json, 'phone_number') ? undefined : json['phone_number'],
-        'price': !exists(json, 'price') ? undefined : json['price'],
         'transferTime': !exists(json, 'transfer_time') ? undefined : json['transfer_time'],
     };
 }
@@ -103,8 +89,6 @@ export function EntPaymentToJSON(value?: EntPayment | null): any {
         'account_number': value.accountNumber,
         'edges': EntPaymentEdgesToJSON(value.edges),
         'id': value.id,
-        'phone_number': value.phoneNumber,
-        'price': value.price,
         'transfer_time': value.transferTime,
     };
 }

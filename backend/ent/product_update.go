@@ -286,6 +286,21 @@ func (pu *ProductUpdate) Save(ctx context.Context) (int, error) {
 			return 0, &ValidationError{Name: "product_name", err: fmt.Errorf("ent: validator failed for field \"product_name\": %w", err)}
 		}
 	}
+	if v, ok := pu.mutation.ProductPrice(); ok {
+		if err := product.ProductPriceValidator(v); err != nil {
+			return 0, &ValidationError{Name: "product_price", err: fmt.Errorf("ent: validator failed for field \"product_price\": %w", err)}
+		}
+	}
+	if v, ok := pu.mutation.ProductTime(); ok {
+		if err := product.ProductTimeValidator(v); err != nil {
+			return 0, &ValidationError{Name: "product_time", err: fmt.Errorf("ent: validator failed for field \"product_time\": %w", err)}
+		}
+	}
+	if v, ok := pu.mutation.ProductPaymentOfYear(); ok {
+		if err := product.ProductPaymentOfYearValidator(v); err != nil {
+			return 0, &ValidationError{Name: "product_payment_of_year", err: fmt.Errorf("ent: validator failed for field \"product_payment_of_year\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -928,6 +943,21 @@ func (puo *ProductUpdateOne) Save(ctx context.Context) (*Product, error) {
 	if v, ok := puo.mutation.ProductName(); ok {
 		if err := product.ProductNameValidator(v); err != nil {
 			return nil, &ValidationError{Name: "product_name", err: fmt.Errorf("ent: validator failed for field \"product_name\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.ProductPrice(); ok {
+		if err := product.ProductPriceValidator(v); err != nil {
+			return nil, &ValidationError{Name: "product_price", err: fmt.Errorf("ent: validator failed for field \"product_price\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.ProductTime(); ok {
+		if err := product.ProductTimeValidator(v); err != nil {
+			return nil, &ValidationError{Name: "product_time", err: fmt.Errorf("ent: validator failed for field \"product_time\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.ProductPaymentOfYear(); ok {
+		if err := product.ProductPaymentOfYearValidator(v); err != nil {
+			return nil, &ValidationError{Name: "product_payment_of_year", err: fmt.Errorf("ent: validator failed for field \"product_payment_of_year\": %w", err)}
 		}
 	}
 

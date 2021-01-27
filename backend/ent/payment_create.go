@@ -36,18 +36,6 @@ func (pc *PaymentCreate) SetAccountNumber(s string) *PaymentCreate {
 	return pc
 }
 
-// SetPhoneNumber sets the phone_number field.
-func (pc *PaymentCreate) SetPhoneNumber(s string) *PaymentCreate {
-	pc.mutation.SetPhoneNumber(s)
-	return pc
-}
-
-// SetPrice sets the price field.
-func (pc *PaymentCreate) SetPrice(f float64) *PaymentCreate {
-	pc.mutation.SetPrice(f)
-	return pc
-}
-
 // SetTransferTime sets the transfer_time field.
 func (pc *PaymentCreate) SetTransferTime(t time.Time) *PaymentCreate {
 	pc.mutation.SetTransferTime(t)
@@ -161,22 +149,6 @@ func (pc *PaymentCreate) Save(ctx context.Context) (*Payment, error) {
 			return nil, &ValidationError{Name: "account_number", err: fmt.Errorf("ent: validator failed for field \"account_number\": %w", err)}
 		}
 	}
-	if _, ok := pc.mutation.PhoneNumber(); !ok {
-		return nil, &ValidationError{Name: "phone_number", err: errors.New("ent: missing required field \"phone_number\"")}
-	}
-	if v, ok := pc.mutation.PhoneNumber(); ok {
-		if err := payment.PhoneNumberValidator(v); err != nil {
-			return nil, &ValidationError{Name: "phone_number", err: fmt.Errorf("ent: validator failed for field \"phone_number\": %w", err)}
-		}
-	}
-	if _, ok := pc.mutation.Price(); !ok {
-		return nil, &ValidationError{Name: "price", err: errors.New("ent: missing required field \"price\"")}
-	}
-	if v, ok := pc.mutation.Price(); ok {
-		if err := payment.PriceValidator(v); err != nil {
-			return nil, &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
-		}
-	}
 	if _, ok := pc.mutation.TransferTime(); !ok {
 		v := payment.DefaultTransferTime()
 		pc.mutation.SetTransferTime(v)
@@ -256,22 +228,6 @@ func (pc *PaymentCreate) createSpec() (*Payment, *sqlgraph.CreateSpec) {
 			Column: payment.FieldAccountNumber,
 		})
 		pa.AccountNumber = value
-	}
-	if value, ok := pc.mutation.PhoneNumber(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: payment.FieldPhoneNumber,
-		})
-		pa.PhoneNumber = value
-	}
-	if value, ok := pc.mutation.Price(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeFloat64,
-			Value:  value,
-			Column: payment.FieldPrice,
-		})
-		pa.Price = value
 	}
 	if value, ok := pc.mutation.TransferTime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

@@ -14,6 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Swal from 'sweetalert2'; // alert
 
 import { EntGender } from '../../api/models/EntGender'; // import interface Gender
 import { EntGroupOfAge } from '../../api/models/EntGroupOfAge'; // import interface GroupOfAge
@@ -112,7 +113,20 @@ export default function Create() {
   }, [loading]);
 
 
-  const CreateProduct = async () => {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: toast => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
+
+
+  /*const CreateProduct = async () => {
     if ((productName != null) && (productName != "") && (productPrice != 0) && (productPrice != null) 
     && (productTime != 0) && (productTime != null) && (productPaymentOfYear != null) && (productPaymentOfYear != 0) 
     && (genderID != null) && (groupOfAgeID != null) && (officerID != null)) { 
@@ -140,7 +154,72 @@ export default function Create() {
             setStatus(true);
             setAlert(false);
         }
-    };
+    }; */
+
+    const product = {
+      gender: genderID,
+      groupOfAge: groupOfAgeID,
+      officer: officerID,
+
+      productName: String(productName),
+      productPrice: Number(productPrice),
+      productTime: Number(productTime),
+      productPaymentOfYear: Number(productPaymentOfYear),
+      };
+
+      function save() {
+
+        const apiUrl = 'http://localhost:8080/api/v1/products';
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(product),
+        };
+
+        console.log(product); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
+
+        fetch(apiUrl, requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            if (data.status == true) {
+              //clear();
+              Toast.fire({
+                icon: 'success',
+                title: 'บันทึกข้อมูลสำเร็จ',
+              });
+            } else {
+              checkCaseSaveError(data.error.Name)
+            }
+          });
+      }
+  // alert error
+  const alertMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+  // check error 
+  const checkCaseSaveError = (field: string) => {
+    switch(field) {
+      case 'product_name':
+        alertMessage("error","เป็นตัวใหญ่เท่านั้น (ex: YONGMAN)");
+        return;
+      case 'product_price':
+        alertMessage("error","จำนวนเงินประกันขั้นต่ำ 100,000 บาท");
+        return;
+      case 'product_time':
+        alertMessage("error","ปีไม่ถูกต้อง");
+        return;
+      case 'product_payment_of_year':
+        alertMessage("error","ผ่อนชำระขั้นต่ำ 10,000 บาท");
+        return;
+      default:
+        alertMessage("error","บันทึกข้อมูลไม่สำเร็จ");
+        return;
+    }
+  }
 
 
   const GenderhandleChange = (
@@ -258,7 +337,7 @@ export default function Create() {
             <Grid item xs={8}>
             <FormControl variant="outlined" className={classes.formControl}>
              <OutlinedInput
-                //id="outlined-adornment-amount"
+                id="outlined-adornment-amount"
                 value={productTime}
                 onChange={ProductTimehandleChange}
                 startAdornment={<InputAdornment position="start">ปี</InputAdornment>}
@@ -352,7 +431,7 @@ export default function Create() {
                 className={classes.button}
                 startIcon={<SaveIcon />}
                 onClick={() => {
-                  CreateProduct();
+                  save();
                 }}
               >
                 Save

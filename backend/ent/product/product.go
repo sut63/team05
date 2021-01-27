@@ -103,4 +103,10 @@ var ForeignKeys = []string{
 var (
 	// ProductNameValidator is a validator for the "product_name" field. It is called by the builders before save.
 	ProductNameValidator func(string) error
+	// ProductPriceValidator is a validator for the "product_price" field. It is called by the builders before save.
+	ProductPriceValidator func(int) error
+	// ProductTimeValidator is a validator for the "product_time" field. It is called by the builders before save.
+	ProductTimeValidator func(int) error
+	// ProductPaymentOfYearValidator is a validator for the "product_payment_of_year" field. It is called by the builders before save.
+	ProductPaymentOfYearValidator func(int) error
 )

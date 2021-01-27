@@ -99,7 +99,7 @@ export function EntOfficerEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
         'officerPayback': !exists(json, 'OfficerPayback') ? undefined : ((json['OfficerPayback'] as Array<any>).map(EntPaybackFromJSON)),
         'officerProduct': !exists(json, 'OfficerProduct') ? undefined : ((json['OfficerProduct'] as Array<any>).map(EntProductFromJSON)),
         'officerRecordinsurance': !exists(json, 'OfficerRecordinsurance') ? undefined : ((json['OfficerRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
-        'position': !exists(json, 'Position') ? undefined : EntPositionFromJSON(json['Position']),
+        'position': !exists(json, 'position') ? undefined : EntPositionFromJSON(json['position']),
     };
 }
 

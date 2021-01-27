@@ -45,12 +45,6 @@ export interface EntInsurance {
      */
     insuranceAddress?: string;
     /**
-     * InsuranceIdentification holds the value of the "insurance_identification" field.
-     * @type {string}
-     * @memberof EntInsurance
-     */
-    insuranceIdentification?: string;
-    /**
      * InsuranceInsurer holds the value of the "insurance_insurer" field.
      * @type {string}
      * @memberof EntInsurance
@@ -83,7 +77,6 @@ export function EntInsuranceFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'edges': !exists(json, 'edges') ? undefined : EntInsuranceEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
         'insuranceAddress': !exists(json, 'insurance_address') ? undefined : json['insurance_address'],
-        'insuranceIdentification': !exists(json, 'insurance_identification') ? undefined : json['insurance_identification'],
         'insuranceInsurer': !exists(json, 'insurance_insurer') ? undefined : json['insurance_insurer'],
         'insuranceTimeBuy': !exists(json, 'insurance_time_buy') ? undefined : json['insurance_time_buy'],
         'insuranceTimeFirstpay': !exists(json, 'insurance_time_firstpay') ? undefined : json['insurance_time_firstpay'],
@@ -102,7 +95,6 @@ export function EntInsuranceToJSON(value?: EntInsurance | null): any {
         'edges': EntInsuranceEdgesToJSON(value.edges),
         'id': value.id,
         'insurance_address': value.insuranceAddress,
-        'insurance_identification': value.insuranceIdentification,
         'insurance_insurer': value.insuranceInsurer,
         'insurance_time_buy': value.insuranceTimeBuy,
         'insurance_time_firstpay': value.insuranceTimeFirstpay,
