@@ -33,6 +33,31 @@ func (ru *RecordinsuranceUpdate) Where(ps ...predicate.Recordinsurance) *Recordi
 	return ru
 }
 
+// SetNumberOfDaysOfTreat sets the number_of_days_of_treat field.
+func (ru *RecordinsuranceUpdate) SetNumberOfDaysOfTreat(i int) *RecordinsuranceUpdate {
+	ru.mutation.ResetNumberOfDaysOfTreat()
+	ru.mutation.SetNumberOfDaysOfTreat(i)
+	return ru
+}
+
+// AddNumberOfDaysOfTreat adds i to number_of_days_of_treat.
+func (ru *RecordinsuranceUpdate) AddNumberOfDaysOfTreat(i int) *RecordinsuranceUpdate {
+	ru.mutation.AddNumberOfDaysOfTreat(i)
+	return ru
+}
+
+// SetRecordinsuranceContact sets the recordinsurance_contact field.
+func (ru *RecordinsuranceUpdate) SetRecordinsuranceContact(s string) *RecordinsuranceUpdate {
+	ru.mutation.SetRecordinsuranceContact(s)
+	return ru
+}
+
+// SetRecordinsuranceAddress sets the recordinsurance_address field.
+func (ru *RecordinsuranceUpdate) SetRecordinsuranceAddress(s string) *RecordinsuranceUpdate {
+	ru.mutation.SetRecordinsuranceAddress(s)
+	return ru
+}
+
 // SetRecordinsuranceTime sets the recordinsurance_time field.
 func (ru *RecordinsuranceUpdate) SetRecordinsuranceTime(t time.Time) *RecordinsuranceUpdate {
 	ru.mutation.SetRecordinsuranceTime(t)
@@ -179,6 +204,21 @@ func (ru *RecordinsuranceUpdate) ClearAmountpaid() *RecordinsuranceUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (ru *RecordinsuranceUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := ru.mutation.NumberOfDaysOfTreat(); ok {
+		if err := recordinsurance.NumberOfDaysOfTreatValidator(v); err != nil {
+			return 0, &ValidationError{Name: "number_of_days_of_treat", err: fmt.Errorf("ent: validator failed for field \"number_of_days_of_treat\": %w", err)}
+		}
+	}
+	if v, ok := ru.mutation.RecordinsuranceContact(); ok {
+		if err := recordinsurance.RecordinsuranceContactValidator(v); err != nil {
+			return 0, &ValidationError{Name: "recordinsurance_contact", err: fmt.Errorf("ent: validator failed for field \"recordinsurance_contact\": %w", err)}
+		}
+	}
+	if v, ok := ru.mutation.RecordinsuranceAddress(); ok {
+		if err := recordinsurance.RecordinsuranceAddressValidator(v); err != nil {
+			return 0, &ValidationError{Name: "recordinsurance_address", err: fmt.Errorf("ent: validator failed for field \"recordinsurance_address\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -246,6 +286,34 @@ func (ru *RecordinsuranceUpdate) sqlSave(ctx context.Context) (n int, err error)
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ru.mutation.NumberOfDaysOfTreat(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: recordinsurance.FieldNumberOfDaysOfTreat,
+		})
+	}
+	if value, ok := ru.mutation.AddedNumberOfDaysOfTreat(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: recordinsurance.FieldNumberOfDaysOfTreat,
+		})
+	}
+	if value, ok := ru.mutation.RecordinsuranceContact(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: recordinsurance.FieldRecordinsuranceContact,
+		})
+	}
+	if value, ok := ru.mutation.RecordinsuranceAddress(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: recordinsurance.FieldRecordinsuranceAddress,
+		})
 	}
 	if value, ok := ru.mutation.RecordinsuranceTime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -447,6 +515,31 @@ type RecordinsuranceUpdateOne struct {
 	mutation *RecordinsuranceMutation
 }
 
+// SetNumberOfDaysOfTreat sets the number_of_days_of_treat field.
+func (ruo *RecordinsuranceUpdateOne) SetNumberOfDaysOfTreat(i int) *RecordinsuranceUpdateOne {
+	ruo.mutation.ResetNumberOfDaysOfTreat()
+	ruo.mutation.SetNumberOfDaysOfTreat(i)
+	return ruo
+}
+
+// AddNumberOfDaysOfTreat adds i to number_of_days_of_treat.
+func (ruo *RecordinsuranceUpdateOne) AddNumberOfDaysOfTreat(i int) *RecordinsuranceUpdateOne {
+	ruo.mutation.AddNumberOfDaysOfTreat(i)
+	return ruo
+}
+
+// SetRecordinsuranceContact sets the recordinsurance_contact field.
+func (ruo *RecordinsuranceUpdateOne) SetRecordinsuranceContact(s string) *RecordinsuranceUpdateOne {
+	ruo.mutation.SetRecordinsuranceContact(s)
+	return ruo
+}
+
+// SetRecordinsuranceAddress sets the recordinsurance_address field.
+func (ruo *RecordinsuranceUpdateOne) SetRecordinsuranceAddress(s string) *RecordinsuranceUpdateOne {
+	ruo.mutation.SetRecordinsuranceAddress(s)
+	return ruo
+}
+
 // SetRecordinsuranceTime sets the recordinsurance_time field.
 func (ruo *RecordinsuranceUpdateOne) SetRecordinsuranceTime(t time.Time) *RecordinsuranceUpdateOne {
 	ruo.mutation.SetRecordinsuranceTime(t)
@@ -593,6 +686,21 @@ func (ruo *RecordinsuranceUpdateOne) ClearAmountpaid() *RecordinsuranceUpdateOne
 
 // Save executes the query and returns the updated entity.
 func (ruo *RecordinsuranceUpdateOne) Save(ctx context.Context) (*Recordinsurance, error) {
+	if v, ok := ruo.mutation.NumberOfDaysOfTreat(); ok {
+		if err := recordinsurance.NumberOfDaysOfTreatValidator(v); err != nil {
+			return nil, &ValidationError{Name: "number_of_days_of_treat", err: fmt.Errorf("ent: validator failed for field \"number_of_days_of_treat\": %w", err)}
+		}
+	}
+	if v, ok := ruo.mutation.RecordinsuranceContact(); ok {
+		if err := recordinsurance.RecordinsuranceContactValidator(v); err != nil {
+			return nil, &ValidationError{Name: "recordinsurance_contact", err: fmt.Errorf("ent: validator failed for field \"recordinsurance_contact\": %w", err)}
+		}
+	}
+	if v, ok := ruo.mutation.RecordinsuranceAddress(); ok {
+		if err := recordinsurance.RecordinsuranceAddressValidator(v); err != nil {
+			return nil, &ValidationError{Name: "recordinsurance_address", err: fmt.Errorf("ent: validator failed for field \"recordinsurance_address\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -659,6 +767,34 @@ func (ruo *RecordinsuranceUpdateOne) sqlSave(ctx context.Context) (r *Recordinsu
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Recordinsurance.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := ruo.mutation.NumberOfDaysOfTreat(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: recordinsurance.FieldNumberOfDaysOfTreat,
+		})
+	}
+	if value, ok := ruo.mutation.AddedNumberOfDaysOfTreat(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: recordinsurance.FieldNumberOfDaysOfTreat,
+		})
+	}
+	if value, ok := ruo.mutation.RecordinsuranceContact(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: recordinsurance.FieldRecordinsuranceContact,
+		})
+	}
+	if value, ok := ruo.mutation.RecordinsuranceAddress(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: recordinsurance.FieldRecordinsuranceAddress,
+		})
+	}
 	if value, ok := ruo.mutation.RecordinsuranceTime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

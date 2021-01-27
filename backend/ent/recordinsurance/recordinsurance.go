@@ -11,6 +11,12 @@ const (
 	Label = "recordinsurance"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldNumberOfDaysOfTreat holds the string denoting the number_of_days_of_treat field in the database.
+	FieldNumberOfDaysOfTreat = "number_of_days_of_treat"
+	// FieldRecordinsuranceContact holds the string denoting the recordinsurance_contact field in the database.
+	FieldRecordinsuranceContact = "recordinsurance_contact"
+	// FieldRecordinsuranceAddress holds the string denoting the recordinsurance_address field in the database.
+	FieldRecordinsuranceAddress = "recordinsurance_address"
 	// FieldRecordinsuranceTime holds the string denoting the recordinsurance_time field in the database.
 	FieldRecordinsuranceTime = "recordinsurance_time"
 
@@ -67,6 +73,9 @@ const (
 // Columns holds all SQL columns for recordinsurance fields.
 var Columns = []string{
 	FieldID,
+	FieldNumberOfDaysOfTreat,
+	FieldRecordinsuranceContact,
+	FieldRecordinsuranceAddress,
 	FieldRecordinsuranceTime,
 }
 
@@ -80,6 +89,12 @@ var ForeignKeys = []string{
 }
 
 var (
+	// NumberOfDaysOfTreatValidator is a validator for the "number_of_days_of_treat" field. It is called by the builders before save.
+	NumberOfDaysOfTreatValidator func(int) error
+	// RecordinsuranceContactValidator is a validator for the "recordinsurance_contact" field. It is called by the builders before save.
+	RecordinsuranceContactValidator func(string) error
+	// RecordinsuranceAddressValidator is a validator for the "recordinsurance_address" field. It is called by the builders before save.
+	RecordinsuranceAddressValidator func(string) error
 	// DefaultRecordinsuranceTime holds the default value on creation for the recordinsurance_time field.
 	DefaultRecordinsuranceTime func() time.Time
 )

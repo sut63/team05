@@ -394,12 +394,12 @@ func (rq *RecordinsuranceQuery) WithAmountpaid(opts ...func(*AmountpaidQuery)) *
 // Example:
 //
 //	var v []struct {
-//		RecordinsuranceTime time.Time `json:"recordinsurance_time,omitempty"`
+//		NumberOfDaysOfTreat int `json:"number_of_days_of_treat,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Recordinsurance.Query().
-//		GroupBy(recordinsurance.FieldRecordinsuranceTime).
+//		GroupBy(recordinsurance.FieldNumberOfDaysOfTreat).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -420,11 +420,11 @@ func (rq *RecordinsuranceQuery) GroupBy(field string, fields ...string) *Recordi
 // Example:
 //
 //	var v []struct {
-//		RecordinsuranceTime time.Time `json:"recordinsurance_time,omitempty"`
+//		NumberOfDaysOfTreat int `json:"number_of_days_of_treat,omitempty"`
 //	}
 //
 //	client.Recordinsurance.Query().
-//		Select(recordinsurance.FieldRecordinsuranceTime).
+//		Select(recordinsurance.FieldNumberOfDaysOfTreat).
 //		Scan(ctx, &v)
 //
 func (rq *RecordinsuranceQuery) Select(field string, fields ...string) *RecordinsuranceSelect {

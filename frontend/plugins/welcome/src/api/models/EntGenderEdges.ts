@@ -44,7 +44,7 @@ export function EntGenderEdgesFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'genderProduct': !exists(json, 'GenderProduct') ? undefined : ((json['GenderProduct'] as Array<any>).map(EntProductFromJSON)),
+        'genderProduct': !exists(json, 'genderProduct') ? undefined : ((json['genderProduct'] as Array<any>).map(EntProductFromJSON)),
     };
 }
 

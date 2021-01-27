@@ -93,10 +93,329 @@ func IDLTE(id int) predicate.Recordinsurance {
 	})
 }
 
+// NumberOfDaysOfTreat applies equality check predicate on the "number_of_days_of_treat" field. It's identical to NumberOfDaysOfTreatEQ.
+func NumberOfDaysOfTreat(v int) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldNumberOfDaysOfTreat), v))
+	})
+}
+
+// RecordinsuranceContact applies equality check predicate on the "recordinsurance_contact" field. It's identical to RecordinsuranceContactEQ.
+func RecordinsuranceContact(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceAddress applies equality check predicate on the "recordinsurance_address" field. It's identical to RecordinsuranceAddressEQ.
+func RecordinsuranceAddress(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
 // RecordinsuranceTime applies equality check predicate on the "recordinsurance_time" field. It's identical to RecordinsuranceTimeEQ.
 func RecordinsuranceTime(v time.Time) predicate.Recordinsurance {
 	return predicate.Recordinsurance(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldRecordinsuranceTime), v))
+	})
+}
+
+// NumberOfDaysOfTreatEQ applies the EQ predicate on the "number_of_days_of_treat" field.
+func NumberOfDaysOfTreatEQ(v int) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldNumberOfDaysOfTreat), v))
+	})
+}
+
+// NumberOfDaysOfTreatNEQ applies the NEQ predicate on the "number_of_days_of_treat" field.
+func NumberOfDaysOfTreatNEQ(v int) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldNumberOfDaysOfTreat), v))
+	})
+}
+
+// NumberOfDaysOfTreatIn applies the In predicate on the "number_of_days_of_treat" field.
+func NumberOfDaysOfTreatIn(vs ...int) predicate.Recordinsurance {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldNumberOfDaysOfTreat), v...))
+	})
+}
+
+// NumberOfDaysOfTreatNotIn applies the NotIn predicate on the "number_of_days_of_treat" field.
+func NumberOfDaysOfTreatNotIn(vs ...int) predicate.Recordinsurance {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldNumberOfDaysOfTreat), v...))
+	})
+}
+
+// NumberOfDaysOfTreatGT applies the GT predicate on the "number_of_days_of_treat" field.
+func NumberOfDaysOfTreatGT(v int) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldNumberOfDaysOfTreat), v))
+	})
+}
+
+// NumberOfDaysOfTreatGTE applies the GTE predicate on the "number_of_days_of_treat" field.
+func NumberOfDaysOfTreatGTE(v int) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldNumberOfDaysOfTreat), v))
+	})
+}
+
+// NumberOfDaysOfTreatLT applies the LT predicate on the "number_of_days_of_treat" field.
+func NumberOfDaysOfTreatLT(v int) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldNumberOfDaysOfTreat), v))
+	})
+}
+
+// NumberOfDaysOfTreatLTE applies the LTE predicate on the "number_of_days_of_treat" field.
+func NumberOfDaysOfTreatLTE(v int) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldNumberOfDaysOfTreat), v))
+	})
+}
+
+// RecordinsuranceContactEQ applies the EQ predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactEQ(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactNEQ applies the NEQ predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactNEQ(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactIn applies the In predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactIn(vs ...string) predicate.Recordinsurance {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldRecordinsuranceContact), v...))
+	})
+}
+
+// RecordinsuranceContactNotIn applies the NotIn predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactNotIn(vs ...string) predicate.Recordinsurance {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldRecordinsuranceContact), v...))
+	})
+}
+
+// RecordinsuranceContactGT applies the GT predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactGT(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactGTE applies the GTE predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactGTE(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactLT applies the LT predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactLT(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactLTE applies the LTE predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactLTE(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactContains applies the Contains predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactContains(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactHasPrefix applies the HasPrefix predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactHasPrefix(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactHasSuffix applies the HasSuffix predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactHasSuffix(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactEqualFold applies the EqualFold predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactEqualFold(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceContactContainsFold applies the ContainsFold predicate on the "recordinsurance_contact" field.
+func RecordinsuranceContactContainsFold(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldRecordinsuranceContact), v))
+	})
+}
+
+// RecordinsuranceAddressEQ applies the EQ predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressEQ(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressNEQ applies the NEQ predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressNEQ(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressIn applies the In predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressIn(vs ...string) predicate.Recordinsurance {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldRecordinsuranceAddress), v...))
+	})
+}
+
+// RecordinsuranceAddressNotIn applies the NotIn predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressNotIn(vs ...string) predicate.Recordinsurance {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldRecordinsuranceAddress), v...))
+	})
+}
+
+// RecordinsuranceAddressGT applies the GT predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressGT(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressGTE applies the GTE predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressGTE(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressLT applies the LT predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressLT(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressLTE applies the LTE predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressLTE(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressContains applies the Contains predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressContains(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressHasPrefix applies the HasPrefix predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressHasPrefix(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressHasSuffix applies the HasSuffix predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressHasSuffix(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressEqualFold applies the EqualFold predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressEqualFold(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldRecordinsuranceAddress), v))
+	})
+}
+
+// RecordinsuranceAddressContainsFold applies the ContainsFold predicate on the "recordinsurance_address" field.
+func RecordinsuranceAddressContainsFold(v string) predicate.Recordinsurance {
+	return predicate.Recordinsurance(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldRecordinsuranceAddress), v))
 	})
 }
 
