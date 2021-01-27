@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"errors"
+	"regexp"
 	"time"
 
 	"github.com/facebookincubator/ent"
@@ -16,6 +18,24 @@ type Recordinsurance struct {
 // Fields of the Insurance.
 func (Recordinsurance) Fields() []ent.Field {
 	return []ent.Field{
+
+		field.Int("number_of_days_of_treat").Range(0, 30),
+		field.String("recordinsurance_contact").NotEmpty().MinLen(10).MaxLen(10).
+			Validate(func(s string) error {
+				match, _ := regexp.MatchString("^[0]\\d", s)
+				if !match {
+					return errors.New("เบอร์โทรที่กรอกต้องขึ้นต้นด้วย 0")
+				}
+				return nil
+			}),
+
+		field.String("recordinsurance_address").Validate(func(s string) error {
+			match, _ := regexp.MatchString("^[ก-๙0-9a-zA-Z- ./\\s]+$", s)
+			if !match {
+				return errors.New("ป้อนรูปแบบของที่อยู่ไม่ถูกต้อง")
+			}
+			return nil
+		}).NotEmpty(),
 		field.Time("recordinsurance_time").Default(time.Now),
 	}
 }

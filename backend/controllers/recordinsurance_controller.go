@@ -23,12 +23,15 @@ type RecordinsuranceController struct {
 
 // Recordinsurance defines the struct for the recordinsurance
 type Recordinsurance struct {
-	ProductID           int
-	MemberID            int
-	HospitalID          int
-	OfficerID           int
-	AmountpaidID        int
-	RecordinsuranceTime string
+	ProductID              int
+	MemberID               int
+	HospitalID             int
+	OfficerID              int
+	AmountpaidID           int
+	NumberOfDaysOfTreat    int
+	RecordinsuranceContact string
+	RecordinsuranceTime    string
+	RecordinsuranceAddress string
 }
 
 // CreateRecordinsurance handles POST requests for adding recordinsurance entities
@@ -110,7 +113,7 @@ func (ctl *RecordinsuranceController) CreateRecordinsurance(c *gin.Context) {
 		})
 		return
 	}
-	timet, err := time.Parse(time.RFC3339, obj.RecordinsuranceTime)
+	timet := time.Now().Local()
 
 	rin, err := ctl.client.Recordinsurance.
 		Create().
@@ -119,16 +122,25 @@ func (ctl *RecordinsuranceController) CreateRecordinsurance(c *gin.Context) {
 		SetHospital(h).
 		SetOfficer(of).
 		SetAmountpaid(ap).
+		SetNumberOfDaysOfTreat(obj.NumberOfDaysOfTreat).
+		SetRecordinsuranceContact(obj.RecordinsuranceContact).
 		SetRecordinsuranceTime(timet).
+		SetRecordinsuranceAddress(obj.RecordinsuranceAddress).
 		Save(context.Background())
+
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
 
-	c.JSON(200, rin)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data":   rin,
+	})
 }
 
 // ListRecordinsurance handles request to get a list of recordinsurance entities

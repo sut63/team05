@@ -104,13 +104,13 @@ export function EntProductEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'gender': !exists(json, 'Gender') ? undefined : EntGenderFromJSON(json['Gender']),
-        'groupofage': !exists(json, 'Groupofage') ? undefined : EntGroupOfAgeFromJSON(json['Groupofage']),
-        'officer': !exists(json, 'Officer') ? undefined : EntOfficerFromJSON(json['Officer']),
-        'productInquiry': !exists(json, 'ProductInquiry') ? undefined : ((json['ProductInquiry'] as Array<any>).map(EntInquiryFromJSON)),
-        'productInsurance': !exists(json, 'ProductInsurance') ? undefined : ((json['ProductInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
-        'productPayback': !exists(json, 'ProductPayback') ? undefined : ((json['ProductPayback'] as Array<any>).map(EntPaybackFromJSON)),
-        'productRecordinsurance': !exists(json, 'ProductRecordinsurance') ? undefined : ((json['ProductRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
+        'gender': !exists(json, 'gender') ? undefined : EntGenderFromJSON(json['gender']),
+        'groupofage': !exists(json, 'groupofage') ? undefined : EntGroupOfAgeFromJSON(json['groupofage']),
+        'officer': !exists(json, 'officer') ? undefined : EntOfficerFromJSON(json['officer']),
+        'productInquiry': !exists(json, 'productInquiry') ? undefined : ((json['productInquiry'] as Array<any>).map(EntInquiryFromJSON)),
+        'productInsurance': !exists(json, 'productInsurance') ? undefined : ((json['productInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
+        'productPayback': !exists(json, 'productPayback') ? undefined : ((json['productPayback'] as Array<any>).map(EntPaybackFromJSON)),
+        'productRecordinsurance': !exists(json, 'productRecordinsurance') ? undefined : ((json['productRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
     };
 }
 

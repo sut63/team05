@@ -8752,23 +8752,27 @@ func (m *ProductMutation) ResetEdge(name string) error {
 // nodes in the graph.
 type RecordinsuranceMutation struct {
 	config
-	op                   Op
-	typ                  string
-	id                   *int
-	recordinsurance_time *time.Time
-	clearedFields        map[string]struct{}
-	_Member              *int
-	cleared_Member       bool
-	_Hospital            *int
-	cleared_Hospital     bool
-	_Officer             *int
-	cleared_Officer      bool
-	_Product             *int
-	cleared_Product      bool
-	_Amountpaid          *int
-	cleared_Amountpaid   bool
-	done                 bool
-	oldValue             func(context.Context) (*Recordinsurance, error)
+	op                         Op
+	typ                        string
+	id                         *int
+	number_of_days_of_treat    *int
+	addnumber_of_days_of_treat *int
+	recordinsurance_contact    *string
+	recordinsurance_address    *string
+	recordinsurance_time       *time.Time
+	clearedFields              map[string]struct{}
+	_Member                    *int
+	cleared_Member             bool
+	_Hospital                  *int
+	cleared_Hospital           bool
+	_Officer                   *int
+	cleared_Officer            bool
+	_Product                   *int
+	cleared_Product            bool
+	_Amountpaid                *int
+	cleared_Amountpaid         bool
+	done                       bool
+	oldValue                   func(context.Context) (*Recordinsurance, error)
 }
 
 var _ ent.Mutation = (*RecordinsuranceMutation)(nil)
@@ -8848,6 +8852,137 @@ func (m *RecordinsuranceMutation) ID() (id int, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetNumberOfDaysOfTreat sets the number_of_days_of_treat field.
+func (m *RecordinsuranceMutation) SetNumberOfDaysOfTreat(i int) {
+	m.number_of_days_of_treat = &i
+	m.addnumber_of_days_of_treat = nil
+}
+
+// NumberOfDaysOfTreat returns the number_of_days_of_treat value in the mutation.
+func (m *RecordinsuranceMutation) NumberOfDaysOfTreat() (r int, exists bool) {
+	v := m.number_of_days_of_treat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNumberOfDaysOfTreat returns the old number_of_days_of_treat value of the Recordinsurance.
+// If the Recordinsurance object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RecordinsuranceMutation) OldNumberOfDaysOfTreat(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldNumberOfDaysOfTreat is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldNumberOfDaysOfTreat requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNumberOfDaysOfTreat: %w", err)
+	}
+	return oldValue.NumberOfDaysOfTreat, nil
+}
+
+// AddNumberOfDaysOfTreat adds i to number_of_days_of_treat.
+func (m *RecordinsuranceMutation) AddNumberOfDaysOfTreat(i int) {
+	if m.addnumber_of_days_of_treat != nil {
+		*m.addnumber_of_days_of_treat += i
+	} else {
+		m.addnumber_of_days_of_treat = &i
+	}
+}
+
+// AddedNumberOfDaysOfTreat returns the value that was added to the number_of_days_of_treat field in this mutation.
+func (m *RecordinsuranceMutation) AddedNumberOfDaysOfTreat() (r int, exists bool) {
+	v := m.addnumber_of_days_of_treat
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetNumberOfDaysOfTreat reset all changes of the "number_of_days_of_treat" field.
+func (m *RecordinsuranceMutation) ResetNumberOfDaysOfTreat() {
+	m.number_of_days_of_treat = nil
+	m.addnumber_of_days_of_treat = nil
+}
+
+// SetRecordinsuranceContact sets the recordinsurance_contact field.
+func (m *RecordinsuranceMutation) SetRecordinsuranceContact(s string) {
+	m.recordinsurance_contact = &s
+}
+
+// RecordinsuranceContact returns the recordinsurance_contact value in the mutation.
+func (m *RecordinsuranceMutation) RecordinsuranceContact() (r string, exists bool) {
+	v := m.recordinsurance_contact
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRecordinsuranceContact returns the old recordinsurance_contact value of the Recordinsurance.
+// If the Recordinsurance object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RecordinsuranceMutation) OldRecordinsuranceContact(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldRecordinsuranceContact is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldRecordinsuranceContact requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRecordinsuranceContact: %w", err)
+	}
+	return oldValue.RecordinsuranceContact, nil
+}
+
+// ResetRecordinsuranceContact reset all changes of the "recordinsurance_contact" field.
+func (m *RecordinsuranceMutation) ResetRecordinsuranceContact() {
+	m.recordinsurance_contact = nil
+}
+
+// SetRecordinsuranceAddress sets the recordinsurance_address field.
+func (m *RecordinsuranceMutation) SetRecordinsuranceAddress(s string) {
+	m.recordinsurance_address = &s
+}
+
+// RecordinsuranceAddress returns the recordinsurance_address value in the mutation.
+func (m *RecordinsuranceMutation) RecordinsuranceAddress() (r string, exists bool) {
+	v := m.recordinsurance_address
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRecordinsuranceAddress returns the old recordinsurance_address value of the Recordinsurance.
+// If the Recordinsurance object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RecordinsuranceMutation) OldRecordinsuranceAddress(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldRecordinsuranceAddress is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldRecordinsuranceAddress requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRecordinsuranceAddress: %w", err)
+	}
+	return oldValue.RecordinsuranceAddress, nil
+}
+
+// ResetRecordinsuranceAddress reset all changes of the "recordinsurance_address" field.
+func (m *RecordinsuranceMutation) ResetRecordinsuranceAddress() {
+	m.recordinsurance_address = nil
 }
 
 // SetRecordinsuranceTime sets the recordinsurance_time field.
@@ -9096,7 +9231,16 @@ func (m *RecordinsuranceMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *RecordinsuranceMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 4)
+	if m.number_of_days_of_treat != nil {
+		fields = append(fields, recordinsurance.FieldNumberOfDaysOfTreat)
+	}
+	if m.recordinsurance_contact != nil {
+		fields = append(fields, recordinsurance.FieldRecordinsuranceContact)
+	}
+	if m.recordinsurance_address != nil {
+		fields = append(fields, recordinsurance.FieldRecordinsuranceAddress)
+	}
 	if m.recordinsurance_time != nil {
 		fields = append(fields, recordinsurance.FieldRecordinsuranceTime)
 	}
@@ -9108,6 +9252,12 @@ func (m *RecordinsuranceMutation) Fields() []string {
 // not set, or was not define in the schema.
 func (m *RecordinsuranceMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case recordinsurance.FieldNumberOfDaysOfTreat:
+		return m.NumberOfDaysOfTreat()
+	case recordinsurance.FieldRecordinsuranceContact:
+		return m.RecordinsuranceContact()
+	case recordinsurance.FieldRecordinsuranceAddress:
+		return m.RecordinsuranceAddress()
 	case recordinsurance.FieldRecordinsuranceTime:
 		return m.RecordinsuranceTime()
 	}
@@ -9119,6 +9269,12 @@ func (m *RecordinsuranceMutation) Field(name string) (ent.Value, bool) {
 // or the query to the database was failed.
 func (m *RecordinsuranceMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case recordinsurance.FieldNumberOfDaysOfTreat:
+		return m.OldNumberOfDaysOfTreat(ctx)
+	case recordinsurance.FieldRecordinsuranceContact:
+		return m.OldRecordinsuranceContact(ctx)
+	case recordinsurance.FieldRecordinsuranceAddress:
+		return m.OldRecordinsuranceAddress(ctx)
 	case recordinsurance.FieldRecordinsuranceTime:
 		return m.OldRecordinsuranceTime(ctx)
 	}
@@ -9130,6 +9286,27 @@ func (m *RecordinsuranceMutation) OldField(ctx context.Context, name string) (en
 // type mismatch the field type.
 func (m *RecordinsuranceMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case recordinsurance.FieldNumberOfDaysOfTreat:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNumberOfDaysOfTreat(v)
+		return nil
+	case recordinsurance.FieldRecordinsuranceContact:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRecordinsuranceContact(v)
+		return nil
+	case recordinsurance.FieldRecordinsuranceAddress:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRecordinsuranceAddress(v)
+		return nil
 	case recordinsurance.FieldRecordinsuranceTime:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -9144,13 +9321,21 @@ func (m *RecordinsuranceMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented
 // or decremented during this mutation.
 func (m *RecordinsuranceMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addnumber_of_days_of_treat != nil {
+		fields = append(fields, recordinsurance.FieldNumberOfDaysOfTreat)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was in/decremented
 // from a field with the given name. The second value indicates
 // that this field was not set, or was not define in the schema.
 func (m *RecordinsuranceMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case recordinsurance.FieldNumberOfDaysOfTreat:
+		return m.AddedNumberOfDaysOfTreat()
+	}
 	return nil, false
 }
 
@@ -9159,6 +9344,13 @@ func (m *RecordinsuranceMutation) AddedField(name string) (ent.Value, bool) {
 // type mismatch the field type.
 func (m *RecordinsuranceMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case recordinsurance.FieldNumberOfDaysOfTreat:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddNumberOfDaysOfTreat(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Recordinsurance numeric field %s", name)
 }
@@ -9187,6 +9379,15 @@ func (m *RecordinsuranceMutation) ClearField(name string) error {
 // defined in the schema.
 func (m *RecordinsuranceMutation) ResetField(name string) error {
 	switch name {
+	case recordinsurance.FieldNumberOfDaysOfTreat:
+		m.ResetNumberOfDaysOfTreat()
+		return nil
+	case recordinsurance.FieldRecordinsuranceContact:
+		m.ResetRecordinsuranceContact()
+		return nil
+	case recordinsurance.FieldRecordinsuranceAddress:
+		m.ResetRecordinsuranceAddress()
+		return nil
 	case recordinsurance.FieldRecordinsuranceTime:
 		m.ResetRecordinsuranceTime()
 		return nil

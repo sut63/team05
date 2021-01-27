@@ -3159,11 +3159,20 @@ var doc = `{
                 "memberID": {
                     "type": "integer"
                 },
+                "numberOfDaysOfTreat": {
+                    "type": "integer"
+                },
                 "officerID": {
                     "type": "integer"
                 },
                 "productID": {
                     "type": "integer"
+                },
+                "recordinsuranceAddress": {
+                    "type": "string"
+                },
+                "recordinsuranceContact": {
+                    "type": "string"
                 },
                 "recordinsuranceTime": {
                     "type": "string"
@@ -3889,6 +3898,18 @@ var doc = `{
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
+                },
+                "number_of_days_of_treat": {
+                    "description": "NumberOfDaysOfTreat holds the value of the \"number_of_days_of_treat\" field.",
+                    "type": "integer"
+                },
+                "recordinsurance_address": {
+                    "description": "RecordinsuranceAddress holds the value of the \"recordinsurance_address\" field.",
+                    "type": "string"
+                },
+                "recordinsurance_contact": {
+                    "description": "RecordinsuranceContact holds the value of the \"recordinsurance_contact\" field.",
+                    "type": "string"
                 },
                 "recordinsurance_time": {
                     "description": "RecordinsuranceTime holds the value of the \"recordinsurance_time\" field.",

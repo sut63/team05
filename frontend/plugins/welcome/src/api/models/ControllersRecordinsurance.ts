@@ -42,6 +42,12 @@ export interface ControllersRecordinsurance {
      * @type {number}
      * @memberof ControllersRecordinsurance
      */
+    numberOfDaysOfTreat?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ControllersRecordinsurance
+     */
     officerID?: number;
     /**
      * 
@@ -49,6 +55,18 @@ export interface ControllersRecordinsurance {
      * @memberof ControllersRecordinsurance
      */
     productID?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersRecordinsurance
+     */
+    recordinsuranceAddress?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersRecordinsurance
+     */
+    recordinsuranceContact?: string;
     /**
      * 
      * @type {string}
@@ -70,8 +88,11 @@ export function ControllersRecordinsuranceFromJSONTyped(json: any, ignoreDiscrim
         'amountpaidID': !exists(json, 'amountpaidID') ? undefined : json['amountpaidID'],
         'hospitalID': !exists(json, 'hospitalID') ? undefined : json['hospitalID'],
         'memberID': !exists(json, 'memberID') ? undefined : json['memberID'],
+        'numberOfDaysOfTreat': !exists(json, 'numberOfDaysOfTreat') ? undefined : json['numberOfDaysOfTreat'],
         'officerID': !exists(json, 'officerID') ? undefined : json['officerID'],
         'productID': !exists(json, 'productID') ? undefined : json['productID'],
+        'recordinsuranceAddress': !exists(json, 'recordinsuranceAddress') ? undefined : json['recordinsuranceAddress'],
+        'recordinsuranceContact': !exists(json, 'recordinsuranceContact') ? undefined : json['recordinsuranceContact'],
         'recordinsuranceTime': !exists(json, 'recordinsuranceTime') ? undefined : json['recordinsuranceTime'],
     };
 }
@@ -88,8 +109,11 @@ export function ControllersRecordinsuranceToJSON(value?: ControllersRecordinsura
         'amountpaidID': value.amountpaidID,
         'hospitalID': value.hospitalID,
         'memberID': value.memberID,
+        'numberOfDaysOfTreat': value.numberOfDaysOfTreat,
         'officerID': value.officerID,
         'productID': value.productID,
+        'recordinsuranceAddress': value.recordinsuranceAddress,
+        'recordinsuranceContact': value.recordinsuranceContact,
         'recordinsuranceTime': value.recordinsuranceTime,
     };
 }

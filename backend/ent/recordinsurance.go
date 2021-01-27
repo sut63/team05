@@ -21,6 +21,12 @@ type Recordinsurance struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// NumberOfDaysOfTreat holds the value of the "number_of_days_of_treat" field.
+	NumberOfDaysOfTreat int `json:"number_of_days_of_treat,omitempty"`
+	// RecordinsuranceContact holds the value of the "recordinsurance_contact" field.
+	RecordinsuranceContact string `json:"recordinsurance_contact,omitempty"`
+	// RecordinsuranceAddress holds the value of the "recordinsurance_address" field.
+	RecordinsuranceAddress string `json:"recordinsurance_address,omitempty"`
 	// RecordinsuranceTime holds the value of the "recordinsurance_time" field.
 	RecordinsuranceTime time.Time `json:"recordinsurance_time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -123,8 +129,11 @@ func (e RecordinsuranceEdges) AmountpaidOrErr() (*Amountpaid, error) {
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Recordinsurance) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{}, // id
-		&sql.NullTime{},  // recordinsurance_time
+		&sql.NullInt64{},  // id
+		&sql.NullInt64{},  // number_of_days_of_treat
+		&sql.NullString{}, // recordinsurance_contact
+		&sql.NullString{}, // recordinsurance_address
+		&sql.NullTime{},   // recordinsurance_time
 	}
 }
 
@@ -151,12 +160,27 @@ func (r *Recordinsurance) assignValues(values ...interface{}) error {
 	}
 	r.ID = int(value.Int64)
 	values = values[1:]
-	if value, ok := values[0].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field recordinsurance_time", values[0])
+	if value, ok := values[0].(*sql.NullInt64); !ok {
+		return fmt.Errorf("unexpected type %T for field number_of_days_of_treat", values[0])
+	} else if value.Valid {
+		r.NumberOfDaysOfTreat = int(value.Int64)
+	}
+	if value, ok := values[1].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field recordinsurance_contact", values[1])
+	} else if value.Valid {
+		r.RecordinsuranceContact = value.String
+	}
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field recordinsurance_address", values[2])
+	} else if value.Valid {
+		r.RecordinsuranceAddress = value.String
+	}
+	if value, ok := values[3].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field recordinsurance_time", values[3])
 	} else if value.Valid {
 		r.RecordinsuranceTime = value.Time
 	}
-	values = values[1:]
+	values = values[4:]
 	if len(values) == len(recordinsurance.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field amountpaid_id", value)
@@ -240,6 +264,12 @@ func (r *Recordinsurance) String() string {
 	var builder strings.Builder
 	builder.WriteString("Recordinsurance(")
 	builder.WriteString(fmt.Sprintf("id=%v", r.ID))
+	builder.WriteString(", number_of_days_of_treat=")
+	builder.WriteString(fmt.Sprintf("%v", r.NumberOfDaysOfTreat))
+	builder.WriteString(", recordinsurance_contact=")
+	builder.WriteString(r.RecordinsuranceContact)
+	builder.WriteString(", recordinsurance_address=")
+	builder.WriteString(r.RecordinsuranceAddress)
 	builder.WriteString(", recordinsurance_time=")
 	builder.WriteString(r.RecordinsuranceTime.Format(time.ANSIC))
 	builder.WriteByte(')')

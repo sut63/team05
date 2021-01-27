@@ -356,11 +356,16 @@ func main() {
 	// Set Amountpaid Data
 	amountpaids := Amountpaids{
 		Amountpaid: []Amountpaid{
-			Amountpaid{35000.},
-			Amountpaid{57000},
-			Amountpaid{82500},
+			Amountpaid{10000},
+			Amountpaid{20000},
+			Amountpaid{30000},
+			Amountpaid{40000},
+			Amountpaid{50000},
+			Amountpaid{60000},
+			Amountpaid{70000},
+			Amountpaid{80000},
 			Amountpaid{90000},
-			Amountpaid{110000},
+			Amountpaid{100000},
 		},
 	}
 
