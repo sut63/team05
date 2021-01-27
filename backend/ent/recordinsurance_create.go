@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -22,6 +23,24 @@ type RecordinsuranceCreate struct {
 	config
 	mutation *RecordinsuranceMutation
 	hooks    []Hook
+}
+
+// SetNumberOfDaysOfTreat sets the number_of_days_of_treat field.
+func (rc *RecordinsuranceCreate) SetNumberOfDaysOfTreat(i int) *RecordinsuranceCreate {
+	rc.mutation.SetNumberOfDaysOfTreat(i)
+	return rc
+}
+
+// SetRecordinsuranceContact sets the recordinsurance_contact field.
+func (rc *RecordinsuranceCreate) SetRecordinsuranceContact(s string) *RecordinsuranceCreate {
+	rc.mutation.SetRecordinsuranceContact(s)
+	return rc
+}
+
+// SetRecordinsuranceAddress sets the recordinsurance_address field.
+func (rc *RecordinsuranceCreate) SetRecordinsuranceAddress(s string) *RecordinsuranceCreate {
+	rc.mutation.SetRecordinsuranceAddress(s)
+	return rc
 }
 
 // SetRecordinsuranceTime sets the recordinsurance_time field.
@@ -140,6 +159,30 @@ func (rc *RecordinsuranceCreate) Mutation() *RecordinsuranceMutation {
 
 // Save creates the Recordinsurance in the database.
 func (rc *RecordinsuranceCreate) Save(ctx context.Context) (*Recordinsurance, error) {
+	if _, ok := rc.mutation.NumberOfDaysOfTreat(); !ok {
+		return nil, &ValidationError{Name: "number_of_days_of_treat", err: errors.New("ent: missing required field \"number_of_days_of_treat\"")}
+	}
+	if v, ok := rc.mutation.NumberOfDaysOfTreat(); ok {
+		if err := recordinsurance.NumberOfDaysOfTreatValidator(v); err != nil {
+			return nil, &ValidationError{Name: "number_of_days_of_treat", err: fmt.Errorf("ent: validator failed for field \"number_of_days_of_treat\": %w", err)}
+		}
+	}
+	if _, ok := rc.mutation.RecordinsuranceContact(); !ok {
+		return nil, &ValidationError{Name: "recordinsurance_contact", err: errors.New("ent: missing required field \"recordinsurance_contact\"")}
+	}
+	if v, ok := rc.mutation.RecordinsuranceContact(); ok {
+		if err := recordinsurance.RecordinsuranceContactValidator(v); err != nil {
+			return nil, &ValidationError{Name: "recordinsurance_contact", err: fmt.Errorf("ent: validator failed for field \"recordinsurance_contact\": %w", err)}
+		}
+	}
+	if _, ok := rc.mutation.RecordinsuranceAddress(); !ok {
+		return nil, &ValidationError{Name: "recordinsurance_address", err: errors.New("ent: missing required field \"recordinsurance_address\"")}
+	}
+	if v, ok := rc.mutation.RecordinsuranceAddress(); ok {
+		if err := recordinsurance.RecordinsuranceAddressValidator(v); err != nil {
+			return nil, &ValidationError{Name: "recordinsurance_address", err: fmt.Errorf("ent: validator failed for field \"recordinsurance_address\": %w", err)}
+		}
+	}
 	if _, ok := rc.mutation.RecordinsuranceTime(); !ok {
 		v := recordinsurance.DefaultRecordinsuranceTime()
 		rc.mutation.SetRecordinsuranceTime(v)
@@ -204,6 +247,30 @@ func (rc *RecordinsuranceCreate) createSpec() (*Recordinsurance, *sqlgraph.Creat
 			},
 		}
 	)
+	if value, ok := rc.mutation.NumberOfDaysOfTreat(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: recordinsurance.FieldNumberOfDaysOfTreat,
+		})
+		r.NumberOfDaysOfTreat = value
+	}
+	if value, ok := rc.mutation.RecordinsuranceContact(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: recordinsurance.FieldRecordinsuranceContact,
+		})
+		r.RecordinsuranceContact = value
+	}
+	if value, ok := rc.mutation.RecordinsuranceAddress(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: recordinsurance.FieldRecordinsuranceAddress,
+		})
+		r.RecordinsuranceAddress = value
+	}
 	if value, ok := rc.mutation.RecordinsuranceTime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

@@ -11,6 +11,8 @@ import Payment from './components/Payment';
 import Inquiry from './components/Inquiry'
 import Recordinsurance from './components/Recordinsurance'
 import Payback from './components/Payback';
+import RecordinsuranceSearch from './components/RecordinsuranceSearch';
+import RecordinsuranceTable from './components/RecordinsuranceTable';
 
 export const plugin = createPlugin({
   id: 'welcome',
@@ -25,7 +27,10 @@ export const plugin = createPlugin({
     router.registerRoute('/officerlongin', Officerlongin);
 
     router.registerRoute('/inquiry', Inquiry);
-    router.registerRoute('/recordinsurance', Recordinsurance);
     router.registerRoute('/payback', Payback);
+    router.registerRoute('/recordinsurance', Recordinsurance);
+    router.registerRoute('/recordinsurancesearch', RecordinsuranceSearch);
+    router.registerRoute('/recordinsurancetable', RecordinsuranceTable);
+
   },
 });

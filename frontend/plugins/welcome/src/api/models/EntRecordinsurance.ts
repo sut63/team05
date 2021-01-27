@@ -39,6 +39,24 @@ export interface EntRecordinsurance {
      */
     id?: number;
     /**
+     * NumberOfDaysOfTreat holds the value of the "number_of_days_of_treat" field.
+     * @type {number}
+     * @memberof EntRecordinsurance
+     */
+    numberOfDaysOfTreat?: number;
+    /**
+     * RecordinsuranceAddress holds the value of the "recordinsurance_address" field.
+     * @type {string}
+     * @memberof EntRecordinsurance
+     */
+    recordinsuranceAddress?: string;
+    /**
+     * RecordinsuranceContact holds the value of the "recordinsurance_contact" field.
+     * @type {string}
+     * @memberof EntRecordinsurance
+     */
+    recordinsuranceContact?: string;
+    /**
      * RecordinsuranceTime holds the value of the "recordinsurance_time" field.
      * @type {string}
      * @memberof EntRecordinsurance
@@ -58,6 +76,9 @@ export function EntRecordinsuranceFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'edges': !exists(json, 'edges') ? undefined : EntRecordinsuranceEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'numberOfDaysOfTreat': !exists(json, 'number_of_days_of_treat') ? undefined : json['number_of_days_of_treat'],
+        'recordinsuranceAddress': !exists(json, 'recordinsurance_address') ? undefined : json['recordinsurance_address'],
+        'recordinsuranceContact': !exists(json, 'recordinsurance_contact') ? undefined : json['recordinsurance_contact'],
         'recordinsuranceTime': !exists(json, 'recordinsurance_time') ? undefined : json['recordinsurance_time'],
     };
 }
@@ -73,6 +94,9 @@ export function EntRecordinsuranceToJSON(value?: EntRecordinsurance | null): any
         
         'edges': EntRecordinsuranceEdgesToJSON(value.edges),
         'id': value.id,
+        'number_of_days_of_treat': value.numberOfDaysOfTreat,
+        'recordinsurance_address': value.recordinsuranceAddress,
+        'recordinsurance_contact': value.recordinsuranceContact,
         'recordinsurance_time': value.recordinsuranceTime,
     };
 }

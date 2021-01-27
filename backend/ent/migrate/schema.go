@@ -382,6 +382,9 @@ var (
 	// RecordinsurancesColumns holds the columns for the "recordinsurances" table.
 	RecordinsurancesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "number_of_days_of_treat", Type: field.TypeInt},
+		{Name: "recordinsurance_contact", Type: field.TypeString, Size: 10},
+		{Name: "recordinsurance_address", Type: field.TypeString},
 		{Name: "recordinsurance_time", Type: field.TypeTime},
 		{Name: "amountpaid_id", Type: field.TypeInt, Nullable: true},
 		{Name: "hospital_id", Type: field.TypeInt, Nullable: true},
@@ -397,35 +400,35 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "recordinsurances_amountpaids_amountpaid_recordinsurance",
-				Columns: []*schema.Column{RecordinsurancesColumns[2]},
+				Columns: []*schema.Column{RecordinsurancesColumns[5]},
 
 				RefColumns: []*schema.Column{AmountpaidsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "recordinsurances_hospitals_hospital_recordinsurance",
-				Columns: []*schema.Column{RecordinsurancesColumns[3]},
+				Columns: []*schema.Column{RecordinsurancesColumns[6]},
 
 				RefColumns: []*schema.Column{HospitalsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "recordinsurances_members_member_recordinsurance",
-				Columns: []*schema.Column{RecordinsurancesColumns[4]},
+				Columns: []*schema.Column{RecordinsurancesColumns[7]},
 
 				RefColumns: []*schema.Column{MembersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "recordinsurances_officers_officer_recordinsurance",
-				Columns: []*schema.Column{RecordinsurancesColumns[5]},
+				Columns: []*schema.Column{RecordinsurancesColumns[8]},
 
 				RefColumns: []*schema.Column{OfficersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "recordinsurances_products_product_recordinsurance",
-				Columns: []*schema.Column{RecordinsurancesColumns[6]},
+				Columns: []*schema.Column{RecordinsurancesColumns[9]},
 
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,

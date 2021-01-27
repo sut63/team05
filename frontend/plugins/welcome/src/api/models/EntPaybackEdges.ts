@@ -74,10 +74,10 @@ export function EntPaybackEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'bank': !exists(json, 'Bank') ? undefined : EntBankFromJSON(json['Bank']),
-        'member': !exists(json, 'Member') ? undefined : EntMemberFromJSON(json['Member']),
-        'officer': !exists(json, 'Officer') ? undefined : EntOfficerFromJSON(json['Officer']),
-        'product': !exists(json, 'Product') ? undefined : EntProductFromJSON(json['Product']),
+        'bank': !exists(json, 'bank') ? undefined : EntBankFromJSON(json['bank']),
+        'member': !exists(json, 'member') ? undefined : EntMemberFromJSON(json['member']),
+        'officer': !exists(json, 'officer') ? undefined : EntOfficerFromJSON(json['officer']),
+        'product': !exists(json, 'product') ? undefined : EntProductFromJSON(json['product']),
     };
 }
 

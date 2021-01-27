@@ -44,7 +44,7 @@ export function EntMoneytransferEdgesFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'moneytransferPayment': !exists(json, 'MoneytransferPayment') ? undefined : ((json['MoneytransferPayment'] as Array<any>).map(EntPaymentFromJSON)),
+        'moneytransferPayment': !exists(json, 'moneytransferPayment') ? undefined : ((json['moneytransferPayment'] as Array<any>).map(EntPaymentFromJSON)),
     };
 }
 

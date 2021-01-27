@@ -198,8 +198,50 @@ func init() {
 	product.ProductPaymentOfYearValidator = productDescProductPaymentOfYear.Validators[0].(func(int) error)
 	recordinsuranceFields := schema.Recordinsurance{}.Fields()
 	_ = recordinsuranceFields
+	// recordinsuranceDescNumberOfDaysOfTreat is the schema descriptor for number_of_days_of_treat field.
+	recordinsuranceDescNumberOfDaysOfTreat := recordinsuranceFields[0].Descriptor()
+	// recordinsurance.NumberOfDaysOfTreatValidator is a validator for the "number_of_days_of_treat" field. It is called by the builders before save.
+	recordinsurance.NumberOfDaysOfTreatValidator = recordinsuranceDescNumberOfDaysOfTreat.Validators[0].(func(int) error)
+	// recordinsuranceDescRecordinsuranceContact is the schema descriptor for recordinsurance_contact field.
+	recordinsuranceDescRecordinsuranceContact := recordinsuranceFields[1].Descriptor()
+	// recordinsurance.RecordinsuranceContactValidator is a validator for the "recordinsurance_contact" field. It is called by the builders before save.
+	recordinsurance.RecordinsuranceContactValidator = func() func(string) error {
+		validators := recordinsuranceDescRecordinsuranceContact.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+			validators[3].(func(string) error),
+		}
+		return func(recordinsurance_contact string) error {
+			for _, fn := range fns {
+				if err := fn(recordinsurance_contact); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// recordinsuranceDescRecordinsuranceAddress is the schema descriptor for recordinsurance_address field.
+	recordinsuranceDescRecordinsuranceAddress := recordinsuranceFields[2].Descriptor()
+	// recordinsurance.RecordinsuranceAddressValidator is a validator for the "recordinsurance_address" field. It is called by the builders before save.
+	recordinsurance.RecordinsuranceAddressValidator = func() func(string) error {
+		validators := recordinsuranceDescRecordinsuranceAddress.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(recordinsurance_address string) error {
+			for _, fn := range fns {
+				if err := fn(recordinsurance_address); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// recordinsuranceDescRecordinsuranceTime is the schema descriptor for recordinsurance_time field.
-	recordinsuranceDescRecordinsuranceTime := recordinsuranceFields[0].Descriptor()
+	recordinsuranceDescRecordinsuranceTime := recordinsuranceFields[3].Descriptor()
 	// recordinsurance.DefaultRecordinsuranceTime holds the default value on creation for the recordinsurance_time field.
 	recordinsurance.DefaultRecordinsuranceTime = recordinsuranceDescRecordinsuranceTime.Default.(func() time.Time)
 }
