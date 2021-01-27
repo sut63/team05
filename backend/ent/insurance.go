@@ -20,12 +20,10 @@ type Insurance struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// InsuranceIdentification holds the value of the "insurance_identification" field.
-	InsuranceIdentification string `json:"insurance_identification,omitempty"`
-	// InsuranceInsurer holds the value of the "insurance_insurer" field.
-	InsuranceInsurer string `json:"insurance_insurer,omitempty"`
 	// InsuranceAddress holds the value of the "insurance_address" field.
 	InsuranceAddress string `json:"insurance_address,omitempty"`
+	// InsuranceInsurer holds the value of the "insurance_insurer" field.
+	InsuranceInsurer string `json:"insurance_insurer,omitempty"`
 	// InsuranceTimeBuy holds the value of the "insurance_time_buy" field.
 	InsuranceTimeBuy time.Time `json:"insurance_time_buy,omitempty"`
 	// InsuranceTimeFirstpay holds the value of the "insurance_time_firstpay" field.
@@ -125,9 +123,8 @@ func (e InsuranceEdges) InsurancePaymentOrErr() ([]*Payment, error) {
 func (*Insurance) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
-		&sql.NullString{}, // insurance_identification
-		&sql.NullString{}, // insurance_insurer
 		&sql.NullString{}, // insurance_address
+		&sql.NullString{}, // insurance_insurer
 		&sql.NullTime{},   // insurance_time_buy
 		&sql.NullTime{},   // insurance_time_firstpay
 	}
@@ -156,31 +153,26 @@ func (i *Insurance) assignValues(values ...interface{}) error {
 	i.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field insurance_identification", values[0])
+		return fmt.Errorf("unexpected type %T for field insurance_address", values[0])
 	} else if value.Valid {
-		i.InsuranceIdentification = value.String
+		i.InsuranceAddress = value.String
 	}
 	if value, ok := values[1].(*sql.NullString); !ok {
 		return fmt.Errorf("unexpected type %T for field insurance_insurer", values[1])
 	} else if value.Valid {
 		i.InsuranceInsurer = value.String
 	}
-	if value, ok := values[2].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field insurance_address", values[2])
-	} else if value.Valid {
-		i.InsuranceAddress = value.String
-	}
-	if value, ok := values[3].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field insurance_time_buy", values[3])
+	if value, ok := values[2].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field insurance_time_buy", values[2])
 	} else if value.Valid {
 		i.InsuranceTimeBuy = value.Time
 	}
-	if value, ok := values[4].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field insurance_time_firstpay", values[4])
+	if value, ok := values[3].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field insurance_time_firstpay", values[3])
 	} else if value.Valid {
 		i.InsuranceTimeFirstpay = value.Time
 	}
-	values = values[5:]
+	values = values[4:]
 	if len(values) == len(insurance.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field hospital_id", value)
@@ -258,12 +250,10 @@ func (i *Insurance) String() string {
 	var builder strings.Builder
 	builder.WriteString("Insurance(")
 	builder.WriteString(fmt.Sprintf("id=%v", i.ID))
-	builder.WriteString(", insurance_identification=")
-	builder.WriteString(i.InsuranceIdentification)
-	builder.WriteString(", insurance_insurer=")
-	builder.WriteString(i.InsuranceInsurer)
 	builder.WriteString(", insurance_address=")
 	builder.WriteString(i.InsuranceAddress)
+	builder.WriteString(", insurance_insurer=")
+	builder.WriteString(i.InsuranceInsurer)
 	builder.WriteString(", insurance_time_buy=")
 	builder.WriteString(i.InsuranceTimeBuy.Format(time.ANSIC))
 	builder.WriteString(", insurance_time_firstpay=")

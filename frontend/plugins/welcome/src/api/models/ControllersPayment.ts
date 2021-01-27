@@ -60,18 +60,6 @@ export interface ControllersPayment {
      * @type {string}
      * @memberof ControllersPayment
      */
-    phoneNumber?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ControllersPayment
-     */
-    price?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ControllersPayment
-     */
     transferTime?: string;
 }
 
@@ -91,8 +79,6 @@ export function ControllersPaymentFromJSONTyped(json: any, ignoreDiscriminator: 
         'insuranceID': !exists(json, 'insuranceID') ? undefined : json['insuranceID'],
         'memberID': !exists(json, 'memberID') ? undefined : json['memberID'],
         'moneytransferID': !exists(json, 'moneytransferID') ? undefined : json['moneytransferID'],
-        'phoneNumber': !exists(json, 'phoneNumber') ? undefined : json['phoneNumber'],
-        'price': !exists(json, 'price') ? undefined : json['price'],
         'transferTime': !exists(json, 'transferTime') ? undefined : json['transferTime'],
     };
 }
@@ -112,8 +98,6 @@ export function ControllersPaymentToJSON(value?: ControllersPayment | null): any
         'insuranceID': value.insuranceID,
         'memberID': value.memberID,
         'moneytransferID': value.moneytransferID,
-        'phoneNumber': value.phoneNumber,
-        'price': value.price,
         'transferTime': value.transferTime,
     };
 }

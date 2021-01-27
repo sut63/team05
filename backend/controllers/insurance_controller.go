@@ -23,15 +23,14 @@ type InsuranceController struct {
 
 // Insurance defines the struct for the insurance
 type Insurance struct {
-	ProductID               int
-	MemberID                int
-	HospitalID              int
-	OfficerID               int
-	InsuranceIdentification string
-	InsuranceAddress        string
-	InsuranceInsurer        string
-	InsuranceTimeBuy        string
-	InsuranceTimeFirstpay   string
+	ProductID             int
+	MemberID              int
+	HospitalID            int
+	OfficerID             int
+	InsuranceAddress      string
+	InsuranceInsurer      string
+	InsuranceTimeBuy      string
+	InsuranceTimeFirstpay string
 }
 
 // CreateInsurance handles POST requests for adding insurance entities
@@ -104,32 +103,25 @@ func (ctl *InsuranceController) CreateInsurance(c *gin.Context) {
 	timeb := time.Now().Local()
 	timep, err := time.Parse(time.RFC3339, obj.InsuranceTimeFirstpay)
 
-	i, err := ctl.client.Insurance.
+	in, err := ctl.client.Insurance.
 		Create().
 		SetProduct(p).
 		SetMember(m).
 		SetHospital(h).
 		SetOfficer(of).
-		SetInsuranceIdentification(obj.InsuranceIdentification).
 		SetInsuranceAddress(obj.InsuranceAddress).
 		SetInsuranceInsurer(obj.InsuranceInsurer).
 		SetInsuranceTimeBuy(timeb).
 		SetInsuranceTimeFirstpay(timep).
 		Save(context.Background())
-
 	if err != nil {
-		fmt.Println(err)
 		c.JSON(400, gin.H{
-			"status": false,
-			"error":  err,
+			"error": "saving failed",
 		})
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"status": true,
-		"data":   i,
-	})
+	c.JSON(200, in)
 }
 
 // ListInsurance handles request to get a list of insurance entities
@@ -198,7 +190,7 @@ func (ctl *InsuranceController) GetInsurance(c *gin.Context) {
 		})
 		return
 	}
-	in, err := ctl.client.Insurance.
+	p, err := ctl.client.Insurance.
 		Query().
 		WithProduct().
 		Where(insurance.IDEQ(int(id))).
@@ -211,7 +203,7 @@ func (ctl *InsuranceController) GetInsurance(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, in)
+	c.JSON(200, p)
 }
 
 // DeleteInsurance handles DELETE requests to delete a insurance entity
@@ -259,7 +251,6 @@ func NewInsuranceController(router gin.IRouter, client *ent.Client) *InsuranceCo
 
 // InitInsuranceController registers routes to the main engine
 func (ctl *InsuranceController) register() {
-
 	insurances := ctl.router.Group("/insurances")
 
 	insurances.GET("", ctl.ListInsurance)

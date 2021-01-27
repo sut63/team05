@@ -28,8 +28,6 @@ type Payment struct {
 	InsuranceID           int
 	AccountName           string
 	AccountNumber         string
-	PhoneNumber           string
-	Price				  float64
 	TransferTime          string
 }
 
@@ -110,25 +108,17 @@ func (ctl *PaymentController) CreatePayment(c *gin.Context) {
 		SetMoneytransfer(mn).
 		SetInsurance(in).
 		SetAccountName(obj.AccountName).
-		SetAccountNumber(obj.AccountNumber ).
-		SetPhoneNumber(obj.PhoneNumber).
-		SetPrice(obj.Price).
-		SetTransferTime(time).
+		SetAccountNumber (obj.AccountNumber ).
+		SetTransferTime (time).
 		Save(context.Background())
-	
-		if err != nil {
-			fmt.Println(err)
-			c.JSON(400, gin.H{
-				"status" : false,
-				"error": err,
-			})
-			return
-		}
-	
-		c.JSON(200, gin.H{
-			"status" : true,
-			"data": p,
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "saving failed",
 		})
+		return
+	}
+
+	c.JSON(200, p)
 }
 
 // ListPayment handles request to get a list of payment entities

@@ -15,10 +15,6 @@ const (
 	FieldAccountName = "account_name"
 	// FieldAccountNumber holds the string denoting the account_number field in the database.
 	FieldAccountNumber = "account_number"
-	// FieldPhoneNumber holds the string denoting the phone_number field in the database.
-	FieldPhoneNumber = "phone_number"
-	// FieldPrice holds the string denoting the price field in the database.
-	FieldPrice = "price"
 	// FieldTransferTime holds the string denoting the transfer_time field in the database.
 	FieldTransferTime = "transfer_time"
 
@@ -68,8 +64,6 @@ var Columns = []string{
 	FieldID,
 	FieldAccountName,
 	FieldAccountNumber,
-	FieldPhoneNumber,
-	FieldPrice,
 	FieldTransferTime,
 }
 
@@ -86,10 +80,6 @@ var (
 	AccountNameValidator func(string) error
 	// AccountNumberValidator is a validator for the "account_number" field. It is called by the builders before save.
 	AccountNumberValidator func(string) error
-	// PhoneNumberValidator is a validator for the "phone_number" field. It is called by the builders before save.
-	PhoneNumberValidator func(string) error
-	// PriceValidator is a validator for the "price" field. It is called by the builders before save.
-	PriceValidator func(float64) error
 	// DefaultTransferTime holds the default value on creation for the transfer_time field.
 	DefaultTransferTime func() time.Time
 )

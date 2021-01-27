@@ -1,6 +1,9 @@
 package schema
 
 import (
+	"errors"
+	"regexp"
+
 	"github.com/facebookincubator/ent"
 	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
@@ -13,11 +16,21 @@ type Product struct {
 
 // Fields of the Product.
 func (Product) Fields() []ent.Field {
+
 	return []ent.Field{
-		field.String("product_name").NotEmpty(),
-		field.Int("product_price"),
-		field.Int("product_time"),
-		field.Int("product_payment_of_year"),
+		field.String("product_name").Validate(func(s string) error {
+			match, _ := regexp.MatchString("[A-Z]$", s)
+			if !match {
+				return errors.New("ชื่อผลิตภัณฑ์ต้องขึ้นต้นด้วยตัวใหญ่เท่านั้น")
+			}
+			return nil
+		}).NotEmpty().Unique(),
+
+		//field.String("product_name").NotEmpty().MinLen(5).Match(regexp.MustCompile("[ABCDEFGHIJKLMNOPQRSTUVWXYZ]")),
+		//field.String("product_name").NotEmpty().Unique(),
+		field.Int("product_price").Range(100000, 1000000),
+		field.Int("product_time").Min(1).Positive(),
+		field.Int("product_payment_of_year").Min(10000),
 	}
 }
 
