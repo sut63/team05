@@ -104,9 +104,9 @@ export function EntProductEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'gender': !exists(json, 'gender') ? undefined : EntGenderFromJSON(json['gender']),
-        'groupofage': !exists(json, 'groupofage') ? undefined : EntGroupOfAgeFromJSON(json['groupofage']),
-        'officer': !exists(json, 'officer') ? undefined : EntOfficerFromJSON(json['officer']),
+        'gender': !exists(json, 'Gender') ? undefined : EntGenderFromJSON(json['Gender']),
+        'groupofage': !exists(json, 'Groupofage') ? undefined : EntGroupOfAgeFromJSON(json['Groupofage']),
+        'officer': !exists(json, 'Officer') ? undefined : EntOfficerFromJSON(json['Officer']),
         'productInquiry': !exists(json, 'productInquiry') ? undefined : ((json['productInquiry'] as Array<any>).map(EntInquiryFromJSON)),
         'productInsurance': !exists(json, 'productInsurance') ? undefined : ((json['productInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
         'productPayback': !exists(json, 'productPayback') ? undefined : ((json['productPayback'] as Array<any>).map(EntPaybackFromJSON)),

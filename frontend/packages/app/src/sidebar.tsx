@@ -12,6 +12,7 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import SaveAltTwoToneIcon from '@material-ui/icons/SaveAltTwoTone';
+import SearchIcon from '@material-ui/icons/Search';
 
 import {
   Sidebar,
@@ -86,6 +87,7 @@ export const AppSidebar = () => {
             icon={CreditCardIcon}
             to="Inquiry"
             text="Inquiry" />
+            
             </>
             
         )
@@ -111,6 +113,10 @@ export const AppSidebar = () => {
             icon={PaymentIcon}
             to="payback"
             text="payback" />
+             <SidebarItem
+            icon={SearchIcon}
+            to="ProductSearch"
+            text="ค้นหาผลิตภัณฑ์" />
             </>
         )
         :

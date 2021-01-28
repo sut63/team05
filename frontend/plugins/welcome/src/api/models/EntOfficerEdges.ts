@@ -94,12 +94,12 @@ export function EntOfficerEdgesFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'officerInquiry': !exists(json, 'officerInquiry') ? undefined : ((json['officerInquiry'] as Array<any>).map(EntInquiryFromJSON)),
-        'officerInsurance': !exists(json, 'officerInsurance') ? undefined : ((json['officerInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
-        'officerPayback': !exists(json, 'officerPayback') ? undefined : ((json['officerPayback'] as Array<any>).map(EntPaybackFromJSON)),
-        'officerProduct': !exists(json, 'officerProduct') ? undefined : ((json['officerProduct'] as Array<any>).map(EntProductFromJSON)),
-        'officerRecordinsurance': !exists(json, 'officerRecordinsurance') ? undefined : ((json['officerRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
-        'position': !exists(json, 'position') ? undefined : EntPositionFromJSON(json['position']),
+        'officerInquiry': !exists(json, 'OfficerInquiry') ? undefined : ((json['OfficerInquiry'] as Array<any>).map(EntInquiryFromJSON)),
+        'officerInsurance': !exists(json, 'OfficerInsurance') ? undefined : ((json['OfficerInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
+        'officerPayback': !exists(json, 'OfficerPayback') ? undefined : ((json['OfficerPayback'] as Array<any>).map(EntPaybackFromJSON)),
+        'officerProduct': !exists(json, 'OfficerProduct') ? undefined : ((json['OfficerProduct'] as Array<any>).map(EntProductFromJSON)),
+        'officerRecordinsurance': !exists(json, 'OfficerRecordinsurance') ? undefined : ((json['OfficerRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
+        'position': !exists(json, 'Position') ? undefined : EntPositionFromJSON(json['Position']),
     };
 }
 

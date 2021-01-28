@@ -85,6 +85,7 @@ export default function Login(props: any) {
       if ((item.officerEmail == officeremail) && (item.officerPassword == officerpassword)) {
         setAlert(true);
         localStorage.setItem("officerdata", JSON.stringify(item.id));
+        localStorage.setItem("positiondata",JSON.stringify(item.edges.position.positionName));
         history.pushState("", "", "/Product");
         window.location.reload(false);
 
