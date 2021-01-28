@@ -95,11 +95,11 @@ export function EntMemberEdgesFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'memberInquiry': !exists(json, 'memberInquiry') ? undefined : ((json['memberInquiry'] as Array<any>).map(EntInquiryFromJSON)),
-        'memberInsurance': !exists(json, 'MemberInsurance') ? undefined : ((json['MemberInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
+        'memberInsurance': !exists(json, 'memberInsurance') ? undefined : ((json['memberInsurance'] as Array<any>).map(EntInsuranceFromJSON)),
         'memberPayback': !exists(json, 'memberPayback') ? undefined : ((json['memberPayback'] as Array<any>).map(EntPaybackFromJSON)),
         'memberPayment': !exists(json, 'memberPayment') ? undefined : ((json['memberPayment'] as Array<any>).map(EntPaymentFromJSON)),
         'memberRecordinsurance': !exists(json, 'memberRecordinsurance') ? undefined : ((json['memberRecordinsurance'] as Array<any>).map(EntRecordinsuranceFromJSON)),
-        'position': !exists(json, 'Position') ? undefined : EntPositionFromJSON(json['Position']),
+        'position': !exists(json, 'position') ? undefined : EntPositionFromJSON(json['position']),
     };
 }
 

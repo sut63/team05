@@ -24,6 +24,10 @@ type Payment struct {
 	AccountName string `json:"account_name,omitempty"`
 	// AccountNumber holds the value of the "account_number" field.
 	AccountNumber string `json:"account_number,omitempty"`
+	// PhoneNumber holds the value of the "phone_number" field.
+	PhoneNumber string `json:"phone_number,omitempty"`
+	// Price holds the value of the "price" field.
+	Price float64 `json:"price,omitempty"`
 	// TransferTime holds the value of the "transfer_time" field.
 	TransferTime time.Time `json:"transfer_time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -109,10 +113,12 @@ func (e PaymentEdges) MemberOrErr() (*Member, error) {
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Payment) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{},  // id
-		&sql.NullString{}, // account_name
-		&sql.NullString{}, // account_number
-		&sql.NullTime{},   // transfer_time
+		&sql.NullInt64{},   // id
+		&sql.NullString{},  // account_name
+		&sql.NullString{},  // account_number
+		&sql.NullString{},  // phone_number
+		&sql.NullFloat64{}, // price
+		&sql.NullTime{},    // transfer_time
 	}
 }
 
@@ -148,12 +154,22 @@ func (pa *Payment) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		pa.AccountNumber = value.String
 	}
-	if value, ok := values[2].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field transfer_time", values[2])
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field phone_number", values[2])
+	} else if value.Valid {
+		pa.PhoneNumber = value.String
+	}
+	if value, ok := values[3].(*sql.NullFloat64); !ok {
+		return fmt.Errorf("unexpected type %T for field price", values[3])
+	} else if value.Valid {
+		pa.Price = value.Float64
+	}
+	if value, ok := values[4].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field transfer_time", values[4])
 	} else if value.Valid {
 		pa.TransferTime = value.Time
 	}
-	values = values[3:]
+	values = values[5:]
 	if len(values) == len(payment.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field bank_id", value)
@@ -230,6 +246,10 @@ func (pa *Payment) String() string {
 	builder.WriteString(pa.AccountName)
 	builder.WriteString(", account_number=")
 	builder.WriteString(pa.AccountNumber)
+	builder.WriteString(", phone_number=")
+	builder.WriteString(pa.PhoneNumber)
+	builder.WriteString(", price=")
+	builder.WriteString(fmt.Sprintf("%v", pa.Price))
 	builder.WriteString(", transfer_time=")
 	builder.WriteString(pa.TransferTime.Format(time.ANSIC))
 	builder.WriteByte(')')

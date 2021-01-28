@@ -285,7 +285,9 @@ var (
 	PaymentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "account_name", Type: field.TypeString},
-		{Name: "account_number", Type: field.TypeString},
+		{Name: "account_number", Type: field.TypeString, Size: 10},
+		{Name: "phone_number", Type: field.TypeString, Size: 10},
+		{Name: "price", Type: field.TypeFloat64},
 		{Name: "transfer_time", Type: field.TypeTime},
 		{Name: "bank_id", Type: field.TypeInt, Nullable: true},
 		{Name: "insurance_id", Type: field.TypeInt, Nullable: true},
@@ -300,28 +302,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "payments_banks_bank_payment",
-				Columns: []*schema.Column{PaymentsColumns[4]},
+				Columns: []*schema.Column{PaymentsColumns[6]},
 
 				RefColumns: []*schema.Column{BanksColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "payments_insurances_insurance_payment",
-				Columns: []*schema.Column{PaymentsColumns[5]},
+				Columns: []*schema.Column{PaymentsColumns[7]},
 
 				RefColumns: []*schema.Column{InsurancesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "payments_members_member_payment",
-				Columns: []*schema.Column{PaymentsColumns[6]},
+				Columns: []*schema.Column{PaymentsColumns[8]},
 
 				RefColumns: []*schema.Column{MembersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "payments_moneytransfers_moneytransfer_payment",
-				Columns: []*schema.Column{PaymentsColumns[7]},
+				Columns: []*schema.Column{PaymentsColumns[9]},
 
 				RefColumns: []*schema.Column{MoneytransfersColumns[0]},
 				OnDelete:   schema.SetNull,

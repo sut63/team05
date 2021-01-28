@@ -44,6 +44,25 @@ func (pu *PaymentUpdate) SetAccountNumber(s string) *PaymentUpdate {
 	return pu
 }
 
+// SetPhoneNumber sets the phone_number field.
+func (pu *PaymentUpdate) SetPhoneNumber(s string) *PaymentUpdate {
+	pu.mutation.SetPhoneNumber(s)
+	return pu
+}
+
+// SetPrice sets the price field.
+func (pu *PaymentUpdate) SetPrice(f float64) *PaymentUpdate {
+	pu.mutation.ResetPrice()
+	pu.mutation.SetPrice(f)
+	return pu
+}
+
+// AddPrice adds f to price.
+func (pu *PaymentUpdate) AddPrice(f float64) *PaymentUpdate {
+	pu.mutation.AddPrice(f)
+	return pu
+}
+
 // SetTransferTime sets the transfer_time field.
 func (pu *PaymentUpdate) SetTransferTime(t time.Time) *PaymentUpdate {
 	pu.mutation.SetTransferTime(t)
@@ -175,6 +194,16 @@ func (pu *PaymentUpdate) Save(ctx context.Context) (int, error) {
 			return 0, &ValidationError{Name: "account_number", err: fmt.Errorf("ent: validator failed for field \"account_number\": %w", err)}
 		}
 	}
+	if v, ok := pu.mutation.PhoneNumber(); ok {
+		if err := payment.PhoneNumberValidator(v); err != nil {
+			return 0, &ValidationError{Name: "phone_number", err: fmt.Errorf("ent: validator failed for field \"phone_number\": %w", err)}
+		}
+	}
+	if v, ok := pu.mutation.Price(); ok {
+		if err := payment.PriceValidator(v); err != nil {
+			return 0, &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -255,6 +284,27 @@ func (pu *PaymentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: payment.FieldAccountNumber,
+		})
+	}
+	if value, ok := pu.mutation.PhoneNumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: payment.FieldPhoneNumber,
+		})
+	}
+	if value, ok := pu.mutation.Price(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: payment.FieldPrice,
+		})
+	}
+	if value, ok := pu.mutation.AddedPrice(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: payment.FieldPrice,
 		})
 	}
 	if value, ok := pu.mutation.TransferTime(); ok {
@@ -434,6 +484,25 @@ func (puo *PaymentUpdateOne) SetAccountNumber(s string) *PaymentUpdateOne {
 	return puo
 }
 
+// SetPhoneNumber sets the phone_number field.
+func (puo *PaymentUpdateOne) SetPhoneNumber(s string) *PaymentUpdateOne {
+	puo.mutation.SetPhoneNumber(s)
+	return puo
+}
+
+// SetPrice sets the price field.
+func (puo *PaymentUpdateOne) SetPrice(f float64) *PaymentUpdateOne {
+	puo.mutation.ResetPrice()
+	puo.mutation.SetPrice(f)
+	return puo
+}
+
+// AddPrice adds f to price.
+func (puo *PaymentUpdateOne) AddPrice(f float64) *PaymentUpdateOne {
+	puo.mutation.AddPrice(f)
+	return puo
+}
+
 // SetTransferTime sets the transfer_time field.
 func (puo *PaymentUpdateOne) SetTransferTime(t time.Time) *PaymentUpdateOne {
 	puo.mutation.SetTransferTime(t)
@@ -565,6 +634,16 @@ func (puo *PaymentUpdateOne) Save(ctx context.Context) (*Payment, error) {
 			return nil, &ValidationError{Name: "account_number", err: fmt.Errorf("ent: validator failed for field \"account_number\": %w", err)}
 		}
 	}
+	if v, ok := puo.mutation.PhoneNumber(); ok {
+		if err := payment.PhoneNumberValidator(v); err != nil {
+			return nil, &ValidationError{Name: "phone_number", err: fmt.Errorf("ent: validator failed for field \"phone_number\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.Price(); ok {
+		if err := payment.PriceValidator(v); err != nil {
+			return nil, &ValidationError{Name: "price", err: fmt.Errorf("ent: validator failed for field \"price\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -643,6 +722,27 @@ func (puo *PaymentUpdateOne) sqlSave(ctx context.Context) (pa *Payment, err erro
 			Type:   field.TypeString,
 			Value:  value,
 			Column: payment.FieldAccountNumber,
+		})
+	}
+	if value, ok := puo.mutation.PhoneNumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: payment.FieldPhoneNumber,
+		})
+	}
+	if value, ok := puo.mutation.Price(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: payment.FieldPrice,
+		})
+	}
+	if value, ok := puo.mutation.AddedPrice(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeFloat64,
+			Value:  value,
+			Column: payment.FieldPrice,
 		})
 	}
 	if value, ok := puo.mutation.TransferTime(); ok {
