@@ -9,7 +9,7 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import CommentIcon from '@material-ui/icons/Comment';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import PaymentIcon from '@material-ui/icons/Payment';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import FindInPageIcon from '@material-ui/icons/FindInPage';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import SaveAltTwoToneIcon from '@material-ui/icons/SaveAltTwoTone';
 
@@ -75,18 +75,19 @@ export const AppSidebar = () => {
             to="Insurance"
             text="Insurance" />
             <SidebarItem
-            icon={LibraryBooksIcon}
-            to="Resultinsurance"
-            text="SearchInsurance" />
-            <SidebarItem
             icon={MonetizationOnIcon}
             to="payment"
             text="Payment" />
+           <SidebarItem
+            icon={FindInPageIcon}
+            to="PaymentSearch"
+            text="PaymentSearch" />
             <SidebarItem
             icon={CreditCardIcon}
             to="Inquiry"
             text="Inquiry" />
             </>
+            
         )
         :
         null
