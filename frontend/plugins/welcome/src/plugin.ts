@@ -3,6 +3,7 @@ import WelcomePage from './components/WelcomePage';
 import SignIn from './components/SignIn'
 import Insurance from './components/Insurance';
 import TableInsurance from './components/TableInsurance';
+import ResultInsurance from './components/ResultInsurance';
 
 import Product from './components/Product';
 import Officerlongin from './components/Officerlongin';
@@ -22,6 +23,7 @@ export const plugin = createPlugin({
     router.registerRoute('/payment', Payment);
     router.registerRoute('/insurance', Insurance);
     router.registerRoute('/tableinsurance', TableInsurance);
+    router.registerRoute('/resultinsurance', ResultInsurance);
     router.registerRoute('/product', Product);
 
     router.registerRoute('/officerlongin', Officerlongin);

@@ -395,12 +395,12 @@ func (iq *InsuranceQuery) WithInsurancePayment(opts ...func(*PaymentQuery)) *Ins
 // Example:
 //
 //	var v []struct {
-//		InsuranceAddress string `json:"insurance_address,omitempty"`
+//		InsuranceIdentification string `json:"insurance_identification,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Insurance.Query().
-//		GroupBy(insurance.FieldInsuranceAddress).
+//		GroupBy(insurance.FieldInsuranceIdentification).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -421,11 +421,11 @@ func (iq *InsuranceQuery) GroupBy(field string, fields ...string) *InsuranceGrou
 // Example:
 //
 //	var v []struct {
-//		InsuranceAddress string `json:"insurance_address,omitempty"`
+//		InsuranceIdentification string `json:"insurance_identification,omitempty"`
 //	}
 //
 //	client.Insurance.Query().
-//		Select(insurance.FieldInsuranceAddress).
+//		Select(insurance.FieldInsuranceIdentification).
 //		Scan(ctx, &v)
 //
 func (iq *InsuranceQuery) Select(field string, fields ...string) *InsuranceSelect {

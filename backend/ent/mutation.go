@@ -3140,8 +3140,9 @@ type InsuranceMutation struct {
 	op                       Op
 	typ                      string
 	id                       *int
-	insurance_address        *string
+	insurance_identification *string
 	insurance_insurer        *string
+	insurance_address        *string
 	insurance_time_buy       *time.Time
 	insurance_time_firstpay  *time.Time
 	clearedFields            map[string]struct{}
@@ -3238,41 +3239,41 @@ func (m *InsuranceMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
-// SetInsuranceAddress sets the insurance_address field.
-func (m *InsuranceMutation) SetInsuranceAddress(s string) {
-	m.insurance_address = &s
+// SetInsuranceIdentification sets the insurance_identification field.
+func (m *InsuranceMutation) SetInsuranceIdentification(s string) {
+	m.insurance_identification = &s
 }
 
-// InsuranceAddress returns the insurance_address value in the mutation.
-func (m *InsuranceMutation) InsuranceAddress() (r string, exists bool) {
-	v := m.insurance_address
+// InsuranceIdentification returns the insurance_identification value in the mutation.
+func (m *InsuranceMutation) InsuranceIdentification() (r string, exists bool) {
+	v := m.insurance_identification
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldInsuranceAddress returns the old insurance_address value of the Insurance.
+// OldInsuranceIdentification returns the old insurance_identification value of the Insurance.
 // If the Insurance object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *InsuranceMutation) OldInsuranceAddress(ctx context.Context) (v string, err error) {
+func (m *InsuranceMutation) OldInsuranceIdentification(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldInsuranceAddress is allowed only on UpdateOne operations")
+		return v, fmt.Errorf("OldInsuranceIdentification is allowed only on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldInsuranceAddress requires an ID field in the mutation")
+		return v, fmt.Errorf("OldInsuranceIdentification requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldInsuranceAddress: %w", err)
+		return v, fmt.Errorf("querying old value for OldInsuranceIdentification: %w", err)
 	}
-	return oldValue.InsuranceAddress, nil
+	return oldValue.InsuranceIdentification, nil
 }
 
-// ResetInsuranceAddress reset all changes of the "insurance_address" field.
-func (m *InsuranceMutation) ResetInsuranceAddress() {
-	m.insurance_address = nil
+// ResetInsuranceIdentification reset all changes of the "insurance_identification" field.
+func (m *InsuranceMutation) ResetInsuranceIdentification() {
+	m.insurance_identification = nil
 }
 
 // SetInsuranceInsurer sets the insurance_insurer field.
@@ -3310,6 +3311,43 @@ func (m *InsuranceMutation) OldInsuranceInsurer(ctx context.Context) (v string, 
 // ResetInsuranceInsurer reset all changes of the "insurance_insurer" field.
 func (m *InsuranceMutation) ResetInsuranceInsurer() {
 	m.insurance_insurer = nil
+}
+
+// SetInsuranceAddress sets the insurance_address field.
+func (m *InsuranceMutation) SetInsuranceAddress(s string) {
+	m.insurance_address = &s
+}
+
+// InsuranceAddress returns the insurance_address value in the mutation.
+func (m *InsuranceMutation) InsuranceAddress() (r string, exists bool) {
+	v := m.insurance_address
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInsuranceAddress returns the old insurance_address value of the Insurance.
+// If the Insurance object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *InsuranceMutation) OldInsuranceAddress(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldInsuranceAddress is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldInsuranceAddress requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInsuranceAddress: %w", err)
+	}
+	return oldValue.InsuranceAddress, nil
+}
+
+// ResetInsuranceAddress reset all changes of the "insurance_address" field.
+func (m *InsuranceMutation) ResetInsuranceAddress() {
+	m.insurance_address = nil
 }
 
 // SetInsuranceTimeBuy sets the insurance_time_buy field.
@@ -3598,12 +3636,15 @@ func (m *InsuranceMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *InsuranceMutation) Fields() []string {
-	fields := make([]string, 0, 4)
-	if m.insurance_address != nil {
-		fields = append(fields, insurance.FieldInsuranceAddress)
+	fields := make([]string, 0, 5)
+	if m.insurance_identification != nil {
+		fields = append(fields, insurance.FieldInsuranceIdentification)
 	}
 	if m.insurance_insurer != nil {
 		fields = append(fields, insurance.FieldInsuranceInsurer)
+	}
+	if m.insurance_address != nil {
+		fields = append(fields, insurance.FieldInsuranceAddress)
 	}
 	if m.insurance_time_buy != nil {
 		fields = append(fields, insurance.FieldInsuranceTimeBuy)
@@ -3619,10 +3660,12 @@ func (m *InsuranceMutation) Fields() []string {
 // not set, or was not define in the schema.
 func (m *InsuranceMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case insurance.FieldInsuranceAddress:
-		return m.InsuranceAddress()
+	case insurance.FieldInsuranceIdentification:
+		return m.InsuranceIdentification()
 	case insurance.FieldInsuranceInsurer:
 		return m.InsuranceInsurer()
+	case insurance.FieldInsuranceAddress:
+		return m.InsuranceAddress()
 	case insurance.FieldInsuranceTimeBuy:
 		return m.InsuranceTimeBuy()
 	case insurance.FieldInsuranceTimeFirstpay:
@@ -3636,10 +3679,12 @@ func (m *InsuranceMutation) Field(name string) (ent.Value, bool) {
 // or the query to the database was failed.
 func (m *InsuranceMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case insurance.FieldInsuranceAddress:
-		return m.OldInsuranceAddress(ctx)
+	case insurance.FieldInsuranceIdentification:
+		return m.OldInsuranceIdentification(ctx)
 	case insurance.FieldInsuranceInsurer:
 		return m.OldInsuranceInsurer(ctx)
+	case insurance.FieldInsuranceAddress:
+		return m.OldInsuranceAddress(ctx)
 	case insurance.FieldInsuranceTimeBuy:
 		return m.OldInsuranceTimeBuy(ctx)
 	case insurance.FieldInsuranceTimeFirstpay:
@@ -3653,12 +3698,12 @@ func (m *InsuranceMutation) OldField(ctx context.Context, name string) (ent.Valu
 // type mismatch the field type.
 func (m *InsuranceMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case insurance.FieldInsuranceAddress:
+	case insurance.FieldInsuranceIdentification:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetInsuranceAddress(v)
+		m.SetInsuranceIdentification(v)
 		return nil
 	case insurance.FieldInsuranceInsurer:
 		v, ok := value.(string)
@@ -3666,6 +3711,13 @@ func (m *InsuranceMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetInsuranceInsurer(v)
+		return nil
+	case insurance.FieldInsuranceAddress:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInsuranceAddress(v)
 		return nil
 	case insurance.FieldInsuranceTimeBuy:
 		v, ok := value.(time.Time)
@@ -3731,11 +3783,14 @@ func (m *InsuranceMutation) ClearField(name string) error {
 // defined in the schema.
 func (m *InsuranceMutation) ResetField(name string) error {
 	switch name {
-	case insurance.FieldInsuranceAddress:
-		m.ResetInsuranceAddress()
+	case insurance.FieldInsuranceIdentification:
+		m.ResetInsuranceIdentification()
 		return nil
 	case insurance.FieldInsuranceInsurer:
 		m.ResetInsuranceInsurer()
+		return nil
+	case insurance.FieldInsuranceAddress:
+		m.ResetInsuranceAddress()
 		return nil
 	case insurance.FieldInsuranceTimeBuy:
 		m.ResetInsuranceTimeBuy()
