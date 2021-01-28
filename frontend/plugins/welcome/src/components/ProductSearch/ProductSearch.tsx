@@ -112,11 +112,11 @@ export default function Insurance() {
       const checkJobPosition = async () => {
         const jobdata = JSON.parse(String(localStorage.getItem("positiondata")));
         setLoading(false);
-        if (jobdata != "พนักงานประกันระบบสุขภาพ" ) {
+        if (jobdata != "พนักงานบริษัทประกันสุขภาพ" ) {
           localStorage.setItem("officerdata",JSON.stringify(null));
           localStorage.setItem("positiondata",JSON.stringify(null));
-          history.pushState("","","./Officerlongin");  //Officerlongin
-          window.location.reload(false);        
+          history.pushState("","","./");  //ProductSearch Officerlongin
+          window.location.reload(false);       
         }
         else{
             setOfiicerID(Number(localStorage.getItem("officerdata")))

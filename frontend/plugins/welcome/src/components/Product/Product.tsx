@@ -322,7 +322,7 @@ export default function Create() {
             <Grid item xs={8}>
             <FormControl variant="outlined" className={classes.formControl}>
              <OutlinedInput
-                id="outlined-adornment-amount"
+                id="outlined-adornment-price"
                 value={productPrice}
                 onChange={ProductPricehandleChange}
                 startAdornment={<InputAdornment position="start">฿</InputAdornment>}
@@ -337,7 +337,7 @@ export default function Create() {
             <Grid item xs={8}>
             <FormControl variant="outlined" className={classes.formControl}>
              <OutlinedInput
-                id="outlined-adornment-amount"
+                id="outlined-adornment-time"
                 value={productTime}
                 onChange={ProductTimehandleChange}
                 startAdornment={<InputAdornment position="start">ปี</InputAdornment>}
@@ -352,7 +352,7 @@ export default function Create() {
             <Grid item xs={8}>
             <FormControl variant="outlined" className={classes.formControl}>
              <OutlinedInput
-                id="outlined-adornment-amount"
+                id="outlined-adornment-payment"
                 value={productPaymentOfYear}
                 onChange={ProductPaymentOfYearhandleChange}
                 startAdornment={<InputAdornment position="start">฿</InputAdornment>}
