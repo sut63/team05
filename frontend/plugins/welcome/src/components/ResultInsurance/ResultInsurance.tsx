@@ -87,9 +87,6 @@ const check = {
   membercheck : true
 }
 
-const searchcheck = {
-  resultsearchcheck: true
-}
 
 export default function Insurance() {
   const classes = useStyles();
