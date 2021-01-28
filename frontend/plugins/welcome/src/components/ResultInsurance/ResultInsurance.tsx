@@ -96,7 +96,6 @@ export default function Insurance() {
   const api = new DefaultApi();
   const [insurances, setInsurances] = useState<EntInsurance[]>([]);
   const [loading, setLoading] = useState(true);
-  const profile = { givenName: 'ระบบบันทึกการใช้รถพยาบาล' };
   const [status, setStatus] = useState(false);
   const [alert, setAlert] = React.useState(true);
   const [alerttype, setAlertType] = useState(String);
