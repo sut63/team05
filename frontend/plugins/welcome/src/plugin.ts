@@ -15,6 +15,8 @@ import Payback from './components/Payback';
 import RecordinsuranceSearch from './components/RecordinsuranceSearch';
 import RecordinsuranceTable from './components/RecordinsuranceTable';
 import PaymentSearch from './components/PaymentSearch';
+
+import ProductSearch from './components/ProductSearch';
 export const plugin = createPlugin({
   id: 'welcome',
   register({ router }) {
@@ -34,6 +36,7 @@ export const plugin = createPlugin({
     router.registerRoute('/recordinsurancesearch', RecordinsuranceSearch);
     router.registerRoute('/recordinsurancetable', RecordinsuranceTable);
     router.registerRoute('/paymentsearch', PaymentSearch);
+    router.registerRoute('/productsearch', ProductSearch);
 
   },
 });
