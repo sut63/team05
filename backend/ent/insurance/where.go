@@ -93,10 +93,10 @@ func IDLTE(id int) predicate.Insurance {
 	})
 }
 
-// InsuranceAddress applies equality check predicate on the "insurance_address" field. It's identical to InsuranceAddressEQ.
-func InsuranceAddress(v string) predicate.Insurance {
+// InsuranceIdentification applies equality check predicate on the "insurance_identification" field. It's identical to InsuranceIdentificationEQ.
+func InsuranceIdentification(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.EQ(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
@@ -104,6 +104,13 @@ func InsuranceAddress(v string) predicate.Insurance {
 func InsuranceInsurer(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldInsuranceInsurer), v))
+	})
+}
+
+// InsuranceAddress applies equality check predicate on the "insurance_address" field. It's identical to InsuranceAddressEQ.
+func InsuranceAddress(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInsuranceAddress), v))
 	})
 }
 
@@ -121,22 +128,22 @@ func InsuranceTimeFirstpay(v time.Time) predicate.Insurance {
 	})
 }
 
-// InsuranceAddressEQ applies the EQ predicate on the "insurance_address" field.
-func InsuranceAddressEQ(v string) predicate.Insurance {
+// InsuranceIdentificationEQ applies the EQ predicate on the "insurance_identification" field.
+func InsuranceIdentificationEQ(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.EQ(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressNEQ applies the NEQ predicate on the "insurance_address" field.
-func InsuranceAddressNEQ(v string) predicate.Insurance {
+// InsuranceIdentificationNEQ applies the NEQ predicate on the "insurance_identification" field.
+func InsuranceIdentificationNEQ(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.NEQ(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressIn applies the In predicate on the "insurance_address" field.
-func InsuranceAddressIn(vs ...string) predicate.Insurance {
+// InsuranceIdentificationIn applies the In predicate on the "insurance_identification" field.
+func InsuranceIdentificationIn(vs ...string) predicate.Insurance {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -148,12 +155,12 @@ func InsuranceAddressIn(vs ...string) predicate.Insurance {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldInsuranceAddress), v...))
+		s.Where(sql.In(s.C(FieldInsuranceIdentification), v...))
 	})
 }
 
-// InsuranceAddressNotIn applies the NotIn predicate on the "insurance_address" field.
-func InsuranceAddressNotIn(vs ...string) predicate.Insurance {
+// InsuranceIdentificationNotIn applies the NotIn predicate on the "insurance_identification" field.
+func InsuranceIdentificationNotIn(vs ...string) predicate.Insurance {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -165,70 +172,70 @@ func InsuranceAddressNotIn(vs ...string) predicate.Insurance {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldInsuranceAddress), v...))
+		s.Where(sql.NotIn(s.C(FieldInsuranceIdentification), v...))
 	})
 }
 
-// InsuranceAddressGT applies the GT predicate on the "insurance_address" field.
-func InsuranceAddressGT(v string) predicate.Insurance {
+// InsuranceIdentificationGT applies the GT predicate on the "insurance_identification" field.
+func InsuranceIdentificationGT(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.GT(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressGTE applies the GTE predicate on the "insurance_address" field.
-func InsuranceAddressGTE(v string) predicate.Insurance {
+// InsuranceIdentificationGTE applies the GTE predicate on the "insurance_identification" field.
+func InsuranceIdentificationGTE(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.GTE(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressLT applies the LT predicate on the "insurance_address" field.
-func InsuranceAddressLT(v string) predicate.Insurance {
+// InsuranceIdentificationLT applies the LT predicate on the "insurance_identification" field.
+func InsuranceIdentificationLT(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.LT(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressLTE applies the LTE predicate on the "insurance_address" field.
-func InsuranceAddressLTE(v string) predicate.Insurance {
+// InsuranceIdentificationLTE applies the LTE predicate on the "insurance_identification" field.
+func InsuranceIdentificationLTE(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.LTE(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressContains applies the Contains predicate on the "insurance_address" field.
-func InsuranceAddressContains(v string) predicate.Insurance {
+// InsuranceIdentificationContains applies the Contains predicate on the "insurance_identification" field.
+func InsuranceIdentificationContains(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.Contains(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressHasPrefix applies the HasPrefix predicate on the "insurance_address" field.
-func InsuranceAddressHasPrefix(v string) predicate.Insurance {
+// InsuranceIdentificationHasPrefix applies the HasPrefix predicate on the "insurance_identification" field.
+func InsuranceIdentificationHasPrefix(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.HasPrefix(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressHasSuffix applies the HasSuffix predicate on the "insurance_address" field.
-func InsuranceAddressHasSuffix(v string) predicate.Insurance {
+// InsuranceIdentificationHasSuffix applies the HasSuffix predicate on the "insurance_identification" field.
+func InsuranceIdentificationHasSuffix(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.HasSuffix(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressEqualFold applies the EqualFold predicate on the "insurance_address" field.
-func InsuranceAddressEqualFold(v string) predicate.Insurance {
+// InsuranceIdentificationEqualFold applies the EqualFold predicate on the "insurance_identification" field.
+func InsuranceIdentificationEqualFold(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.EqualFold(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
-// InsuranceAddressContainsFold applies the ContainsFold predicate on the "insurance_address" field.
-func InsuranceAddressContainsFold(v string) predicate.Insurance {
+// InsuranceIdentificationContainsFold applies the ContainsFold predicate on the "insurance_identification" field.
+func InsuranceIdentificationContainsFold(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldInsuranceAddress), v))
+		s.Where(sql.ContainsFold(s.C(FieldInsuranceIdentification), v))
 	})
 }
 
@@ -340,6 +347,117 @@ func InsuranceInsurerEqualFold(v string) predicate.Insurance {
 func InsuranceInsurerContainsFold(v string) predicate.Insurance {
 	return predicate.Insurance(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldInsuranceInsurer), v))
+	})
+}
+
+// InsuranceAddressEQ applies the EQ predicate on the "insurance_address" field.
+func InsuranceAddressEQ(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressNEQ applies the NEQ predicate on the "insurance_address" field.
+func InsuranceAddressNEQ(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressIn applies the In predicate on the "insurance_address" field.
+func InsuranceAddressIn(vs ...string) predicate.Insurance {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Insurance(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldInsuranceAddress), v...))
+	})
+}
+
+// InsuranceAddressNotIn applies the NotIn predicate on the "insurance_address" field.
+func InsuranceAddressNotIn(vs ...string) predicate.Insurance {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Insurance(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldInsuranceAddress), v...))
+	})
+}
+
+// InsuranceAddressGT applies the GT predicate on the "insurance_address" field.
+func InsuranceAddressGT(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressGTE applies the GTE predicate on the "insurance_address" field.
+func InsuranceAddressGTE(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressLT applies the LT predicate on the "insurance_address" field.
+func InsuranceAddressLT(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressLTE applies the LTE predicate on the "insurance_address" field.
+func InsuranceAddressLTE(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressContains applies the Contains predicate on the "insurance_address" field.
+func InsuranceAddressContains(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressHasPrefix applies the HasPrefix predicate on the "insurance_address" field.
+func InsuranceAddressHasPrefix(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressHasSuffix applies the HasSuffix predicate on the "insurance_address" field.
+func InsuranceAddressHasSuffix(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressEqualFold applies the EqualFold predicate on the "insurance_address" field.
+func InsuranceAddressEqualFold(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldInsuranceAddress), v))
+	})
+}
+
+// InsuranceAddressContainsFold applies the ContainsFold predicate on the "insurance_address" field.
+func InsuranceAddressContainsFold(v string) predicate.Insurance {
+	return predicate.Insurance(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldInsuranceAddress), v))
 	})
 }
 

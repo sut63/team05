@@ -25,15 +25,21 @@ type InsuranceCreate struct {
 	hooks    []Hook
 }
 
-// SetInsuranceAddress sets the insurance_address field.
-func (ic *InsuranceCreate) SetInsuranceAddress(s string) *InsuranceCreate {
-	ic.mutation.SetInsuranceAddress(s)
+// SetInsuranceIdentification sets the insurance_identification field.
+func (ic *InsuranceCreate) SetInsuranceIdentification(s string) *InsuranceCreate {
+	ic.mutation.SetInsuranceIdentification(s)
 	return ic
 }
 
 // SetInsuranceInsurer sets the insurance_insurer field.
 func (ic *InsuranceCreate) SetInsuranceInsurer(s string) *InsuranceCreate {
 	ic.mutation.SetInsuranceInsurer(s)
+	return ic
+}
+
+// SetInsuranceAddress sets the insurance_address field.
+func (ic *InsuranceCreate) SetInsuranceAddress(s string) *InsuranceCreate {
+	ic.mutation.SetInsuranceAddress(s)
 	return ic
 }
 
@@ -54,14 +60,6 @@ func (ic *InsuranceCreate) SetNillableInsuranceTimeBuy(t *time.Time) *InsuranceC
 // SetInsuranceTimeFirstpay sets the insurance_time_firstpay field.
 func (ic *InsuranceCreate) SetInsuranceTimeFirstpay(t time.Time) *InsuranceCreate {
 	ic.mutation.SetInsuranceTimeFirstpay(t)
-	return ic
-}
-
-// SetNillableInsuranceTimeFirstpay sets the insurance_time_firstpay field if the given value is not nil.
-func (ic *InsuranceCreate) SetNillableInsuranceTimeFirstpay(t *time.Time) *InsuranceCreate {
-	if t != nil {
-		ic.SetInsuranceTimeFirstpay(*t)
-	}
 	return ic
 }
 
@@ -163,12 +161,12 @@ func (ic *InsuranceCreate) Mutation() *InsuranceMutation {
 
 // Save creates the Insurance in the database.
 func (ic *InsuranceCreate) Save(ctx context.Context) (*Insurance, error) {
-	if _, ok := ic.mutation.InsuranceAddress(); !ok {
-		return nil, &ValidationError{Name: "insurance_address", err: errors.New("ent: missing required field \"insurance_address\"")}
+	if _, ok := ic.mutation.InsuranceIdentification(); !ok {
+		return nil, &ValidationError{Name: "insurance_identification", err: errors.New("ent: missing required field \"insurance_identification\"")}
 	}
-	if v, ok := ic.mutation.InsuranceAddress(); ok {
-		if err := insurance.InsuranceAddressValidator(v); err != nil {
-			return nil, &ValidationError{Name: "insurance_address", err: fmt.Errorf("ent: validator failed for field \"insurance_address\": %w", err)}
+	if v, ok := ic.mutation.InsuranceIdentification(); ok {
+		if err := insurance.InsuranceIdentificationValidator(v); err != nil {
+			return nil, &ValidationError{Name: "insurance_identification", err: fmt.Errorf("ent: validator failed for field \"insurance_identification\": %w", err)}
 		}
 	}
 	if _, ok := ic.mutation.InsuranceInsurer(); !ok {
@@ -179,13 +177,20 @@ func (ic *InsuranceCreate) Save(ctx context.Context) (*Insurance, error) {
 			return nil, &ValidationError{Name: "insurance_insurer", err: fmt.Errorf("ent: validator failed for field \"insurance_insurer\": %w", err)}
 		}
 	}
+	if _, ok := ic.mutation.InsuranceAddress(); !ok {
+		return nil, &ValidationError{Name: "insurance_address", err: errors.New("ent: missing required field \"insurance_address\"")}
+	}
+	if v, ok := ic.mutation.InsuranceAddress(); ok {
+		if err := insurance.InsuranceAddressValidator(v); err != nil {
+			return nil, &ValidationError{Name: "insurance_address", err: fmt.Errorf("ent: validator failed for field \"insurance_address\": %w", err)}
+		}
+	}
 	if _, ok := ic.mutation.InsuranceTimeBuy(); !ok {
 		v := insurance.DefaultInsuranceTimeBuy()
 		ic.mutation.SetInsuranceTimeBuy(v)
 	}
 	if _, ok := ic.mutation.InsuranceTimeFirstpay(); !ok {
-		v := insurance.DefaultInsuranceTimeFirstpay()
-		ic.mutation.SetInsuranceTimeFirstpay(v)
+		return nil, &ValidationError{Name: "insurance_time_firstpay", err: errors.New("ent: missing required field \"insurance_time_firstpay\"")}
 	}
 	var (
 		err  error
@@ -247,13 +252,13 @@ func (ic *InsuranceCreate) createSpec() (*Insurance, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := ic.mutation.InsuranceAddress(); ok {
+	if value, ok := ic.mutation.InsuranceIdentification(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: insurance.FieldInsuranceAddress,
+			Column: insurance.FieldInsuranceIdentification,
 		})
-		i.InsuranceAddress = value
+		i.InsuranceIdentification = value
 	}
 	if value, ok := ic.mutation.InsuranceInsurer(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -262,6 +267,14 @@ func (ic *InsuranceCreate) createSpec() (*Insurance, *sqlgraph.CreateSpec) {
 			Column: insurance.FieldInsuranceInsurer,
 		})
 		i.InsuranceInsurer = value
+	}
+	if value, ok := ic.mutation.InsuranceAddress(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: insurance.FieldInsuranceAddress,
+		})
+		i.InsuranceAddress = value
 	}
 	if value, ok := ic.mutation.InsuranceTimeBuy(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

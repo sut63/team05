@@ -70,22 +70,67 @@ func init() {
 	inquiry.DefaultInquiryTimeMessages = inquiryDescInquiryTimeMessages.Default.(func() time.Time)
 	insuranceFields := schema.Insurance{}.Fields()
 	_ = insuranceFields
-	// insuranceDescInsuranceAddress is the schema descriptor for insurance_address field.
-	insuranceDescInsuranceAddress := insuranceFields[0].Descriptor()
-	// insurance.InsuranceAddressValidator is a validator for the "insurance_address" field. It is called by the builders before save.
-	insurance.InsuranceAddressValidator = insuranceDescInsuranceAddress.Validators[0].(func(string) error)
+	// insuranceDescInsuranceIdentification is the schema descriptor for insurance_identification field.
+	insuranceDescInsuranceIdentification := insuranceFields[0].Descriptor()
+	// insurance.InsuranceIdentificationValidator is a validator for the "insurance_identification" field. It is called by the builders before save.
+	insurance.InsuranceIdentificationValidator = func() func(string) error {
+		validators := insuranceDescInsuranceIdentification.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+			validators[3].(func(string) error),
+		}
+		return func(insurance_identification string) error {
+			for _, fn := range fns {
+				if err := fn(insurance_identification); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// insuranceDescInsuranceInsurer is the schema descriptor for insurance_insurer field.
 	insuranceDescInsuranceInsurer := insuranceFields[1].Descriptor()
 	// insurance.InsuranceInsurerValidator is a validator for the "insurance_insurer" field. It is called by the builders before save.
-	insurance.InsuranceInsurerValidator = insuranceDescInsuranceInsurer.Validators[0].(func(string) error)
+	insurance.InsuranceInsurerValidator = func() func(string) error {
+		validators := insuranceDescInsuranceInsurer.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+		}
+		return func(insurance_insurer string) error {
+			for _, fn := range fns {
+				if err := fn(insurance_insurer); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// insuranceDescInsuranceAddress is the schema descriptor for insurance_address field.
+	insuranceDescInsuranceAddress := insuranceFields[2].Descriptor()
+	// insurance.InsuranceAddressValidator is a validator for the "insurance_address" field. It is called by the builders before save.
+	insurance.InsuranceAddressValidator = func() func(string) error {
+		validators := insuranceDescInsuranceAddress.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(insurance_address string) error {
+			for _, fn := range fns {
+				if err := fn(insurance_address); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// insuranceDescInsuranceTimeBuy is the schema descriptor for insurance_time_buy field.
-	insuranceDescInsuranceTimeBuy := insuranceFields[2].Descriptor()
+	insuranceDescInsuranceTimeBuy := insuranceFields[3].Descriptor()
 	// insurance.DefaultInsuranceTimeBuy holds the default value on creation for the insurance_time_buy field.
 	insurance.DefaultInsuranceTimeBuy = insuranceDescInsuranceTimeBuy.Default.(func() time.Time)
-	// insuranceDescInsuranceTimeFirstpay is the schema descriptor for insurance_time_firstpay field.
-	insuranceDescInsuranceTimeFirstpay := insuranceFields[3].Descriptor()
-	// insurance.DefaultInsuranceTimeFirstpay holds the default value on creation for the insurance_time_firstpay field.
-	insurance.DefaultInsuranceTimeFirstpay = insuranceDescInsuranceTimeFirstpay.Default.(func() time.Time)
 	memberFields := schema.Member{}.Fields()
 	_ = memberFields
 	// memberDescMemberEmail is the schema descriptor for member_email field.

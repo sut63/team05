@@ -1,6 +1,9 @@
 package schema
 
 import (
+	"errors"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/facebookincubator/ent"
@@ -16,10 +19,31 @@ type Insurance struct {
 // Fields of the Insurance.
 func (Insurance) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("insurance_address").NotEmpty(),
-		field.String("insurance_insurer").NotEmpty(),
-		field.Time("insurance_time_buy").Default(time.Now),
-		field.Time("insurance_time_firstpay").Default(time.Now),
+		field.String("insurance_identification").NotEmpty().MinLen(13).MaxLen(13).
+			Validate(func(s string) error {
+				match, _ := regexp.MatchString("^[0-9]+$", s)
+				if !match {
+					return errors.New("Identification must be Number")
+				}
+				return nil
+			}),
+		field.String("insurance_insurer").NotEmpty().Match(regexp.MustCompile("^[a-zA-Z ]+$")).
+			Validate(func(s string) error {
+				if strings.ToLower(s) == s {
+					return errors.New("Insurance name must begin with uppercase")
+				}
+				return nil
+			}),
+
+		field.String("insurance_address").Validate(func(s string) error {
+			match, _ := regexp.MatchString("^[ก-๙0-9a-zA-Z- ./\\s]+$", s)
+			if !match {
+				return errors.New("Invalid address format")
+			}
+			return nil
+		}).NotEmpty(),
+		field.Time("insurance_time_buy").Immutable().Default(time.Now),
+		field.Time("insurance_time_firstpay"),
 	}
 }
 
