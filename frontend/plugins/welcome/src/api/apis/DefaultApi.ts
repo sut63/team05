@@ -244,6 +244,10 @@ export interface GetProductRequest {
     id: number;
 }
 
+export interface GetRecordinsuranceRequest {
+    id: number;
+}
+
 export interface ListAmountpaidRequest {
     limit?: number;
     offset?: number;
@@ -1728,6 +1732,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getProduct(requestParameters: GetProductRequest): Promise<EntProduct> {
         const response = await this.getProductRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get recordinsurance by ID
+     * Get a recordinsurance entity by ID
+     */
+    async getRecordinsuranceRaw(requestParameters: GetRecordinsuranceRequest): Promise<runtime.ApiResponse<EntRecordinsurance>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getRecordinsurance.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/recordinsurances/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EntRecordinsuranceFromJSON(jsonValue));
+    }
+
+    /**
+     * get recordinsurance by ID
+     * Get a recordinsurance entity by ID
+     */
+    async getRecordinsurance(requestParameters: GetRecordinsuranceRequest): Promise<EntRecordinsurance> {
+        const response = await this.getRecordinsuranceRaw(requestParameters);
         return await response.value();
     }
 

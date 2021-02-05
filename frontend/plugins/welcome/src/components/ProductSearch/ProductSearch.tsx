@@ -86,7 +86,7 @@ const check = {
 }
 
 
-export default function Insurance() {
+export default function Product() {
   const classes = useStyles();
   const api = new DefaultApi();
   const [products, setProducts] = useState<EntProduct[]>([]);
@@ -96,7 +96,7 @@ export default function Insurance() {
   const [alerttype, setAlertType] = useState(String);
   const [errormessege, setErrorMessege] = useState(String);
   const [officers, setOfficers] = useState<EntOfficer[]>([]);
-  const [officerid, setOfiicerID] = useState(Number);
+  const [officerid, setOfficerID] = useState(Number);
   const [productsearch, setProductSearch] = useState(String);
  
   useEffect(() => {
@@ -109,20 +109,26 @@ export default function Insurance() {
       };
       getOfficers();
 
-      const checkJobPosition = async () => {
-        const jobdata = JSON.parse(String(localStorage.getItem("positiondata")));
-        setLoading(false);
-        if (jobdata != "พนักงานบริษัทประกันสุขภาพ" ) {
-          localStorage.setItem("officerdata",JSON.stringify(null));
-          localStorage.setItem("positiondata",JSON.stringify(null));
-          history.pushState("","","./");  //ProductSearch Officerlongin
-          window.location.reload(false);       
-        }
-        else{
-            setOfiicerID(Number(localStorage.getItem("officerdata")))
-        }
+    const dataa = localStorage.getItem("officerdata");
+    if (dataa) {
+    setOfficerID(Number(localStorage.getItem("officerdata")));
+    setLoading(false);
+    }
+
+    const checkJobPosition = async () => {
+      const jobdata = JSON.parse(String(localStorage.getItem("positiondata")));
+      setLoading(false);
+      if (jobdata != "พนักงานบริษัทประกันสุขภาพ" ) {
+        localStorage.setItem("officerdata",JSON.stringify(null));
+        localStorage.setItem("positiondata",JSON.stringify(null));
+        history.pushState("","","./Officerlongin");  
+        window.location.reload(false);       
       }
-    checkJobPosition();
+      else{
+          setOfficerID(Number(localStorage.getItem("officerdata")))
+      }
+    }
+  checkJobPosition();
 
   }, [loading]);
 

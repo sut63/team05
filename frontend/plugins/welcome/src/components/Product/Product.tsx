@@ -110,6 +110,21 @@ export default function Create() {
     setOfficerID(Number(localStorage.getItem("officerdata")));
     setLoading(false);
     }
+
+    const checkJobPosition = async () => {
+      const jobdata = JSON.parse(String(localStorage.getItem("positiondata")));
+      setLoading(false);
+      if (jobdata != "พนักงานบริษัทประกันสุขภาพ" ) {
+        localStorage.setItem("officerdata",JSON.stringify(null));
+        localStorage.setItem("positiondata",JSON.stringify(null));
+        history.pushState("","","./Officerlongin");  
+        window.location.reload(false);       
+      }
+      else{
+          setOfficerID(Number(localStorage.getItem("officerdata")))
+      }
+    }
+  checkJobPosition();
   }, [loading]);
 
 

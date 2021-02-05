@@ -13,6 +13,7 @@ import (
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
 	"github.com/sut63/team05/ent/product"
+	"github.com/sut63/team05/ent/recordinsurance"
 )
 
 // RecordinsuranceController defines the struct for the recordinsurance controller
@@ -191,6 +192,38 @@ func (ctl *RecordinsuranceController) ListRecordinsurance(c *gin.Context) {
 	c.JSON(200, recordinsurances)
 }
 
+// GetRecordinsurance handles GET requests to retrieve a recordinsurance entity
+// @Summary Get a recordinsurance entity by ID
+// @Description get recordinsurance by ID
+// @ID get-recordinsurance
+// @Produce  json
+// @Param id path int true "Recordinsurance ID"
+// @Success 200 {object} ent.Recordinsurance
+// @Failure 400 {object} gin.H
+// @Failure 404 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /recordinsurances/{id} [get]
+func (ctl *RecordinsuranceController) GetRecordinsurance(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	p, err := ctl.client.Recordinsurance.
+		Query().
+		Where(recordinsurance.IDEQ(int(id))).
+		Only(context.Background())
+	if err != nil {
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(200, p)
+}
+
 // DeleteRecordinsurance handles DELETE requests to delete a recordinsurance entity
 // @Summary Delete a recordinsurance entity by ID
 // @Description get recordinsurance by ID
@@ -239,6 +272,7 @@ func (ctl *RecordinsuranceController) register() {
 	recordinsurances := ctl.router.Group("/recordinsurances")
 
 	recordinsurances.GET("", ctl.ListRecordinsurance)
+	recordinsurances.GET(":id", ctl.GetRecordinsurance)
 	recordinsurances.POST("", ctl.CreateRecordinsurance)
 	recordinsurances.DELETE(":id", ctl.DeleteRecordinsurance)
 }

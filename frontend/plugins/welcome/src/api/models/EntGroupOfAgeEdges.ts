@@ -44,7 +44,7 @@ export function EntGroupOfAgeEdgesFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'groupofageProduct': !exists(json, 'groupofageProduct') ? undefined : ((json['groupofageProduct'] as Array<any>).map(EntProductFromJSON)),
+        'groupofageProduct': !exists(json, 'GroupofageProduct') ? undefined : ((json['GroupofageProduct'] as Array<any>).map(EntProductFromJSON)),
     };
 }
 
