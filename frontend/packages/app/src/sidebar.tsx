@@ -16,6 +16,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import FindInPageOutlinedIcon from '@material-ui/icons/FindInPageOutlined';
+import DvrIcon from '@material-ui/icons/Dvr';
 
 import {
   Sidebar,
@@ -79,21 +80,25 @@ export const AppSidebar = () => {
             to="Insurance"
             text="Insurance" />
             <SidebarItem
+            icon={LibraryBooksIcon}
+            to="Resultinsurance"
+            text="SearchInsurance" />
+            <SidebarItem
             icon={MonetizationOnIcon}
             to="payment"
             text="Payment" />
            <SidebarItem
             icon={FindInPageIcon}
             to="PaymentSearch"
-            text="PaymentSearch" />
+            text="SearchPayment"/>
             <SidebarItem
             icon={CreditCardIcon}
             to="Inquiry"
             text="Inquiry" />
             <SidebarItem
-            icon={LibraryBooksIcon}
-            to="Resultinsurance"
-            text="SearchInsurance" />
+            icon={DvrIcon}
+            to="Inquirysearch"
+            text="SearchInquiry" />
             
             </>
             
