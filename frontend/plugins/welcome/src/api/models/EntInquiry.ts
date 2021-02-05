@@ -27,11 +27,23 @@ import {
  */
 export interface EntInquiry {
     /**
+     * InquiryAgeMessages holds the value of the "Inquiry_age_messages" field.
+     * @type {number}
+     * @memberof EntInquiry
+     */
+    inquiryAgeMessages?: number;
+    /**
      * InquiryMessages holds the value of the "Inquiry_messages" field.
      * @type {string}
      * @memberof EntInquiry
      */
     inquiryMessages?: string;
+    /**
+     * InquiryNameMessages holds the value of the "Inquiry_name_messages" field.
+     * @type {string}
+     * @memberof EntInquiry
+     */
+    inquiryNameMessages?: string;
     /**
      * InquiryPhoneMessages holds the value of the "Inquiry_phone_messages" field.
      * @type {string}
@@ -68,7 +80,9 @@ export function EntInquiryFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
+        'inquiryAgeMessages': !exists(json, 'Inquiry_age_messages') ? undefined : json['Inquiry_age_messages'],
         'inquiryMessages': !exists(json, 'Inquiry_messages') ? undefined : json['Inquiry_messages'],
+        'inquiryNameMessages': !exists(json, 'Inquiry_name_messages') ? undefined : json['Inquiry_name_messages'],
         'inquiryPhoneMessages': !exists(json, 'Inquiry_phone_messages') ? undefined : json['Inquiry_phone_messages'],
         'inquiryTimeMessages': !exists(json, 'Inquiry_time_messages') ? undefined : json['Inquiry_time_messages'],
         'edges': !exists(json, 'edges') ? undefined : EntInquiryEdgesFromJSON(json['edges']),
@@ -85,7 +99,9 @@ export function EntInquiryToJSON(value?: EntInquiry | null): any {
     }
     return {
         
+        'Inquiry_age_messages': value.inquiryAgeMessages,
         'Inquiry_messages': value.inquiryMessages,
+        'Inquiry_name_messages': value.inquiryNameMessages,
         'Inquiry_phone_messages': value.inquiryPhoneMessages,
         'Inquiry_time_messages': value.inquiryTimeMessages,
         'edges': EntInquiryEdgesToJSON(value.edges),

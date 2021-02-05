@@ -56,16 +56,70 @@ func init() {
 	hospital.HospitalNameValidator = hospitalDescHospitalName.Validators[0].(func(string) error)
 	inquiryFields := schema.Inquiry{}.Fields()
 	_ = inquiryFields
-	// inquiryDescInquiryMessages is the schema descriptor for Inquiry_messages field.
-	inquiryDescInquiryMessages := inquiryFields[0].Descriptor()
-	// inquiry.InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
-	inquiry.InquiryMessagesValidator = inquiryDescInquiryMessages.Validators[0].(func(string) error)
+	// inquiryDescInquiryNameMessages is the schema descriptor for Inquiry_name_messages field.
+	inquiryDescInquiryNameMessages := inquiryFields[0].Descriptor()
+	// inquiry.InquiryNameMessagesValidator is a validator for the "Inquiry_name_messages" field. It is called by the builders before save.
+	inquiry.InquiryNameMessagesValidator = func() func(string) error {
+		validators := inquiryDescInquiryNameMessages.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+		}
+		return func(_Inquiry_name_messages string) error {
+			for _, fn := range fns {
+				if err := fn(_Inquiry_name_messages); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// inquiryDescInquiryPhoneMessages is the schema descriptor for Inquiry_phone_messages field.
 	inquiryDescInquiryPhoneMessages := inquiryFields[1].Descriptor()
 	// inquiry.InquiryPhoneMessagesValidator is a validator for the "Inquiry_phone_messages" field. It is called by the builders before save.
-	inquiry.InquiryPhoneMessagesValidator = inquiryDescInquiryPhoneMessages.Validators[0].(func(string) error)
+	inquiry.InquiryPhoneMessagesValidator = func() func(string) error {
+		validators := inquiryDescInquiryPhoneMessages.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+			validators[3].(func(string) error),
+			validators[4].(func(string) error),
+		}
+		return func(_Inquiry_phone_messages string) error {
+			for _, fn := range fns {
+				if err := fn(_Inquiry_phone_messages); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// inquiryDescInquiryAgeMessages is the schema descriptor for Inquiry_age_messages field.
+	inquiryDescInquiryAgeMessages := inquiryFields[2].Descriptor()
+	// inquiry.InquiryAgeMessagesValidator is a validator for the "Inquiry_age_messages" field. It is called by the builders before save.
+	inquiry.InquiryAgeMessagesValidator = inquiryDescInquiryAgeMessages.Validators[0].(func(int) error)
+	// inquiryDescInquiryMessages is the schema descriptor for Inquiry_messages field.
+	inquiryDescInquiryMessages := inquiryFields[3].Descriptor()
+	// inquiry.InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
+	inquiry.InquiryMessagesValidator = func() func(string) error {
+		validators := inquiryDescInquiryMessages.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_Inquiry_messages string) error {
+			for _, fn := range fns {
+				if err := fn(_Inquiry_messages); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// inquiryDescInquiryTimeMessages is the schema descriptor for Inquiry_time_messages field.
-	inquiryDescInquiryTimeMessages := inquiryFields[2].Descriptor()
+	inquiryDescInquiryTimeMessages := inquiryFields[4].Descriptor()
 	// inquiry.DefaultInquiryTimeMessages holds the default value on creation for the Inquiry_time_messages field.
 	inquiry.DefaultInquiryTimeMessages = inquiryDescInquiryTimeMessages.Default.(func() time.Time)
 	insuranceFields := schema.Insurance{}.Fields()

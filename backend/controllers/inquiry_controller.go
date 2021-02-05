@@ -26,9 +26,11 @@ type Inquiry struct {
 	MemberID             int
 	CategoryID           int
 	OfficerID            int
+	InquiryAgeMessages   int
 	InquiryMessages      string
-	InquiryTimeMessages  string
 	InquiryPhoneMessages string
+	InquiryNameMessages  string
+	InquiryTimeMessages  string
 }
 
 // CreateInquiry handles POST requests for adding inquiry entities
@@ -106,18 +108,26 @@ func (ctl *InquiryController) CreateInquiry(c *gin.Context) {
 		SetMember(m).
 		SetCategory(cg).
 		SetOfficer(of).
+		SetInquiryAgeMessages(obj.InquiryAgeMessages).
 		SetInquiryMessages(obj.InquiryMessages).
 		SetInquiryPhoneMessages(obj.InquiryPhoneMessages).
+		SetInquiryNameMessages(obj.InquiryNameMessages).
 		SetInquiryTimeMessages(timem).
 		Save(context.Background())
+
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
 
-	c.JSON(200, in)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data":   in,
+	})
 }
 
 // ListInquiry handles request to get a list of inquiry entities

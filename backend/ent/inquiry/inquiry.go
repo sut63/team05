@@ -11,10 +11,14 @@ const (
 	Label = "inquiry"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldInquiryMessages holds the string denoting the inquiry_messages field in the database.
-	FieldInquiryMessages = "inquiry_messages"
+	// FieldInquiryNameMessages holds the string denoting the inquiry_name_messages field in the database.
+	FieldInquiryNameMessages = "inquiry_name_messages"
 	// FieldInquiryPhoneMessages holds the string denoting the inquiry_phone_messages field in the database.
 	FieldInquiryPhoneMessages = "inquiry_phone_messages"
+	// FieldInquiryAgeMessages holds the string denoting the inquiry_age_messages field in the database.
+	FieldInquiryAgeMessages = "inquiry_age_messages"
+	// FieldInquiryMessages holds the string denoting the inquiry_messages field in the database.
+	FieldInquiryMessages = "inquiry_messages"
 	// FieldInquiryTimeMessages holds the string denoting the inquiry_time_messages field in the database.
 	FieldInquiryTimeMessages = "inquiry_time_messages"
 
@@ -62,8 +66,10 @@ const (
 // Columns holds all SQL columns for inquiry fields.
 var Columns = []string{
 	FieldID,
-	FieldInquiryMessages,
+	FieldInquiryNameMessages,
 	FieldInquiryPhoneMessages,
+	FieldInquiryAgeMessages,
+	FieldInquiryMessages,
 	FieldInquiryTimeMessages,
 }
 
@@ -76,10 +82,14 @@ var ForeignKeys = []string{
 }
 
 var (
-	// InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
-	InquiryMessagesValidator func(string) error
+	// InquiryNameMessagesValidator is a validator for the "Inquiry_name_messages" field. It is called by the builders before save.
+	InquiryNameMessagesValidator func(string) error
 	// InquiryPhoneMessagesValidator is a validator for the "Inquiry_phone_messages" field. It is called by the builders before save.
 	InquiryPhoneMessagesValidator func(string) error
+	// InquiryAgeMessagesValidator is a validator for the "Inquiry_age_messages" field. It is called by the builders before save.
+	InquiryAgeMessagesValidator func(int) error
+	// InquiryMessagesValidator is a validator for the "Inquiry_messages" field. It is called by the builders before save.
+	InquiryMessagesValidator func(string) error
 	// DefaultInquiryTimeMessages holds the default value on creation for the Inquiry_time_messages field.
 	DefaultInquiryTimeMessages func() time.Time
 )

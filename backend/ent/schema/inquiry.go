@@ -1,6 +1,9 @@
 package schema
 
 import (
+	"errors"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/facebookincubator/ent"
@@ -16,8 +19,34 @@ type Inquiry struct {
 // Fields of the Inquiry.
 func (Inquiry) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("Inquiry_messages").NotEmpty(),
-		field.String("Inquiry_phone_messages").NotEmpty(),
+		field.String("Inquiry_name_messages").NotEmpty().Match(regexp.MustCompile("^[a-zA-Z ]+$")).
+			Validate(func(s string) error {
+				if strings.ToLower(s) == s {
+					return errors.New("รูปแบบชื่อไม่ถูกต้อง")
+				}
+				return nil
+			}),
+
+		field.String("Inquiry_phone_messages").NotEmpty().MaxLen(10).MinLen(10).
+			NotEmpty().Validate(func(s string) error {
+			match, _ := regexp.MatchString("^[0-9]+$", s)
+			if !match {
+				return errors.New("รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง กรุณาใส่เลขเบอร์โทร 10 หลัก")
+			}
+			return nil
+		}),
+
+		field.Int("Inquiry_age_messages").Positive(),
+
+		field.String("Inquiry_messages").
+			NotEmpty().Validate(func(s string) error {
+			match, _ := regexp.MatchString("^[ก-๙0-9a-zA-Z- ./\\s]+$", s)
+			if !match {
+				return errors.New("รูปแบบรายละเอียดไม่ถูกต้อง")
+			}
+			return nil
+		}),
+
 		field.Time("Inquiry_time_messages").Default(time.Now),
 	}
 }

@@ -3103,7 +3103,13 @@ var doc = `{
                 "categoryID": {
                     "type": "integer"
                 },
+                "inquiryAgeMessages": {
+                    "type": "integer"
+                },
                 "inquiryMessages": {
+                    "type": "string"
+                },
+                "inquiryNameMessages": {
                     "type": "string"
                 },
                 "inquiryPhoneMessages": {
@@ -3475,8 +3481,16 @@ var doc = `{
         "ent.Inquiry": {
             "type": "object",
             "properties": {
+                "Inquiry_age_messages": {
+                    "description": "InquiryAgeMessages holds the value of the \"Inquiry_age_messages\" field.",
+                    "type": "integer"
+                },
                 "Inquiry_messages": {
                     "description": "InquiryMessages holds the value of the \"Inquiry_messages\" field.",
+                    "type": "string"
+                },
+                "Inquiry_name_messages": {
+                    "description": "InquiryNameMessages holds the value of the \"Inquiry_name_messages\" field.",
                     "type": "string"
                 },
                 "Inquiry_phone_messages": {
