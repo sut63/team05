@@ -39,6 +39,18 @@ export interface EntPayback {
      */
     id?: number;
     /**
+     * PaybackAccountiden holds the value of the "payback_accountiden" field.
+     * @type {string}
+     * @memberof EntPayback
+     */
+    paybackAccountiden?: string;
+    /**
+     * PaybackAccountname holds the value of the "payback_accountname" field.
+     * @type {string}
+     * @memberof EntPayback
+     */
+    paybackAccountname?: string;
+    /**
      * PaybackAccountnumber holds the value of the "payback_accountnumber" field.
      * @type {string}
      * @memberof EntPayback
@@ -64,6 +76,8 @@ export function EntPaybackFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'edges': !exists(json, 'edges') ? undefined : EntPaybackEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'paybackAccountiden': !exists(json, 'payback_accountiden') ? undefined : json['payback_accountiden'],
+        'paybackAccountname': !exists(json, 'payback_accountname') ? undefined : json['payback_accountname'],
         'paybackAccountnumber': !exists(json, 'payback_accountnumber') ? undefined : json['payback_accountnumber'],
         'paybackTransfertime': !exists(json, 'payback_transfertime') ? undefined : json['payback_transfertime'],
     };
@@ -80,6 +94,8 @@ export function EntPaybackToJSON(value?: EntPayback | null): any {
         
         'edges': EntPaybackEdgesToJSON(value.edges),
         'id': value.id,
+        'payback_accountiden': value.paybackAccountiden,
+        'payback_accountname': value.paybackAccountname,
         'payback_accountnumber': value.paybackAccountnumber,
         'payback_transfertime': value.paybackTransfertime,
     };

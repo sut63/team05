@@ -240,6 +240,10 @@ export interface GetOfficerRequest {
     id: number;
 }
 
+export interface GetPaybackRequest {
+    id: number;
+}
+
 export interface GetProductRequest {
     id: number;
 }
@@ -1700,6 +1704,38 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async getOfficer(requestParameters: GetOfficerRequest): Promise<EntOfficer> {
         const response = await this.getOfficerRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * get payback by ID
+     * Get a payback entity by ID
+     */
+    async getPaybackRaw(requestParameters: GetPaybackRequest): Promise<runtime.ApiResponse<Array<EntPayback>>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getPayback.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/paybacks/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EntPaybackFromJSON));
+    }
+
+    /**
+     * get payback by ID
+     * Get a payback entity by ID
+     */
+    async getPayback(requestParameters: GetPaybackRequest): Promise<Array<EntPayback>> {
+        const response = await this.getPaybackRaw(requestParameters);
         return await response.value();
     }
 

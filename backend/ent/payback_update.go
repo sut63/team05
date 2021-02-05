@@ -32,12 +32,6 @@ func (pu *PaybackUpdate) Where(ps ...predicate.Payback) *PaybackUpdate {
 	return pu
 }
 
-// SetPaybackAccountnumber sets the payback_accountnumber field.
-func (pu *PaybackUpdate) SetPaybackAccountnumber(s string) *PaybackUpdate {
-	pu.mutation.SetPaybackAccountnumber(s)
-	return pu
-}
-
 // SetPaybackTransfertime sets the payback_transfertime field.
 func (pu *PaybackUpdate) SetPaybackTransfertime(t time.Time) *PaybackUpdate {
 	pu.mutation.SetPaybackTransfertime(t)
@@ -49,6 +43,24 @@ func (pu *PaybackUpdate) SetNillablePaybackTransfertime(t *time.Time) *PaybackUp
 	if t != nil {
 		pu.SetPaybackTransfertime(*t)
 	}
+	return pu
+}
+
+// SetPaybackAccountnumber sets the payback_accountnumber field.
+func (pu *PaybackUpdate) SetPaybackAccountnumber(s string) *PaybackUpdate {
+	pu.mutation.SetPaybackAccountnumber(s)
+	return pu
+}
+
+// SetPaybackAccountname sets the payback_accountname field.
+func (pu *PaybackUpdate) SetPaybackAccountname(s string) *PaybackUpdate {
+	pu.mutation.SetPaybackAccountname(s)
+	return pu
+}
+
+// SetPaybackAccountiden sets the payback_accountiden field.
+func (pu *PaybackUpdate) SetPaybackAccountiden(s string) *PaybackUpdate {
+	pu.mutation.SetPaybackAccountiden(s)
 	return pu
 }
 
@@ -164,6 +176,16 @@ func (pu *PaybackUpdate) Save(ctx context.Context) (int, error) {
 			return 0, &ValidationError{Name: "payback_accountnumber", err: fmt.Errorf("ent: validator failed for field \"payback_accountnumber\": %w", err)}
 		}
 	}
+	if v, ok := pu.mutation.PaybackAccountname(); ok {
+		if err := payback.PaybackAccountnameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "payback_accountname", err: fmt.Errorf("ent: validator failed for field \"payback_accountname\": %w", err)}
+		}
+	}
+	if v, ok := pu.mutation.PaybackAccountiden(); ok {
+		if err := payback.PaybackAccountidenValidator(v); err != nil {
+			return 0, &ValidationError{Name: "payback_accountiden", err: fmt.Errorf("ent: validator failed for field \"payback_accountiden\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -232,6 +254,13 @@ func (pu *PaybackUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := pu.mutation.PaybackTransfertime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: payback.FieldPaybackTransfertime,
+		})
+	}
 	if value, ok := pu.mutation.PaybackAccountnumber(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -239,11 +268,18 @@ func (pu *PaybackUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: payback.FieldPaybackAccountnumber,
 		})
 	}
-	if value, ok := pu.mutation.PaybackTransfertime(); ok {
+	if value, ok := pu.mutation.PaybackAccountname(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
+			Type:   field.TypeString,
 			Value:  value,
-			Column: payback.FieldPaybackTransfertime,
+			Column: payback.FieldPaybackAccountname,
+		})
+	}
+	if value, ok := pu.mutation.PaybackAccountiden(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: payback.FieldPaybackAccountiden,
 		})
 	}
 	if pu.mutation.OfficerCleared() {
@@ -404,12 +440,6 @@ type PaybackUpdateOne struct {
 	mutation *PaybackMutation
 }
 
-// SetPaybackAccountnumber sets the payback_accountnumber field.
-func (puo *PaybackUpdateOne) SetPaybackAccountnumber(s string) *PaybackUpdateOne {
-	puo.mutation.SetPaybackAccountnumber(s)
-	return puo
-}
-
 // SetPaybackTransfertime sets the payback_transfertime field.
 func (puo *PaybackUpdateOne) SetPaybackTransfertime(t time.Time) *PaybackUpdateOne {
 	puo.mutation.SetPaybackTransfertime(t)
@@ -421,6 +451,24 @@ func (puo *PaybackUpdateOne) SetNillablePaybackTransfertime(t *time.Time) *Payba
 	if t != nil {
 		puo.SetPaybackTransfertime(*t)
 	}
+	return puo
+}
+
+// SetPaybackAccountnumber sets the payback_accountnumber field.
+func (puo *PaybackUpdateOne) SetPaybackAccountnumber(s string) *PaybackUpdateOne {
+	puo.mutation.SetPaybackAccountnumber(s)
+	return puo
+}
+
+// SetPaybackAccountname sets the payback_accountname field.
+func (puo *PaybackUpdateOne) SetPaybackAccountname(s string) *PaybackUpdateOne {
+	puo.mutation.SetPaybackAccountname(s)
+	return puo
+}
+
+// SetPaybackAccountiden sets the payback_accountiden field.
+func (puo *PaybackUpdateOne) SetPaybackAccountiden(s string) *PaybackUpdateOne {
+	puo.mutation.SetPaybackAccountiden(s)
 	return puo
 }
 
@@ -536,6 +584,16 @@ func (puo *PaybackUpdateOne) Save(ctx context.Context) (*Payback, error) {
 			return nil, &ValidationError{Name: "payback_accountnumber", err: fmt.Errorf("ent: validator failed for field \"payback_accountnumber\": %w", err)}
 		}
 	}
+	if v, ok := puo.mutation.PaybackAccountname(); ok {
+		if err := payback.PaybackAccountnameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "payback_accountname", err: fmt.Errorf("ent: validator failed for field \"payback_accountname\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.PaybackAccountiden(); ok {
+		if err := payback.PaybackAccountidenValidator(v); err != nil {
+			return nil, &ValidationError{Name: "payback_accountiden", err: fmt.Errorf("ent: validator failed for field \"payback_accountiden\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -602,6 +660,13 @@ func (puo *PaybackUpdateOne) sqlSave(ctx context.Context) (pa *Payback, err erro
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Payback.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := puo.mutation.PaybackTransfertime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: payback.FieldPaybackTransfertime,
+		})
+	}
 	if value, ok := puo.mutation.PaybackAccountnumber(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -609,11 +674,18 @@ func (puo *PaybackUpdateOne) sqlSave(ctx context.Context) (pa *Payback, err erro
 			Column: payback.FieldPaybackAccountnumber,
 		})
 	}
-	if value, ok := puo.mutation.PaybackTransfertime(); ok {
+	if value, ok := puo.mutation.PaybackAccountname(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
+			Type:   field.TypeString,
 			Value:  value,
-			Column: payback.FieldPaybackTransfertime,
+			Column: payback.FieldPaybackAccountname,
+		})
+	}
+	if value, ok := puo.mutation.PaybackAccountiden(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: payback.FieldPaybackAccountiden,
 		})
 	}
 	if puo.mutation.OfficerCleared() {

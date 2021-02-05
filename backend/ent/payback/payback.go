@@ -11,10 +11,14 @@ const (
 	Label = "payback"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldPaybackAccountnumber holds the string denoting the payback_accountnumber field in the database.
-	FieldPaybackAccountnumber = "payback_accountnumber"
 	// FieldPaybackTransfertime holds the string denoting the payback_transfertime field in the database.
 	FieldPaybackTransfertime = "payback_transfertime"
+	// FieldPaybackAccountnumber holds the string denoting the payback_accountnumber field in the database.
+	FieldPaybackAccountnumber = "payback_accountnumber"
+	// FieldPaybackAccountname holds the string denoting the payback_accountname field in the database.
+	FieldPaybackAccountname = "payback_accountname"
+	// FieldPaybackAccountiden holds the string denoting the payback_accountiden field in the database.
+	FieldPaybackAccountiden = "payback_accountiden"
 
 	// EdgeOfficer holds the string denoting the officer edge name in mutations.
 	EdgeOfficer = "Officer"
@@ -60,8 +64,10 @@ const (
 // Columns holds all SQL columns for payback fields.
 var Columns = []string{
 	FieldID,
-	FieldPaybackAccountnumber,
 	FieldPaybackTransfertime,
+	FieldPaybackAccountnumber,
+	FieldPaybackAccountname,
+	FieldPaybackAccountiden,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the Payback type.
@@ -73,8 +79,12 @@ var ForeignKeys = []string{
 }
 
 var (
-	// PaybackAccountnumberValidator is a validator for the "payback_accountnumber" field. It is called by the builders before save.
-	PaybackAccountnumberValidator func(string) error
 	// DefaultPaybackTransfertime holds the default value on creation for the payback_transfertime field.
 	DefaultPaybackTransfertime func() time.Time
+	// PaybackAccountnumberValidator is a validator for the "payback_accountnumber" field. It is called by the builders before save.
+	PaybackAccountnumberValidator func(string) error
+	// PaybackAccountnameValidator is a validator for the "payback_accountname" field. It is called by the builders before save.
+	PaybackAccountnameValidator func(string) error
+	// PaybackAccountidenValidator is a validator for the "payback_accountiden" field. It is called by the builders before save.
+	PaybackAccountidenValidator func(string) error
 )
