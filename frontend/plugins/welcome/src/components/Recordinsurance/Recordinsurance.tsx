@@ -160,6 +160,21 @@ export default function Create() {
     setOfficerID(Number(localStorage.getItem("officerdata")));
     setLoading(false);
     }
+
+    const checkJobPosition = async () => {
+      const jobdata = JSON.parse(String(localStorage.getItem("positiondata")));
+      setLoading(false);
+      if (jobdata != "พนักงานบริษัทประกันสุขภาพ" ) {
+        localStorage.setItem("officerdata",JSON.stringify(null));
+        localStorage.setItem("positiondata",JSON.stringify(null));
+        history.pushState("","","./Officerlongin");  
+        window.location.reload(false);       
+      }
+      else{
+          setOfficerID(Number(localStorage.getItem("officerdata")))
+      }
+    }
+  checkJobPosition();
  
   }, [loading]);
      
@@ -325,6 +340,15 @@ export default function Create() {
         </Header>
         <Content>
         <ContentHeader title="ทำการบันทึกข้อมูลสิทธิประกันสุขภาพ" >
+        <Button
+                    style={{ marginLeft: 10 }}
+                    component={RouterLink}
+                    to="/recordinsurancesearch"
+                    variant="contained"
+                    color="secondary"
+                  >
+                    ค้นหาการบันทึก
+                </Button>
         </ContentHeader>
 
           <Container maxWidth="sm">

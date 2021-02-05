@@ -1,5 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import React, { FC, useEffect,useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Content, Header, Page, pageTheme } from '@backstage/core';
+import SearchIcon from '@material-ui/icons/Search';
+import Swal from 'sweetalert2'; // alert
+
+import {
+  Container,
+  Grid,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+  TextField,
+  Avatar,
+  Button,
+  FormHelperText,
+} from '@material-ui/core'
+import { DefaultApi } from '../../api/apis';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { EntProduct } from '../../api/models/EntProduct';
+import { EntMember } from '../../api/models/EntMember';
+import { EntHospital } from '../../api/models/EntHospital';
+import { EntOfficer } from '../../api/models/EntOfficer';
+import { EntAmountpaid } from '../../api/models/EntAmountpaid';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { Link as RouterLink } from 'react-router-dom';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import { Alert } from '@material-ui/lab';
+import { ContentHeader } from '@backstage/core';
+import { Link } from '@material-ui/core';
+import { Theme, createStyles } from '@material-ui/core/styles';
+
+import CardMedia from '@material-ui/core/CardMedia';
+import { Image1Base64Function } from '../../image/image1';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,318 +41,234 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { DefaultApi } from '../../api/apis';
-
-import { EntProduct } from '../../api/models/EntProduct';
-
-import Swal from 'sweetalert2'
-import { Link as RouterLink } from 'react-router-dom';
+import { EntRecordinsurance } from '../../api/models/EntRecordinsurance';
 import moment from 'moment';
-import { Page, pageTheme, Header, Content, Link } from '@backstage/core';
-import { Grid, Button, TextField, Typography, FormControl } from '@material-ui/core';
-import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
+
+// header css
+const HeaderCustom = {
+  minHeight: '50px',
+};
+
+// css style
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  formControl: {
+    width: 300,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    width: 300,
+  },
+  table: {
+    minWidth: 650,
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  media: {
+    height: 0,
+    marginLeft: 25,
+    maxWidth: 300,
+}
+}));
+
+const check = {
+  membercheck : true
+}
 
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-    },
-    headsearch: {
-      width: 'auto',
-      margin: '10px',
-      color: '#FFFFFF',
-      background: '#2196F3',
-    },
-    margin: {
-      margin: theme.spacing(1),
-    },
-    margins: {
-      margin: theme.spacing(2),
-    },
-
-    withoutLabel: {
-      marginTop: theme.spacing(3),
-    },
-    textField: {
-      width: '25ch',
-    },
-    paper: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(3),
-    },
-    table: {
-      minWidth: 500,
-    },
-
-
-  }),
-);
-const Toast = Swal.mixin({
-  //toast: true,
-  position: 'center',
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  showCloseButton: true,
-
-});
-
-
-export default function ComponentsTable() {
-
-    //--------------------------
-    ;
-
+export default function Recordinsurance() {
   const classes = useStyles();
   const api = new DefaultApi();
+  const [recordinsurances, setRecordinsurances] = useState<EntRecordinsurance[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState(false);
-
-  //---------------------------
-  const [checkproductname, setProductnames] = useState(false);
-  const [product, setProduct] = useState<EntProduct[]>([])
-
-  //--------------------------
-  const [productname, setProductname] = useState(String);
-  const profile = { givenName: 'ระบบค้นหาข้อมูลอะไหล่คอมพิวเตอร์' };
-  const alertMessage = (icon: any, title: any) => {
-    Toast.fire({
-      icon: icon,
-      title: title,
-    });
-    setSearch(false);
-  }
-
+  const [status, setStatus] = useState(false);
+  const [alert, setAlert] = React.useState(true);
+  const [alerttype, setAlertType] = useState(String);
+  const [errormessege, setErrorMessege] = useState(String);
+  const [officers, setOfficers] = useState<EntOfficer[]>([]);
+  const [officerid, setOfficerID] = useState(Number);
+  const [recordinsurancesearch, setRecordinsuranceSearch] = useState(String);
+ 
   useEffect(() => {
-    const getProducts = async () => {
-      const res = await api.listProduct({ offset: 0 });
+
+    const getOfficers = async () => {
+ 
+      const ofc = await api.listOfficer({});
+        setLoading(false);
+        setOfficers(ofc);
+      };
+      getOfficers();
+
+      const dataa = localStorage.getItem("officerdata");
+      if (dataa) {
+      setOfficerID(Number(localStorage.getItem("officerdata")));
       setLoading(false);
-      setProduct(res);
-    };
-    getProducts();
-  }, [loading]);
+      }
 
-  //-------------------
-  const productnamehandlehange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSearch(false);
-    setProductnames(false);
-    setProductname(event.target.value as string);
-
-  };
-
-  const cleardata = () => {
-    setProductname("");
-    setSearch(false);
-    setProductnames(false);
-    setSearch(false);
-
-  }
-  //---------------------
-  const checkresearch = async () => {
-    var check = false;
-    product.map(item => {
-      if (productname != "") {
-        if (item.productname?.includes(productname)) {
-          setProductnames(true);
-          alertMessage("success", "ค้นหาสำเร็จ");
-          check = true;
+      const checkJobPosition = async () => {
+        const jobdata = JSON.parse(String(localStorage.getItem("positiondata")));
+        setLoading(false);
+        if (jobdata != "พนักงานบริษัทประกันสุขภาพ" ) {
+          localStorage.setItem("officerdata",JSON.stringify(null));
+          localStorage.setItem("positiondata",JSON.stringify(null));
+          history.pushState("","","./Officerlongin");  
+          window.location.reload(false);       
+        }
+        else{
+            setOfficerID(Number(localStorage.getItem("officerdata")))
         }
       }
-    })
-    if (!check) {
-      alertMessage("error", "ไม่พบข้อมูลที่ค้นหา");
+    checkJobPosition();
+
+  }, [loading]);
+
+  const SearchRecordinsurance = async () => {
+    const res = await api.listRecordinsurance({ offset: 0 });
+    const search = Recordinsurancesearch(res);
+    setErrorMessege("ไม่พบเบอร์โทรที่ค้นหา");
+        setAlertType("error");
+        setAlert(false);
+        setRecordinsurances([]);
+        if(search.length > 0){
+            Object.entries(check).map(([key, value]) =>{
+                if (value == true){
+                    setErrorMessege("ค้นหาข้อมูลสำเร็จ");
+                    setAlertType("success");
+                    setAlert(true);
+                    setRecordinsurances(search);
+                }
+            })
+        }
+
+        setStatus(true);
+  }
+
+  const Recordinsurancesearch = (res: any) => {
+    const data = res.filter((filter: EntRecordinsurance) => filter?.recordinsuranceContact?.includes(recordinsurancesearch))
+    if (data.length != 0 && recordinsurancesearch != "") {
+        return data;
     }
-    console.log(checkproductname)
-    if (productname == "") {
-      alertMessage("info", "แสดงข้อมูลอะไหล่คอมพิวเตอร์ทั้งหมดในระบบ");
+    else{
+      return data;
+        }
     }
+
+  const handleSearchChange = (event: any) => {
+    setRecordinsuranceSearch(event.target.value as string);
   };
 
-  return (
-
-    <Page theme={pageTheme.tool}>
-      <Header title={`Product System`} type="Computer Repair System" >
-      <div>&nbsp;&nbsp;&nbsp;</div>
-        <Button 
-        style={{ marginLeft: 20 }} 
-        href="/Producttables"
-        variant="contained"  
-        > 
-        กลับหน้าตารางข้อมูลอะไหล่คอมพิวเตอร์ 
-        </Button>
-
-        <Button 
-        style={{ marginLeft: 20 }} 
-        href="/"
-        variant="contained"  
-        > 
-        ออกจากระบบ 
-        </Button>
-
-      </Header>
-      <Content>
-        <Grid container item xs={12} justify="center">
-          <Grid item xs={5}>
-            <Paper>
-
-              <Typography align="center" >
-                <div style={{ background: 'linear-gradient(45deg, #CCCCCC 15%, #CCCCCC 120%)', height: 35 }}>
-                  <h1 style={
-                    {
-                      //color: "#000000",
-                      //borderRadius: 5,
-                      //height: 18,
-                      //padding: '0 30px',
-                      fontSize: '20px',
-                    }}>
-                    ค้นหาข้อมูลอะไหล่คอมพิวเตอร์
-            </h1>
-                </div>
-
-                <div>
-                  <FormControl
-                    className={classes.margin}
-                    variant="outlined"
-                  >
-                    <div className={classes.paper}><strong>กรุณากรอกชื่อสินค้า</strong></div>
-                    <TextField
-                      id="productname"
-                      value={productname}
-                      onChange={productnamehandlehange}
-                      type="string"
-                      size="small"
-
-                      style={{ width: 250 }}
-                    />
-                  </FormControl>
-                </div>
-                <div></div>
-                <Button
-                  onClick={() => {
-                    checkresearch();
-                    setSearch(true);
-
+    return (
+      <Page theme={pageTheme.service}>
+        <Header style={HeaderCustom} title={`ระบบค้นหาการบันทึกสิทธิประกันสุขภาพ`}>
+        </Header>
+        <Content>
+        <ContentHeader title="ค้นหาการบันทึกด้วยเบอร์โทร">
+        <Link component={RouterLink} to="/recordinsurance">
+           <Button variant="contained" color="primary">
+             บันทึกข้อมูลสิทธิประกันสุขภาพ
+           </Button>
+         </Link>
+          {status ? (
+            <div>
+              {alert ? (
+                <Alert severity="success" onClose={() => { setStatus(false) }}>
+                  {errormessege}
+                </Alert>
+              ) : (
+                  <Alert severity="error" onClose={() => { setStatus(false) }}>
+                    {errormessege}
+                  </Alert>
+                )}
+            </div>
+          ) : null}
+     </ContentHeader>
+      <Container maxWidth="xl">
+        <Grid container spacing={3}>
+          <Grid item xs={12}></Grid>
+          <Grid item xs={3}>
+          <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  //style={{ width: 300 }}
+                  id="recordinsuranceContact"
+                  label=""
+                  variant="outlined"
+                  color="secondary"
+                  type="string"
+                  size="small"
+                  value={recordinsurancesearch}
+                  onChange={handleSearchChange}
+                  name="recordinsurance_Contact"
+                  multiline
+                  rows={1}
+                  InputLabelProps={{
+                    shrink: true,
                   }}
-                  
-                  className={classes.margins}
-                  variant="contained"
-                  style={{ background: "#5C9DC0", height: 40 }}>
-                  <h3
-                    style={
-                      {
-                        color: "#FFFFFF",
-                        padding: '0 10px',
-
-                      }
-                    }>
-                    Search
-            </h3>
-                </Button>
-                <Button
-                  onClick={() => {
-                    cleardata();
-
-                  }}
-                  className={classes.margins}
-                  variant="contained"
-                  style={{ background: "#DD0000", height: 40 }}>
-                  <h3
-                    style={
-                      {
-                        color: "#FFFFFF",
-                        padding: '0 20px',
-
-                      }
-                    }>
-                    Delete
-            </h3>
-                </Button>
-              </Typography>
-            </Paper>
+                />
+              </FormControl>
           </Grid>
+          <Grid item xs={4}>
+          <Button
+            onClick={() => {
+              SearchRecordinsurance();
+            }}
+            variant="contained"
+            //color="primary"
+            size="large"
+            startIcon={<SearchIcon />}
+          >
+            ค้นหา
+          </Button>
+         </Grid>
         </Grid>
-
-
-        <Grid container justify="center">
-          <Grid item xs={12} md={10}>
-            <Paper>
-              {search ? (
-                <div>
-                  {  checkproductname ? (
-                    <TableContainer component={Paper}>
-                      <Table className={classes.table} aria-label="simple table">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell align="center">No</TableCell>
-                            <TableCell align="center">ชื่อสินค้า</TableCell>
-                            <TableCell align="center">จำนวนสินค้า</TableCell>
-                            <TableCell align="center">ราคา</TableCell>
-                            <TableCell align="center">แบรนด์</TableCell>
-                            <TableCell align="center">ประเภทของสินค้า</TableCell>
-                            <TableCell align="center">เจ้าหน้าที่ที่ทำการบันทึก</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-
-                          {product.filter((filter: any) => filter.productname.includes(productname)).map((item: any) => (
-                            <TableRow key={item.id}>
-                                <TableCell align="center">{item.id}</TableCell>
-                                <TableCell align="center">{item.productname}</TableCell>
-                                <TableCell align="center">{item.numberofproduct}</TableCell>
-                                <TableCell align="center">{item.price}</TableCell>
-                                <TableCell align="center">{item.edges?.brand?.brandname}</TableCell>
-                                <TableCell align="center">{item.edges?.typeproduct?.typeproductname}</TableCell>
-                                <TableCell align="center">{item.edges?.personal?.personalname}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  )
-                    : productname == "" ? (
-                      <div>
-                        <TableContainer component={Paper}>
-                          <Table className={classes.table} aria-label="simple table">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell align="center">No</TableCell>
-                                <TableCell align="center">ชื่อสินค้า</TableCell>
-                                <TableCell align="center">จำนวนสินค้า</TableCell>
-                                <TableCell align="center">ราคา</TableCell>
-                                <TableCell align="center">แบรนด์</TableCell>
-                                <TableCell align="center">ประเภทของสินค้า</TableCell>
-                                <TableCell align="center">เจ้าหน้าที่ที่ทำการบันทึก</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-
-                              {product.map((item: any) => (
-                                <TableRow key={item.id}>
-                                    <TableCell align="center">{item.id}</TableCell>
-                                    <TableCell align="center">{item.productname}</TableCell>
-                                    <TableCell align="center">{item.numberofproduct}</TableCell>
-                                    <TableCell align="center">{item.price}</TableCell>
-                                    <TableCell align="center">{item.edges?.brand?.brandname}</TableCell>
-                                    <TableCell align="center">{item.edges?.typeproduct?.typeproductname}</TableCell>
-                                    <TableCell align="center">{item.edges?.personal?.personalname}</TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-
-                      </div>
-                    ) : null}
-                </div>
-              ) : null}
-            </Paper>
-          </Grid>
-        </Grid>
-      </Content>
-    </Page>
-  );
-
-}
+      </Container>
+        
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                            <TableCell align="center">ลำดับ</TableCell>
+                            <TableCell align="center">ชื่อสมาชิก</TableCell>
+                            <TableCell align="center">ชื่อผลิตภัณฑ์</TableCell>
+                            <TableCell align="center">เงินที่ประกันจ่าย</TableCell>
+                            <TableCell align="center">โรงพยาบาล</TableCell>
+                            <TableCell align="center">จำนวนวันในการรักษา</TableCell>
+                            <TableCell align="center">ที่อยู่ของลูกค้า</TableCell>
+                            <TableCell align="center">เบอร์โทรติดต่อ</TableCell>
+                            <TableCell align="center">วันเวลาที่บันทึก</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {recordinsurances.map((item: any) => (
+                <TableRow key={item.id}>
+                              <TableCell align="center">{item.id}</TableCell>
+                              <TableCell align="center">{item.edges?.member?.memberName}</TableCell>
+                              <TableCell align="center">{item.edges?.product?.productName}</TableCell>
+                              <TableCell align="center">{item.edges?.amountpaid?.amountpaidMoney}</TableCell>
+                              <TableCell align="center">{item.edges?.hospital?.hospitalName}</TableCell>
+                              <TableCell align="center">{item.numberOfDaysOfTreat}</TableCell>
+                              <TableCell align="center">{item.recordinsuranceAddress}</TableCell>
+                              <TableCell align="center">{item.recordinsuranceContact}</TableCell>
+                              <TableCell align="center">{moment(item.recordinsuranceTime).format('DD/MM/YYYY HH.mm น.')}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <br></br>
+        </Content>
+      </Page>
+    );
+  }
