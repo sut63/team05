@@ -5926,8 +5926,10 @@ type PaybackMutation struct {
 	op                    Op
 	typ                   string
 	id                    *int
-	payback_accountnumber *string
 	payback_transfertime  *time.Time
+	payback_accountnumber *string
+	payback_accountname   *string
+	payback_accountiden   *string
 	clearedFields         map[string]struct{}
 	_Officer              *int
 	cleared_Officer       bool
@@ -6020,6 +6022,43 @@ func (m *PaybackMutation) ID() (id int, exists bool) {
 	return *m.id, true
 }
 
+// SetPaybackTransfertime sets the payback_transfertime field.
+func (m *PaybackMutation) SetPaybackTransfertime(t time.Time) {
+	m.payback_transfertime = &t
+}
+
+// PaybackTransfertime returns the payback_transfertime value in the mutation.
+func (m *PaybackMutation) PaybackTransfertime() (r time.Time, exists bool) {
+	v := m.payback_transfertime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPaybackTransfertime returns the old payback_transfertime value of the Payback.
+// If the Payback object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *PaybackMutation) OldPaybackTransfertime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPaybackTransfertime is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPaybackTransfertime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPaybackTransfertime: %w", err)
+	}
+	return oldValue.PaybackTransfertime, nil
+}
+
+// ResetPaybackTransfertime reset all changes of the "payback_transfertime" field.
+func (m *PaybackMutation) ResetPaybackTransfertime() {
+	m.payback_transfertime = nil
+}
+
 // SetPaybackAccountnumber sets the payback_accountnumber field.
 func (m *PaybackMutation) SetPaybackAccountnumber(s string) {
 	m.payback_accountnumber = &s
@@ -6057,41 +6096,78 @@ func (m *PaybackMutation) ResetPaybackAccountnumber() {
 	m.payback_accountnumber = nil
 }
 
-// SetPaybackTransfertime sets the payback_transfertime field.
-func (m *PaybackMutation) SetPaybackTransfertime(t time.Time) {
-	m.payback_transfertime = &t
+// SetPaybackAccountname sets the payback_accountname field.
+func (m *PaybackMutation) SetPaybackAccountname(s string) {
+	m.payback_accountname = &s
 }
 
-// PaybackTransfertime returns the payback_transfertime value in the mutation.
-func (m *PaybackMutation) PaybackTransfertime() (r time.Time, exists bool) {
-	v := m.payback_transfertime
+// PaybackAccountname returns the payback_accountname value in the mutation.
+func (m *PaybackMutation) PaybackAccountname() (r string, exists bool) {
+	v := m.payback_accountname
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPaybackTransfertime returns the old payback_transfertime value of the Payback.
+// OldPaybackAccountname returns the old payback_accountname value of the Payback.
 // If the Payback object wasn't provided to the builder, the object is fetched
 // from the database.
 // An error is returned if the mutation operation is not UpdateOne, or database query fails.
-func (m *PaybackMutation) OldPaybackTransfertime(ctx context.Context) (v time.Time, err error) {
+func (m *PaybackMutation) OldPaybackAccountname(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldPaybackTransfertime is allowed only on UpdateOne operations")
+		return v, fmt.Errorf("OldPaybackAccountname is allowed only on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldPaybackTransfertime requires an ID field in the mutation")
+		return v, fmt.Errorf("OldPaybackAccountname requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPaybackTransfertime: %w", err)
+		return v, fmt.Errorf("querying old value for OldPaybackAccountname: %w", err)
 	}
-	return oldValue.PaybackTransfertime, nil
+	return oldValue.PaybackAccountname, nil
 }
 
-// ResetPaybackTransfertime reset all changes of the "payback_transfertime" field.
-func (m *PaybackMutation) ResetPaybackTransfertime() {
-	m.payback_transfertime = nil
+// ResetPaybackAccountname reset all changes of the "payback_accountname" field.
+func (m *PaybackMutation) ResetPaybackAccountname() {
+	m.payback_accountname = nil
+}
+
+// SetPaybackAccountiden sets the payback_accountiden field.
+func (m *PaybackMutation) SetPaybackAccountiden(s string) {
+	m.payback_accountiden = &s
+}
+
+// PaybackAccountiden returns the payback_accountiden value in the mutation.
+func (m *PaybackMutation) PaybackAccountiden() (r string, exists bool) {
+	v := m.payback_accountiden
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPaybackAccountiden returns the old payback_accountiden value of the Payback.
+// If the Payback object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *PaybackMutation) OldPaybackAccountiden(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPaybackAccountiden is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPaybackAccountiden requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPaybackAccountiden: %w", err)
+	}
+	return oldValue.PaybackAccountiden, nil
+}
+
+// ResetPaybackAccountiden reset all changes of the "payback_accountiden" field.
+func (m *PaybackMutation) ResetPaybackAccountiden() {
+	m.payback_accountiden = nil
 }
 
 // SetOfficerID sets the Officer edge to Officer by id.
@@ -6264,12 +6340,18 @@ func (m *PaybackMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *PaybackMutation) Fields() []string {
-	fields := make([]string, 0, 2)
+	fields := make([]string, 0, 4)
+	if m.payback_transfertime != nil {
+		fields = append(fields, payback.FieldPaybackTransfertime)
+	}
 	if m.payback_accountnumber != nil {
 		fields = append(fields, payback.FieldPaybackAccountnumber)
 	}
-	if m.payback_transfertime != nil {
-		fields = append(fields, payback.FieldPaybackTransfertime)
+	if m.payback_accountname != nil {
+		fields = append(fields, payback.FieldPaybackAccountname)
+	}
+	if m.payback_accountiden != nil {
+		fields = append(fields, payback.FieldPaybackAccountiden)
 	}
 	return fields
 }
@@ -6279,10 +6361,14 @@ func (m *PaybackMutation) Fields() []string {
 // not set, or was not define in the schema.
 func (m *PaybackMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case payback.FieldPaybackAccountnumber:
-		return m.PaybackAccountnumber()
 	case payback.FieldPaybackTransfertime:
 		return m.PaybackTransfertime()
+	case payback.FieldPaybackAccountnumber:
+		return m.PaybackAccountnumber()
+	case payback.FieldPaybackAccountname:
+		return m.PaybackAccountname()
+	case payback.FieldPaybackAccountiden:
+		return m.PaybackAccountiden()
 	}
 	return nil, false
 }
@@ -6292,10 +6378,14 @@ func (m *PaybackMutation) Field(name string) (ent.Value, bool) {
 // or the query to the database was failed.
 func (m *PaybackMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case payback.FieldPaybackAccountnumber:
-		return m.OldPaybackAccountnumber(ctx)
 	case payback.FieldPaybackTransfertime:
 		return m.OldPaybackTransfertime(ctx)
+	case payback.FieldPaybackAccountnumber:
+		return m.OldPaybackAccountnumber(ctx)
+	case payback.FieldPaybackAccountname:
+		return m.OldPaybackAccountname(ctx)
+	case payback.FieldPaybackAccountiden:
+		return m.OldPaybackAccountiden(ctx)
 	}
 	return nil, fmt.Errorf("unknown Payback field %s", name)
 }
@@ -6305,6 +6395,13 @@ func (m *PaybackMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type mismatch the field type.
 func (m *PaybackMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case payback.FieldPaybackTransfertime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPaybackTransfertime(v)
+		return nil
 	case payback.FieldPaybackAccountnumber:
 		v, ok := value.(string)
 		if !ok {
@@ -6312,12 +6409,19 @@ func (m *PaybackMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPaybackAccountnumber(v)
 		return nil
-	case payback.FieldPaybackTransfertime:
-		v, ok := value.(time.Time)
+	case payback.FieldPaybackAccountname:
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPaybackTransfertime(v)
+		m.SetPaybackAccountname(v)
+		return nil
+	case payback.FieldPaybackAccountiden:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPaybackAccountiden(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Payback field %s", name)
@@ -6369,11 +6473,17 @@ func (m *PaybackMutation) ClearField(name string) error {
 // defined in the schema.
 func (m *PaybackMutation) ResetField(name string) error {
 	switch name {
+	case payback.FieldPaybackTransfertime:
+		m.ResetPaybackTransfertime()
+		return nil
 	case payback.FieldPaybackAccountnumber:
 		m.ResetPaybackAccountnumber()
 		return nil
-	case payback.FieldPaybackTransfertime:
-		m.ResetPaybackTransfertime()
+	case payback.FieldPaybackAccountname:
+		m.ResetPaybackAccountname()
+		return nil
+	case payback.FieldPaybackAccountiden:
+		m.ResetPaybackAccountiden()
 		return nil
 	}
 	return fmt.Errorf("unknown Payback field %s", name)

@@ -2468,6 +2468,52 @@ var doc = `{
             }
         },
         "/paybacks/{id}": {
+            "get": {
+                "description": "get payback by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a payback entity by ID",
+                "operationId": "get-payback",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Payback ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ent.Payback"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "get payback by ID",
                 "produces": [
@@ -2962,6 +3008,49 @@ var doc = `{
             }
         },
         "/recordinsurances/{id}": {
+            "get": {
+                "description": "get recordinsurance by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a recordinsurance entity by ID",
+                "operationId": "get-recordinsurance",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Recordinsurance ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Recordinsurance"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "get recordinsurance by ID",
                 "produces": [
@@ -3077,6 +3166,12 @@ var doc = `{
                 },
                 "officerID": {
                     "type": "integer"
+                },
+                "paybackAccountiden": {
+                    "type": "string"
+                },
+                "paybackAccountname": {
+                    "type": "string"
                 },
                 "paybackAccountnumber": {
                     "type": "string"
@@ -3677,6 +3772,14 @@ var doc = `{
                 "id": {
                     "description": "ID of the ent.",
                     "type": "integer"
+                },
+                "payback_accountiden": {
+                    "description": "PaybackAccountiden holds the value of the \"payback_accountiden\" field.",
+                    "type": "string"
+                },
+                "payback_accountname": {
+                    "description": "PaybackAccountname holds the value of the \"payback_accountname\" field.",
+                    "type": "string"
                 },
                 "payback_accountnumber": {
                     "description": "PaybackAccountnumber holds the value of the \"payback_accountnumber\" field.",

@@ -238,8 +238,10 @@ var (
 	// PaybacksColumns holds the columns for the "paybacks" table.
 	PaybacksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "payback_accountnumber", Type: field.TypeString},
 		{Name: "payback_transfertime", Type: field.TypeTime},
+		{Name: "payback_accountnumber", Type: field.TypeString, Size: 10},
+		{Name: "payback_accountname", Type: field.TypeString, Size: 10},
+		{Name: "payback_accountiden", Type: field.TypeString, Size: 13},
 		{Name: "bank_id", Type: field.TypeInt, Nullable: true},
 		{Name: "member_id", Type: field.TypeInt, Nullable: true},
 		{Name: "officer_id", Type: field.TypeInt, Nullable: true},
@@ -253,28 +255,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "paybacks_banks_bank_payback",
-				Columns: []*schema.Column{PaybacksColumns[3]},
+				Columns: []*schema.Column{PaybacksColumns[5]},
 
 				RefColumns: []*schema.Column{BanksColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "paybacks_members_member_payback",
-				Columns: []*schema.Column{PaybacksColumns[4]},
+				Columns: []*schema.Column{PaybacksColumns[6]},
 
 				RefColumns: []*schema.Column{MembersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "paybacks_officers_officer_payback",
-				Columns: []*schema.Column{PaybacksColumns[5]},
+				Columns: []*schema.Column{PaybacksColumns[7]},
 
 				RefColumns: []*schema.Column{OfficersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "paybacks_products_product_payback",
-				Columns: []*schema.Column{PaybacksColumns[6]},
+				Columns: []*schema.Column{PaybacksColumns[8]},
 
 				RefColumns: []*schema.Column{ProductsColumns[0]},
 				OnDelete:   schema.SetNull,
