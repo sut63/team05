@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Sprint 2 ระบบค้นหาประวัติการสอบถาม</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ค้นหาสำเร็จ</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/inquirysearch<datalist><option>http://localhost:3000/inquirysearch</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=inquiryNameMessages<datalist><option>id=inquiryNameMessages</option><option>name=inquiry_name_messages</option><option>//textarea[@id='inquiryNameMessages']</option><option>//div[@id='root']/div/div[2]/article/div[2]/div/div[2]/div/div/div/textarea</option><option>//textarea</option><option>css=#inquiryNameMessages</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=inquiryNameMessages<datalist><option>id=inquiryNameMessages</option><option>name=inquiry_name_messages</option><option>//textarea[@id='inquiryNameMessages']</option><option>//div[@id='root']/div/div[2]/article/div[2]/div/div[2]/div/div/div/textarea</option><option>//textarea</option><option>css=#inquiryNameMessages</option></datalist></td><td>Pong</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/div[2]/article/div[2]/div/div[3]/button/span<datalist><option>//div[@id='root']/div/div[2]/article/div[2]/div/div[3]/button/span</option><option>//div[3]/button/span</option><option>css=button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSizeLarge.MuiButton-sizeLarge &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>//div[@id='root']/div/div[2]/article/div/div[2]/div/div/div[2]<datalist><option>//div[@id='root']/div/div[2]/article/div/div[2]/div/div/div[2]</option><option>//div[2]/div/div/div[2]</option><option>css=div.MuiAlert-message</option></datalist></td><td>พบข้อมูลการสอบถาม</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ค้นหาไม่สำเร็จ</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/inquirysearch<datalist><option>http://localhost:3000/inquirysearch</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/div[2]/article/div/div<datalist><option>//div[@id='root']/div/div[2]/article/div/div</option><option>//article/div/div</option><option>css=div.makeStyles-leftItemsBox-109</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=inquiryNameMessages<datalist><option>id=inquiryNameMessages</option><option>name=inquiry_name_messages</option><option>//textarea[@id='inquiryNameMessages']</option><option>//div[@id='root']/div/div[2]/article/div[2]/div/div[2]/div/div/div/textarea</option><option>//textarea</option><option>css=#inquiryNameMessages</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=inquiryNameMessages<datalist><option>id=inquiryNameMessages</option><option>name=inquiry_name_messages</option><option>//textarea[@id='inquiryNameMessages']</option><option>//div[@id='root']/div/div[2]/article/div[2]/div/div[2]/div/div/div/textarea</option><option>//textarea</option><option>css=#inquiryNameMessages</option></datalist></td><td>Thai</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/div[2]/article/div[2]/div/div[3]/button/span<datalist><option>//div[@id='root']/div/div[2]/article/div[2]/div/div[3]/button/span</option><option>//div[2]/div/div[3]/button/span</option><option>css=button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSizeLarge.MuiButton-sizeLarge &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>//div[@id='root']/div/div[2]/article/div/div[2]/div/div/div[2]<datalist><option>//div[@id='root']/div/div[2]/article/div/div[2]/div/div/div[2]</option><option>//div[2]/div/div/div[2]</option><option>css=div.MuiAlert-message</option></datalist></td><td>ไม่พบชื่อผู้สอบถามการสอบถามข้อมูลที่ค้นหา</td>
+</tr>
+</tbody></table>
+</body>
+</html>
