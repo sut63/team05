@@ -363,12 +363,12 @@ func (iq *InquiryQuery) WithProduct(opts ...func(*ProductQuery)) *InquiryQuery {
 // Example:
 //
 //	var v []struct {
-//		InquiryMessages string `json:"Inquiry_messages,omitempty"`
+//		InquiryNameMessages string `json:"Inquiry_name_messages,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Inquiry.Query().
-//		GroupBy(inquiry.FieldInquiryMessages).
+//		GroupBy(inquiry.FieldInquiryNameMessages).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -389,11 +389,11 @@ func (iq *InquiryQuery) GroupBy(field string, fields ...string) *InquiryGroupBy 
 // Example:
 //
 //	var v []struct {
-//		InquiryMessages string `json:"Inquiry_messages,omitempty"`
+//		InquiryNameMessages string `json:"Inquiry_name_messages,omitempty"`
 //	}
 //
 //	client.Inquiry.Query().
-//		Select(inquiry.FieldInquiryMessages).
+//		Select(inquiry.FieldInquiryNameMessages).
 //		Scan(ctx, &v)
 //
 func (iq *InquiryQuery) Select(field string, fields ...string) *InquirySelect {

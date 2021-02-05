@@ -93,10 +93,10 @@ func IDLTE(id int) predicate.Inquiry {
 	})
 }
 
-// InquiryMessages applies equality check predicate on the "Inquiry_messages" field. It's identical to InquiryMessagesEQ.
-func InquiryMessages(v string) predicate.Inquiry {
+// InquiryNameMessages applies equality check predicate on the "Inquiry_name_messages" field. It's identical to InquiryNameMessagesEQ.
+func InquiryNameMessages(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldInquiryMessages), v))
+		s.Where(sql.EQ(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
@@ -107,6 +107,20 @@ func InquiryPhoneMessages(v string) predicate.Inquiry {
 	})
 }
 
+// InquiryAgeMessages applies equality check predicate on the "Inquiry_age_messages" field. It's identical to InquiryAgeMessagesEQ.
+func InquiryAgeMessages(v int) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInquiryAgeMessages), v))
+	})
+}
+
+// InquiryMessages applies equality check predicate on the "Inquiry_messages" field. It's identical to InquiryMessagesEQ.
+func InquiryMessages(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInquiryMessages), v))
+	})
+}
+
 // InquiryTimeMessages applies equality check predicate on the "Inquiry_time_messages" field. It's identical to InquiryTimeMessagesEQ.
 func InquiryTimeMessages(v time.Time) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
@@ -114,22 +128,22 @@ func InquiryTimeMessages(v time.Time) predicate.Inquiry {
 	})
 }
 
-// InquiryMessagesEQ applies the EQ predicate on the "Inquiry_messages" field.
-func InquiryMessagesEQ(v string) predicate.Inquiry {
+// InquiryNameMessagesEQ applies the EQ predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesEQ(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldInquiryMessages), v))
+		s.Where(sql.EQ(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesNEQ applies the NEQ predicate on the "Inquiry_messages" field.
-func InquiryMessagesNEQ(v string) predicate.Inquiry {
+// InquiryNameMessagesNEQ applies the NEQ predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesNEQ(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldInquiryMessages), v))
+		s.Where(sql.NEQ(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesIn applies the In predicate on the "Inquiry_messages" field.
-func InquiryMessagesIn(vs ...string) predicate.Inquiry {
+// InquiryNameMessagesIn applies the In predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesIn(vs ...string) predicate.Inquiry {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -141,12 +155,12 @@ func InquiryMessagesIn(vs ...string) predicate.Inquiry {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldInquiryMessages), v...))
+		s.Where(sql.In(s.C(FieldInquiryNameMessages), v...))
 	})
 }
 
-// InquiryMessagesNotIn applies the NotIn predicate on the "Inquiry_messages" field.
-func InquiryMessagesNotIn(vs ...string) predicate.Inquiry {
+// InquiryNameMessagesNotIn applies the NotIn predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesNotIn(vs ...string) predicate.Inquiry {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -158,70 +172,70 @@ func InquiryMessagesNotIn(vs ...string) predicate.Inquiry {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldInquiryMessages), v...))
+		s.Where(sql.NotIn(s.C(FieldInquiryNameMessages), v...))
 	})
 }
 
-// InquiryMessagesGT applies the GT predicate on the "Inquiry_messages" field.
-func InquiryMessagesGT(v string) predicate.Inquiry {
+// InquiryNameMessagesGT applies the GT predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesGT(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldInquiryMessages), v))
+		s.Where(sql.GT(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesGTE applies the GTE predicate on the "Inquiry_messages" field.
-func InquiryMessagesGTE(v string) predicate.Inquiry {
+// InquiryNameMessagesGTE applies the GTE predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesGTE(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldInquiryMessages), v))
+		s.Where(sql.GTE(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesLT applies the LT predicate on the "Inquiry_messages" field.
-func InquiryMessagesLT(v string) predicate.Inquiry {
+// InquiryNameMessagesLT applies the LT predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesLT(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldInquiryMessages), v))
+		s.Where(sql.LT(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesLTE applies the LTE predicate on the "Inquiry_messages" field.
-func InquiryMessagesLTE(v string) predicate.Inquiry {
+// InquiryNameMessagesLTE applies the LTE predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesLTE(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldInquiryMessages), v))
+		s.Where(sql.LTE(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesContains applies the Contains predicate on the "Inquiry_messages" field.
-func InquiryMessagesContains(v string) predicate.Inquiry {
+// InquiryNameMessagesContains applies the Contains predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesContains(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldInquiryMessages), v))
+		s.Where(sql.Contains(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesHasPrefix applies the HasPrefix predicate on the "Inquiry_messages" field.
-func InquiryMessagesHasPrefix(v string) predicate.Inquiry {
+// InquiryNameMessagesHasPrefix applies the HasPrefix predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesHasPrefix(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldInquiryMessages), v))
+		s.Where(sql.HasPrefix(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesHasSuffix applies the HasSuffix predicate on the "Inquiry_messages" field.
-func InquiryMessagesHasSuffix(v string) predicate.Inquiry {
+// InquiryNameMessagesHasSuffix applies the HasSuffix predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesHasSuffix(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldInquiryMessages), v))
+		s.Where(sql.HasSuffix(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesEqualFold applies the EqualFold predicate on the "Inquiry_messages" field.
-func InquiryMessagesEqualFold(v string) predicate.Inquiry {
+// InquiryNameMessagesEqualFold applies the EqualFold predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesEqualFold(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldInquiryMessages), v))
+		s.Where(sql.EqualFold(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
-// InquiryMessagesContainsFold applies the ContainsFold predicate on the "Inquiry_messages" field.
-func InquiryMessagesContainsFold(v string) predicate.Inquiry {
+// InquiryNameMessagesContainsFold applies the ContainsFold predicate on the "Inquiry_name_messages" field.
+func InquiryNameMessagesContainsFold(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldInquiryMessages), v))
+		s.Where(sql.ContainsFold(s.C(FieldInquiryNameMessages), v))
 	})
 }
 
@@ -333,6 +347,193 @@ func InquiryPhoneMessagesEqualFold(v string) predicate.Inquiry {
 func InquiryPhoneMessagesContainsFold(v string) predicate.Inquiry {
 	return predicate.Inquiry(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldInquiryPhoneMessages), v))
+	})
+}
+
+// InquiryAgeMessagesEQ applies the EQ predicate on the "Inquiry_age_messages" field.
+func InquiryAgeMessagesEQ(v int) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInquiryAgeMessages), v))
+	})
+}
+
+// InquiryAgeMessagesNEQ applies the NEQ predicate on the "Inquiry_age_messages" field.
+func InquiryAgeMessagesNEQ(v int) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldInquiryAgeMessages), v))
+	})
+}
+
+// InquiryAgeMessagesIn applies the In predicate on the "Inquiry_age_messages" field.
+func InquiryAgeMessagesIn(vs ...int) predicate.Inquiry {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Inquiry(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldInquiryAgeMessages), v...))
+	})
+}
+
+// InquiryAgeMessagesNotIn applies the NotIn predicate on the "Inquiry_age_messages" field.
+func InquiryAgeMessagesNotIn(vs ...int) predicate.Inquiry {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Inquiry(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldInquiryAgeMessages), v...))
+	})
+}
+
+// InquiryAgeMessagesGT applies the GT predicate on the "Inquiry_age_messages" field.
+func InquiryAgeMessagesGT(v int) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldInquiryAgeMessages), v))
+	})
+}
+
+// InquiryAgeMessagesGTE applies the GTE predicate on the "Inquiry_age_messages" field.
+func InquiryAgeMessagesGTE(v int) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldInquiryAgeMessages), v))
+	})
+}
+
+// InquiryAgeMessagesLT applies the LT predicate on the "Inquiry_age_messages" field.
+func InquiryAgeMessagesLT(v int) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldInquiryAgeMessages), v))
+	})
+}
+
+// InquiryAgeMessagesLTE applies the LTE predicate on the "Inquiry_age_messages" field.
+func InquiryAgeMessagesLTE(v int) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldInquiryAgeMessages), v))
+	})
+}
+
+// InquiryMessagesEQ applies the EQ predicate on the "Inquiry_messages" field.
+func InquiryMessagesEQ(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesNEQ applies the NEQ predicate on the "Inquiry_messages" field.
+func InquiryMessagesNEQ(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesIn applies the In predicate on the "Inquiry_messages" field.
+func InquiryMessagesIn(vs ...string) predicate.Inquiry {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Inquiry(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldInquiryMessages), v...))
+	})
+}
+
+// InquiryMessagesNotIn applies the NotIn predicate on the "Inquiry_messages" field.
+func InquiryMessagesNotIn(vs ...string) predicate.Inquiry {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Inquiry(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldInquiryMessages), v...))
+	})
+}
+
+// InquiryMessagesGT applies the GT predicate on the "Inquiry_messages" field.
+func InquiryMessagesGT(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesGTE applies the GTE predicate on the "Inquiry_messages" field.
+func InquiryMessagesGTE(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesLT applies the LT predicate on the "Inquiry_messages" field.
+func InquiryMessagesLT(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesLTE applies the LTE predicate on the "Inquiry_messages" field.
+func InquiryMessagesLTE(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesContains applies the Contains predicate on the "Inquiry_messages" field.
+func InquiryMessagesContains(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesHasPrefix applies the HasPrefix predicate on the "Inquiry_messages" field.
+func InquiryMessagesHasPrefix(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesHasSuffix applies the HasSuffix predicate on the "Inquiry_messages" field.
+func InquiryMessagesHasSuffix(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesEqualFold applies the EqualFold predicate on the "Inquiry_messages" field.
+func InquiryMessagesEqualFold(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldInquiryMessages), v))
+	})
+}
+
+// InquiryMessagesContainsFold applies the ContainsFold predicate on the "Inquiry_messages" field.
+func InquiryMessagesContainsFold(v string) predicate.Inquiry {
+	return predicate.Inquiry(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldInquiryMessages), v))
 	})
 }
 

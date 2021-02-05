@@ -27,10 +27,22 @@ export interface ControllersInquiry {
     categoryID?: number;
     /**
      * 
+     * @type {number}
+     * @memberof ControllersInquiry
+     */
+    inquiryAgeMessages?: number;
+    /**
+     * 
      * @type {string}
      * @memberof ControllersInquiry
      */
     inquiryMessages?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersInquiry
+     */
+    inquiryNameMessages?: string;
     /**
      * 
      * @type {string}
@@ -74,7 +86,9 @@ export function ControllersInquiryFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'categoryID': !exists(json, 'categoryID') ? undefined : json['categoryID'],
+        'inquiryAgeMessages': !exists(json, 'inquiryAgeMessages') ? undefined : json['inquiryAgeMessages'],
         'inquiryMessages': !exists(json, 'inquiryMessages') ? undefined : json['inquiryMessages'],
+        'inquiryNameMessages': !exists(json, 'inquiryNameMessages') ? undefined : json['inquiryNameMessages'],
         'inquiryPhoneMessages': !exists(json, 'inquiryPhoneMessages') ? undefined : json['inquiryPhoneMessages'],
         'inquiryTimeMessages': !exists(json, 'inquiryTimeMessages') ? undefined : json['inquiryTimeMessages'],
         'memberID': !exists(json, 'memberID') ? undefined : json['memberID'],
@@ -93,7 +107,9 @@ export function ControllersInquiryToJSON(value?: ControllersInquiry | null): any
     return {
         
         'categoryID': value.categoryID,
+        'inquiryAgeMessages': value.inquiryAgeMessages,
         'inquiryMessages': value.inquiryMessages,
+        'inquiryNameMessages': value.inquiryNameMessages,
         'inquiryPhoneMessages': value.inquiryPhoneMessages,
         'inquiryTimeMessages': value.inquiryTimeMessages,
         'memberID': value.memberID,

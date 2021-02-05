@@ -24,15 +24,27 @@ type InquiryCreate struct {
 	hooks    []Hook
 }
 
-// SetInquiryMessages sets the Inquiry_messages field.
-func (ic *InquiryCreate) SetInquiryMessages(s string) *InquiryCreate {
-	ic.mutation.SetInquiryMessages(s)
+// SetInquiryNameMessages sets the Inquiry_name_messages field.
+func (ic *InquiryCreate) SetInquiryNameMessages(s string) *InquiryCreate {
+	ic.mutation.SetInquiryNameMessages(s)
 	return ic
 }
 
 // SetInquiryPhoneMessages sets the Inquiry_phone_messages field.
 func (ic *InquiryCreate) SetInquiryPhoneMessages(s string) *InquiryCreate {
 	ic.mutation.SetInquiryPhoneMessages(s)
+	return ic
+}
+
+// SetInquiryAgeMessages sets the Inquiry_age_messages field.
+func (ic *InquiryCreate) SetInquiryAgeMessages(i int) *InquiryCreate {
+	ic.mutation.SetInquiryAgeMessages(i)
+	return ic
+}
+
+// SetInquiryMessages sets the Inquiry_messages field.
+func (ic *InquiryCreate) SetInquiryMessages(s string) *InquiryCreate {
+	ic.mutation.SetInquiryMessages(s)
 	return ic
 }
 
@@ -133,12 +145,12 @@ func (ic *InquiryCreate) Mutation() *InquiryMutation {
 
 // Save creates the Inquiry in the database.
 func (ic *InquiryCreate) Save(ctx context.Context) (*Inquiry, error) {
-	if _, ok := ic.mutation.InquiryMessages(); !ok {
-		return nil, &ValidationError{Name: "Inquiry_messages", err: errors.New("ent: missing required field \"Inquiry_messages\"")}
+	if _, ok := ic.mutation.InquiryNameMessages(); !ok {
+		return nil, &ValidationError{Name: "Inquiry_name_messages", err: errors.New("ent: missing required field \"Inquiry_name_messages\"")}
 	}
-	if v, ok := ic.mutation.InquiryMessages(); ok {
-		if err := inquiry.InquiryMessagesValidator(v); err != nil {
-			return nil, &ValidationError{Name: "Inquiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_messages\": %w", err)}
+	if v, ok := ic.mutation.InquiryNameMessages(); ok {
+		if err := inquiry.InquiryNameMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Inquiry_name_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_name_messages\": %w", err)}
 		}
 	}
 	if _, ok := ic.mutation.InquiryPhoneMessages(); !ok {
@@ -147,6 +159,22 @@ func (ic *InquiryCreate) Save(ctx context.Context) (*Inquiry, error) {
 	if v, ok := ic.mutation.InquiryPhoneMessages(); ok {
 		if err := inquiry.InquiryPhoneMessagesValidator(v); err != nil {
 			return nil, &ValidationError{Name: "Inquiry_phone_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_phone_messages\": %w", err)}
+		}
+	}
+	if _, ok := ic.mutation.InquiryAgeMessages(); !ok {
+		return nil, &ValidationError{Name: "Inquiry_age_messages", err: errors.New("ent: missing required field \"Inquiry_age_messages\"")}
+	}
+	if v, ok := ic.mutation.InquiryAgeMessages(); ok {
+		if err := inquiry.InquiryAgeMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Inquiry_age_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_age_messages\": %w", err)}
+		}
+	}
+	if _, ok := ic.mutation.InquiryMessages(); !ok {
+		return nil, &ValidationError{Name: "Inquiry_messages", err: errors.New("ent: missing required field \"Inquiry_messages\"")}
+	}
+	if v, ok := ic.mutation.InquiryMessages(); ok {
+		if err := inquiry.InquiryMessagesValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Inquiry_messages", err: fmt.Errorf("ent: validator failed for field \"Inquiry_messages\": %w", err)}
 		}
 	}
 	if _, ok := ic.mutation.InquiryTimeMessages(); !ok {
@@ -213,13 +241,13 @@ func (ic *InquiryCreate) createSpec() (*Inquiry, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := ic.mutation.InquiryMessages(); ok {
+	if value, ok := ic.mutation.InquiryNameMessages(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: inquiry.FieldInquiryMessages,
+			Column: inquiry.FieldInquiryNameMessages,
 		})
-		i.InquiryMessages = value
+		i.InquiryNameMessages = value
 	}
 	if value, ok := ic.mutation.InquiryPhoneMessages(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -228,6 +256,22 @@ func (ic *InquiryCreate) createSpec() (*Inquiry, *sqlgraph.CreateSpec) {
 			Column: inquiry.FieldInquiryPhoneMessages,
 		})
 		i.InquiryPhoneMessages = value
+	}
+	if value, ok := ic.mutation.InquiryAgeMessages(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeInt,
+			Value:  value,
+			Column: inquiry.FieldInquiryAgeMessages,
+		})
+		i.InquiryAgeMessages = value
+	}
+	if value, ok := ic.mutation.InquiryMessages(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: inquiry.FieldInquiryMessages,
+		})
+		i.InquiryMessages = value
 	}
 	if value, ok := ic.mutation.InquiryTimeMessages(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

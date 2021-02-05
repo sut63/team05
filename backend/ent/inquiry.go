@@ -20,10 +20,14 @@ type Inquiry struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// InquiryMessages holds the value of the "Inquiry_messages" field.
-	InquiryMessages string `json:"Inquiry_messages,omitempty"`
+	// InquiryNameMessages holds the value of the "Inquiry_name_messages" field.
+	InquiryNameMessages string `json:"Inquiry_name_messages,omitempty"`
 	// InquiryPhoneMessages holds the value of the "Inquiry_phone_messages" field.
 	InquiryPhoneMessages string `json:"Inquiry_phone_messages,omitempty"`
+	// InquiryAgeMessages holds the value of the "Inquiry_age_messages" field.
+	InquiryAgeMessages int `json:"Inquiry_age_messages,omitempty"`
+	// InquiryMessages holds the value of the "Inquiry_messages" field.
+	InquiryMessages string `json:"Inquiry_messages,omitempty"`
 	// InquiryTimeMessages holds the value of the "Inquiry_time_messages" field.
 	InquiryTimeMessages time.Time `json:"Inquiry_time_messages,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -110,8 +114,10 @@ func (e InquiryEdges) ProductOrErr() (*Product, error) {
 func (*Inquiry) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
-		&sql.NullString{}, // Inquiry_messages
+		&sql.NullString{}, // Inquiry_name_messages
 		&sql.NullString{}, // Inquiry_phone_messages
+		&sql.NullInt64{},  // Inquiry_age_messages
+		&sql.NullString{}, // Inquiry_messages
 		&sql.NullTime{},   // Inquiry_time_messages
 	}
 }
@@ -139,21 +145,31 @@ func (i *Inquiry) assignValues(values ...interface{}) error {
 	i.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field Inquiry_messages", values[0])
+		return fmt.Errorf("unexpected type %T for field Inquiry_name_messages", values[0])
 	} else if value.Valid {
-		i.InquiryMessages = value.String
+		i.InquiryNameMessages = value.String
 	}
 	if value, ok := values[1].(*sql.NullString); !ok {
 		return fmt.Errorf("unexpected type %T for field Inquiry_phone_messages", values[1])
 	} else if value.Valid {
 		i.InquiryPhoneMessages = value.String
 	}
-	if value, ok := values[2].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field Inquiry_time_messages", values[2])
+	if value, ok := values[2].(*sql.NullInt64); !ok {
+		return fmt.Errorf("unexpected type %T for field Inquiry_age_messages", values[2])
+	} else if value.Valid {
+		i.InquiryAgeMessages = int(value.Int64)
+	}
+	if value, ok := values[3].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Inquiry_messages", values[3])
+	} else if value.Valid {
+		i.InquiryMessages = value.String
+	}
+	if value, ok := values[4].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field Inquiry_time_messages", values[4])
 	} else if value.Valid {
 		i.InquiryTimeMessages = value.Time
 	}
-	values = values[3:]
+	values = values[5:]
 	if len(values) == len(inquiry.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field category_id", value)
@@ -226,10 +242,14 @@ func (i *Inquiry) String() string {
 	var builder strings.Builder
 	builder.WriteString("Inquiry(")
 	builder.WriteString(fmt.Sprintf("id=%v", i.ID))
-	builder.WriteString(", Inquiry_messages=")
-	builder.WriteString(i.InquiryMessages)
+	builder.WriteString(", Inquiry_name_messages=")
+	builder.WriteString(i.InquiryNameMessages)
 	builder.WriteString(", Inquiry_phone_messages=")
 	builder.WriteString(i.InquiryPhoneMessages)
+	builder.WriteString(", Inquiry_age_messages=")
+	builder.WriteString(fmt.Sprintf("%v", i.InquiryAgeMessages))
+	builder.WriteString(", Inquiry_messages=")
+	builder.WriteString(i.InquiryMessages)
 	builder.WriteString(", Inquiry_time_messages=")
 	builder.WriteString(i.InquiryTimeMessages.Format(time.ANSIC))
 	builder.WriteByte(')')
