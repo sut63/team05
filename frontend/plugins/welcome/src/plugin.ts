@@ -10,6 +10,7 @@ import Officerlongin from './components/Officerlongin';
 
 import Payment from './components/Payment';
 import Inquiry from './components/Inquiry'
+import Inquirysearch from './components/Inquirysearch'
 import Recordinsurance from './components/Recordinsurance'
 import Payback from './components/Payback';
 import RecordinsuranceSearch from './components/RecordinsuranceSearch';
@@ -31,6 +32,7 @@ export const plugin = createPlugin({
     router.registerRoute('/officerlongin', Officerlongin);
 
     router.registerRoute('/inquiry', Inquiry);
+    router.registerRoute('/inquirysearch', Inquirysearch);
     router.registerRoute('/payback', Payback);
     router.registerRoute('/recordinsurance', Recordinsurance);
     router.registerRoute('/recordinsurancesearch', RecordinsuranceSearch);
