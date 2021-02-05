@@ -46,6 +46,10 @@ definitions:
         type: integer
       officerID:
         type: integer
+      paybackAccountiden:
+        type: string
+      paybackAccountname:
+        type: string
       paybackAccountnumber:
         type: string
       paybackTransfertime:
@@ -505,6 +509,14 @@ definitions:
       id:
         description: ID of the ent.
         type: integer
+      payback_accountiden:
+        description: PaybackAccountiden holds the value of the "payback_accountiden"
+          field.
+        type: string
+      payback_accountname:
+        description: PaybackAccountname holds the value of the "payback_accountname"
+          field.
+        type: string
       payback_accountnumber:
         description: PaybackAccountnumber holds the value of the "payback_accountnumber"
           field.
@@ -2391,6 +2403,37 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Delete a payback entity by ID
+    get:
+      description: get payback by ID
+      operationId: get-payback
+      parameters:
+      - description: Payback ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ent.Payback'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a payback entity by ID
   /payments:
     get:
       description: list payment entities
@@ -2720,6 +2763,35 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Delete a recordinsurance entity by ID
+    get:
+      description: get recordinsurance by ID
+      operationId: get-recordinsurance
+      parameters:
+      - description: Recordinsurance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Recordinsurance'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a recordinsurance entity by ID
 securityDefinitions:
   ApiKeyAuth:
     in: header

@@ -167,14 +167,70 @@ func init() {
 	officer.OfficerPasswordValidator = officerDescOfficerPassword.Validators[0].(func(string) error)
 	paybackFields := schema.Payback{}.Fields()
 	_ = paybackFields
-	// paybackDescPaybackAccountnumber is the schema descriptor for payback_accountnumber field.
-	paybackDescPaybackAccountnumber := paybackFields[0].Descriptor()
-	// payback.PaybackAccountnumberValidator is a validator for the "payback_accountnumber" field. It is called by the builders before save.
-	payback.PaybackAccountnumberValidator = paybackDescPaybackAccountnumber.Validators[0].(func(string) error)
 	// paybackDescPaybackTransfertime is the schema descriptor for payback_transfertime field.
-	paybackDescPaybackTransfertime := paybackFields[1].Descriptor()
+	paybackDescPaybackTransfertime := paybackFields[0].Descriptor()
 	// payback.DefaultPaybackTransfertime holds the default value on creation for the payback_transfertime field.
 	payback.DefaultPaybackTransfertime = paybackDescPaybackTransfertime.Default.(func() time.Time)
+	// paybackDescPaybackAccountnumber is the schema descriptor for payback_accountnumber field.
+	paybackDescPaybackAccountnumber := paybackFields[1].Descriptor()
+	// payback.PaybackAccountnumberValidator is a validator for the "payback_accountnumber" field. It is called by the builders before save.
+	payback.PaybackAccountnumberValidator = func() func(string) error {
+		validators := paybackDescPaybackAccountnumber.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+			validators[3].(func(string) error),
+		}
+		return func(payback_accountnumber string) error {
+			for _, fn := range fns {
+				if err := fn(payback_accountnumber); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// paybackDescPaybackAccountname is the schema descriptor for payback_accountname field.
+	paybackDescPaybackAccountname := paybackFields[2].Descriptor()
+	// payback.PaybackAccountnameValidator is a validator for the "payback_accountname" field. It is called by the builders before save.
+	payback.PaybackAccountnameValidator = func() func(string) error {
+		validators := paybackDescPaybackAccountname.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+			validators[3].(func(string) error),
+		}
+		return func(payback_accountname string) error {
+			for _, fn := range fns {
+				if err := fn(payback_accountname); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// paybackDescPaybackAccountiden is the schema descriptor for payback_accountiden field.
+	paybackDescPaybackAccountiden := paybackFields[3].Descriptor()
+	// payback.PaybackAccountidenValidator is a validator for the "payback_accountiden" field. It is called by the builders before save.
+	payback.PaybackAccountidenValidator = func() func(string) error {
+		validators := paybackDescPaybackAccountiden.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+			validators[2].(func(string) error),
+			validators[3].(func(string) error),
+		}
+		return func(payback_accountiden string) error {
+			for _, fn := range fns {
+				if err := fn(payback_accountiden); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	paymentFields := schema.Payment{}.Fields()
 	_ = paymentFields
 	// paymentDescAccountName is the schema descriptor for account_name field.
