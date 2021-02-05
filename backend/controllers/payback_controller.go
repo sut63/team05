@@ -11,6 +11,7 @@ import (
 	"github.com/sut63/team05/ent/bank"
 	"github.com/sut63/team05/ent/member"
 	"github.com/sut63/team05/ent/officer"
+	"github.com/sut63/team05/ent/payback"
 	"github.com/sut63/team05/ent/product"
 )
 
@@ -26,7 +27,9 @@ type Payback struct {
 	MemberID             int
 	BankID               int
 	OfficerID            int
+	PaybackAccountname   string
 	PaybackAccountnumber string
+	PaybackAccountiden   string
 	PaybackTransfertime  string
 }
 
@@ -97,7 +100,7 @@ func (ctl *PaybackController) CreatePayback(c *gin.Context) {
 		})
 		return
 	}
-	time, err := time.Parse(time.RFC3339, obj.PaybackTransfertime)
+	time := time.Now().Local()
 
 	in, err := ctl.client.Payback.
 		Create().
@@ -105,17 +108,60 @@ func (ctl *PaybackController) CreatePayback(c *gin.Context) {
 		SetMember(m).
 		SetBank(b).
 		SetOfficer(of).
+		SetPaybackAccountname(obj.PaybackAccountname).
 		SetPaybackAccountnumber(obj.PaybackAccountnumber).
+		SetPaybackAccountiden(obj.PaybackAccountiden).
 		SetPaybackTransfertime(time).
 		Save(context.Background())
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
 
-	c.JSON(200, in)
+	c.JSON(200, gin.H{
+		"status": true,
+		"data":   in,
+	})
+}
+
+// GetPayback handles GET requests to retrieve a payback entity
+// @Summary Get a payback entity by ID
+// @Description get payback by ID
+// @ID get-payback
+// @Produce  json
+// @Param id path int true "Payback ID"
+// @Success 200 {array} ent.Payback
+// @Failure 400 {object} gin.H
+// @Failure 404 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /paybacks/{id} [get]
+func (ctl *PaybackController) GetPayback(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	pa, err := ctl.client.Payback.
+		Query().
+		WithOfficer().
+		WithMember().
+		WithProduct().
+		WithBank().
+		Where(payback.HasMemberWith(member.IDEQ(int(id)))).
+		All(context.Background())
+	if err != nil {
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(200, pa)
 }
 
 // ListPayback handles request to get a list of payback entities
@@ -215,4 +261,5 @@ func (ctl *PaybackController) register() {
 	paybacks.GET("", ctl.ListPayback)
 	paybacks.POST("", ctl.CreatePayback)
 	paybacks.DELETE(":id", ctl.DeletePayback)
+	paybacks.GET(":id", ctl.GetPayback)
 }

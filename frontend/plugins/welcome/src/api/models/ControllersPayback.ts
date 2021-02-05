@@ -42,6 +42,18 @@ export interface ControllersPayback {
      * @type {string}
      * @memberof ControllersPayback
      */
+    paybackAccountiden?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersPayback
+     */
+    paybackAccountname?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersPayback
+     */
     paybackAccountnumber?: string;
     /**
      * 
@@ -70,6 +82,8 @@ export function ControllersPaybackFromJSONTyped(json: any, ignoreDiscriminator: 
         'bankID': !exists(json, 'bankID') ? undefined : json['bankID'],
         'memberID': !exists(json, 'memberID') ? undefined : json['memberID'],
         'officerID': !exists(json, 'officerID') ? undefined : json['officerID'],
+        'paybackAccountiden': !exists(json, 'paybackAccountiden') ? undefined : json['paybackAccountiden'],
+        'paybackAccountname': !exists(json, 'paybackAccountname') ? undefined : json['paybackAccountname'],
         'paybackAccountnumber': !exists(json, 'paybackAccountnumber') ? undefined : json['paybackAccountnumber'],
         'paybackTransfertime': !exists(json, 'paybackTransfertime') ? undefined : json['paybackTransfertime'],
         'productID': !exists(json, 'productID') ? undefined : json['productID'],
@@ -88,6 +102,8 @@ export function ControllersPaybackToJSON(value?: ControllersPayback | null): any
         'bankID': value.bankID,
         'memberID': value.memberID,
         'officerID': value.officerID,
+        'paybackAccountiden': value.paybackAccountiden,
+        'paybackAccountname': value.paybackAccountname,
         'paybackAccountnumber': value.paybackAccountnumber,
         'paybackTransfertime': value.paybackTransfertime,
         'productID': value.productID,

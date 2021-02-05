@@ -77,6 +77,8 @@ export default function Create() {
   const [officerid, setOfficerid] = useState(Number);
   const [officerID, setOfficerID] = React.useState(Number);
   const [payback_accountnumber, setPaybackAccountnumber] = useState(String);
+  const [payback_accountname, setPaybackAccountname] = useState(String);
+  const [payback_accountiden, setPaybackAccountiden] = useState(String);
   const [payback_transfertime, setPaybackTransfertime] = useState(String);
   const [productPrice, setProductPrice] = useState(String);
   const [productPaymentOfYear, setProductPaymentOfYear] = useState(String);
@@ -117,12 +119,30 @@ export default function Create() {
       getOfficers();
 
       const dataa = localStorage.getItem("officerdata");
-    if (dataa) {
-    setOfficerID(Number(localStorage.getItem("officerdata")));
-    setLoading(false);
-    }
+      if (dataa) {
+      setOfficerID(Number(localStorage.getItem("officerdata")));
+      setLoading(false);
+      }
+
+      const checkJobPosition = async () => {
+        const jobdata = JSON.parse(String(localStorage.getItem("positiondata")));
+        setLoading(false);
+        if (jobdata != "พนักงานบริษัทประกันสุขภาพ" ) {
+          localStorage.setItem("officerdata",JSON.stringify(null));
+          localStorage.setItem("positiondata",JSON.stringify(null));
+          history.pushState("","","./Officerlongin");  
+          window.location.reload(false);       
+        }
+        else{
+            setOfficerID(Number(localStorage.getItem("officerdata")))
+        }
+      }
+    checkJobPosition();
  
   }, [loading]);
+
+
+
  
   const Toast = Swal.mixin({
     toast: true,
@@ -136,13 +156,14 @@ export default function Create() {
     },
   });
 
-  const CreatePayback = async () => {
+ /* const CreatePayback = async () => {
     if ((bankid != null) && (memberid != null) && (officerid != null) && (productid != null) && (payback_accountnumber != "") && (payback_transfertime != "")) {
       const payback = {
 
          bankID    : bankid, 
          memberID        : memberid,
          officerID         : officerID,
+         paybackAccountname      : payback_accountname,
          paybackAccountnumber      : payback_accountnumber,
          paybackTransfertime  : payback_transfertime  + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
          productID          : productid,     
@@ -164,7 +185,74 @@ export default function Create() {
     }
  
     
-  };
+  };*/
+
+  const payback = {
+         bankID    : bankid, 
+         memberID        : memberid,
+         officerID         : officerID,
+         paybackAccountname      : payback_accountname,
+         paybackAccountnumber      : payback_accountnumber,
+         paybackAccountiden      : payback_accountiden,
+         paybackTransfertime  : payback_transfertime  + ":00+07:00", //+ "T00:00:00+07:00", //2020-10-20T11:53  yyyy-MM-ddT07:mm
+         productID          : productid,
+    };
+
+    function save() {
+
+      const apiUrl = 'http://localhost:8080/api/v1/paybacks';
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payback),
+      };
+
+      console.log(payback); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
+
+      fetch(apiUrl, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.status == true) {
+            //clear();
+            Toast.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลสำเร็จ',
+            });
+          } else {
+            checkCaseSaveError(data.error.Name)
+          }
+        });
+    }
+
+
+    const alertMessage = (icon: any , title: any) => {
+      Toast.fire({
+        icon: icon,
+        title: title,
+      })
+    }
+
+
+
+    const checkCaseSaveError = (field : String) => {
+      switch(field) {
+      
+        case 'payback_accountname' :
+          alertMessage("error","กรอกเบอร์โทรไม่ถูกต้อง");
+          return;
+        case 'payback_accountnumber' :
+          alertMessage("error","กรอกเลขบัญชีไม่ถูกต้อง");
+          return;
+        case 'payback_accountiden' :
+          alertMessage("error","กรอกเลขประจำตัวประชาชนไม่ถูกต้อง");
+          return;
+        default:
+          alertMessage("error","บันทึกข้อมูลไม่ถูกต้อง");
+          return;
+      }
+    }
+
  
    const product_id_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
    setProductid(event.target.value as number);
@@ -182,8 +270,16 @@ export default function Create() {
       setOfficerid(event.target.value as number);
      };
 
+     const paybackAccountname_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setPaybackAccountname(event.target.value as string);
+     };
+
      const paybackAccountnumber_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
       setPaybackAccountnumber(event.target.value as string);
+     };
+
+     const paybackAccountiden_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setPaybackAccountiden(event.target.value as string);
      };
 
     const paybackTransfertime_handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -249,6 +345,28 @@ export default function Create() {
                   </Select>
                 </FormControl>
               </Grid>
+              
+              <Grid item xs={3}>
+              <div className={classes.paper}>เลขประจำตัวประชาชน</div>
+            </Grid>
+            <Grid item xs={9}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  //style={{ width: 300 }}
+                  id="payback_accountiden"
+                  name="payback_accountiden"
+                  multiline
+                  rows={2}
+                  value={payback_accountiden}
+                  type="string"
+                  onChange={paybackAccountiden_handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+              </FormControl>
+            </Grid>
 
               <Grid item xs={3}>
                 <div className={classes.paper}>ผลิตภัณฑ์</div>
@@ -323,13 +441,36 @@ export default function Create() {
               <FormControl variant="outlined" className={classes.formControl}>
                 <TextField
                   //style={{ width: 300 }}
-                  id="outlined-number"
+                  id="payback_accountnumber"
                   name="payback_accountnumber"
                   multiline
-                  rows={4}
+                  rows={2}
                   value={payback_accountnumber}
                   type="string"
                   onChange={paybackAccountnumber_handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                />
+              </FormControl>
+            </Grid>
+              
+
+            <Grid item xs={3}>
+              <div className={classes.paper}>เบอร์โทร</div>
+            </Grid>
+            <Grid item xs={9}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  //style={{ width: 300 }}
+                  id="payback_accountname"
+                  name="payback_accountname"
+                  multiline
+                  rows={2}
+                  value={payback_accountname}
+                  type="string"
+                  onChange={paybackAccountname_handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -354,26 +495,7 @@ export default function Create() {
               
               />
               </Grid>
-
               
-              <Grid item xs={3}>
-                <div className={classes.paper}>วันที่ทำรายการ</div>
-              </Grid>
-              <Grid item xs={9}>
-                <form className={classes.container} noValidate>
-                  <TextField
-                    label="เลือกเวลา"
-                    name="payback_transfertime"
-                    type="datetime-local"
-                    value={payback_transfertime || ''} // (undefined || '') = ''
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    onChange={paybackTransfertime_handleChange}
-                  />
-                </form>
-              </Grid>
   
               <Grid item xs={4}></Grid>
               <Grid item xs={8}>
@@ -383,7 +505,7 @@ export default function Create() {
                 size="large"
                 startIcon={<SaveIcon />}
                 onClick={() => {
-                  CreatePayback();
+                  save();
                 }}
               >
                 บันทึกการคืนทุนประกัน

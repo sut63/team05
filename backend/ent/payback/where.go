@@ -93,6 +93,13 @@ func IDLTE(id int) predicate.Payback {
 	})
 }
 
+// PaybackTransfertime applies equality check predicate on the "payback_transfertime" field. It's identical to PaybackTransfertimeEQ.
+func PaybackTransfertime(v time.Time) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPaybackTransfertime), v))
+	})
+}
+
 // PaybackAccountnumber applies equality check predicate on the "payback_accountnumber" field. It's identical to PaybackAccountnumberEQ.
 func PaybackAccountnumber(v string) predicate.Payback {
 	return predicate.Payback(func(s *sql.Selector) {
@@ -100,10 +107,93 @@ func PaybackAccountnumber(v string) predicate.Payback {
 	})
 }
 
-// PaybackTransfertime applies equality check predicate on the "payback_transfertime" field. It's identical to PaybackTransfertimeEQ.
-func PaybackTransfertime(v time.Time) predicate.Payback {
+// PaybackAccountname applies equality check predicate on the "payback_accountname" field. It's identical to PaybackAccountnameEQ.
+func PaybackAccountname(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPaybackAccountname), v))
+	})
+}
+
+// PaybackAccountiden applies equality check predicate on the "payback_accountiden" field. It's identical to PaybackAccountidenEQ.
+func PaybackAccountiden(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackTransfertimeEQ applies the EQ predicate on the "payback_transfertime" field.
+func PaybackTransfertimeEQ(v time.Time) predicate.Payback {
 	return predicate.Payback(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldPaybackTransfertime), v))
+	})
+}
+
+// PaybackTransfertimeNEQ applies the NEQ predicate on the "payback_transfertime" field.
+func PaybackTransfertimeNEQ(v time.Time) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPaybackTransfertime), v))
+	})
+}
+
+// PaybackTransfertimeIn applies the In predicate on the "payback_transfertime" field.
+func PaybackTransfertimeIn(vs ...time.Time) predicate.Payback {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Payback(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPaybackTransfertime), v...))
+	})
+}
+
+// PaybackTransfertimeNotIn applies the NotIn predicate on the "payback_transfertime" field.
+func PaybackTransfertimeNotIn(vs ...time.Time) predicate.Payback {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Payback(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPaybackTransfertime), v...))
+	})
+}
+
+// PaybackTransfertimeGT applies the GT predicate on the "payback_transfertime" field.
+func PaybackTransfertimeGT(v time.Time) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPaybackTransfertime), v))
+	})
+}
+
+// PaybackTransfertimeGTE applies the GTE predicate on the "payback_transfertime" field.
+func PaybackTransfertimeGTE(v time.Time) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPaybackTransfertime), v))
+	})
+}
+
+// PaybackTransfertimeLT applies the LT predicate on the "payback_transfertime" field.
+func PaybackTransfertimeLT(v time.Time) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPaybackTransfertime), v))
+	})
+}
+
+// PaybackTransfertimeLTE applies the LTE predicate on the "payback_transfertime" field.
+func PaybackTransfertimeLTE(v time.Time) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPaybackTransfertime), v))
 	})
 }
 
@@ -218,22 +308,22 @@ func PaybackAccountnumberContainsFold(v string) predicate.Payback {
 	})
 }
 
-// PaybackTransfertimeEQ applies the EQ predicate on the "payback_transfertime" field.
-func PaybackTransfertimeEQ(v time.Time) predicate.Payback {
+// PaybackAccountnameEQ applies the EQ predicate on the "payback_accountname" field.
+func PaybackAccountnameEQ(v string) predicate.Payback {
 	return predicate.Payback(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldPaybackTransfertime), v))
+		s.Where(sql.EQ(s.C(FieldPaybackAccountname), v))
 	})
 }
 
-// PaybackTransfertimeNEQ applies the NEQ predicate on the "payback_transfertime" field.
-func PaybackTransfertimeNEQ(v time.Time) predicate.Payback {
+// PaybackAccountnameNEQ applies the NEQ predicate on the "payback_accountname" field.
+func PaybackAccountnameNEQ(v string) predicate.Payback {
 	return predicate.Payback(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldPaybackTransfertime), v))
+		s.Where(sql.NEQ(s.C(FieldPaybackAccountname), v))
 	})
 }
 
-// PaybackTransfertimeIn applies the In predicate on the "payback_transfertime" field.
-func PaybackTransfertimeIn(vs ...time.Time) predicate.Payback {
+// PaybackAccountnameIn applies the In predicate on the "payback_accountname" field.
+func PaybackAccountnameIn(vs ...string) predicate.Payback {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -245,12 +335,12 @@ func PaybackTransfertimeIn(vs ...time.Time) predicate.Payback {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldPaybackTransfertime), v...))
+		s.Where(sql.In(s.C(FieldPaybackAccountname), v...))
 	})
 }
 
-// PaybackTransfertimeNotIn applies the NotIn predicate on the "payback_transfertime" field.
-func PaybackTransfertimeNotIn(vs ...time.Time) predicate.Payback {
+// PaybackAccountnameNotIn applies the NotIn predicate on the "payback_accountname" field.
+func PaybackAccountnameNotIn(vs ...string) predicate.Payback {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -262,35 +352,181 @@ func PaybackTransfertimeNotIn(vs ...time.Time) predicate.Payback {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldPaybackTransfertime), v...))
+		s.Where(sql.NotIn(s.C(FieldPaybackAccountname), v...))
 	})
 }
 
-// PaybackTransfertimeGT applies the GT predicate on the "payback_transfertime" field.
-func PaybackTransfertimeGT(v time.Time) predicate.Payback {
+// PaybackAccountnameGT applies the GT predicate on the "payback_accountname" field.
+func PaybackAccountnameGT(v string) predicate.Payback {
 	return predicate.Payback(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldPaybackTransfertime), v))
+		s.Where(sql.GT(s.C(FieldPaybackAccountname), v))
 	})
 }
 
-// PaybackTransfertimeGTE applies the GTE predicate on the "payback_transfertime" field.
-func PaybackTransfertimeGTE(v time.Time) predicate.Payback {
+// PaybackAccountnameGTE applies the GTE predicate on the "payback_accountname" field.
+func PaybackAccountnameGTE(v string) predicate.Payback {
 	return predicate.Payback(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldPaybackTransfertime), v))
+		s.Where(sql.GTE(s.C(FieldPaybackAccountname), v))
 	})
 }
 
-// PaybackTransfertimeLT applies the LT predicate on the "payback_transfertime" field.
-func PaybackTransfertimeLT(v time.Time) predicate.Payback {
+// PaybackAccountnameLT applies the LT predicate on the "payback_accountname" field.
+func PaybackAccountnameLT(v string) predicate.Payback {
 	return predicate.Payback(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldPaybackTransfertime), v))
+		s.Where(sql.LT(s.C(FieldPaybackAccountname), v))
 	})
 }
 
-// PaybackTransfertimeLTE applies the LTE predicate on the "payback_transfertime" field.
-func PaybackTransfertimeLTE(v time.Time) predicate.Payback {
+// PaybackAccountnameLTE applies the LTE predicate on the "payback_accountname" field.
+func PaybackAccountnameLTE(v string) predicate.Payback {
 	return predicate.Payback(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldPaybackTransfertime), v))
+		s.Where(sql.LTE(s.C(FieldPaybackAccountname), v))
+	})
+}
+
+// PaybackAccountnameContains applies the Contains predicate on the "payback_accountname" field.
+func PaybackAccountnameContains(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldPaybackAccountname), v))
+	})
+}
+
+// PaybackAccountnameHasPrefix applies the HasPrefix predicate on the "payback_accountname" field.
+func PaybackAccountnameHasPrefix(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldPaybackAccountname), v))
+	})
+}
+
+// PaybackAccountnameHasSuffix applies the HasSuffix predicate on the "payback_accountname" field.
+func PaybackAccountnameHasSuffix(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldPaybackAccountname), v))
+	})
+}
+
+// PaybackAccountnameEqualFold applies the EqualFold predicate on the "payback_accountname" field.
+func PaybackAccountnameEqualFold(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldPaybackAccountname), v))
+	})
+}
+
+// PaybackAccountnameContainsFold applies the ContainsFold predicate on the "payback_accountname" field.
+func PaybackAccountnameContainsFold(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldPaybackAccountname), v))
+	})
+}
+
+// PaybackAccountidenEQ applies the EQ predicate on the "payback_accountiden" field.
+func PaybackAccountidenEQ(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenNEQ applies the NEQ predicate on the "payback_accountiden" field.
+func PaybackAccountidenNEQ(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenIn applies the In predicate on the "payback_accountiden" field.
+func PaybackAccountidenIn(vs ...string) predicate.Payback {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Payback(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPaybackAccountiden), v...))
+	})
+}
+
+// PaybackAccountidenNotIn applies the NotIn predicate on the "payback_accountiden" field.
+func PaybackAccountidenNotIn(vs ...string) predicate.Payback {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Payback(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPaybackAccountiden), v...))
+	})
+}
+
+// PaybackAccountidenGT applies the GT predicate on the "payback_accountiden" field.
+func PaybackAccountidenGT(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenGTE applies the GTE predicate on the "payback_accountiden" field.
+func PaybackAccountidenGTE(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenLT applies the LT predicate on the "payback_accountiden" field.
+func PaybackAccountidenLT(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenLTE applies the LTE predicate on the "payback_accountiden" field.
+func PaybackAccountidenLTE(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenContains applies the Contains predicate on the "payback_accountiden" field.
+func PaybackAccountidenContains(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenHasPrefix applies the HasPrefix predicate on the "payback_accountiden" field.
+func PaybackAccountidenHasPrefix(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenHasSuffix applies the HasSuffix predicate on the "payback_accountiden" field.
+func PaybackAccountidenHasSuffix(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenEqualFold applies the EqualFold predicate on the "payback_accountiden" field.
+func PaybackAccountidenEqualFold(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldPaybackAccountiden), v))
+	})
+}
+
+// PaybackAccountidenContainsFold applies the ContainsFold predicate on the "payback_accountiden" field.
+func PaybackAccountidenContainsFold(v string) predicate.Payback {
+	return predicate.Payback(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldPaybackAccountiden), v))
 	})
 }
 
