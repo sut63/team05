@@ -13,6 +13,8 @@ import FindInPageIcon from '@material-ui/icons/FindInPage';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import SaveAltTwoToneIcon from '@material-ui/icons/SaveAltTwoTone';
 import SearchIcon from '@material-ui/icons/Search';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import FindInPageTwoToneIcon from '@material-ui/icons/FindInPageTwoTone';
 import FindInPageOutlinedIcon from '@material-ui/icons/FindInPageOutlined';
 
 import {
@@ -88,6 +90,10 @@ export const AppSidebar = () => {
             icon={CreditCardIcon}
             to="Inquiry"
             text="Inquiry" />
+            <SidebarItem
+            icon={LibraryBooksIcon}
+            to="Resultinsurance"
+            text="SearchInsurance" />
             
             </>
             
@@ -110,15 +116,19 @@ export const AppSidebar = () => {
             icon={SaveAltTwoToneIcon}
             to="Recordinsurance"
             text="Recordinsurance" />
-            <SidebarItem
+          <SidebarItem
+            icon={FindInPageTwoToneIcon}
+            to="RecordinsuranceSearch"
+            text="RecordinsuranceSearch" />
+          <SidebarItem
             icon={PaymentIcon}
             to="payback"
             text="payback" />
-            <SidebarItem
+          <SidebarItem
             icon={SearchIcon}
             to="ProductSearch"
-            text="ค้นหาผลิตภัณฑ์" />
-            <SidebarItem
+            text="ค้นหาผลิตภัณฑ์" /> 
+          <SidebarItem
             icon={FindInPageOutlinedIcon}
             to="PaybackSearch"
             text="ค้นหาการคืนทุนประกัน" />
