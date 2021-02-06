@@ -140,7 +140,7 @@ export default function Payback() {
   const SearchPayback = async () => {
     const res = await api.listPayback({ offset: 0 });
     const search = Paybacksearch(res);
-    setErrorMessege("ไม่พบเบอร์โทรที่ค้นหา");
+    setErrorMessege("ไม่พบเลขบัตรประชาชนที่ค้นหา");
         setAlertType("error");
         setAlert(false);
         setPaybacks([]);
