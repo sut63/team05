@@ -180,7 +180,7 @@ export default function Payback() {
         <ContentHeader title="ค้นหาการคืนทุนประกัน">
         <Link component={RouterLink} to="/payback">
            <Button variant="contained" color="primary">
-             บันทึกข้อมูลสิทธิประกันสุขภาพ
+             บันทึกข้อมูลการคืนทุนประกัน
            </Button>
          </Link>
           {status ? (
