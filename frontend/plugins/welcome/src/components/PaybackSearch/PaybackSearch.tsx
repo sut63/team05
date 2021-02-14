@@ -177,7 +177,7 @@ export default function Payback() {
         <Header style={HeaderCustom} title={`ระบบค้นหาการคืนทุนประกัน`}>
         </Header>
         <Content>
-        <ContentHeader title="ค้นหาการคืนทุนประกัน">
+        <ContentHeader title="ค้นหาการคืนทุนประกันด้วยเลขบัตรประชาชน">
         <Link component={RouterLink} to="/payback">
            <Button variant="contained" color="primary">
              บันทึกข้อมูลการคืนทุนประกัน
