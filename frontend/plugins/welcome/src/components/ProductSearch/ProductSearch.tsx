@@ -172,7 +172,7 @@ export default function Product() {
         <Header style={HeaderCustom} title={`ระบบค้นหาข้อมูลผลิตภัณฑ์`}>
         </Header>
         <Content>
-        <ContentHeader title="ค้นหาข้อมูลผลิตภัณฑ์">
+        <ContentHeader title="ค้นหาชื่อผลิตภัณฑ์">
         <Link component={RouterLink} to="/Product">
            <Button variant="contained" color="secondary">
              บันทึกข้อมูลผลิตภัณฑ์
@@ -200,7 +200,7 @@ export default function Product() {
                 <TextField
                   //style={{ width: 300 }}
                   id="insuranceIdentification"
-                  label=""
+                  label="กรอกชื่อผลิตภัณฑ์ที่ต้องการ"
                   variant="outlined"
                   color="secondary"
                   type="string"
